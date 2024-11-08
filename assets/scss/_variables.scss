@@ -4,11 +4,24 @@
   --main-font-size: 16px;
 
   --main-color: #0E0E0EFF;
-  --secondary-color: #fff;
-  --fill-color: #a9b7ba;
+  --bg-color: #f0f0f0;
+  --card-bg-color: #fff;
   --hover-color: #8a989a;
   --gray-color: #f0f0f0;
   --white-color: #fff;
   --border-radius: 16px;
+  --border-color: #fff;
+  --border-width: 0;
+  --border-style: solid;
   --box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+[data-theme='dark'] {
+  --main-color: #E0E0E0;
+  --bg-color: rgb(15, 23, 42);
+  --card-bg-color: rgb(30, 40, 65);
+  --box-shadow: none;
+  --border-width: 1px;
+  --border-style: solid;
+  --border-color: rgba(226, 232, 240, 0.2);
 }

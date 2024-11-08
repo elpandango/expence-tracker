@@ -1,8 +1,15 @@
 <template>
   <div class="index-page">
-    <Card>
-      Add your new card!
-    </Card>
+    <div class="card-details-block">
+      <Card>
+        Add your new card!
+      </Card>
+    </div>
+    <div class="statistics-block">
+      <Card>
+        Statistics
+      </Card>
+    </div>
   </div>
 </template>
 

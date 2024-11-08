@@ -5,7 +5,7 @@
 body, html {
   font-family: var(--main-font), serif;
   color: var(--main-color);
-  background-color: var(--gray-color);
+  background-color: var(--bg-color);
 }
 
 a {
@@ -69,7 +69,7 @@ p {
 
   .content {
     border-radius: var(--border-radius);
-    background-color: var(--white-color);
+    background-color: var(--card-bg-color);
     min-height: calc(100vh - 30px);
     padding: 20px;
   }
