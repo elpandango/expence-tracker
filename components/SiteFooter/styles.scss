@@ -1,0 +1,48 @@
+.site-footer {
+  padding: 60px 0;
+  position: relative;
+
+  @media only screen and (max-width: 767px) {
+    padding: 60px 0 80px;
+  }
+
+  .footer-question {
+    @media only screen and (max-width: 991px) {
+      font-size: 52px;
+    }
+
+    @media only screen and (max-width: 767px) {
+      font-size: 32px;
+      margin-bottom: 26px;
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  .make-appointment {
+    width: 250px;
+    height: 250px;
+    background-color: var(--secondary-color);
+    color: var(--main-color);
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color .3s;
+    margin: 0;
+
+    &:hover {
+      background-color: var(--hover-color);
+    }
+
+    @media only screen and (max-width: 991px) {
+      width: 150px;
+      height: 150px;
+    }
+
+    @media only screen and (max-width: 767px) {
+      margin: 0 auto;
+    }
+  }
+}

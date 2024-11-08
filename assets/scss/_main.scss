@@ -1,0 +1,80 @@
+* {
+  box-sizing: border-box;
+}
+
+body, html {
+  font-family: var(--main-font), serif;
+  color: var(--main-color);
+  background-color: var(--gray-color);
+}
+
+a {
+  color: inherit;
+}
+
+.no-overflow {
+  overflow: visible;
+}
+
+//text-align
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+//positions
+.pos-relative {
+  position: relative;
+}
+
+.pos-absolute {
+  position: absolute;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.columns {
+  display: flex;
+}
+
+.section-title {
+  font-size: 32px;
+}
+
+p {
+  margin-top: 0;
+}
+
+.hidden {
+  overflow: hidden;
+}
+
+.main-content {
+  width: calc(100% - 250px);
+  padding: 20px 10px 10px 0;
+
+  .content {
+    border-radius: var(--border-radius);
+    background-color: var(--white-color);
+    min-height: calc(100vh - 30px);
+    padding: 20px;
+  }
+}
+
+//5 = Mastercard
+//4 = Visa
+//3 = American Express

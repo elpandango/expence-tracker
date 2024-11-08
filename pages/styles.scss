@@ -1,0 +1,59 @@
+.index-page {
+  //padding-top: 105px;
+}
+
+.block-title {
+  font-size: 68px;
+  font-family: var(--secondary-font);
+  font-weight: 300;
+
+  @media only screen and (max-width: 767px) {
+    font-size: 58px;
+  }
+}
+
+.content-cols {
+  display: flex;
+
+  .col.text {
+    flex-basis: fit-content;
+    padding-right: 40px;
+    display: flex;
+    align-items: center;
+  }
+
+  .col.image {
+    width: 350px;
+    img {
+      height: 450px;
+    }
+  }
+}
+
+.about-text {
+  font-size: 26px;
+}
+
+.page-section {
+  padding-top: 65px;
+  padding-bottom: 65px;
+}
+
+.bg-gray {
+  background-color: var(--fill-color);
+}
+
+.blog-posts-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.site-posts {
+  margin-bottom: 80px;
+}
+
+.faq {
+  .block-title {
+
+  }
+}
