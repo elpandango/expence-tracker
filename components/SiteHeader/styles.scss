@@ -1,5 +1,6 @@
 .site-header {
   height: 50px;
+  margin-bottom: 24px;
 
   .container {
     height: 100%;
@@ -15,5 +16,22 @@
   .actions-block {
     display: flex;
     align-items: center;
+  }
+
+  .greeting-block {
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  .search-block {
+    width: 400px;
+    margin-right: 20px;
+  }
+
+  .avatar-block {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--bg-color);
   }
 }

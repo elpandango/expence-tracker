@@ -24,14 +24,8 @@ export default defineNuxtConfig({
   modules: [['@nuxtjs/google-fonts', {
     families: {
       Raleway: {
-        wght: [400, 700],
+        wght: [400, 500, 600],
       },
-      Montserrat: {
-        wght: [400, 700],
-      },
-      CormorantInfant: {
-        wght: [300, 400, 700]
-      }
     }
   }], '@pinia/nuxt'],
   plugins: ['~/plugins/router.js'],

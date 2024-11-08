@@ -5,10 +5,13 @@
         <div class="greeting-block">Good Morning, Asshole!</div>
         <div class="actions-block">
           <div class="search-block">
-            <input type="text">
+            <input
+             class="form-input"
+             type="text"
+             placeholder="Search">
           </div>
           <div class="avatar-block">
-            (*|*)
+
           </div>
         </div>
       </div>
