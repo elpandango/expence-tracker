@@ -2,12 +2,16 @@
   <div class="index-page">
     <div class="card-details-block">
       <Card>
-        Add your new card!
+        <PaymentCard class="mar-b-8"/>
+        <TransactionsHistory/>
       </Card>
     </div>
     <div class="statistics-block">
       <Card>
         Statistics
+      </Card>
+      <Card>
+        Expenses History
       </Card>
     </div>
   </div>

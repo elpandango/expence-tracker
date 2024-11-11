@@ -13,19 +13,19 @@
           Dashboard
         </NuxtLink>
         <NuxtLink
-         to="/"
+         to="/cards"
          class="menu-link">
           <div class="icon"></div>
-          Card
+          My Cards
         </NuxtLink>
         <NuxtLink
-         to="/"
+         to="/transactions"
          class="menu-link">
           <div class="icon"></div>
-          Payment
+          Transactions
         </NuxtLink>
         <NuxtLink
-         to="/"
+         to="/statistics"
          class="menu-link">
           <div class="icon"></div>
           Statistics
@@ -40,16 +40,17 @@
     </div>
     <div class="bottom-block">
       <NuxtLink
-       to="/"
+       to="/settings"
        class="menu-link">
         <div class="icon"></div>
         Settings
       </NuxtLink>
-      <button
+      <div
        class="menu-link"
        @click="toggleTheme">
-        {{ isDark ? '🌞' : '🌙' }} Theme
-      </button>
+        <div class="icon">{{ isDark ? '🌞' : '🌙' }}</div>
+        Theme
+      </div>
     </div>
   </aside>
 </template>
