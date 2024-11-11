@@ -1,38 +1,56 @@
 <template>
   <aside class="sidebar">
     <div class="top-block">
-      <div class="logo">logo</div>
+      <div class="logo">
+        <div class="logo-img"></div>
+        <div class="brand-name">Expense Tracker</div>
+      </div>
       <div class="sidebar-menu">
         <NuxtLink
          to="/"
-         class="menu-link">Dashboard
+         class="menu-link">
+          <div class="icon"></div>
+          Dashboard
         </NuxtLink>
         <NuxtLink
-         to="/"
-         class="menu-link">Card
+         to="/cards"
+         class="menu-link">
+          <div class="icon"></div>
+          My Cards
         </NuxtLink>
         <NuxtLink
-         to="/"
-         class="menu-link">Payment
+         to="/transactions"
+         class="menu-link">
+          <div class="icon"></div>
+          Transactions
         </NuxtLink>
         <NuxtLink
-         to="/"
-         class="menu-link">Statistics
+         to="/statistics"
+         class="menu-link">
+          <div class="icon"></div>
+          Statistics
         </NuxtLink>
         <NuxtLink
          to="/profile"
-         class="menu-link">Profile
+         class="menu-link">
+          <div class="icon"></div>
+          Profile
         </NuxtLink>
       </div>
     </div>
     <div class="bottom-block">
       <NuxtLink
-       to="/"
-       class="menu-link">Settings
+       to="/settings"
+       class="menu-link">
+        <div class="icon"></div>
+        Settings
       </NuxtLink>
-      <button @click="toggleTheme">
-        {{ isDark ? '🌞 Светлая тема' : '🌙 Тёмная тема' }}
-      </button>
+      <div
+       class="menu-link"
+       @click="toggleTheme">
+        <div class="icon">{{ isDark ? '🌞' : '🌙' }}</div>
+        Theme
+      </div>
     </div>
   </aside>
 </template>
@@ -47,44 +65,6 @@ const {isDark, toggleTheme} = useTheme();
 </script>
 
 <style
- lang="scss">
-.sidebar {
-  width: 250px;
-  height: 100vh;
-  padding: 20px 14px 20px 0;
-  background-color: var(--bg-color);
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  justify-content: space-between;
-
-  .top-block {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  .sidebar-menu {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-  }
-
-  .menu-link {
-    display: flex;
-    width: 100%;
-    height: 36px;
-    align-items: center;
-    background-color: transparent;
-    padding: 0 16px;
-    transition: background-color .3s;
-
-    &:hover, &.active {
-      background-color: var(--card-bg-color);
-    }
-  }
-
-  .logo {
-    margin-bottom: 60px;
-  }
-}
+ lang="scss"
+ src="./styles.scss">
 </style>

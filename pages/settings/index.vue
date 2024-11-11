@@ -1,6 +1,6 @@
 <template>
-  <div class="card">
-    <slot></slot>
+  <div class="cards-page">
+    <h1>Settings</h1>
   </div>
 </template>
 
@@ -11,6 +11,5 @@
 </script>
 
 <style
- lang="scss"
- src="./styles.scss">
+ lang="scss">
 </style>

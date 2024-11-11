@@ -1,0 +1,33 @@
+.transactions-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 26px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .category-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: var(--gray-color);
+    margin-right: 16px;
+  }
+
+  .item-details {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .item-name {
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  .item-date {
+    font-size: 14px;
+  }
+}
