@@ -1,27 +1,27 @@
 <template>
   <Teleport to="body">
     <div
-     class="fixed inset-0 flex items-center justify-center"
-     @keydown.esc="closeDialog">
+     class="modal-overlay"
+     @keydown.esc="closeModal"
+     @click:outside="clickOutside">
       <div
-       class="fixed inset-0 bg-black bg-opacity-50"
+       class="modal-background"
        @click="closeModal"></div>
-      <div class="bg-white rounded-lg shadow-lg w-full max-w-lg z-10">
-        <div class="flex items-center justify-between p-4 border-b border-gray-200">
-          <h2 class="text-lg font-semibold">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">
             <slot name="header"></slot>
           </h2>
           <button
            @click="closeModal"
-           class="text-gray-500 hover:text-gray-700">
-            &times;
+           class="modal-close-button">&times;
           </button>
         </div>
-        <div class="p-4">
+        <div class="modal-body">
           <slot name="body"></slot>
         </div>
-        <div class="flex justify-end p-4 border-t border-gray-200">
-          <div class="space-x-2">
+        <div class="modal-footer">
+          <div class="footer-slot">
             <slot name="footer"></slot>
           </div>
         </div>
@@ -34,7 +34,6 @@
  setup
  lang="ts">
 
-const dialog = ref<null | HTMLDialogElement>(null);
 const props = defineProps({
   modelValue: {
     type: Boolean,
@@ -44,14 +43,12 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue']);
 
-const openModal = () => {
-  if (dialog.value) {
-    dialog.value.showModal();
-  }
-};
-
 const closeModal = () => {
   emit('update:modelValue', false);
+};
+
+const clickOutside = () => {
+  closeModal();
 };
 
 const handleEscape = (event) => {
@@ -68,21 +65,93 @@ onUnmounted(() => {
   window.removeEventListener('keydown', handleEscape);
 });
 
-watch(
- () => props.modelValue,
- (newVal) => {
-   if (newVal) {
-     openModal();
-   } else {
-     closeModal();
-   }
- }
-);
+// watch(
+//  () => props.modelValue,
+//  (newVal) => {
+//    if (newVal) {
+//      openModal();
+//    } else {
+//      closeModal();
+//    }
+//  }
+// );
 
 </script>
 
 <style
  scoped
  lang="scss">
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: black;
+  opacity: 0.5;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 32rem;
+  position: relative;
+  z-index: 10;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-title {
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+.modal-close-button {
+  color: #6b7280;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.modal-close-button:hover {
+  color: #374151;
+}
+
+.modal-body {
+  padding: 1rem;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.footer-slot {
+  display: flex;
+  gap: 0.5rem;
+}
 
 </style>

@@ -1,8 +1,7 @@
 <template>
   <header class="site-header">
-    <!--    <div class="container">-->
     <div class="header-content">
-      <div class="greeting-block">Good Morning, Asshole!</div>
+      <div class="greeting-block">Good Morning, Username!</div>
       <div class="actions-block">
         <div class="search-block">
           <input
@@ -14,7 +13,6 @@
 
         </div>
       </div>
-      <!--      </div>-->
     </div>
   </header>
 </template>
