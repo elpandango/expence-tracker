@@ -3,7 +3,7 @@
    v-model="modalValue"
    @update:modelValue="closeModal">
     <template v-slot:header>
-      Adding New Card
+      Adding a New Card
     </template>
     <template v-slot:body>
       <form>
@@ -11,27 +11,29 @@
           <FloatLabelInput
            v-model="userName"
            size="medium"
-           label="Cards name"/>
+           label="Card name"/>
         </div>
         <div class="form-row">
           <FloatLabelInput
-           v-model="cardNumber"
+           v-model="formattedCardNumber"
            size="medium"
-           label="Cards number"/>
+           label="Card number"
+           :status="cardNumberError ? 'error' : ''"
+           :error-message="cardNumberError ? cardNumberError : ''"
+           @input="formatCardNumber"/>
         </div>
       </form>
     </template>
     <template v-slot:footer>
-      <button
-       class="px-4 py-2 bg-stone-500 hover:bg-stone-700 transition-bg-color duration-200 text-white rounded"
-       @click="closeModal">
-        Cancel
-      </button>
-      <button
-       class="px-4 py-2 bg-red-500 hover:bg-red-700 transition-bg-color duration-200 text-white rounded focus:outline-none"
-       @click="confirmDelete">
-        Add a new Card
-      </button>
+      <BaseButton
+       @click="closeModal"
+       type="transparent"
+       size="big">Cancel
+      </BaseButton>
+      <BaseButton
+       @click="handleAddCard"
+       size="big">Add a new card
+      </BaseButton>
     </template>
   </Modal>
 </template>
@@ -42,6 +44,7 @@
 import {ref} from 'vue';
 import Modal from './Modal.vue';
 import FloatLabelInput from "~/components/Forms/Inputs/FloatLabelInput.vue";
+import BaseButton from "~/components/Buttons/BaseButton.vue";
 
 const props = defineProps({
   isOpen: {
@@ -53,20 +56,43 @@ const props = defineProps({
 const modalValue = ref(props.isOpen);
 const userName = ref('');
 const cardNumber = ref('');
+const formattedCardNumber = ref('');
+const cardNumberError = ref<string | null>(null);
 
-const emit = defineEmits(['confirm', 'update:isOpen']);
+const emit = defineEmits(['card-added', 'update:isOpen']);
 
 const closeModal = () => {
   emit('update:isOpen', false);
 };
 
-const confirmDelete = () => {
-  emit('confirm');
+const handleAddCard = () => {
+  if (!/^\d{16}$/.test(cardNumber.value)) {
+    cardNumberError.value = 'Card number must be exactly 16 digits.';
+    return;
+  }
+
+  cardNumberError.value = null;
+
+  emit('card-added', {name: userName.value, number: cardNumber.value});
 };
+
+const formatCardNumber = () => {
+  const rawValue = formattedCardNumber.value.replace(/\D/g, '');
+
+  if (rawValue.length > 16) {
+    formattedCardNumber.value = rawValue.slice(0, 16).replace(/(\d{4})(?=\d)/g, '$1 ');
+  } else {
+    formattedCardNumber.value = rawValue.replace(/(\d{4})(?=\d)/g, '$1 ');
+  }
+
+  cardNumber.value = rawValue.slice(0, 16);
+};
+
+
 </script>
 
 <style lang="scss">
 .form-row {
-  margin-bottom: 12px;
+  margin-bottom: 22px;
 }
 </style>

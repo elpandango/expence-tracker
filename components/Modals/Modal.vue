@@ -1,6 +1,7 @@
 <template>
   <Teleport to="body">
     <div
+     v-if="modelValue"
      class="modal-overlay"
      @keydown.esc="closeModal"
      @click:outside="clickOutside">
@@ -64,18 +65,6 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('keydown', handleEscape);
 });
-
-// watch(
-//  () => props.modelValue,
-//  (newVal) => {
-//    if (newVal) {
-//      openModal();
-//    } else {
-//      closeModal();
-//    }
-//  }
-// );
-
 </script>
 
 <style
@@ -84,6 +73,7 @@ onUnmounted(() => {
 
 .modal-overlay {
   position: fixed;
+  z-index: 100;
   top: 0;
   left: 0;
   right: 0;
@@ -99,12 +89,12 @@ onUnmounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: black;
+  background-color: var(--modal-bg-color);
   opacity: 0.5;
 }
 
 .modal-content {
-  background-color: white;
+  background-color: var(--modal-body-color);
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 100%;
@@ -115,10 +105,9 @@ onUnmounted(() => {
 
 .modal-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   padding: 1rem;
-  border-bottom: 1px solid #e5e7eb;
 }
 
 .modal-title {
@@ -132,6 +121,8 @@ onUnmounted(() => {
   border: none;
   cursor: pointer;
   transition: color 0.2s;
+  font-size: 30px;
+  line-height: 16px;
 }
 
 .modal-close-button:hover {
@@ -146,12 +137,10 @@ onUnmounted(() => {
   display: flex;
   justify-content: flex-end;
   padding: 1rem;
-  border-top: 1px solid #e5e7eb;
 }
 
 .footer-slot {
   display: flex;
   gap: 0.5rem;
 }
-
 </style>

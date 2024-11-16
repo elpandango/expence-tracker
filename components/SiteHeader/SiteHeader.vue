@@ -4,10 +4,10 @@
       <div class="greeting-block">Good Morning, Username!</div>
       <div class="actions-block">
         <div class="search-block">
-          <input
-           class="form-input"
-           type="text"
-           placeholder="Search">
+          <FloatLabelInput
+           v-model="searchValue"
+           size="medium"
+           label="Search transaction"/>
         </div>
         <div class="avatar-block">
 
@@ -18,7 +18,10 @@
 </template>
 
 <script setup>
+import {ref} from 'vue';
+import FloatLabelInput from "~/components/Forms/Inputs/FloatLabelInput.vue";
 
+const searchValue = ref('');
 </script>
 
 <style

@@ -3,6 +3,7 @@
   <div>
     <NuxtLayout>
       <NuxtPage/>
+      <Preloader v-if="!isLoaded"/>
     </NuxtLayout>
   </div>
 </template>
@@ -11,7 +12,13 @@
  setup
  lang="ts">
 import SvgSprite from "~/components/svgComponents/SvgSprite.vue";
+import {ref} from "vue";
 
+const isLoaded = ref(false);
+
+setTimeout(() => {
+  isLoaded.value = true;
+}, 1600);
 // useHead({
 //   link: [
 //     {rel: 'icon', href: '/favicons/favicon-32x32.png', sizes: '32x32'},

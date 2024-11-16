@@ -3,7 +3,7 @@
     <div class="top-block">
       <div class="logo">
         <div class="logo-img"></div>
-        <div class="brand-name">Expense Tracker</div>
+        <div class="brand-name">Expendango</div>
       </div>
       <div class="sidebar-menu">
         <NuxtLink
@@ -48,7 +48,9 @@
       <div
        class="menu-link"
        @click="toggleTheme">
-        <div class="icon">{{ isDark ? '🌞' : '🌙' }}</div>
+        <ClientOnly>
+          <div class="icon">{{ isDark ? '🌞' : '🌙' }}</div>
+        </ClientOnly>
         Theme
       </div>
     </div>
