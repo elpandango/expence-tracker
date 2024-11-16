@@ -3,6 +3,13 @@
    class="payment-card"
    :class="props.class">
 
+    <div>name: {{data.name}}</div>
+    <div>number: {{data.number}}</div>
+
+    <!--          <div class="actions">-->
+    <!--            <button>Edit</button>-->
+    <!--            <button>Delete</button>-->
+    <!--          </div>-->
   </div>
 </template>
 
@@ -13,6 +20,9 @@
 const props = defineProps({
   class: {
     type: String
+  },
+  data: {
+    type: Object
   }
 });
 

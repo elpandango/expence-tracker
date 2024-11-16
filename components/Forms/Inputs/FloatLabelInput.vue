@@ -60,7 +60,8 @@ const emits = defineEmits(['update:modelValue']);
     transform: translateY(-50%);
     z-index: 1;
     transition: all .3s;
-    background-color: #fff;
+    background-color: var(--input-label-bg);
+    //background-color: inherit;
 
     &.frozen {
       font-size: 12px;
@@ -74,6 +75,7 @@ const emits = defineEmits(['update:modelValue']);
     position: relative;
     z-index: 5;
     background-color: transparent;
+    color: var(--input-primary-color);
 
     &::placeholder {
       display: none;
@@ -81,6 +83,7 @@ const emits = defineEmits(['update:modelValue']);
     }
 
     &:focus, &:active {
+      border-color: var(--accent-color);
       & + label {
         font-size: 12px;
         transform: translateY(0);

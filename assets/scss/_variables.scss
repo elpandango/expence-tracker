@@ -5,6 +5,8 @@
   --main-color: #0E0E0EFF;
   --accent-color: #5d66fe;
   --bg-color: #f0f0f0;
+  --modal-bg-color: #000;
+  --modal-body-color: #fff;
   --card-bg-color: #fff;
   --hover-color: #8a989a;
   --gray-color: #f0f0f0;
@@ -15,14 +17,101 @@
   --border-width: 0;
   --border-style: solid;
   --box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+
+  /* Inputs colors */
+  --input-primary-color: #0E0E0EFF;
+
+  /* Button colors */
+  --btn-primary-bg: #5d66fe;
+  --btn-primary-bg-hover: #4952ea;
+  --btn-primary-color: #fff;
+  --btn-transparent-color: #5d66fe;
+  --btn-primary-border-color: rgba(226, 232, 240, 0.9);
+  --input-label-bg: #fff;
+
+  /* Text colors */
+  --text-100: #131523;
+  --text-80: #5a607f;
+  --text-70: #7e84a3;
+  --text-50: #d7dbec;
+  --text-40: #e6e9f4;
+  --text-0: #fff;
+
+  /* Primary colors */
+  --primary-30: #ecf2ff;
+  --primary-40: #d9e4ff;
+  --primary-50: #b6cbff;
+  --primary-60: #89abff;
+  --primary-70: #608dff;
+  --primary-80: #4f81ff;
+  --primary-90: #336dff;
+  --primary-default: #1e5eff;
+  --primary-hover: #336dff;
+
+  /* Neutral colors */
+  --neutral-900: #242930;
+  --neutral-800: #505760;
+  --neutral-750: #607E82;
+  --neutral-700: #838E9D;
+  --neutral-600: #A3B1C6;
+  --neutral-500: #CAD6E6;
+  --neutral-400: #E1E9F2;
+  --neutral-300: #F0F4FB;
+  --neutral-200: #F5F9FE;
+  --neutral-100: #F9FCFE;
+  --neutral-0: #FFF;
+
+  /* Secondary colors */
+  --red-30: #fde7ea;
+  --red-40: #fcd5d9;
+  --red-50: #fab3bc;
+  --red-60: #f8919d;
+  --red-70: #f45a6d;
+  --red-80: #f34359;
+  --red-90: #f12b43;
+  --red-100: #f0142f;
+
+  --green-30: #daf9ec;
+  --green-40: #c4f8e2;
+  --green-50: #95f6cc;
+  --green-60: #74efb9;
+  --green-70: #48e9a5;
+  --green-80: #25e191;
+  --green-90: #1fd286;
+  --green-100: #06a561;
+
+  --yellow-30: #fff9e1;
+  --yellow-40: #fff4c9;
+  --yellow-50: #ffeca3;
+  --yellow-60: #ffe582;
+  --yellow-70: #ffe45f;
+  --yellow-80: #ffd613;
+  --yellow-90: #ffc700;
+  --yellow-100: #f99600;
+
+  --blue-30: #c8f4ff;
+  --blue-40: #baf0ff;
+  --blue-50: #ace9ff;
+  --blue-60: #9ee4ff;
+  --blue-70: #90e0ff;
+  --blue-80: #82dbff;
+  --blue-90: #73d7ff;
+  --blue-100: #65d2ff;
 }
 
 [data-theme='dark'] {
   --main-color: #E0E0E0;
-  --bg-color: rgb(15, 23, 42);
-  --card-bg-color: rgb(30, 40, 65);
+  --bg-color: rgb(30, 40, 65);
+  --modal-bg-color: rgba(0,0,0, 1);
+  --modal-body-color: rgb(15, 23, 42);
+  --card-bg-color: rgb(15, 23, 42);
   --box-shadow: none;
   --border-width: 1px;
   --border-style: solid;
   --border-color: rgba(226, 232, 240, 0.2);
+  --input-border-color: rgba(226, 232, 240, 0.2);
+  --input-label-bg: rgb(15, 23, 42);
+  --input-primary-color: #E0E0E0;
+
+  --btn-transparent-color: #E0E0E0;
 }

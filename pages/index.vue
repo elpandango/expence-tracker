@@ -2,7 +2,7 @@
   <div class="index-page">
     <div class="card-details-block">
       <Card>
-        <PaymentCard class="mar-b-8"/>
+        <PaymentCard :data="{name: 'Cardholder', number: '123123123123'}" class="mar-b-8"/>
         <TransactionsHistory/>
       </Card>
     </div>
@@ -23,7 +23,7 @@
 import {onMounted, ref} from "vue";
 import Card from "~/components/Card/Card.vue";
 
-const route = useRoute();
+// const route = useRoute();
 // const currentUrl = computed(() => process.client ? `${window.location.origin}${route.fullPath}` : '');
 
 // useSeoMeta({
