@@ -24,8 +24,12 @@
     font-size: 14px;
   }
 
+  &.medium {
+    height: 42px;
+  }
+
   &.big {
-    padding: 8px 16px;
+    height: 50px;
   }
 
   &.error {

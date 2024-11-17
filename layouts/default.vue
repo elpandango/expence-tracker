@@ -15,6 +15,16 @@
  setup
  lang="ts">
 import '~/assets/scss/global.scss';
+
+const router = useRouter();
+
+onMounted(async() => {
+  const userEmail = localStorage.getItem('userEmail');
+
+  if (!userEmail) {
+    router.push('/auth');
+  }
+});
 </script>
 
 <style

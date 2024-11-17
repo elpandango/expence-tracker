@@ -11,12 +11,12 @@
           <div class="avatar-actions">
             <BaseButton
              @click="handleCancel"
-             type="transparent"
+             variant="transparent"
              size="big">Upload Photo
             </BaseButton>
             <BaseButton
              @click="handleSaveChanges"
-             type="transparent"
+             variant="transparent"
              size="big">Remove Photo
             </BaseButton>
           </div>
@@ -45,7 +45,7 @@
           <div class="form-row btn-block">
             <BaseButton
              @click="handleCancel"
-             type="transparent"
+             variant="transparent"
              size="big">Cancel
             </BaseButton>
             <BaseButton

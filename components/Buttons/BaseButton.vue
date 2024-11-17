@@ -1,7 +1,8 @@
 <template>
   <button
    class="button"
-   :class="[size, type]">
+   :type="type"
+   :class="[size, variant]">
     <slot></slot>
   </button>
 </template>
@@ -13,6 +14,10 @@ const props = defineProps({
     required: false
   },
   type: {
+    type: String,
+    default: 'button'
+  },
+  variant: {
     type: String,
     required: false
   }

@@ -13,12 +13,12 @@ const router = useRouter();
 
 onMounted(async () => {
   try {
-    const userEmail = localStorage.getItem('userEmail');
-    const data = await repositoryFactory.get('User').getUser(userEmail);
+    // const userEmail = localStorage.getItem('userEmail');
+    // const data = await repositoryFactory.get('User').getUser(userEmail);
 
-    if (data.status === 200) {
-      router.push('/admin/all-posts')
-    }
+    // if (data.status === 200) {
+      // router.push('/admin/all-posts')
+    // }
   } catch (err) {
     console.log(err);
   }
