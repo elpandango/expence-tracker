@@ -4,11 +4,11 @@
       <Card>
         <Tabs :tabs="tabs">
           <template #login>
-            <LoginForm/>
+            <LoginForm @login="handleLogin"/>
           </template>
           <template #signup>
             <form>
-              <RegisterForm/>
+              <RegisterForm @register="handleRegister"/>
             </form>
           </template>
         </Tabs>
@@ -17,8 +17,7 @@
   </div>
 </template>
 
-<script setup>
-import {ref} from 'vue';
+<script setup lang="ts">
 import Tabs from "~/components/Tabs/Tabs.vue";
 import repositoryFactory from "~/repositories/repositoryFactory";
 import LoginForm from "~/components/Forms/LoginForm/LoginForm.vue";
@@ -29,21 +28,37 @@ definePageMeta({
 });
 
 const router = useRouter();
-const email = ref('');
-const password = ref('');
 
 const tabs = [
   {id: 'login', label: 'Login', slotName: 'login'},
   {id: 'signup', label: 'Sign Up', slotName: 'signup'},
 ];
 
-const onLogin = async () => {
+const handleLogin = async (user: { email: string; password: string }) => {
   try {
-    const response = await repositoryFactory.get('Auth').login({email: email.value, password: password.value});
-    // localStorage.setItem('userEmail', email.value);
-    // localStorage.setItem('token', response.token);
-  } catch (error) {
-    console.error(error);
+    const {status, userId} = await repositoryFactory.get('Auth').login(user);
+
+    if (userId && status === 200) {
+      await router.push('/');
+    }
+  } catch (error: any) {
+    console.log(`Login failed: ${error.message}`);
+  }
+};
+
+
+const handleRegister = async (user) => {
+  try {
+    const {status, userId} = await repositoryFactory.get('Auth').register(user);
+
+    if (userId && status === 200) {
+      await router.push('/');
+    }
+  } catch(error) {
+    console.log(error);
+
+    // const errorMessage = handleApiError(error);
+    // console.error(errorMessage);
   }
 };
 </script>

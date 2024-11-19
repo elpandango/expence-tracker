@@ -15,14 +15,18 @@
  setup
  lang="ts">
 import '~/assets/scss/global.scss';
+import {useUserStore} from '~/stores/user';
 
 const router = useRouter();
+const userStore = useUserStore();
 
-onMounted(async() => {
-  const userEmail = localStorage.getItem('userEmail');
+onMounted(async () => {
+  if (userStore.loading) {
+    await userStore.checkAuth();
+  }
 
-  if (!userEmail) {
-    router.push('/auth');
+  if (!userStore.isLoggedIn) {
+    await router.push('/auth');
   }
 });
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="auth-form">
-    <form>
+    <form @keydown.enter="handleRegister">
       <div class="form-row cols">
         <div class="row-col w50p">
           <FloatLabelInput
@@ -53,6 +53,8 @@ import {reactive} from 'vue';
 import FloatLabelInput from "~/components/Forms/Inputs/FloatLabelInput.vue";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
 
+const emit = defineEmits(['register']);
+
 const user = reactive({
   name: '',
   lastName: '',
@@ -62,7 +64,7 @@ const user = reactive({
 });
 
 const handleRegister = () => {
-
+  emit('register', user);
 };
 </script>
 
