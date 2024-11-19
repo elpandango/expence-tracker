@@ -27,12 +27,12 @@
     <template v-slot:footer>
       <BaseButton
        @click="closeModal"
-       type="transparent"
+       variant="transparent"
        size="big">Cancel
       </BaseButton>
       <BaseButton
        @click="handleAddCard"
-       size="big">Add a new card
+       size="medium">Add a new card
       </BaseButton>
     </template>
   </Modal>

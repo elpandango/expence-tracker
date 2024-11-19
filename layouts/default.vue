@@ -15,6 +15,20 @@
  setup
  lang="ts">
 import '~/assets/scss/global.scss';
+import {useUserStore} from '~/stores/user';
+
+const router = useRouter();
+const userStore = useUserStore();
+
+onMounted(async () => {
+  if (userStore.loading) {
+    await userStore.checkAuth();
+  }
+
+  if (!userStore.isLoggedIn) {
+    await router.push('/auth');
+  }
+});
 </script>
 
 <style

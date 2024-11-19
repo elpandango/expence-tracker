@@ -51,6 +51,7 @@ const emits = defineEmits(['update:modelValue']);
 
 <style scoped lang="scss">
 .form-block.float-label {
+  width: 100%;
   position: relative;
 
   label {

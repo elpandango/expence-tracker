@@ -1,11 +1,11 @@
-import { authLogin } from "~/server/controllers/authController/authLogin";
+import {authRegister} from "~/server/controllers/authController/authRegister";
 import { readBody, setCookie } from 'h3';
 
 export default defineEventHandler(async (event) => {
-    const { email, password } = await readBody(event);
+    const {name, lastName, email, password} = await readBody(event);
 
     try {
-        const { token, userId } = await authLogin({ email, password });
+        const { token, userId } = await authRegister({ name, lastName, email, password });
 
         setCookie(event, 'auth_token', token, {
             httpOnly: true,
