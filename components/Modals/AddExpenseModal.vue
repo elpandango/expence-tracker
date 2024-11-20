@@ -3,7 +3,7 @@
    v-model="modalValue"
    @update:modelValue="closeModal">
     <template v-slot:header>
-      Adding a New Card
+      Adding a New Expense
     </template>
     <template v-slot:body>
       <form>
@@ -32,7 +32,7 @@
       </BaseButton>
       <BaseButton
        @click="handleAddCard"
-       size="big">Add a new card
+       size="big">Add a new expense
       </BaseButton>
     </template>
   </Modal>
@@ -59,10 +59,10 @@ const cardNumber = ref('');
 const formattedCardNumber = ref('');
 const cardNumberError = ref<string | null>(null);
 
-const emit = defineEmits(['card-added', 'update:isOpen']);
+const emit = defineEmits(['expense-added', 'close']);
 
 const closeModal = () => {
-  emit('update:isOpen', false);
+  emit('close');
 };
 
 const handleAddCard = () => {
@@ -73,7 +73,7 @@ const handleAddCard = () => {
 
   cardNumberError.value = null;
 
-  emit('card-added', {name: userName.value, number: cardNumber.value});
+  emit('expense-added', {name: userName.value, number: cardNumber.value});
 };
 
 const formatCardNumber = () => {
