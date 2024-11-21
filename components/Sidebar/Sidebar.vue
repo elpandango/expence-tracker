@@ -36,6 +36,12 @@
           <div class="icon"></div>
           Profile
         </NuxtLink>
+        <button
+         class="menu-link"
+         @click="handleNewExpense">
+          <span class="icon"></span>
+          Add Expense
+        </button>
       </div>
     </div>
     <div class="bottom-block">
@@ -61,9 +67,14 @@
  setup
  lang="ts">
 import {useTheme} from "~/use/useTheme";
+import {useUIStore} from "~/stores/ui";
 
 const {isDark, toggleTheme} = useTheme();
 
+const uiStore = useUIStore();
+const handleNewExpense = () => {
+  uiStore.openAddExpenseModal();
+}
 </script>
 
 <style

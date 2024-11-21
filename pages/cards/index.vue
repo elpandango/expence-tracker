@@ -54,15 +54,7 @@ import AddCardModal from "~/components/Modals/AddCardModal.vue";
 const isModalOpen = ref(false);
 const cardsList = ref([]);
 
-const handlePostDelete = (id) => {
-  isModalOpen.value = true;
-  // postIdToDelete.value = id;
-};
-
 const handleAddCard = async (cardData: any) => {
-  // await postRepository.delete(postIdToDelete.value);
-  // await fetchPosts();
-
   console.log('cardData: ', cardData);
 
   cardsList.value.push(cardData);

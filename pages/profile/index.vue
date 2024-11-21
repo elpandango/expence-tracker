@@ -6,16 +6,26 @@
       <Card
        max-width="50%">
         <div class="avatar-block">
-          <div class="avatar"></div>
-          <div class="avatar-name">{{ user.name }} {{ user.lastName }}</div>
+          <div class="avatar">
+            <img
+             v-if="user.avatar"
+             :src="user.avatar"
+             alt="User Avatar"
+             class="avatar-image"/>
+            <div
+             v-else
+             class="avatar-placeholder">
+            </div>
+          </div>
+          <div class="avatar-name">{{ savedUser.name }} {{ savedUser.lastName }}</div>
           <div class="avatar-actions">
             <BaseButton
-             @click="handleCancel"
+             @click="handleUploadAvatar"
              variant="transparent"
              size="big">Upload Photo
             </BaseButton>
             <BaseButton
-             @click="handleSaveChanges"
+             @click="handleRemoveAvatar"
              variant="transparent"
              size="big">Remove Photo
             </BaseButton>
@@ -63,71 +73,114 @@
 <script
  setup
  lang="ts">
-
+import repositoryFactory from "~/repositories/repositoryFactory";
+import {useUserStore} from '~/stores/user';
 import FloatLabelInput from "~/components/Forms/Inputs/FloatLabelInput.vue";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
 
-const user = reactive({
-  name: 'Andre',
-  lastName: 'Petrov',
-  email: 'elelelele@ddddd.com'
+interface User {
+  name: string;
+  lastName: string;
+  email: string;
+  avatar?: string;
+}
+
+const userStore = useUserStore();
+
+const user = reactive<User>({
+  name: '',
+  lastName: '',
+  email: '',
+  avatar: ''
 });
 
-const handleSaveChanges = () => {
+const savedUser = reactive({
+  name: '',
+  lastName: '',
+});
+
+const initializeUserData = (storeUser: User) => {
+  user.name = storeUser.name;
+  user.lastName = storeUser.lastName;
+  user.email = storeUser.email;
+  user.avatar = storeUser.avatar;
+
+  savedUser.name = storeUser.name;
+  savedUser.lastName = storeUser.lastName;
+};
+
+const handleSaveChanges = async () => {
+  const userId = userStore.getUserID;
+
+  if (
+   user.name === userStore.getUser.name &&
+   user.lastName === userStore.getUser.lastName &&
+   user.email === userStore.getUser.email
+  ) {
+    console.log('No changes to save.');
+    return;
+  }
+
+  const updatedUser = await repositoryFactory.get('User').updateProfile(userId, {
+    name: user.name,
+    lastName: user.lastName,
+    email: user.email,
+  });
+
+  initializeUserData(updatedUser);
 }
+
 const handleCancel = () => {
+  const storeUser = userStore.getUser;
+  initializeUserData(storeUser);
 }
+
+const handleUploadAvatar = async () => {
+  const userId = userStore.getUserID;
+  const avatarInput = document.createElement('input');
+  avatarInput.type = 'file';
+  avatarInput.accept = 'image/*';
+
+  avatarInput.onchange = async (e) => {
+    const file = e.target?.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      const avatarBase64 = reader.result as string;
+
+      try {
+        const updatedUser = await repositoryFactory.get('User').updateAvatar(userId, avatarBase64);
+        user.avatar = updatedUser.avatar;
+      } catch (error) {
+        console.error('Error updating avatar:', error);
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  avatarInput.click();
+};
+
+const handleRemoveAvatar = async () => {
+  const userId = userStore.getUserID;
+
+  try {
+    const updatedUser = await repositoryFactory.get('User').deleteAvatar(userId);
+    user.avatar = '';
+  } catch (error) {
+    console.error('Error removing avatar:', error);
+  }
+};
+
+onMounted(() => {
+  const storeUser = userStore.getUser;
+  initializeUserData(storeUser);
+});
 </script>
 
 <style
- scoped
+ src="./styles.scss"
  lang="scss">
-.avatar-block {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 24px;
 
-  .avatar {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    background: grey;
-    box-shadow: var(--box-shadow);
-    margin-bottom: 14px;
-  }
-
-  .avatar-name {
-    width: 100%;
-    text-align: center;
-    margin-bottom: 14px;
-  }
-
-  .avatar-actions {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .button {
-    min-width: 120px;
-  }
-}
-
-.profile-cols {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.btn-block {
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.5rem;
-
-  .button {
-    min-width: 120px;
-  }
-}
 </style>
