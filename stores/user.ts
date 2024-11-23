@@ -11,7 +11,9 @@ export const useUserStore = defineStore('user', {
   state: () => ({
     isLoggedIn: false,
     loading: true,
+    avatarLoading: true,
     user: {} as User,
+    avatar: '',
     userId: null,
   }),
   actions: {
@@ -34,9 +36,22 @@ export const useUserStore = defineStore('user', {
         this.loading = false;
       }
     },
+    async getUserAvatar() {
+      this.avatarLoading = true;
+      try {
+        const {avatar} = await repositoryFactory.get('User').getAvatar();
+        this.avatar = avatar || '';
+      } catch (err) {
+        console.error('Error fetching avatar:', err);
+        this.avatar = '';
+      } finally {
+        this.avatarLoading = false;
+      }
+    },
   },
   getters: {
     getUser: (state) => state.user,
-    getUserID: (state) => state.userId
+    getUserID: (state) => state.userId,
+    getAvatar: (state) => state.avatar,
   }
 });

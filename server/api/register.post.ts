@@ -3,6 +3,7 @@ import { readBody, setCookie } from 'h3';
 
 export default defineEventHandler(async (event) => {
     const {name, lastName, email, password} = await readBody(event);
+    const cookieAge = 60 * 60 * 24 * 7;
 
     try {
         const { token, userId } = await authRegister({ name, lastName, email, password });
@@ -11,7 +12,15 @@ export default defineEventHandler(async (event) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'strict',
-            maxAge: 60 * 60 * 24 * 7,
+            maxAge: cookieAge,
+        });
+
+        setCookie(event, 'userId', userId, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            path: '/',
+            maxAge: cookieAge,
         });
 
         return { status: 200, userId };

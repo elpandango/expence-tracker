@@ -6,10 +6,10 @@
     <div>name: {{data.name}}</div>
     <div>number: {{data.number}}</div>
 
-    <!--          <div class="actions">-->
-    <!--            <button>Edit</button>-->
-    <!--            <button>Delete</button>-->
-    <!--          </div>-->
+    <div class="actions">
+      <button @click="$emit('update-card')">Edit</button>
+      <button @click="$emit('delete-card')">Delete</button>
+    </div>
   </div>
 </template>
 
@@ -26,6 +26,7 @@ const props = defineProps({
   }
 });
 
+const emit = defineEmits(['update-card', 'delete-card']);
 </script>
 
 <style

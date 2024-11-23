@@ -51,14 +51,11 @@ const handleRegister = async (user) => {
   try {
     const {status, userId} = await repositoryFactory.get('Auth').register(user);
 
-    if (userId && status === 200) {
+    if (status === 200) {
       await router.push('/');
     }
   } catch(error) {
     console.log(error);
-
-    // const errorMessage = handleApiError(error);
-    // console.error(errorMessage);
   }
 };
 </script>

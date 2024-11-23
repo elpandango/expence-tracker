@@ -1,7 +1,8 @@
 import { deleteAvatar } from '~/server/controllers/userController/userController';
+import {getCookie} from "h3";
 
 export default defineEventHandler(async (event) => {
-  const userId = event.context.params?.id;
+  const userId = getCookie(event, 'userId');
 
   try {
     const user = await deleteAvatar(userId);

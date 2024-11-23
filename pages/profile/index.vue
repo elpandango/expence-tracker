@@ -110,8 +110,6 @@ const initializeUserData = (storeUser: User) => {
 };
 
 const handleSaveChanges = async () => {
-  const userId = userStore.getUserID;
-
   if (
    user.name === userStore.getUser.name &&
    user.lastName === userStore.getUser.lastName &&
@@ -121,7 +119,7 @@ const handleSaveChanges = async () => {
     return;
   }
 
-  const updatedUser = await repositoryFactory.get('User').updateProfile(userId, {
+  const updatedUser = await repositoryFactory.get('User').updateProfile({
     name: user.name,
     lastName: user.lastName,
     email: user.email,
@@ -136,7 +134,6 @@ const handleCancel = () => {
 }
 
 const handleUploadAvatar = async () => {
-  const userId = userStore.getUserID;
   const avatarInput = document.createElement('input');
   avatarInput.type = 'file';
   avatarInput.accept = 'image/*';
@@ -150,7 +147,7 @@ const handleUploadAvatar = async () => {
       const avatarBase64 = reader.result as string;
 
       try {
-        const updatedUser = await repositoryFactory.get('User').updateAvatar(userId, avatarBase64);
+        const updatedUser = await repositoryFactory.get('User').updateAvatar(avatarBase64);
         user.avatar = updatedUser.avatar;
       } catch (error) {
         console.error('Error updating avatar:', error);
@@ -163,17 +160,15 @@ const handleUploadAvatar = async () => {
 };
 
 const handleRemoveAvatar = async () => {
-  const userId = userStore.getUserID;
-
   try {
-    const updatedUser = await repositoryFactory.get('User').deleteAvatar(userId);
+    const updatedUser = await repositoryFactory.get('User').deleteAvatar();
     user.avatar = '';
   } catch (error) {
     console.error('Error removing avatar:', error);
   }
 };
 
-onMounted(() => {
+onMounted(async () => {
   const storeUser = userStore.getUser;
   initializeUserData(storeUser);
 });

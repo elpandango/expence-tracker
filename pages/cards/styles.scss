@@ -1,0 +1,28 @@
+.cards-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.add-card-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--accent-color);
+  border-radius: var(--border-radius);
+  background-color: transparent;
+  outline: none;
+  width: 400px;
+  height: 250px;
+  font-size: 18px;
+  color: var(--btn-transparent-color);
+  cursor: pointer;
+
+  .plus-icon {
+    font-size: 24px;
+  }
+
+  .btn-text {
+    margin-left: 10px;
+  }
+}

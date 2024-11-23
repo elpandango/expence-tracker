@@ -38,7 +38,6 @@ const uiStore = useUIStore();
 const isLoading = ref(true);
 const isModalOpen = ref(false);
 
-
 onBeforeMount(async () => {
   try {
     if (userStore.loading) {

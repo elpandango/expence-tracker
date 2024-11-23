@@ -20,7 +20,7 @@ import './styles.scss';
 
 const props = defineProps({
   modelValue: {
-    type: String,
+    type: [String, Number, Date],
     required: true
   },
   placeholder: {
@@ -43,6 +43,10 @@ const props = defineProps({
   errorMessage: {
     type: String,
     required: false
+  },
+  disabled: {
+    type: Boolean,
+    default: false
   }
 });
 
