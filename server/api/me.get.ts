@@ -1,6 +1,6 @@
 import {createError} from 'h3';
 import {verifyToken} from "~/server/utils/auth";
-import {UserModel} from '../models/userModel';
+import {UserModel} from '../models/UserModel';
 
 export default defineEventHandler(async (event) => {
   const token = parseCookies(event).auth_token;
@@ -11,7 +11,8 @@ export default defineEventHandler(async (event) => {
 
   const userData = verifyToken(token);
   const userId = userData?.userId;
-  const user = await UserModel.findById(userId);
+
+  const user = await UserModel.findById(userId, 'name lastName email avatar');
 
   if (!user) {
     throw createError({statusCode: 404, message: 'User not found'});

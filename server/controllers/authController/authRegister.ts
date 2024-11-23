@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from "jsonwebtoken";
-import { UserModel } from "~/server/models/userModel";
+import { UserModel } from "~/server/models/UserModel";
 
 interface AuthRegisterParams {
   name: string;

@@ -1,4 +1,4 @@
-import {UserModel} from "~/server/models/userModel";
+import {UserModel} from "~/server/models/UserModel";
 import {createError} from 'h3';
 
 export const updateProfile = async (

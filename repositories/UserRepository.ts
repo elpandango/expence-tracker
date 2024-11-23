@@ -1,21 +1,24 @@
-import {fetchWithAuth} from "~/server/utils/api";
-
 export default {
-  async updateProfile(userId: string, payload: { name?: string; lastName?: string; email?: string }) {
-    return await $fetch(`/api/profile/${userId}`, {
+  async updateProfile(payload: { name?: string; lastName?: string; email?: string }) {
+    return await $fetch(`/api/profile`, {
       method: 'PUT',
       body: payload,
     });
   },
-  async updateAvatar(userId: string, avatarBase64: string) {
-    return await $fetch(`/api/profile/avatar/${userId}`, {
+  async updateAvatar(avatarBase64: string) {
+    return await $fetch(`/api/profile/avatar`, {
       method: 'PUT',
       body: {avatar: avatarBase64},
     });
   },
-  async deleteAvatar(userId: string) {
-    return await $fetch(`/api/profile/avatar/${userId}`, {
+  async deleteAvatar() {
+    return await $fetch(`/api/profile/avatar`, {
       method: 'DELETE',
     });
-  }
+  },
+  async getAvatar() {
+    return await $fetch(`/api/profile/avatar`, {
+      method: 'GET',
+    });
+  },
 };

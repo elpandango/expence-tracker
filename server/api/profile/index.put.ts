@@ -1,8 +1,8 @@
 import { updateProfile } from "~/server/controllers/userController/userController";
-import { readBody } from 'h3';
+import {getCookie, readBody} from 'h3';
 
 export default defineEventHandler(async (event) => {
-  const userId = event.context.params?.id;
+  const userId = getCookie(event, 'userId');
   const { name, lastName, email } = await readBody(event);
 
   if (!userId) {

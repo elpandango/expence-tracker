@@ -3,13 +3,13 @@
    v-model="modalValue"
    @update:modelValue="closeModal">
     <template v-slot:header>
-      Adding a New Card
+      {{ isEditMode ? 'Editing Card' : 'Adding a New Card' }}
     </template>
     <template v-slot:body>
       <form>
         <div class="form-row">
           <FloatLabelInput
-           v-model="userName"
+           v-model="cardName"
            size="medium"
            label="Card name"/>
         </div>
@@ -20,8 +20,22 @@
            label="Card number"
            :status="cardNumberError ? 'error' : ''"
            :error-message="cardNumberError ? cardNumberError : ''"
+           :disabled="isEditMode"
            @input="formatCardNumber"/>
         </div>
+        <div class="form-row">
+          <FloatLabelInput
+           v-model="cardBalance"
+           size="medium"
+           label="Card balance"/>
+        </div>
+        <div class="form-row">
+          <FloatLabelInput
+           v-model="cardCurrency"
+           size="medium"
+           label="Card currency"/>
+        </div>
+
       </form>
     </template>
     <template v-slot:footer>
@@ -31,8 +45,8 @@
        size="big">Cancel
       </BaseButton>
       <BaseButton
-       @click="handleAddCard"
-       size="big">Add a new card
+       @click="handleSaveCard"
+       size="big">{{ isEditMode ? 'Save Changes' : 'Add a New Card' }}
       </BaseButton>
     </template>
   </Modal>
@@ -50,30 +64,47 @@ const props = defineProps({
   isOpen: {
     type: Boolean,
     required: true
+  },
+  isEditMode: {
+    type: Boolean,
+    default: false
+  },
+  card: {
+    type: Object,
+    default: () => ({})
   }
 });
 
 const modalValue = ref(props.isOpen);
-const userName = ref('');
+const cardName = ref('');
 const cardNumber = ref('');
+const cardBalance = ref('0');
+const cardCurrency = ref('USD');
 const formattedCardNumber = ref('');
 const cardNumberError = ref<string | null>(null);
 
-const emit = defineEmits(['card-added', 'update:isOpen']);
+const emit = defineEmits(['card-saved', 'update:isOpen']);
 
 const closeModal = () => {
   emit('update:isOpen', false);
 };
 
-const handleAddCard = () => {
-  if (!/^\d{16}$/.test(cardNumber.value)) {
-    cardNumberError.value = 'Card number must be exactly 16 digits.';
-    return;
+const handleSaveCard = () => {
+  if (!props.isEditMode) {
+    if (!/^\d{16}$/.test(cardNumber.value)) {
+      cardNumberError.value = 'Card number must be exactly 16 digits.';
+      return;
+    }
   }
 
   cardNumberError.value = null;
 
-  emit('card-added', {name: userName.value, number: cardNumber.value});
+  emit('card-saved', {
+    name: cardName.value,
+    number: cardNumber.value,
+    balance: cardBalance.value,
+    currency: cardCurrency.value
+  });
 };
 
 const formatCardNumber = () => {
@@ -88,7 +119,24 @@ const formatCardNumber = () => {
   cardNumber.value = rawValue.slice(0, 16);
 };
 
+watchEffect(() => {
+  const newCard = props.card;
+  const newIsEditMode = props.isEditMode;
+  const defaultCardData = {
+    name: '',
+    number: '',
+    balance: '0',
+    currency: 'USD'
+  };
 
+  const cardData = newIsEditMode ? newCard : defaultCardData;
+
+  cardName.value = cardData.name || '';
+  cardNumber.value = cardData.number || '';
+  cardBalance.value = cardData.balance || '0';
+  cardCurrency.value = cardData.currency || 'USD';
+
+});
 </script>
 
 <style lang="scss">
