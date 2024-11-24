@@ -1,0 +1,35 @@
+.expense-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .category-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-right: 20px;
+    background-color: grey;
+  }
+
+  .content-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
+
+    .category-name {
+      font-size: 20px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .expense-date {
+      font-size: 14px;
+    }
+
+    .expense-amount {
+      font-size: 20px;
+      font-weight: 600;
+    }
+  }
+}

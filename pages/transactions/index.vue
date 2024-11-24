@@ -2,12 +2,14 @@
   <div class="cards-page">
     <h1>Transactions</h1>
 
-    <ul>
-      <li v-for="expense in expenses">
-        description: {{expense.description}}
-        amount: {{expense.amount}}
-      </li>
-    </ul>
+    <Card
+     class="mar-b-8"
+     v-for="expense in expenses"
+     :key="expense._id">
+      <Expense
+       :data="expense"
+      />
+    </Card>
   </div>
 </template>
 
@@ -16,6 +18,7 @@
  lang="ts">
 import {ref} from 'vue';
 import repositoryFactory from "~/repositories/repositoryFactory";
+import Expense from "~/components/Expense/Expense.vue";
 
 const expenses = ref([]);
 

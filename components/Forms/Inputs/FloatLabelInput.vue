@@ -1,6 +1,6 @@
 <template>
   <div class="form-block float-label">
-    <input type="text"
+    <input :type="type"
            class="form-input"
            :class="[size, status]"
            :value="modelValue"
@@ -47,6 +47,10 @@ const props = defineProps({
   disabled: {
     type: Boolean,
     default: false
+  },
+  type: {
+    type: String,
+    default: 'text'
   }
 });
 
@@ -66,7 +70,6 @@ const emits = defineEmits(['update:modelValue']);
     z-index: 1;
     transition: all .3s;
     background-color: var(--input-label-bg);
-    //background-color: inherit;
 
     &.frozen {
       font-size: 12px;
