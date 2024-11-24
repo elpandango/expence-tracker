@@ -3,12 +3,28 @@
    class="payment-card"
    :class="props.class">
 
-    <div>name: {{data.name}}</div>
-    <div>number: {{data.number}}</div>
+    <div class="card-details">
+      <div class="card-name">{{ data.name }}</div>
+
+      <div class="bottom-part">
+        <div class="card-balance">Balance: <strong>{{ data.balance }}{{ data.currency }}</strong></div>
+        <div class="card-number">{{ formattedNumber }}</div>
+      </div>
+    </div>
 
     <div class="actions">
-      <button @click="$emit('update-card')">Edit</button>
-      <button @click="$emit('delete-card')">Delete</button>
+      <div class="btn-block">
+        <BaseButton
+         @click="$emit('update-card')"
+         variant="green"
+         size="big">Edit
+        </BaseButton>
+        <BaseButton
+         @click="$emit('delete-card')"
+         variant="red"
+         size="big">Delete
+        </BaseButton>
+      </div>
     </div>
   </div>
 </template>
@@ -16,6 +32,8 @@
 <script
  setup
  lang="ts">
+import {useFormatCardNumber} from "~/use/useFormatCardNumber";
+import BaseButton from "~/components/Buttons/BaseButton.vue";
 
 const props = defineProps({
   class: {
@@ -27,17 +45,12 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['update-card', 'delete-card']);
+
+const {formattedNumber} = useFormatCardNumber(props.data.number);
 </script>
 
 <style
  scoped
- lang="scss">
-.payment-card {
-  width: 400px;
-  height: 250px;
-  background-color: grey;
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
-  //margin-bottom: 26px;
-}
+ lang="scss"
+ src="./styles.scss">
 </style>

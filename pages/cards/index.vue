@@ -37,13 +37,21 @@
       </button>
     </div>
 
-    <template v-if="isModalOpen">
+    <template v-if="isDeleteConfirmationModalOpen">
+      <DeleteConfirmationModal
+       :isOpen="isDeleteConfirmationModalOpen"
+       @delete="handleDeleteCard"
+       @update:isOpen="isDeleteConfirmationModalOpen = $event"
+      />
+    </template>
+
+    <template v-if="isCardModalOpen">
       <AddEditCardModal
-       :isOpen="isModalOpen"
+       :isOpen="isCardModalOpen"
        :is-edit-mode="isEditMode"
        :card="currentEditingCard"
        @cardSaved="isEditMode ? handleUpdateCard($event) : handleAddCard($event)"
-       @update:isOpen="isModalOpen = $event"
+       @update:isOpen="isCardModalOpen = $event"
       />
     </template>
 
@@ -56,15 +64,18 @@
 import {ref} from "vue";
 import repositoryFactory from "~/repositories/repositoryFactory";
 import AddEditCardModal from "~/components/Modals/AddEditCardModal.vue";
+import DeleteConfirmationModal from "~/components/Modals/DeleteConfirmationModal.vue";
 
-const isModalOpen = ref(false);
+const isDeleteConfirmationModalOpen = ref(false);
+const isCardModalOpen = ref(false);
 const isEditMode = ref(false);
 const cardsList = ref([]);
 const currentEditingCard = ref({});
+const cardIdToDelete = ref('');
 
 const handleAddCardClicked = () => {
   isEditMode.value = false;
-  isModalOpen.value = true;
+  isCardModalOpen.value = true;
 };
 
 const handleAddCard = async (cardData: any) => {
@@ -76,13 +87,13 @@ const handleAddCard = async (cardData: any) => {
     cardsList.value.push(cardData);
   }
 
-  isModalOpen.value = false;
+  isCardModalOpen.value = false;
   await fetchCards();
 };
 
 const handleUpdateCardClicked = async (cardId: string) => {
   isEditMode.value = true;
-  isModalOpen.value = true;
+  isCardModalOpen.value = true;
 
   const currCard = cardsList.value.find(card => card._id === cardId);
   currentEditingCard.value = {...currCard};
@@ -96,14 +107,21 @@ const handleUpdateCard = async (cardData: any) => {
     ...cardData
   });
 
-  isModalOpen.value = false;
+  isCardModalOpen.value = false;
   isEditMode.value = false;
 };
 
 const handleDeleteCardClicked = async (cardId) => {
+  cardIdToDelete.value = cardId;
+  isDeleteConfirmationModalOpen.value = true;
+};
+
+const handleDeleteCard = async() => {
+  const cardId = cardIdToDelete.value;
   await repositoryFactory.get('Card').deleteCard(cardId);
   cardsList.value = cardsList.value.filter(card => card._id !== cardId);
 
+  isDeleteConfirmationModalOpen.value = false;
   await fetchCards();
 };
 

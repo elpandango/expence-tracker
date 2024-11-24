@@ -32,13 +32,23 @@
     height: 50px;
   }
 
-  &.error {
+  &.red {
     background-color: var(--red-100);
 
     &:hover,
     &:focus,
     &:active {
-      background-color: var(--red-60);
+      background-color: var(--red-70);
+    }
+  }
+
+  &.green {
+    background-color: var(--green-100);
+
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: var(--green-90);
     }
   }
 

@@ -59,6 +59,7 @@ import {ref} from 'vue';
 import Modal from './Modal.vue';
 import FloatLabelInput from "~/components/Forms/Inputs/FloatLabelInput.vue";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
+import {useFormatCardNumber} from "~/use/useFormatCardNumber";
 
 const props = defineProps({
   isOpen: {
@@ -108,14 +109,8 @@ const handleSaveCard = () => {
 };
 
 const formatCardNumber = () => {
-  const rawValue = formattedCardNumber.value.replace(/\D/g, '');
-
-  if (rawValue.length > 16) {
-    formattedCardNumber.value = rawValue.slice(0, 16).replace(/(\d{4})(?=\d)/g, '$1 ');
-  } else {
-    formattedCardNumber.value = rawValue.replace(/(\d{4})(?=\d)/g, '$1 ');
-  }
-
+  const {rawValue, formattedNumber} = useFormatCardNumber(formattedCardNumber.value);
+  formattedCardNumber.value = formattedNumber;
   cardNumber.value = rawValue.slice(0, 16);
 };
 

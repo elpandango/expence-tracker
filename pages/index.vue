@@ -2,8 +2,20 @@
   <div class="index-page">
     <div class="card-details-block">
       <Card>
-        <PaymentCard :data="{name: 'Cardholder', number: '123123123123'}" class="mar-b-8"/>
-        <TransactionsHistory/>
+        <PaymentCard
+         :data="{name: 'Cardholder', number: '123123123123'}"
+         class="mar-b-8"/>
+        <TransactionsHistory
+         :expenses="expenses"
+         :options="transactionsHistoryOptions">
+          <template v-slot:header>
+            <TitleWithDropdown
+             placeholder="See All"
+             :options="transactionsHistoryOptions">
+              Transactions History
+            </TitleWithDropdown>
+          </template>
+        </TransactionsHistory>
       </Card>
     </div>
     <div class="statistics-block">
@@ -21,10 +33,12 @@
  setup
  lang="ts">
 import {onMounted, ref} from "vue";
+import repositoryFactory from "~/repositories/repositoryFactory";
 import Card from "~/components/Card/Card.vue";
 
 // const route = useRoute();
 // const currentUrl = computed(() => process.client ? `${window.location.origin}${route.fullPath}` : '');
+const expenses = ref([]);
 
 // useSeoMeta({
 //   title: 'Главная - Ольга Радченко',
@@ -50,6 +64,7 @@ useHead({
 });
 
 
+const transactionsHistoryOptions = ref([]);
 // const postRepository = repositoryFactory.get('Post');
 // const phraseRepository = repositoryFactory.get('Phrase');
 // const isLoaded = ref(false);
@@ -83,9 +98,31 @@ useHead({
 //   }
 // };
 
+const fetchCards = async () => {
+  const {cards} = await repositoryFactory.get('Card').getAllCards();
+  const cardsArray = cards.map(card => {
+    return {
+      value: card._id,
+      label: card.number,
+    }
+  });
+
+  cardsArray.unshift({
+    value: null,
+    label: 'Cash'
+  });
+
+  return cardsArray;
+};
+
+const fetchExpenses = async () => {
+  const response = await repositoryFactory.get('Expense').getExpenses();
+  expenses.value = response?.expenses;
+};
+
 onMounted(async () => {
-  // await fetchPosts();
-  // await fetchPhrase();
+  transactionsHistoryOptions.value = await fetchCards();
+  await fetchExpenses();
 });
 
 </script>
