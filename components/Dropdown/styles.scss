@@ -24,13 +24,14 @@
 .dropdown-arrow {
   position: absolute;
   right: 8px;
-  top: 8px;
   transition: transform 0.3s;
-  transform: rotate(0deg);
+
+  top: 50%;
+  transform: translateY(-50%) rotate(0deg);
 }
 
 .dropdown-arrow.is-active {
-  transform: rotate(180deg);
+  transform: translateY(-50%) rotate(180deg);
 }
 
 .dropdown-menu {
@@ -58,7 +59,7 @@
 
 .dropdown-item:hover,
 .dropdown-item.selected {
-  background: #f0f0f0;
+  background-color: var(--card-bg-color);
 }
 
 .fade-expand-enter-active,
@@ -76,4 +77,39 @@
 .fade-expand-leave-from {
   opacity: 1;
   max-height: 500px;
+}
+
+.dropdown.form-dropdown {
+  width: 100%;
+
+  &.small {
+    .dropdown-toggle {
+      height: 30px;
+    }
+  }
+
+  &.medium {
+    .dropdown-toggle {
+      height: 50px;
+    }
+  }
+
+  &.big {
+    .dropdown-toggle {
+      height: 58px;
+    }
+  }
+
+  .dropdown-toggle {
+    height: 40px;
+    border: 1px solid var(--input-border-color);
+    font-weight: 400;
+    font-size: 16px;
+    color: var(--input-primary-color);
+
+    span {
+      text-align: left;
+      font-size: inherit;
+    }
+  }
 }

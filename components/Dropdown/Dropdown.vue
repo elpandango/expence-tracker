@@ -1,6 +1,7 @@
 <template>
   <div
    class="dropdown"
+   :class="[type, size]"
    ref="dropdown"
    @click="toggleDropdown">
     <button class="dropdown-toggle">
@@ -56,6 +57,14 @@ const props = defineProps({
   placeholder: {
     type: String,
     default: 'Select an option',
+  },
+  type: {
+    type: String,
+    default: '',
+  },
+  size: {
+    type: String,
+    required: false
   },
 });
 
