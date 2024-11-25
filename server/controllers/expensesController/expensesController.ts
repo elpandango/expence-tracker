@@ -13,7 +13,7 @@ export const getUserExpenses = async (userId: string, filters: { cardId?: string
   }
 
   if (filters.uncategorized) {
-    query.cardId = { $exists: false };
+    query.cardId = { $in: [null, undefined] };
   }
 
   return await ExpenseModel.find(query).sort({ date: -1 });

@@ -7,6 +7,7 @@
      v-model="selected"
      :options="options"
      :placeholder=props.placeholder
+     @update:modelValue="handleDropdownSelected"
     />
   </div>
 </template>
@@ -26,7 +27,13 @@ const props = defineProps({
   }
 });
 
+const emit = defineEmits(['option-selected']);
+
 const selected = ref(null);
+
+const handleDropdownSelected = (option: any) => {
+  emit('option-selected', option);
+};
 </script>
 
 <style
