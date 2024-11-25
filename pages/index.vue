@@ -1,10 +1,10 @@
 <template>
   <div class="index-page">
     <div class="card-details-block">
+      <Card class="mar-b-6">
+        <BalanceDetails/>
+      </Card>
       <Card>
-        <PaymentCard
-         :data="{name: 'Cardholder', number: '123123123123'}"
-         class="mar-b-8"/>
         <TransactionsHistory
          :expenses="expenses"
          :options="transactionsHistoryOptions">
@@ -20,10 +20,7 @@
     </div>
     <div class="statistics-block">
       <Card>
-        Statistics
-      </Card>
-      <Card>
-        Expenses History
+        Transactions Statistics
       </Card>
     </div>
   </div>
@@ -65,38 +62,8 @@ useHead({
 
 
 const transactionsHistoryOptions = ref([]);
-// const postRepository = repositoryFactory.get('Post');
-// const phraseRepository = repositoryFactory.get('Phrase');
 // const isLoaded = ref(false);
-// const posts = ref([]);
-// const phraseData = ref({});
-// const postsResponse = ref({});
 
-// const fetchPosts = async (page) => {
-//   try {
-//     isLoaded.value = false;
-//     const data = await postRepository.get(page);
-//     postsResponse.value = {...data};
-//     posts.value = data?.posts || [];
-//
-//     //SVG preloader animation
-//     setTimeout(() => {
-//       isLoaded.value = true;
-//     }, 1300);
-//
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
-
-// const fetchPhrase = async () => {
-//   try {
-//     const {phrase} = await phraseRepository.get();
-//     phraseData.value = {...phrase};
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
 
 const fetchCards = async () => {
   const {cards} = await repositoryFactory.get('Card').getAllCards();
