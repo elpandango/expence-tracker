@@ -21,17 +21,6 @@ export default {
             throw new Error(message);
         }
     },
-    async updateBalance(cardId: string, payload: { balance: number }) {
-        try {
-            return await $fetch(`/api/card/balance/${cardId}`, {
-                method: 'PATCH',
-                body: payload,
-            });
-        } catch (error: any) {
-            const message = error?.response?._data?.message || 'Card creation failed';
-            throw new Error(message);
-        }
-    },
     async deleteCard(cardId: string) {
         try {
             return await $fetch(`/api/card/${cardId}`, {

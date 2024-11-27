@@ -3,7 +3,7 @@
    v-model="modalValue"
    @update:modelValue="closeModal">
     <template v-slot:header>
-      Adding a New Expense
+      Adding Funds
     </template>
     <template v-slot:body>
       <form @submit.prevent>
@@ -14,39 +14,31 @@
            :options="cards"
            type="form-dropdown"
            size="medium"
-           placeholder="Select payment type"
+           placeholder="Select where to add funds"
           />
 
         </div>
         <div class="form-row">
           <FloatLabelInput
-           v-model="expense.description"
+           v-model="transaction.description"
            size="medium"
-           :status="expenseDescriptionError ? 'error' : ''"
-           :error-message="expenseDescriptionError ? expenseDescriptionError : ''"
-           label="Expense description"/>
+           label="Funds addition description"/>
         </div>
         <div class="form-row">
           <FloatLabelInput
-           v-model="expense.amount"
+           v-model="transaction.amount"
            size="medium"
            type="number"
-           :status="expenseAmountError ? 'error' : ''"
-           :error-message="expenseAmountError ? expenseAmountError : ''"
-           label="Expense amount"/>
+           :status="transactionAmountError ? 'error' : ''"
+           :error-message="transactionAmountError ? transactionAmountError : ''"
+           label="Amount"/>
         </div>
         <div class="form-row">
           <FloatLabelInput
-           v-model="expense.date"
+           v-model="transaction.date"
            size="medium"
            type="date"
-           label="Expense date"/>
-        </div>
-        <div class="form-row">
-          <FloatLabelInput
-           v-model="expense.category"
-           size="medium"
-           label="Expense category"/>
+           label="Date"/>
         </div>
       </form>
     </template>
@@ -57,8 +49,8 @@
        size="big">Cancel
       </BaseButton>
       <BaseButton
-       @click="handleAddExpense"
-       size="big">Add a new expense
+       @click="handleAddFunds"
+       size="big">Add funds
       </BaseButton>
     </template>
   </Modal>
@@ -76,6 +68,8 @@ import BaseButton from "~/components/Buttons/BaseButton.vue";
 import {useFinanceStore} from "~/stores/financeStore";
 import {useCardsList} from "~/use/useCardList";
 
+const financeStore = useFinanceStore();
+
 const props = defineProps({
   isOpen: {
     type: Boolean,
@@ -83,63 +77,54 @@ const props = defineProps({
   }
 });
 
-const financeStore = useFinanceStore();
-
 const selectedCard = ref({
   value: null,
   label: 'Cash'
 });
 const cards = ref([]);
 const modalValue = ref(props.isOpen);
-const expenseDescriptionError = ref<string | null>(null);
-const expenseAmountError = ref<string | null>(null);
+const transactionDescriptionError = ref<string | null>(null);
+const transactionAmountError = ref<string | null>(null);
 
-interface Expense {
+interface BalanceUpdate {
   cardId: string;
-  description: string;
+  description?: string;
   amount: string;
   date?: Date;
-  category: string;
 }
 
-const expense = reactive<Expense>({
+const transaction = reactive<BalanceUpdate>({
   cardId: '',
   description: '',
   amount: '',
   date: new Date(),
-  category: ''
 });
 
-const emit = defineEmits(['expense-added', 'close']);
+const emit = defineEmits(['funds-added', 'close']);
 
 const closeModal = () => {
   emit('close');
 };
 
-const handleAddExpense = async () => {
-  if (expense.description === '') {
-    expenseDescriptionError.value = 'Description field must be not empty.';
+const handleAddFunds = async () => {
+  transactionDescriptionError.value = null;
+
+  if (transaction.amount === '' || transaction.amount == '0') {
+    transactionAmountError.value = 'Amount field must be not empty.';
     return;
   }
 
-  expenseDescriptionError.value = null;
+  transactionAmountError.value = null;
 
-  if (expense.amount === '' || expense.amount == '0') {
-    expenseAmountError.value = 'Amount field must be not empty.';
-    return;
-  }
+  const cardId = selectedCard.value.value !== '' ? selectedCard.value.value : null;
 
-  expenseAmountError.value = null;
-
-  const newExpense = await financeStore.addExpense({
-    cardId: selectedCard.value.value !== '' ? selectedCard.value.value : null,
-    description: expense.description,
-    amount: expense.amount,
-    date: expense.date,
-    category: expense.category,
+  const newFunds = await financeStore.addFunds(cardId, {
+    description: transaction.description,
+    amount: transaction.amount,
+    date: transaction.date,
   });
 
-  if (newExpense?.status === 200) {
+  if (newFunds?.status === 200) {
     closeModal();
   }
 };

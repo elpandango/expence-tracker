@@ -1,9 +1,9 @@
 import { ExpenseModel } from '~/server/models/ExpenseModel';
 
 /**
- * Получение всех трат пользователя с фильтрацией.
- * @param userId - ID пользователя
- * @param filters - Фильтры (cardId или "uncategorized")
+ * Getting all user expenses with filtering.
+ * @param userId - ID of a user
+ * @param filters - Filters (cardId or "uncategorized")
  */
 export const getUserExpenses = async (userId: string, filters: { cardId?: string; uncategorized?: boolean }) => {
   const query: any = { userId };

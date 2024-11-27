@@ -13,6 +13,15 @@
             <AddExpenseModal
              :isOpen="isAddExpenseModalOpen"
              @expenseAdded="handleAddExpense"
+             @close="closeModal('expense')"
+             @update:isOpen="isModalOpen = $event"
+            />
+          </template>
+
+          <template v-if="isAddFundsModalOpen">
+            <AddFundsModal
+             :isOpen="isAddFundsModalOpen"
+             @fundsAdded="handleAddFunds"
              @close="closeModal"
              @update:isOpen="isModalOpen = $event"
             />
@@ -31,6 +40,7 @@ import {useUserStore} from '~/stores/user';
 import {useUIStore} from "~/stores/ui";
 import AddExpenseModal from "~/components/Modals/AddExpenseModal.vue";
 import {ref} from "vue";
+import AddFundsModal from "~/components/Modals/AddFundsModal.vue";
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -56,12 +66,23 @@ onBeforeMount(async () => {
 
 const handleAddExpense = (expenseData: any) => {
   console.log('expenseData: ', expenseData);
+  closeModal('expense');
+};
+
+const handleAddFunds = (fundsData: any) => {
+  console.log('fundsData: ', fundsData);
+  closeModal();
 };
 
 const isAddExpenseModalOpen = computed(() => uiStore.isAddExpenseModalOpen);
+const isAddFundsModalOpen = computed(() => uiStore.isAddFundsModalOpen);
 
-const closeModal = () => {
-  uiStore.closeAddExpenseModal();
+const closeModal = (name?: string) => {
+  if (name === 'expense') {
+    uiStore.closeAddExpenseModal();
+  } else {
+    uiStore.closeAddFundsModal();
+  }
 };
 </script>
 

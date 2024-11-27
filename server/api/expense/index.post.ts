@@ -7,27 +7,38 @@ import {getCookie} from "h3";
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
   const userId = getCookie(event, 'userId');
-  const {cardId, amount, description, date, category, isCash} = body;
+  const {cardId, amount, description, date, category} = body;
+  const numericAmount = Number(amount);
+
+  console.log('cardId: ', cardId);
 
   const user = await UserModel.findById(userId);
   if (!user) {
     throw createError({statusCode: 404, message: 'User not found'});
   }
 
+  if (isNaN(numericAmount)) {
+    throw createError({ statusCode: 400, message: 'Invalid amount' });
+  }
+
   if (cardId && !user.cards.some((card) => card._id.toString() === cardId)) {
     throw createError({statusCode: 400, message: 'Invalid cardId'});
   }
 
-  if (isCash) {
+  if (!cardId) {
+    console.log('isCash')
     const cashBalance = await CashBalanceModel.findOne({userId, currency: 'USD'});
-    if (!cashBalance || cashBalance.amount < amount) {
+
+    console.log('findOne: ', await CashBalanceModel.findOne({ userId, currency: 'USD' }));
+
+    if (!cashBalance || cashBalance.amount < numericAmount) {
       throw createError({statusCode: 400, message: 'Insufficient cash balance'});
     }
   }
 
   const expense = new ExpenseModel({
     userId,
-    cardId: isCash ? null : cardId,
+    cardId,
     amount,
     description,
     date: date || new Date(),
@@ -37,11 +48,11 @@ export default defineEventHandler(async (event) => {
   await expense.save();
 
   if (cardId) {
-    await CardModel.findByIdAndUpdate(cardId, {$inc: {balance: -amount}});
-  } else if (isCash) {
+    await CardModel.findByIdAndUpdate(cardId, {$inc: {balance: -numericAmount}});
+  } else {
     await CashBalanceModel.updateOne(
       {userId, currency: 'USD'},
-      {$inc: {amount: -amount}}
+      {$inc: {amount: -numericAmount}}
     );
   }
 

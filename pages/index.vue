@@ -7,7 +7,7 @@
       <Card>
         <TransactionsHistory
          :expenses="expenses"
-         :options="transactionsHistoryOptions">
+         :is-loading="expensesIsLoading">
           <template v-slot:header>
             <TitleWithDropdown
              placeholder="See All"
@@ -31,10 +31,14 @@
  setup
  lang="ts">
 import {onMounted, ref} from "vue";
-import repositoryFactory from "~/repositories/repositoryFactory";
 import Card from "~/components/Card/Card.vue";
+import {useFinanceStore} from "~/stores/financeStore";
+import {useCardsList} from "~/use/useCardList";
+
+const financeStore = useFinanceStore();
 
 const expenses = ref([]);
+const expensesIsLoading = ref(true);
 
 useHead({
   htmlAttrs: {
@@ -42,29 +46,13 @@ useHead({
   },
 });
 
-
 const transactionsHistoryOptions = ref([]);
 
-const fetchCards = async () => {
-  const {cards} = await repositoryFactory.get('Card').getAllCards();
-  const cardsArray = cards.map(card => {
-    return {
-      value: card._id,
-      label: card.number,
-    }
-  });
-
-  return [
-    {value: null, label: 'All expenses'},
-    {value: null, label: 'Cash'},
-    ...cardsArray
-  ];
-};
-
 const fetchExpenses = async (query = '') => {
-  let queryString = query ? '?' + query : '';
-  const response = await repositoryFactory.get('Expense').getExpenses(queryString);
-  expenses.value = response?.expenses;
+  expensesIsLoading.value = true;
+  await financeStore.fetchExpenses(query);
+  expenses.value = financeStore.expenses;
+  expensesIsLoading.value = false;
 };
 
 const handleDropdownChanged = async (option: any) => {
@@ -82,8 +70,13 @@ const handleDropdownChanged = async (option: any) => {
 };
 
 onMounted(async () => {
-  transactionsHistoryOptions.value = await fetchCards();
   await fetchExpenses();
+  const {cardsList} = useCardsList([
+     {value: null, label: 'All expenses'},
+     {value: null, label: 'Cash'}
+   ]
+  );
+  transactionsHistoryOptions.value = cardsList.value;
 });
 
 </script>

@@ -3,7 +3,7 @@
   <div>
     <NuxtLayout>
       <NuxtPage/>
-      <Preloader v-if="!isLoaded"/>
+      <PreloaderBrand v-if="!isLoaded"/>
     </NuxtLayout>
   </div>
 </template>

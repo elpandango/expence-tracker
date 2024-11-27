@@ -5,9 +5,10 @@ export default defineEventHandler(async (event) => {
   try {
     const { id } = event.context.params;
     const userId = getCookie(event, 'userId');
-    const { amount } = await readBody(event);
+    const {amount} = await readBody(event);
 
-    if (!amount || typeof amount !== 'number') {
+    const numberAmount = parseFloat(amount);
+    if (isNaN(numberAmount) || numberAmount <= 0) {
       throw createError({
         statusCode: 400,
         message: 'Valid amount is required.',
@@ -22,14 +23,14 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    if (card.balance + amount < 0) {
+    if (card.balance + numberAmount < 0) {
       throw createError({
         statusCode: 400,
         message: 'Insufficient funds.',
       });
     }
 
-    card.balance += amount;
+    card.balance += numberAmount;
     await card.save();
 
     return {
