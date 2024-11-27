@@ -7,11 +7,12 @@
       <Card>
         <TransactionsHistory
          :expenses="expenses"
-         :options="transactionsHistoryOptions">
+         :is-loading="expensesIsLoading">
           <template v-slot:header>
             <TitleWithDropdown
              placeholder="See All"
-             :options="transactionsHistoryOptions">
+             :options="transactionsHistoryOptions"
+             @option-selected="handleDropdownChanged">
               Transactions History
             </TitleWithDropdown>
           </template>
@@ -30,29 +31,14 @@
  setup
  lang="ts">
 import {onMounted, ref} from "vue";
-import repositoryFactory from "~/repositories/repositoryFactory";
 import Card from "~/components/Card/Card.vue";
+import {useFinanceStore} from "~/stores/financeStore";
+import {useCardsList} from "~/use/useCardList";
 
-// const route = useRoute();
-// const currentUrl = computed(() => process.client ? `${window.location.origin}${route.fullPath}` : '');
+const financeStore = useFinanceStore();
+
 const expenses = ref([]);
-
-// useSeoMeta({
-//   title: 'Главная - Ольга Радченко',
-//   description: 'Ольга Радченко — психолог и консультант. Узнайте больше о её услугах и подходе к работе, чтобы найти поддержку в трудные моменты жизни.',
-//   ogTitle: 'Главная - Ольга Радченко',
-//   ogDescription: 'Ольга Радченко — профессиональный психолог, который помогает людям справиться с жизненными трудностями. Узнайте больше о её методах и услугах.',
-//   ogImage: '/images/olga-photo-1.webp',
-//   ogUrl: currentUrl,
-//   twitterTitle: 'Главная - Ольга Радченко',
-//   twitterDescription: 'Ольга Радченко — психолог, который помогает в решении жизненных трудностей. Откройте для себя её подход к психологической поддержке.',
-//   twitterImage: '/images/olga-photo-1.webp',
-//   twitterCard: 'summary'
-// });
-
-// definePageMeta({
-//   layout: 'site-default-layout',
-// });
+const expensesIsLoading = ref(true);
 
 useHead({
   htmlAttrs: {
@@ -60,36 +46,37 @@ useHead({
   },
 });
 
-
 const transactionsHistoryOptions = ref([]);
-// const isLoaded = ref(false);
 
-
-const fetchCards = async () => {
-  const {cards} = await repositoryFactory.get('Card').getAllCards();
-  const cardsArray = cards.map(card => {
-    return {
-      value: card._id,
-      label: card.number,
-    }
-  });
-
-  cardsArray.unshift({
-    value: null,
-    label: 'Cash'
-  });
-
-  return cardsArray;
+const fetchExpenses = async (query = '') => {
+  expensesIsLoading.value = true;
+  await financeStore.fetchExpenses(query);
+  expenses.value = financeStore.expenses;
+  expensesIsLoading.value = false;
 };
 
-const fetchExpenses = async () => {
-  const response = await repositoryFactory.get('Expense').getExpenses();
-  expenses.value = response?.expenses;
+const handleDropdownChanged = async (option: any) => {
+  let query = '';
+
+  if (option.value) {
+    query = 'cardId=' + option.value;
+  } else if (option.label === 'All expenses') {
+    query = '';
+  } else {
+    query = 'uncategorized=true';
+  }
+
+  await fetchExpenses(query);
 };
 
 onMounted(async () => {
-  transactionsHistoryOptions.value = await fetchCards();
   await fetchExpenses();
+  const {cardsList} = useCardsList([
+     {value: null, label: 'All expenses'},
+     {value: null, label: 'Cash'}
+   ]
+  );
+  transactionsHistoryOptions.value = cardsList.value;
 });
 
 </script>

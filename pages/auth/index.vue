@@ -47,9 +47,9 @@ const handleLogin = async (user: { email: string; password: string }) => {
 };
 
 
-const handleRegister = async (user) => {
+const handleRegister = async (user: any) => {
   try {
-    const {status, userId} = await repositoryFactory.get('Auth').register(user);
+    const {status} = await repositoryFactory.get('Auth').register(user);
 
     if (status === 200) {
       await router.push('/');

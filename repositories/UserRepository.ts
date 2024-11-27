@@ -16,9 +16,4 @@ export default {
       method: 'DELETE',
     });
   },
-  async getAvatar() {
-    return await $fetch(`/api/profile/avatar`, {
-      method: 'GET',
-    });
-  },
 };

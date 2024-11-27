@@ -1,41 +1,60 @@
 <template>
-  <div class="balance-details">
-    <div class="total-balance">Balance: $25000</div>
+  <div
+   v-if="!isLoading"
+   class="balance-details">
+    <div class="total-balance">Balance: {{totalBalance}}</div>
     <div class="balance-parts">
-      <div class="balance-item balance-cash">Cash: <strong>$500</strong></div>
-      <div class="balance-item balance-card">Card 1111 2222 3333 4444: <strong>$150$</strong></div>
-      <div class="balance-item balance-card">Card 1111 2222 3333 4444: <strong>$150$</strong></div>
+      <div class="balance-item balance-cash">Cash: <strong>{{ financeStore.cash.amount }}{{
+          financeStore.cash.currency
+        }}</strong></div>
+      <div
+       class="balance-item balance-card"
+       v-for="card in financeStore.cardsList"
+       :key="card._id">Card {{ card.number }}: <strong>{{ card.balance }}{{ card.currency }}</strong></div>
     </div>
-    <BaseButton size="medium">Add Funds</BaseButton>
+    <BaseButton
+     size="medium"
+     @click="handleAddFunds">Add Funds
+    </BaseButton>
   </div>
+  <Preloader v-else/>
 </template>
 
 <script
  setup
  lang="ts">
-
+import {useUIStore} from "~/stores/ui";
+import {useFinanceStore} from "~/stores/financeStore";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
+
+const isLoading = ref(true);
+
+const uiStore = useUIStore();
+const financeStore = useFinanceStore();
+
+const handleAddFunds = () => {
+  uiStore.openAddFundsModal();
+}
+
+const totalBalance = computed(() => {
+  const cardsTotalAmount = financeStore.cardsList.reduce((acc, currentValue) => {
+    return acc + +currentValue?.balance
+  }, 0);
+  return cardsTotalAmount + financeStore.cash.amount;
+});
+
+onMounted(async () => {
+  try {
+    await Promise.all([financeStore.fetchCash(), financeStore.fetchCards()])
+  } catch (e) {
+    console.log(e);
+  } finally {
+    isLoading.value = false;
+  }
+});
 </script>
 
 <style
- lang="scss">
-.balance-details {
-  .total-balance {
-    font-size: 26px;
-    font-weight: 500;
-    margin-bottom: 16px;
-  }
-
-  .balance-parts {
-    margin-bottom: 16px;
-  }
-
-  .balance-item {
-    font-size: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 8px;
-  }
-}
+ lang="scss"
+ src="./styles.scss">
 </style>

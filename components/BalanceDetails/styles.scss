@@ -1,0 +1,19 @@
+.balance-details {
+  .total-balance {
+    font-size: 26px;
+    font-weight: 500;
+    margin-bottom: 16px;
+  }
+
+  .balance-parts {
+    margin-bottom: 16px;
+  }
+
+  .balance-item {
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+}

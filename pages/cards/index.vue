@@ -126,12 +126,12 @@ const handleDeleteCard = async() => {
 };
 
 const fetchCards = async () => {
-  const {cards} = await repositoryFactory.get('Card').getAllCards();
-  cardsList.value = [...cards];
+  // const {cards} = await repositoryFactory.get('Card').getAllCards();
+  // cardsList.value = [...cards];
 };
 
 onMounted(async () => {
-  await fetchCards();
+  // await fetchCards();
 });
 </script>
 

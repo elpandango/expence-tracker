@@ -10,9 +10,9 @@ export default {
             throw new Error(message);
         }
     },
-    async getExpenses() {
+    async getExpenses(query: string = '') {
         try {
-            return await $fetch('/api/get-expenses', {
+            return await $fetch('/api/get-expenses' + query, {
                 method: 'GET',
             });
         } catch (error: any) {
