@@ -73,7 +73,6 @@
 <script
  setup
  lang="ts">
-import repositoryFactory from "~/repositories/repositoryFactory";
 import {useUserStore} from '~/stores/user';
 import FloatLabelInput from "~/components/Forms/Inputs/FloatLabelInput.vue";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
@@ -99,38 +98,37 @@ const savedUser = reactive({
   lastName: '',
 });
 
-const initializeUserData = (storeUser: User) => {
-  user.name = storeUser.name;
-  user.lastName = storeUser.lastName;
-  user.email = storeUser.email;
-  user.avatar = storeUser.avatar;
+const initializeUserData = () => {
+  user.name = userStore.user.name;
+  user.lastName = userStore.user.lastName;
+  user.email = userStore.user.email;
+  user.avatar = userStore.user.avatar;
 
-  savedUser.name = storeUser.name;
-  savedUser.lastName = storeUser.lastName;
+  savedUser.name = userStore.user.name;
+  savedUser.lastName = userStore.user.lastName;
 };
 
 const handleSaveChanges = async () => {
   if (
-   user.name === userStore.getUser.name &&
-   user.lastName === userStore.getUser.lastName &&
-   user.email === userStore.getUser.email
+   user.name === userStore.user.name &&
+   user.lastName === userStore.user.lastName &&
+   user.email === userStore.user.email
   ) {
     console.log('No changes to save.');
     return;
   }
 
-  const updatedUser = await repositoryFactory.get('User').updateProfile({
+  await userStore.updateProfile({
     name: user.name,
     lastName: user.lastName,
     email: user.email,
   });
 
-  initializeUserData(updatedUser);
+  initializeUserData();
 }
 
 const handleCancel = () => {
-  const storeUser = userStore.getUser;
-  initializeUserData(storeUser);
+  initializeUserData();
 }
 
 const handleUploadAvatar = async () => {
@@ -147,8 +145,8 @@ const handleUploadAvatar = async () => {
       const avatarBase64 = reader.result as string;
 
       try {
-        const updatedUser = await repositoryFactory.get('User').updateAvatar(avatarBase64);
-        user.avatar = updatedUser.avatar;
+        await userStore.updateAvatar(avatarBase64);
+        user.avatar = userStore.user.avatar;
       } catch (error) {
         console.error('Error updating avatar:', error);
       }
@@ -161,16 +159,15 @@ const handleUploadAvatar = async () => {
 
 const handleRemoveAvatar = async () => {
   try {
-    const updatedUser = await repositoryFactory.get('User').deleteAvatar();
-    user.avatar = '';
+    await userStore.deleteAvatar();
+    user.avatar = userStore.user.avatar;
   } catch (error) {
     console.error('Error removing avatar:', error);
   }
 };
 
 onMounted(async () => {
-  const storeUser = userStore.getUser;
-  initializeUserData(storeUser);
+  initializeUserData();
 });
 </script>
 

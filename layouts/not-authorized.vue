@@ -13,9 +13,6 @@ const router = useRouter();
 const userStore = useUserStore();
 
 onMounted(() => {
-
-  console.log('userStore.isLoggedIn: ', userStore.isLoggedIn);
-
   if (userStore.isLoggedIn) {
     router.push('/');
   }

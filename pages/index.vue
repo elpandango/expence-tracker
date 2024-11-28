@@ -5,9 +5,7 @@
         <BalanceDetails/>
       </Card>
       <Card>
-        <TransactionsHistory
-         :expenses="expenses"
-         :is-loading="expensesIsLoading">
+        <TransactionsHistory>
           <template v-slot:header>
             <TitleWithDropdown
              placeholder="See All"

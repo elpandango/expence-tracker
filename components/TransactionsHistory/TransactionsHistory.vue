@@ -3,9 +3,9 @@
     <slot name="header"></slot>
     <ul
      class="items-list"
-     v-if="!isLoading">
+     v-if="!financeStore.loadingStates.expenses">
       <Expense
-       v-for="expense in expenses"
+       v-for="expense in financeStore.expenses"
        :key="expense._id"
        tag="li"
        :data="expense"/>
@@ -20,16 +20,8 @@
 <script
  setup
  lang="ts">
-const props = defineProps({
-  expenses: {
-    type: Array
-  },
-  isLoading: {
-    type: Boolean,
-    default: false
-  }
-});
-
+import {useFinanceStore} from "~/stores/financeStore";
+const financeStore = useFinanceStore();
 </script>
 
 <style

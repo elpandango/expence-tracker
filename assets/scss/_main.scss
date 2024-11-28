@@ -65,7 +65,12 @@ p {
 
 .main-content {
   width: calc(100% - 250px);
+  height: 100vh;
   padding: 20px 10px 10px 0;
+  position: fixed;
+  left: 250px;
+  top: 0;
+  overflow-y: auto;
 
   .content {
     border-radius: var(--border-radius);
@@ -75,7 +80,3 @@ p {
     padding: 20px;
   }
 }
-
-//5 = Mastercard
-//4 = Visa
-//3 = American Express

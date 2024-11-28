@@ -110,7 +110,7 @@ const expense = reactive<Expense>({
   category: ''
 });
 
-const emit = defineEmits(['expense-added', 'close']);
+const emit = defineEmits(['close']);
 
 const closeModal = () => {
   emit('close');
