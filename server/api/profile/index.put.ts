@@ -11,7 +11,12 @@ export default defineEventHandler(async (event) => {
 
   try {
     const updatedUser = await updateProfile(userId, { name, lastName, email });
-    return updatedUser;
+    return {
+      name: updatedUser.name,
+      lastName: updatedUser.lastName,
+      email: updatedUser.email,
+      avatar: updatedUser?.avatar ?? '',
+    };
   } catch (err) {
     throw err;
   }

@@ -100,7 +100,7 @@ const transaction = reactive<BalanceUpdate>({
   date: new Date(),
 });
 
-const emit = defineEmits(['funds-added', 'close']);
+const emit = defineEmits(['close']);
 
 const closeModal = () => {
   emit('close');

@@ -1,9 +1,9 @@
 <template>
   <SvgSprite/>
+  <PreloaderBrand v-if="!isLoaded"/>
   <div>
     <NuxtLayout>
       <NuxtPage/>
-      <PreloaderBrand v-if="!isLoaded"/>
     </NuxtLayout>
   </div>
 </template>

@@ -26,10 +26,7 @@ export default defineEventHandler(async (event) => {
   }
 
   if (!cardId) {
-    console.log('isCash')
     const cashBalance = await CashBalanceModel.findOne({userId, currency: 'USD'});
-
-    console.log('findOne: ', await CashBalanceModel.findOne({ userId, currency: 'USD' }));
 
     if (!cashBalance || cashBalance.amount < numericAmount) {
       throw createError({statusCode: 400, message: 'Insufficient cash balance'});

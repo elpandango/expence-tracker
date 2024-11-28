@@ -1,6 +1,6 @@
 <template>
   <div
-   v-if="!isLoading"
+   v-if="!financeStore.loadingStates.cash && !financeStore.loadingStates.cards"
    class="balance-details">
     <div class="total-balance">Balance: {{totalBalance}}</div>
     <div class="balance-parts">
@@ -27,8 +27,6 @@ import {useUIStore} from "~/stores/ui";
 import {useFinanceStore} from "~/stores/financeStore";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
 
-const isLoading = ref(true);
-
 const uiStore = useUIStore();
 const financeStore = useFinanceStore();
 
@@ -48,8 +46,6 @@ onMounted(async () => {
     await Promise.all([financeStore.fetchCash(), financeStore.fetchCards()])
   } catch (e) {
     console.log(e);
-  } finally {
-    isLoading.value = false;
   }
 });
 </script>
