@@ -9,53 +9,57 @@
         <NuxtLink
          to="/"
          class="menu-link">
-          <div class="icon"></div>
+          <span class="icon material-symbols-outlined">home</span>
           Dashboard
         </NuxtLink>
         <NuxtLink
          to="/cards"
          class="menu-link">
-          <div class="icon"></div>
+          <span class="icon material-symbols-outlined">credit_card</span>
           My Cards
         </NuxtLink>
         <NuxtLink
          to="/transactions"
          class="menu-link">
-          <div class="icon"></div>
+          <span class="icon material-symbols-outlined">swap_horiz</span>
           Transactions
         </NuxtLink>
         <NuxtLink
          to="/statistics"
          class="menu-link">
-          <div class="icon"></div>
+          <span class="icon material-symbols-outlined">bar_chart</span>
           Statistics
         </NuxtLink>
         <NuxtLink
          to="/profile"
          class="menu-link">
-          <div class="icon"></div>
+          <span class="icon material-symbols-outlined">account_circle</span>
           Profile
         </NuxtLink>
         <button
          class="menu-link"
          @click="handleNewExpense">
-          <span class="icon"></span>
+          <span class="icon material-symbols-outlined">attach_money</span>
           Add Expense
         </button>
+        <NuxtLink to="/categories" class="menu-link">
+          <span class="icon material-symbols-outlined">category</span>
+          Categories
+        </NuxtLink>
       </div>
     </div>
     <div class="bottom-block">
       <NuxtLink
        to="/settings"
        class="menu-link">
-        <div class="icon"></div>
+        <span class="icon material-symbols-outlined">settings</span>
         Settings
       </NuxtLink>
       <div
        class="menu-link"
        @click="toggleTheme">
         <ClientOnly>
-          <div class="icon">{{ isDark ? '🌞' : '🌙' }}</div>
+          <span class="icon material-symbols-outlined">{{ isDark ? 'light_mode' : 'dark_mode'}}</span>
         </ClientOnly>
         Theme
       </div>

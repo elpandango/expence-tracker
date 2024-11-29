@@ -26,7 +26,11 @@ export default defineNuxtConfig({
       Raleway: {
         wght: [400, 500, 600],
       },
+      'Material+Symbols+Outlined': true,
     }
   }], '@pinia/nuxt'],
   plugins: ['~/plugins/router.js'],
+  server: {
+    plugins: ['~/server/plugins/initializeCategories.ts'],
+  },
 })

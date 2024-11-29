@@ -16,5 +16,7 @@ export const getUserExpenses = async (userId: string, filters: { cardId?: string
     query.cardId = { $in: [null, undefined] };
   }
 
-  return await ExpenseModel.find(query).sort({ date: -1 });
+  return await ExpenseModel.find(query)
+    .populate('category', 'name icon color')
+    .sort({ date: -1 });
 };
