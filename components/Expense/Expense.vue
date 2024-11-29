@@ -2,10 +2,19 @@
   <component
    :is="tag"
    class="expense-item">
-    <div class="category-image"></div>
+
+    <template v-if="data?.category?.icon">
+      <span
+       class="category-icon material-symbols-outlined"
+       :style="{ backgroundColor: data?.category?.color }">{{ data.category.icon }}</span>
+    </template>
+
     <div class="content-block">
       <div class="expense-description">
-        <div class="category-name">{{ data.category === '' || !data.category ? 'Uncategorized' : data.category }}</div>
+        <div class="category-name">{{
+            data.category === '' || !data.category ? 'Uncategorized' : data.category.name
+          }}
+        </div>
         <div class="expense-date">{{ formattedDate }}</div>
       </div>
       <div class="expense-amount">-{{ data.amount }}$</div>

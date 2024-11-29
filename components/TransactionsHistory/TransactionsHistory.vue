@@ -1,7 +1,6 @@
 <template>
   <div class="transactions-history">
     <slot name="header"></slot>
-
     <Preloader
      v-if="uiStore.state.isLoading || financeStore.loadingStates.expenses"
      height="250px"/>

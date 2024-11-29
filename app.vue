@@ -14,6 +14,15 @@
 import SvgSprite from "~/components/svgComponents/SvgSprite.vue";
 import {ref} from "vue";
 
+useHead({
+  link: [
+    {
+      rel: 'stylesheet',
+      href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined',
+    },
+  ],
+});
+
 const isLoaded = ref(false);
 
 setTimeout(() => {

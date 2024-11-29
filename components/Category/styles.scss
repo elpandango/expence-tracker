@@ -1,4 +1,4 @@
-.expense-item {
+.category-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -10,6 +10,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    color: var(--text-100);
     margin-right: 20px;
   }
 
@@ -23,15 +24,6 @@
       font-size: 20px;
       font-weight: 500;
       margin-bottom: 8px;
-    }
-
-    .expense-date {
-      font-size: 14px;
-    }
-
-    .expense-amount {
-      font-size: 20px;
-      font-weight: 600;
     }
   }
 }

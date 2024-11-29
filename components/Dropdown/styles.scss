@@ -1,6 +1,16 @@
 .dropdown {
   position: relative;
   display: inline-block;
+
+  .category-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-right: 16px;
+  }
 }
 
 .dropdown-toggle {
@@ -45,9 +55,10 @@
   border-radius: 4px;
   padding: 0;
   min-width: 100%;
+  max-height: 250px;
   width: max-content;
   white-space: nowrap;
-  overflow: hidden;
+  overflow-y: auto;
   transform: translateY(8px);
 }
 
@@ -55,11 +66,13 @@
   padding: 8px 12px;
   cursor: pointer;
   transition: background 0.2s;
+  display: flex;
+  align-items: center;
 }
 
 .dropdown-item:hover,
 .dropdown-item.selected {
-  background-color: var(--card-bg-color);
+  background-color: var(--list-item-bg-color);
 }
 
 .fade-expand-enter-active,

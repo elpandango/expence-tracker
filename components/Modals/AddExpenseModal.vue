@@ -43,10 +43,13 @@
            label="Expense date"/>
         </div>
         <div class="form-row">
-          <FloatLabelInput
+          <CategoryDropdown
            v-model="expense.category"
+           :options="categories"
+           type="form-dropdown"
            size="medium"
-           label="Expense category"/>
+           placeholder="Select expense category"
+          />
         </div>
       </form>
     </template>
@@ -74,7 +77,11 @@ import Dropdown from "~/components/Dropdown/Dropdown.vue";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
 
 import {useFinanceStore} from "~/stores/financeStore";
+import {useCategoryStore} from "~/stores/category";
 import {useCardsList} from "~/use/useCardList";
+import CategoryDropdown from "~/components/Dropdown/CategoryDropdown.vue";
+
+const emit = defineEmits(['close']);
 
 const props = defineProps({
   isOpen: {
@@ -84,12 +91,14 @@ const props = defineProps({
 });
 
 const financeStore = useFinanceStore();
+const categoryStore = useCategoryStore();
 
 const selectedCard = ref({
   value: null,
   label: 'Cash'
 });
 const cards = ref([]);
+const categories = ref([]);
 const modalValue = ref(props.isOpen);
 const expenseDescriptionError = ref<string | null>(null);
 const expenseAmountError = ref<string | null>(null);
@@ -107,10 +116,11 @@ const expense = reactive<Expense>({
   description: '',
   amount: '',
   date: new Date(),
-  category: ''
+  category: {
+    value: null,
+    label: 'Other'
+  }
 });
-
-const emit = defineEmits(['close']);
 
 const closeModal = () => {
   emit('close');
@@ -138,13 +148,22 @@ const handleAddExpense = async () => {
     description: expense.description,
     amount: expense.amount,
     date: expense.date,
-    category: expense.category,
+    category: expense.category.value,
   });
 };
 
 onMounted(async () => {
   const {cardsList} = useCardsList([{value: null, label: 'Cash'}]);
   cards.value = cardsList.value;
+  await categoryStore.fetchCategoriesIfNeeded();
+  categories.value = categoryStore.categories.map(ctg => {
+    return {
+      value: ctg._id,
+      label: ctg.name,
+      color: ctg.color,
+      icon: ctg.icon
+    }
+  });
 });
 </script>
 

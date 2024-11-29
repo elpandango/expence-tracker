@@ -1,7 +1,7 @@
 <template>
   <header class="site-header">
     <div class="header-content">
-      <div class="greeting-block">Good Morning, {{userStore.user.name}}!</div>
+      <div class="greeting-block">Good {{timeOfDay}}, {{userStore.user.name}}!</div>
       <div class="actions-block">
         <div class="search-block">
           <FloatLabelInput
@@ -32,6 +32,18 @@ import FloatLabelInput from "~/components/Forms/Inputs/FloatLabelInput.vue";
 
 const userStore = useUserStore();
 const searchValue = ref('');
+
+const timeOfDay = computed(() => {
+  const hours = new Date().getHours();
+
+  if (hours >= 5 && hours < 12) {
+    return 'Morning';
+  } else if (hours >= 12 && hours < 18) {
+    return 'Afternoon';
+  } else {
+    return 'Evening';
+  }
+});
 </script>
 
 <style

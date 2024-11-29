@@ -1,5 +1,6 @@
 import {UserModel} from "~/server/models/UserModel";
 import {CardModel} from "~/server/models/CardModel";
+import {CategoryModel} from "~/server/models/CategoryModel";
 import {ExpenseModel} from "~/server/models/ExpenseModel";
 import {CashBalanceModel} from "~/server/models/CashBalanceModel";
 import {getCookie} from "h3";
@@ -20,6 +21,15 @@ export default defineEventHandler(async (event) => {
 
   if (cardId && !user.cards.some((card) => card._id.toString() === cardId)) {
     throw createError({statusCode: 400, message: 'Invalid cardId'});
+  }
+
+  let categoryId = category;
+  if (!categoryId) {
+    const otherCategory = await CategoryModel.findOne({ name: 'Other' });
+    if (!otherCategory) {
+      throw createError({ statusCode: 404, message: 'Category "Other" not found' });
+    }
+    categoryId = otherCategory._id;
   }
 
   if (cardId) {
@@ -43,7 +53,7 @@ export default defineEventHandler(async (event) => {
     amount,
     description,
     date: date || new Date(),
-    category,
+    category: categoryId,
   });
 
   await expense.save();
