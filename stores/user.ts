@@ -1,17 +1,11 @@
 import {defineStore} from 'pinia';
-import repositoryFactory from "~/repositories/repositoryFactory";
 import {ref} from 'vue';
-
-interface User {
-  name: string;
-  lastName: string;
-  email: string;
-  avatar?: string;
-}
+import type { User } from '~/server/interfaces/user';
+import repositoryFactory from "~/repositories/repositoryFactory";
+import {emitter} from "~/classes/uiEventBus";
 
 export const useUserStore = defineStore('user', () => {
   const isLoggedIn = ref(false);
-  const loading = ref(true);
   const user = ref<Partial<User>>({
     name: '',
     lastName: '',
@@ -21,7 +15,7 @@ export const useUserStore = defineStore('user', () => {
   const userId = ref<string | null>(null);
 
   const checkAuth = async () => {
-    loading.value = true;
+    emitter.emit('ui:startLoading', 'auth');
     try {
       const response = await repositoryFactory.get('Auth').me();
       user.value = response?.user || {};
@@ -36,31 +30,43 @@ export const useUserStore = defineStore('user', () => {
       };
       isLoggedIn.value = false;
     } finally {
-      loading.value = false;
+      emitter.emit('ui:stopLoading', 'auth');
     }
   };
 
   const updateProfile = async (payload: { name?: string, lastName?: string, email?: string }) => {
-    loading.value = true;
+    emitter.emit('ui:startLoading', 'default');
     const response = await repositoryFactory.get('User').updateProfile(payload);
     user.value = response || {};
-    loading.value = false;
+    emitter.emit('ui:showToast', {
+      message: 'Profile updated successfully!',
+      type: 'success',
+    });
+    emitter.emit('ui:stopLoading', 'default');
   };
 
   const updateAvatar = async (avatarBase64: string) => {
-    loading.value = true;
+    emitter.emit('ui:startLoading', 'default');
     const updatedUser = await repositoryFactory.get('User').updateAvatar(avatarBase64);
     user.value.avatar = updatedUser.avatar;
-    loading.value = false;
+    emitter.emit('ui:showToast', {
+      message: 'Avatar updated successfully!',
+      type: 'success',
+    });
+    emitter.emit('ui:stopLoading', 'default');
   };
 
   const deleteAvatar = async () => {
-    loading.value = true;
+    emitter.emit('ui:startLoading', 'default');
     await repositoryFactory.get('User').deleteAvatar();
     user.value.avatar = '';
-    loading.value = false;
+    emitter.emit('ui:showToast', {
+      message: 'Avatar deleted successfully!',
+      type: 'success',
+    });
+    emitter.emit('ui:stopLoading', 'default');
   };
 
-  return {user, userId, loading, isLoggedIn, avatar, checkAuth, updateProfile, updateAvatar, deleteAvatar};
+  return {user, userId, isLoggedIn, avatar, checkAuth, updateProfile, updateAvatar, deleteAvatar};
 });
 

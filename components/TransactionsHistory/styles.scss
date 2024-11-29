@@ -1,4 +1,9 @@
 .transactions-history {
+  .transactions-block {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
   .items-list {
     li {
       margin-bottom: 20px;

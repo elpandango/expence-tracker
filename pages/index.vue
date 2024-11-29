@@ -32,6 +32,7 @@ import {onMounted, ref} from "vue";
 import Card from "~/components/Card/Card.vue";
 import {useFinanceStore} from "~/stores/financeStore";
 import {useCardsList} from "~/use/useCardList";
+import {emitter} from "~/classes/uiEventBus";
 
 const financeStore = useFinanceStore();
 
@@ -48,6 +49,7 @@ const transactionsHistoryOptions = ref([]);
 
 const fetchExpenses = async (query = '') => {
   expensesIsLoading.value = true;
+
   await financeStore.fetchExpenses(query);
   expenses.value = financeStore.expenses;
   expensesIsLoading.value = false;
@@ -68,13 +70,15 @@ const handleDropdownChanged = async (option: any) => {
 };
 
 onMounted(async () => {
-  await fetchExpenses();
+  emitter.emit('ui:startLoading', 'default');
+  await financeStore.fetchExpensesIfNeeded();
   const {cardsList} = useCardsList([
      {value: null, label: 'All expenses'},
      {value: null, label: 'Cash'}
    ]
   );
   transactionsHistoryOptions.value = cardsList.value;
+  emitter.emit('ui:stopLoading', 'default');
 });
 
 </script>

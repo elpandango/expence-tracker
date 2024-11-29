@@ -131,17 +131,15 @@ const handleAddExpense = async () => {
 
   expenseAmountError.value = null;
 
-  const newExpense = await financeStore.addExpense({
+  closeModal();
+
+  await financeStore.addExpense({
     cardId: selectedCard.value.value !== '' ? selectedCard.value.value : null,
     description: expense.description,
     amount: expense.amount,
     date: expense.date,
     category: expense.category,
   });
-
-  if (newExpense?.status === 200) {
-    closeModal();
-  }
 };
 
 onMounted(async () => {

@@ -2,12 +2,17 @@
   <div
    class="page-content">
     <Sidebar/>
-    <Preloader
-     :is-full-size="true"
-     v-if="userStore.loading"/>
+    <transition name="toast-fade">
+      <Toast
+       v-if="uiStore.state?.toast?.message"
+       :message="uiStore.state.toast.message"
+       :type="uiStore.state.toast.type"
+       :duration="3000"
+      />
+    </transition>
     <div class="main-content">
       <div class="content">
-        <template v-if="!userStore.loading">
+        <template v-if="!uiStore.state.isAuthLoading">
           <SiteHeader/>
           <main></main>
           <slot></slot>
@@ -50,7 +55,7 @@ const isModalOpen = ref(false);
 
 onBeforeMount(async () => {
   try {
-    if (userStore.loading) {
+    if (uiStore.state.isAuthLoading) {
       await userStore.checkAuth();
     }
 

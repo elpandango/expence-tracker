@@ -118,15 +118,13 @@ const handleAddFunds = async () => {
 
   const cardId = selectedCard.value.value !== '' ? selectedCard.value.value : null;
 
-  const newFunds = await financeStore.addFunds(cardId, {
+  closeModal();
+
+  await financeStore.addFunds(cardId, {
     description: transaction.description,
     amount: transaction.amount,
     date: transaction.date,
   });
-
-  if (newFunds?.status === 200) {
-    closeModal();
-  }
 };
 
 onMounted(async () => {

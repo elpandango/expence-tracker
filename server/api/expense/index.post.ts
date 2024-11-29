@@ -9,30 +9,34 @@ export default defineEventHandler(async (event) => {
   const userId = getCookie(event, 'userId');
   const {cardId, amount, description, date, category} = body;
   const numericAmount = Number(amount);
-
-  console.log('cardId: ', cardId);
-
   const user = await UserModel.findById(userId);
   if (!user) {
     throw createError({statusCode: 404, message: 'User not found'});
   }
 
   if (isNaN(numericAmount)) {
-    throw createError({ statusCode: 400, message: 'Invalid amount' });
+    throw createError({statusCode: 400, message: 'Invalid amount'});
   }
 
   if (cardId && !user.cards.some((card) => card._id.toString() === cardId)) {
     throw createError({statusCode: 400, message: 'Invalid cardId'});
   }
 
-  if (!cardId) {
-    const cashBalance = await CashBalanceModel.findOne({userId, currency: 'USD'});
+  if (cardId) {
+    const card = await CardModel.findById(cardId);
+    if (!card) {
+      throw createError({statusCode: 404, message: 'Card not found'});
+    }
 
+    if (card.balance < numericAmount) {
+      throw createError({statusCode: 400, message: 'Insufficient card balance'});
+    }
+  } else {
+    const cashBalance = await CashBalanceModel.findOne({userId, currency: 'USD'});
     if (!cashBalance || cashBalance.amount < numericAmount) {
       throw createError({statusCode: 400, message: 'Insufficient cash balance'});
     }
   }
-
   const expense = new ExpenseModel({
     userId,
     cardId,
