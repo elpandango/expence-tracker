@@ -1,8 +1,9 @@
 <template>
+  <Preloader v-if="uiStore.state.isLoading || financeStore.loadingStates.cas"/>
   <div
-   v-if="!financeStore.loadingStates.cash && !financeStore.loadingStates.cards"
+   v-else
    class="balance-details">
-    <div class="total-balance">Balance: {{totalBalance}}</div>
+    <div class="total-balance">Balance: <span>{{ totalBalance }}USD</span></div>
     <div class="balance-parts">
       <div class="balance-item balance-cash">Cash: <strong>{{ financeStore.cash.amount }}{{
           financeStore.cash.currency
@@ -17,7 +18,6 @@
      @click="handleAddFunds">Add Funds
     </BaseButton>
   </div>
-  <Preloader v-else/>
 </template>
 
 <script
@@ -43,7 +43,7 @@ const totalBalance = computed(() => {
 
 onMounted(async () => {
   try {
-    await Promise.all([financeStore.fetchCash(), financeStore.fetchCards()])
+    await Promise.all([financeStore.fetchCashIfNeeded(), financeStore.fetchCardsIfNeeded()])
   } catch (e) {
     console.log(e);
   }

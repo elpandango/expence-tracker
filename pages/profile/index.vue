@@ -33,7 +33,10 @@
         </div>
       </Card>
       <Card max-width="50%">
-        <form>
+        <Preloader
+         height="280px"
+         v-if="uiStore.state.isLoading"/>
+        <form v-else>
           <div class="form-row">
             <FloatLabelInput
              v-model="user.name"
@@ -64,7 +67,6 @@
             </BaseButton>
           </div>
         </form>
-
       </Card>
     </div>
   </div>
@@ -76,15 +78,11 @@
 import {useUserStore} from '~/stores/user';
 import FloatLabelInput from "~/components/Forms/Inputs/FloatLabelInput.vue";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
-
-interface User {
-  name: string;
-  lastName: string;
-  email: string;
-  avatar?: string;
-}
+import type {User} from '~/server/interfaces/user';
+import {useUIStore} from "~/stores/ui";
 
 const userStore = useUserStore();
+const uiStore = useUIStore();
 
 const user = reactive<User>({
   name: '',

@@ -1,19 +1,21 @@
 <template>
   <div class="transactions-history">
     <slot name="header"></slot>
-    <ul
-     class="items-list"
-     v-if="!financeStore.loadingStates.expenses">
-      <Expense
-       v-for="expense in financeStore.expenses"
-       :key="expense._id"
-       tag="li"
-       :data="expense"/>
-    </ul>
 
     <Preloader
-     v-else
+     v-if="uiStore.state.isLoading || financeStore.loadingStates.expenses"
      height="250px"/>
+    <div
+     v-else
+     class="transactions-block">
+      <ul class="items-list">
+        <Expense
+         v-for="expense in financeStore.expenses"
+         :key="expense._id"
+         tag="li"
+         :data="expense"/>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -21,7 +23,10 @@
  setup
  lang="ts">
 import {useFinanceStore} from "~/stores/financeStore";
+import {useUIStore} from "~/stores/ui";
+
 const financeStore = useFinanceStore();
+const uiStore = useUIStore();
 </script>
 
 <style

@@ -1,41 +1,45 @@
 <template>
   <div class="cards-page">
     <h1>Here are all your cards</h1>
+    <Preloader
+     height="50vh"
+     v-if="uiStore.state.isLoading"/>
+    <template v-else>
+      <ul
+       v-if="financeStore.cardsList.length > 0"
+       class="cards-list">
+        <li
+         v-for="card in financeStore.cardsList"
+         :key="card.name">
+          <PaymentCard
+           :data="card"
+           @update-card="handleUpdateCardClicked(card._id)"
+           @delete-card="handleDeleteCardClicked(card._id)"/>
+        </li>
+        <li>
+          <button
+           class="add-card-btn"
+           @click="handleAddCardClicked">
+            <span class="plus-icon">+</span>
+            <span class="btn-text">Add a new card</span>
+          </button>
+        </li>
+      </ul>
 
-    <ul
-     v-if="cardsList.length > 0"
-     class="cards-list">
-      <li
-       v-for="card in cardsList"
-       :key="card.name">
-        <PaymentCard
-         :data="card"
-         @update-card="handleUpdateCardClicked(card._id)"
-         @delete-card="handleDeleteCardClicked(card._id)"/>
-      </li>
-      <li>
+      <div
+       v-else
+       class="add-card-block">
+        <h3>Oh, it seems like you haven’t added any cards yet!</h3>
+        <p class="info">Feel free to explore the app without them, but
+          adding cards will let you link transactions and get detailed stats for each one.</p>
         <button
          class="add-card-btn"
          @click="handleAddCardClicked">
           <span class="plus-icon">+</span>
           <span class="btn-text">Add a new card</span>
         </button>
-      </li>
-    </ul>
-
-    <div
-     v-else
-     class="add-card-block">
-      <h3>Oh, it seems like you haven’t added any cards yet!</h3>
-      <p class="info">Feel free to explore the app without them, but
-        adding cards will let you link transactions and get detailed stats for each one.</p>
-      <button
-       class="add-card-btn"
-       @click="handleAddCardClicked">
-        <span class="plus-icon">+</span>
-        <span class="btn-text">Add a new card</span>
-      </button>
-    </div>
+      </div>
+    </template>
 
     <template v-if="isDeleteConfirmationModalOpen">
       <DeleteConfirmationModal
@@ -62,14 +66,17 @@
  setup
  lang="ts">
 import {ref} from "vue";
-import repositoryFactory from "~/repositories/repositoryFactory";
+import {useFinanceStore} from "~/stores/financeStore";
+import {useUIStore} from "~/stores/ui";
 import AddEditCardModal from "~/components/Modals/AddEditCardModal.vue";
 import DeleteConfirmationModal from "~/components/Modals/DeleteConfirmationModal.vue";
+import {emitter} from "~/classes/uiEventBus";
 
+const financeStore = useFinanceStore();
+const uiStore = useUIStore();
 const isDeleteConfirmationModalOpen = ref(false);
 const isCardModalOpen = ref(false);
 const isEditMode = ref(false);
-const cardsList = ref([]);
 const currentEditingCard = ref({});
 const cardIdToDelete = ref('');
 
@@ -79,59 +86,40 @@ const handleAddCardClicked = () => {
 };
 
 const handleAddCard = async (cardData: any) => {
-  const newCard = await repositoryFactory.get('Card').createCard({
-    ...cardData
-  });
-
-  if (newCard?.status === 200) {
-    cardsList.value.push(cardData);
-  }
-
   isCardModalOpen.value = false;
-  await fetchCards();
+  await financeStore.addCard(cardData);
 };
 
 const handleUpdateCardClicked = async (cardId: string) => {
   isEditMode.value = true;
   isCardModalOpen.value = true;
 
-  const currCard = cardsList.value.find(card => card._id === cardId);
+  const currCard = financeStore.cardsList.find(card => card._id === cardId);
   currentEditingCard.value = {...currCard};
-
-  await fetchCards();
 };
 
 const handleUpdateCard = async (cardData: any) => {
   const cardId = currentEditingCard.value._id;
-  await repositoryFactory.get('Card').updateCard(cardId, {
-    ...cardData
-  });
-
   isCardModalOpen.value = false;
+  await financeStore.updateCard(cardId, cardData);
   isEditMode.value = false;
 };
 
-const handleDeleteCardClicked = async (cardId) => {
+const handleDeleteCardClicked = async (cardId: string) => {
   cardIdToDelete.value = cardId;
   isDeleteConfirmationModalOpen.value = true;
 };
 
 const handleDeleteCard = async() => {
   const cardId = cardIdToDelete.value;
-  await repositoryFactory.get('Card').deleteCard(cardId);
-  cardsList.value = cardsList.value.filter(card => card._id !== cardId);
-
   isDeleteConfirmationModalOpen.value = false;
-  await fetchCards();
-};
-
-const fetchCards = async () => {
-  // const {cards} = await repositoryFactory.get('Card').getAllCards();
-  // cardsList.value = [...cards];
+  await financeStore.deleteCard(cardId);
 };
 
 onMounted(async () => {
-  // await fetchCards();
+  emitter.emit('ui:startLoading', 'default');
+  await financeStore.fetchCardsIfNeeded();
+  emitter.emit('ui:stopLoading', 'default');
 });
 </script>
 
