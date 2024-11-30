@@ -1,7 +1,7 @@
 <template>
   <div
    class="card"
-   :class="props.class"
+   :class="[props.class, withScroll ? 'with-scroll' : '']"
    :style="{maxWidth}">
     <slot></slot>
   </div>
@@ -17,6 +17,10 @@ const props = defineProps({
   maxWidth: {
     type: String,
     default: '100%'
+  },
+  withScroll: {
+    type: Boolean,
+    default: false
   }
 });
 </script>

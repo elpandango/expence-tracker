@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
   const newCard = new CardModel({
     userId,
     name,
-    number,
+    number: `**** **** **** ${number.slice(-4)}`,
     balance,
     currency,
   });

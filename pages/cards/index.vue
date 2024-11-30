@@ -6,7 +6,7 @@
      v-if="uiStore.state.isLoading"/>
     <template v-else>
       <ul
-       v-if="financeStore.cardsList.length > 0"
+       v-if="financeStore.cardsList && financeStore.cardsList.length > 0"
        class="cards-list">
         <li
          v-for="card in financeStore.cardsList"

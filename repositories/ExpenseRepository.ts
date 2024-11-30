@@ -10,14 +10,4 @@ export default {
             throw new Error(message);
         }
     },
-    async getExpenses(query: string = '') {
-        try {
-            return await $fetch('/api/get-expenses' + query, {
-                method: 'GET',
-            });
-        } catch (error: any) {
-            const message = error?.response?._data?.message || 'Expenses fetching failed';
-            throw new Error(message);
-        }
-    },
 };

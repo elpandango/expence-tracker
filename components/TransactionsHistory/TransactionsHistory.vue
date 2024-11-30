@@ -2,18 +2,24 @@
   <div class="transactions-history">
     <slot name="header"></slot>
     <Preloader
-     v-if="uiStore.state.isLoading || financeStore.loadingStates.expenses"
+     v-if="uiStore.state.isLoading || financeStore.loadingStates.transactions"
      height="250px"/>
     <div
      v-else
      class="transactions-block">
-      <ul class="items-list">
-        <Expense
-         v-for="expense in financeStore.expenses"
-         :key="expense._id"
-         tag="li"
-         :data="expense"/>
-      </ul>
+      <template v-if="financeStore.transactions.length > 0">
+        <ul class="items-list">
+          <Transaction
+           v-for="expense in financeStore.transactions"
+           :key="expense._id"
+           tag="li"
+           :transaction="expense"
+          />
+        </ul>
+      </template>
+      <template v-else>
+        <p class="empty-message">No transactions found yet. <br />Start by adding your first transaction!</p>
+      </template>
     </div>
   </div>
 </template>

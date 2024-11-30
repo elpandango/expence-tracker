@@ -8,7 +8,7 @@
 
       <div class="bottom-part">
         <div class="card-balance">Balance: <strong>{{ data.balance }}{{ data.currency }}</strong></div>
-        <div class="card-number">{{ formattedNumber }}</div>
+        <div class="card-number">{{ data.number }}</div>
       </div>
     </div>
 
@@ -32,7 +32,6 @@
 <script
  setup
  lang="ts">
-import {useFormatCardNumber} from "~/use/useFormatCardNumber";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
 
 const props = defineProps({
@@ -45,8 +44,6 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['update-card', 'delete-card']);
-
-const {formattedNumber} = useFormatCardNumber(props.data.number);
 </script>
 
 <style

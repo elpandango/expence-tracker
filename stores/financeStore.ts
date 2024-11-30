@@ -12,9 +12,11 @@ const errorMessages = {
 
 export const useFinanceStore = defineStore('finance', () => {
   const expenses = ref([]);
-  const cash = ref({});
+  const cash = ref([]);
   const cardsList = ref([]);
+  const transactions = ref([]);
   const loadingStates = ref<Record<string, boolean>>({
+    transactions: false,
     expenses: false,
     cash: false,
     cards: false,
@@ -40,6 +42,8 @@ export const useFinanceStore = defineStore('finance', () => {
         message: errorMessage,
         type: 'error',
       });
+    } finally {
+      emitter.emit('ui:stopLoading', 'default');
     }
   };
 
@@ -67,17 +71,15 @@ export const useFinanceStore = defineStore('finance', () => {
 
   const fetchCash = async () => {
     setLoading('cash', true);
-    const response = await repositoryFactory.get('Balance').getCashBalance();
-    cash.value = response.cashBalance;
+    const {deposits} = await repositoryFactory.get('Balance').getCashBalance();
+    cash.value = deposits;
     setLoading('cash', false);
   };
 
-  const fetchExpenses = async (query: string = '') => {
+  const fetchTransactions = async (query: string = '') => {
     const queryString = query ? '?' + query : '';
-    setLoading('expenses', true);
-    const response = await repositoryFactory.get('Expense').getExpenses(queryString);
-    expenses.value = response.expenses;
-    setLoading('expenses', false);
+    const response = await repositoryFactory.get('Balance').getAllTransactions(queryString);
+    transactions.value = response.transactions;
   };
 
   const addExpense = async (payload: {
@@ -91,7 +93,7 @@ export const useFinanceStore = defineStore('finance', () => {
 
     try {
       await repositoryFactory.get('Expense').createExpense(payload);
-      await Promise.all([await fetchCards(), await fetchCash(), await fetchExpenses()]);
+      await Promise.all([await fetchCards(), await fetchCash(), await fetchTransactions()]);
       emitter.emit('ui:showToast', {
         message: 'Expense added successfully.',
         type: 'success',
@@ -161,10 +163,6 @@ export const useFinanceStore = defineStore('finance', () => {
     }
   };
 
-  const fetchExpensesIfNeeded = async () => {
-    await fetchDataIfNeeded(expenses.value, fetchExpenses);
-  };
-
   const fetchCardsIfNeeded = async () => {
     await fetchDataIfNeeded(cardsList.value, fetchCards);
   };
@@ -173,10 +171,16 @@ export const useFinanceStore = defineStore('finance', () => {
     await fetchDataIfNeeded(cash.value, fetchCash);
   };
 
+  const fetchTransactionsIfNeeded = async () => {
+    await fetchDataIfNeeded(transactions.value, fetchTransactions);
+  };
+
   return {
     expenses,
     cardsList,
     cash,
+    transactions,
+    setLoading,
     addExpense,
     addFunds,
     addCard,
@@ -184,10 +188,10 @@ export const useFinanceStore = defineStore('finance', () => {
     deleteCard,
     fetchCards,
     fetchCash,
-    fetchExpenses,
-    fetchExpensesIfNeeded,
+    fetchTransactions,
     fetchCardsIfNeeded,
     fetchCashIfNeeded,
+    fetchTransactionsIfNeeded,
     loadingStates
   };
 });

@@ -2,8 +2,9 @@
   .transactions-block {
     max-height: 400px;
     overflow-y: auto;
-    padding-right: 4px;
+    padding-right: 10px;
   }
+
   .items-list {
     li {
       margin-bottom: 20px;
@@ -12,5 +13,12 @@
         margin-bottom: 0;
       }
     }
+  }
+
+  .empty-message {
+    text-align: left;
+    color: var(--text-70);
+    font-size: 16px;
+    margin-top: 20px;
   }
 }

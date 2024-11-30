@@ -22,4 +22,15 @@ export default {
       throw new Error(message);
     }
   },
+  async getAllTransactions(query: string = '') {
+    const url = `/api/get-transactions${query}`;
+    try {
+      return await $fetch(url, {
+        method: 'GET',
+      });
+    } catch (error: any) {
+      const message = error?.response?._data?.message || 'Transactions fetching failed';
+      throw new Error(message);
+    }
+  }
 };
