@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
 
   let categoryId = category;
   if (!categoryId) {
-    const otherCategory = await CategoryModel.findOne({ name: 'Other' });
+    const otherCategory = await CategoryModel.findOne({ name: 'Other (Expenses)' });
     if (!otherCategory) {
       throw createError({ statusCode: 404, message: 'Category "Other" not found' });
     }

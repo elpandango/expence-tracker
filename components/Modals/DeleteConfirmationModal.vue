@@ -30,9 +30,7 @@
  lang="ts">
 import {ref} from 'vue';
 import Modal from './Modal.vue';
-import FloatLabelInput from "~/components/Forms/Inputs/FloatLabelInput.vue";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
-import {useFormatCardNumber} from "~/use/useFormatCardNumber";
 
 const props = defineProps({
   isOpen: {

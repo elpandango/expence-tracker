@@ -1,17 +1,17 @@
-import {defineEventHandler, readBody, createError, getCookie} from 'h3';
-import {CashBalanceModel} from "~/server/models/CashBalanceModel";
+import { defineEventHandler, createError, getCookie } from 'h3';
+import { CashDepositModel } from '~/server/models/CashDepositModel';
 
 export default defineEventHandler(async (event) => {
   const userId = getCookie(event, 'userId');
 
-  let cashBalance = await CashBalanceModel.findOne({userId});
+  const deposits = await CashDepositModel.find({ userId }).sort({ date: -1 });
 
-  if (!cashBalance) {
+  if (!deposits) {
     throw createError({
       statusCode: 404,
-      message: 'No cash balance found.',
+      message: 'No cash deposits found.',
     });
   }
 
-  return {status: 200, cashBalance: cashBalance};
+  return { status: 200, deposits };
 });

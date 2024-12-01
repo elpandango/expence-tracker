@@ -153,9 +153,11 @@ const handleAddExpense = async () => {
 };
 
 onMounted(async () => {
+  await financeStore.fetchCardsIfNeeded();
   const {cardsList} = useCardsList([{value: null, label: 'Cash'}]);
   cards.value = cardsList.value;
   await categoryStore.fetchCategoriesIfNeeded();
+
   categories.value = categoryStore.categories.map(ctg => {
     return {
       value: ctg._id,

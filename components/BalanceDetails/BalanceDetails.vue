@@ -3,15 +3,15 @@
   <div
    v-else
    class="balance-details">
-    <div class="total-balance">Balance: <span>{{ totalBalance }}USD</span></div>
+    <div class="total-balance">Balance: <span>{{ cashTotalBalance + cardsTotalBalance }}USD</span></div>
     <div class="balance-parts">
-      <div class="balance-item balance-cash">Cash: <strong>{{ financeStore.cash.amount }}{{
-          financeStore.cash.currency
+      <div class="balance-item balance-cash">Cash: <strong>{{ cashTotalBalance }}{{
+          financeStore.cash?.currency ?? 'USD'
         }}</strong></div>
       <div
        class="balance-item balance-card"
        v-for="card in financeStore.cardsList"
-       :key="card._id">Card {{ card.number }}: <strong>{{ card.balance }}{{ card.currency }}</strong></div>
+       :key="card._id">Card ({{ card.number }}): <strong>{{ card.balance }}{{ card.currency }}</strong></div>
     </div>
     <BaseButton
      size="medium"
@@ -34,11 +34,18 @@ const handleAddFunds = () => {
   uiStore.openAddFundsModal();
 }
 
-const totalBalance = computed(() => {
-  const cardsTotalAmount = financeStore.cardsList.reduce((acc, currentValue) => {
-    return acc + +currentValue?.balance
+const cashTotalBalance = computed(() => {
+  const cash = financeStore.cash || [];
+  return cash.reduce((acc, currentValue) => {
+    return acc + +currentValue?.amount;
   }, 0);
-  return cardsTotalAmount + financeStore.cash.amount;
+});
+
+const cardsTotalBalance = computed(() => {
+  const cards = financeStore.cardsList || [];
+  return cards.reduce((acc, currentValue) => {
+    return acc + +currentValue?.balance;
+  }, 0);
 });
 
 onMounted(async () => {

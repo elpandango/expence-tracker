@@ -8,10 +8,10 @@
     <template v-else>
       <Card
        class="mar-b-8"
-       v-for="expense in financeStore.expenses"
-       :key="expense._id">
-        <Expense
-         :data="expense"
+       v-for="transaction in financeStore.transactions"
+       :key="transaction._id">
+        <Transaction
+         :transaction="transaction"
         />
       </Card>
     </template>
@@ -24,7 +24,6 @@
 import {onMounted} from "vue";
 import {useFinanceStore} from "~/stores/financeStore";
 import {useUIStore} from "~/stores/ui";
-import Expense from "~/components/Expense/Expense.vue";
 import {emitter} from "~/classes/uiEventBus";
 
 const financeStore = useFinanceStore();
@@ -32,7 +31,7 @@ const uiStore = useUIStore();
 
 onMounted(async () => {
   emitter.emit('ui:startLoading', 'default');
-  await financeStore.fetchExpensesIfNeeded();
+  await financeStore.fetchTransactionsIfNeeded();
   emitter.emit('ui:stopLoading', 'default');
 });
 </script>
