@@ -1,7 +1,7 @@
-.expense-item {
+.transaction-item {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 
   .category-icon {
     width: 40px;
@@ -25,13 +25,24 @@
       margin-bottom: 8px;
     }
 
-    .expense-date {
+    .transaction-info {
+      margin-bottom: 8px;
+    }
+
+    .transaction-date {
       font-size: 14px;
     }
 
-    .expense-amount {
+    .transaction-amount {
       font-size: 20px;
       font-weight: 600;
+
+      &.green {
+        color: var(--green-100);
+      }
+      &.red {
+        color: var(--red-100);
+      }
     }
   }
 }

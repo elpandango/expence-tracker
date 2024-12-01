@@ -14,7 +14,8 @@ export const useFinanceStore = defineStore('finance', () => {
   const expenses = ref([]);
   const cash = ref([]);
   const cardsList = ref([]);
-  const transactions = ref([]);
+  const transactionsResponse = ref([]);
+
   const loadingStates = ref<Record<string, boolean>>({
     transactions: false,
     expenses: false,
@@ -76,10 +77,41 @@ export const useFinanceStore = defineStore('finance', () => {
     setLoading('cash', false);
   };
 
-  const fetchTransactions = async (query: string = '') => {
-    const queryString = query ? '?' + query : '';
-    const response = await repositoryFactory.get('Balance').getAllTransactions(queryString);
-    transactions.value = response.transactions;
+  const fetchTransactions = async (filters: Record<string, any> = {}, page: number = 1, limit: number = 10) => {
+    try {
+      const queryParams = new URLSearchParams();
+      for (const key in filters) {
+        if (filters[key] !== null && filters[key] !== undefined) {
+          queryParams.append(key, filters[key]);
+        }
+      }
+      queryParams.append('page', page.toString());
+      queryParams.append('limit', limit.toString());
+
+      const queryString = queryParams.toString() ? `?${queryParams.toString()}` : '';
+      const response = await repositoryFactory.get('Balance').getAllTransactions(queryString);
+
+      transactionsResponse.value = response;
+    } catch (error) {
+      console.error('Failed to fetch transactions:', error);
+    }
+  };
+
+  const fetchFilteredTransactions = async (filters: Record<string, any>, page: number = 1) => {
+    const transformedFilters = {
+      type: filters.type || null,
+      source: filters.source || null,
+      cardId: filters.cardId || null,
+      startDate: filters.startDate ? new Date(filters.startDate).toISOString() : null,
+      endDate: filters.endDate ? new Date(filters.endDate).toISOString() : null,
+      minAmount: filters.minAmount || null,
+      maxAmount: filters.maxAmount || null,
+      description: filters.description || null,
+      page: filters.value || 1,
+      limit: 10,
+    };
+
+    await fetchTransactions(transformedFilters, page);
   };
 
   const addExpense = async (payload: {
@@ -171,15 +203,11 @@ export const useFinanceStore = defineStore('finance', () => {
     await fetchDataIfNeeded(cash.value, fetchCash);
   };
 
-  const fetchTransactionsIfNeeded = async () => {
-    await fetchDataIfNeeded(transactions.value, fetchTransactions);
-  };
-
   return {
     expenses,
     cardsList,
     cash,
-    transactions,
+    transactionsResponse,
     setLoading,
     addExpense,
     addFunds,
@@ -191,7 +219,7 @@ export const useFinanceStore = defineStore('finance', () => {
     fetchTransactions,
     fetchCardsIfNeeded,
     fetchCashIfNeeded,
-    fetchTransactionsIfNeeded,
+    fetchFilteredTransactions,
     loadingStates
   };
 });

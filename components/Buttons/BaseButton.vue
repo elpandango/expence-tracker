@@ -2,7 +2,8 @@
   <button
    class="button"
    :type="type"
-   :class="[size, variant]">
+   :disabled="disabled"
+   :class="[size, variant, {'disabled': disabled}]">
     <slot></slot>
   </button>
 </template>
@@ -20,6 +21,10 @@ const props = defineProps({
   variant: {
     type: String,
     required: false
+  },
+  disabled: {
+    type: Boolean,
+    default: false
   }
 });
 </script>
