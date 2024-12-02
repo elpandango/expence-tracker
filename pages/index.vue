@@ -66,7 +66,7 @@
 <script
  setup
  lang="ts">
-import {onMounted, ref, reactive} from "vue";
+import {onMounted, ref} from "vue";
 import Card from "~/components/Card/Card.vue";
 import {useFinanceStore} from "~/stores/financeStore";
 import {useCardsList} from "~/use/useCardList";
@@ -95,8 +95,7 @@ const fetchTransactions = async (query = '') => {
 const updateParams = async (newParams: Record<string, any>) => {
   financeStore.setLoading('transactions', true);
   Object.assign(params.value, newParams);
-  const query = new URLSearchParams(params.value).toString();
-  await fetchTransactions(query);
+  await fetchTransactions(params.value);
   financeStore.setLoading('transactions', false);
 };
 
@@ -104,6 +103,7 @@ const handleDropdownChanged = async (option: any) => {
   const newParams: Record<string, string> = {};
   if (option.label === 'Cash') {
     newParams.source = 'cash';
+    newParams.cardId = '';
   } else if (option.label === 'All transactions') {
     newParams.source = '';
     newParams.cardId = '';
@@ -123,9 +123,12 @@ const changePeriod = async (period: string) => {
   } else {
     startDate.setDate(startDate.getDate() - 30);
   }
+
+  const now = new Date();
+
   const newParams = {
-    startDate,
-    endDate: new Date(),
+    startDate: `${startDate.getFullYear()}-${(startDate.getMonth() + 1).toString().padStart(2, '0')}-${startDate.getDate().toString().padStart(2, '0')}`,
+    endDate: `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}`
   };
   periodSelected.value = period;
   await updateParams(newParams);

@@ -7,10 +7,10 @@
     <div
      v-else
      class="transactions-block">
-      <template v-if="financeStore.transactions.length > 0">
+      <template v-if="financeStore.transactionsResponse?.transactions?.length > 0">
         <ul class="items-list">
           <Transaction
-           v-for="expense in financeStore.transactions"
+           v-for="expense in financeStore.transactionsResponse.transactions"
            :key="expense._id"
            tag="li"
            :transaction="expense"

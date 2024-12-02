@@ -17,6 +17,7 @@
 
   &:disabled {
     background-color: var(--neutral-600);
+    cursor: not-allowed;
   }
 
   &.small {
@@ -67,6 +68,7 @@
 
     &:disabled {
       background-color: var(--neutral-400);
+      cursor: not-allowed;
     }
   }
 }

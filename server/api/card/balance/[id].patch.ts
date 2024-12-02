@@ -1,17 +1,18 @@
-import {defineEventHandler, readBody, createError, getCookie} from 'h3';
-import {CardModel} from "~/server/models/CardModel";
+import { defineEventHandler, readBody, createError, getCookie } from 'h3';
+import { CardModel } from '~/server/models/CardModel';
+import { CardDepositModel } from '~/server/models/CardDepositModel';
 
 export default defineEventHandler(async (event) => {
   try {
     const { id } = event.context.params;
     const userId = getCookie(event, 'userId');
-    const {amount} = await readBody(event);
+    const { amount, description, currency = 'USD' } = await readBody(event);
 
-    const numberAmount = parseFloat(amount);
-    if (isNaN(numberAmount) || numberAmount <= 0) {
+    const numericAmount = parseFloat(amount);
+    if (isNaN(numericAmount) || numericAmount <= 0) {
       throw createError({
         statusCode: 400,
-        message: 'Valid amount is required.',
+        message: 'Valid positive amount is required.',
       });
     }
 
@@ -23,20 +24,35 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    if (card.balance + numberAmount < 0) {
-      throw createError({
-        statusCode: 400,
-        message: 'Insufficient funds.',
-      });
-    }
-
-    card.balance += numberAmount;
+    card.balance += numericAmount;
     await card.save();
+
+    const cardDeposit = new CardDepositModel({
+      userId,
+      cardId: card._id,
+      amount: numericAmount,
+      description: description || `Deposit to card "${card.name}"`,
+      currency: currency,
+    });
+
+    await cardDeposit.save();
 
     return {
       status: 200,
       message: 'Card balance updated successfully.',
-      card,
+      card: {
+        id: card._id,
+        name: card.name,
+        balance: card.balance,
+        currency: card.currency,
+      },
+      deposit: {
+        id: cardDeposit._id,
+        amount: cardDeposit.amount,
+        description: cardDeposit.description,
+        date: cardDeposit.date,
+        currency: cardDeposit.currency,
+      },
     };
   } catch (error) {
     console.error(error);

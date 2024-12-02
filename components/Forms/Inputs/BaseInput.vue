@@ -1,13 +1,13 @@
 <template>
-  <div class="form-block float-label">
-    <input :type="type"
+  <div class="form-block base-input">
+    <label v-if="label">{{ label }}</label>
+    <input type="text"
            class="form-input"
+           @input="$emit('update:modelValue', $event.target.value)"
            :class="[size, status]"
            :value="modelValue"
-           @input="$emit('update:modelValue', $event.target.value)"
            :placeholder="placeholder">
-    <label v-if="label"
-           :class="{frozen: modelValue !== ''}">{{ label }}</label>
+
     <div v-if="!!errorMessage"
          class="error-message">
       {{ errorMessage }}
@@ -43,41 +43,14 @@ const props = defineProps({
   errorMessage: {
     type: String,
     required: false
-  },
-  disabled: {
-    type: Boolean,
-    default: false
-  },
-  type: {
-    type: String,
-    default: 'text'
   }
 });
 
 const emits = defineEmits(['update:modelValue']);
 </script>
 
-<style scoped lang="scss">
-.form-block.float-label {
-  width: 100%;
-  position: relative;
-
-  label {
-    position: absolute;
-    top: 50%;
-    left: 16px;
-    transform: translateY(-50%);
-    z-index: 1;
-    transition: all .3s;
-    background-color: var(--input-label-bg);
-
-    &.frozen {
-      font-size: 12px;
-      transform: translateY(0);
-      top: -5px;
-      z-index: 6;
-    }
-  }
+<style lang="scss">
+.form-block.base-input {
 
   input {
     position: relative;
@@ -86,12 +59,17 @@ const emits = defineEmits(['update:modelValue']);
     color: var(--input-primary-color);
 
     &::placeholder {
-      display: none;
-      opacity: 0;
+      transition: opacity .3s;
+      color: var(--main-color);
     }
 
     &:focus, &:active {
       border-color: var(--accent-color);
+
+      &::placeholder {
+        opacity: 0;
+      }
+
       & + label {
         font-size: 12px;
         transform: translateY(0);

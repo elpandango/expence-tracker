@@ -1,9 +1,9 @@
 * {
   box-sizing: border-box;
+  font-family: var(--main-font), sans-serif;
 }
 
 body, html {
-  font-family: var(--main-font), sans-serif;
   color: var(--main-color);
   background-color: var(--bg-color);
 }

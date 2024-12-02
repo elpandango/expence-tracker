@@ -32,6 +32,8 @@ export default defineEventHandler(async (event) => {
     categoryId = otherCategory._id;
   }
 
+  let maskedCardNumber = null;
+
   if (cardId) {
     const card = await CardModel.findById(cardId);
     if (!card) {
@@ -41,6 +43,7 @@ export default defineEventHandler(async (event) => {
     if (card.balance < numericAmount) {
       throw createError({statusCode: 400, message: 'Insufficient card balance'});
     }
+    maskedCardNumber = card.number;
   } else {
     const cashBalance = await CashBalanceModel.findOne({userId, currency: 'USD'});
     if (!cashBalance || cashBalance.amount < numericAmount) {
@@ -51,6 +54,7 @@ export default defineEventHandler(async (event) => {
     userId,
     cardId,
     amount,
+    cardNumber: maskedCardNumber,
     description,
     date: date || new Date(),
     category: categoryId,
