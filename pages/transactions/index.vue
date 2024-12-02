@@ -1,58 +1,82 @@
 <template>
   <div class="cards-page">
-    <h1>Transactions</h1>
+    <h1 class="page-title">Transactions</h1>
 
-    <div class="filters">
-      <div class="filter-item">
-        <Dropdown
-         v-model="filters.type"
-         :options="transactionTypes"
-         placeholder="Select transaction type"/>
+    <div class="page-filters">
+      <div class="filters-row">
+        <div class="filter-item">
+          <Dropdown
+           v-model="filters.type"
+           :options="transactionTypes"
+           type="form-dropdown"
+           placeholder="Select transaction type"/>
+        </div>
+
+        <div class="filter-item">
+          <Dropdown
+           v-model="filters.source"
+           :options="sources"
+           type="form-dropdown"
+           placeholder="Select source"/>
+        </div>
+
+        <div
+         class="filter-item"
+         v-if="filters?.source?.value === 'card'">
+          <Dropdown
+           v-model="filters.cardId"
+           :options="cards"
+           type="form-dropdown"
+           placeholder="Select card"/>
+        </div>
       </div>
+      <div class="filters-row">
 
-      <div class="filter-item">
-        <Dropdown
-         v-model="filters.source"
-         :options="sources"
-         placeholder="Select source"/>
+        <div class="filter-item">
+          <Datepicker
+           v-model="filters.startDate"
+           placeholder="Select start date"/>
+        </div>
+
+        <div class="filter-item">
+          <Datepicker
+           v-model="filters.endDate"
+           placeholder="Select end date"/>
+        </div>
       </div>
+      <div class="filters-row">
+        <div class="filter-item">
+          <BaseInput
+           v-model="filters.minAmount"
+           type="number"
+           placeholder="Min amount"/>
+        </div>
 
-      <div class="filter-item">
-        <Dropdown
-         v-if="filters?.source?.value === 'card'"
-         v-model="filters.cardId"
-         :options="cards"
-         placeholder="Select card"/>
+        <div class="filter-item">
+          <BaseInput
+           v-model="filters.maxAmount"
+           type="number"
+           placeholder="Max amount"/>
+        </div>
       </div>
-
-      <div class="filter-item">
-        <Datepicker v-model="filters.startDate"/>
+      <div class="filters-row full-length">
+        <div class="filter-item">
+          <BaseInput
+           v-model="filters.description"
+           placeholder="Search description"/>
+        </div>
       </div>
-
-      <div class="filter-item">
-        <Datepicker v-model="filters.endDate"/>
+      <div class="filters-row btn-block">
+        <BaseButton
+         @click="updateTransactions"
+         size="medium">Apply Filters
+        </BaseButton>
+        <BaseButton
+         @click="clearFilters"
+         size="medium"
+         variant="transparent">Clear Filters
+        </BaseButton>
       </div>
-
-      <div class="filter-item">
-        <input
-         v-model="filters.minAmount"
-         placeholder="Min amount"/>
-      </div>
-
-      <div class="filter-item">
-        <input
-         v-model="filters.maxAmount"
-         placeholder="Max amount"/>
-      </div>
-
-      <div class="filter-item">
-        <input
-         v-model="filters.description"
-         placeholder="Search description"/>
-      </div>
-
-      <BaseButton @click="updateTransactions">Apply Filters</BaseButton>
-      <BaseButton @click="clearFilters">Clear Filters</BaseButton>
     </div>
 
     <Preloader
@@ -68,7 +92,16 @@
         />
       </Card>
 
+      <div
+       class="no-results"
+       v-if="financeStore.transactionsResponse?.transactions?.length === 0">
+        <Card
+        >Looks like your transactions list is empty. <br/>Why not create one now?
+        </Card>
+      </div>
+
       <Pagination
+       v-if="financeStore.transactionsResponse?.lastPage > 1"
        :data="financeStore.transactionsResponse"
        @page-changed="changePage"/>
     </template>
@@ -79,16 +112,19 @@
  setup
  lang="ts">
 import {ref, onMounted, watch} from 'vue';
+import { useRoute } from 'vue-router';
 import {useFinanceStore} from "~/stores/financeStore";
 import {useUIStore} from "~/stores/ui";
 import {emitter} from "~/classes/uiEventBus";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
 import {useCardsList} from "~/use/useCardList";
+import BaseInput from "~/components/Forms/Inputs/BaseInput.vue";
 
 const financeStore = useFinanceStore();
 const uiStore = useUIStore();
 const currentPage = ref(1);
 const totalPages = ref(1);
+const route = useRoute();
 
 const filters = ref({
   type: null,
@@ -125,13 +161,16 @@ const updateTransactions = async () => {
   const updatedFilters = {
     type: filters.value?.type?.value ?? null,
     source: filters.value?.source?.value ?? null,
-    cardId: filters.value?.cardId?.value ?? null,
     startDate: filters.value?.startDate ?? null,
     endDate: filters.value?.endDate ?? null,
     minAmount: filters.value?.minAmount ?? null,
     maxAmount: filters.value?.maxAmount ?? null,
     description: filters.value?.description ?? null,
   };
+
+  if (filters.value?.source?.value === 'card') {
+    updatedFilters.cardId = filters.value?.cardId?.value ?? null;
+  }
 
   emitter.emit('ui:startLoading', 'default');
   await financeStore.fetchTransactions(updatedFilters, currentPage.value, 10);
@@ -161,10 +200,20 @@ const changePage = async (page: number) => {
 
 onMounted(async () => {
   emitter.emit('ui:startLoading', 'default');
+
+  if (route.query.description) {
+    filters.value.description = route.query.description;
+  }
+
   await financeStore.fetchTransactions();
   await financeStore.fetchCardsIfNeeded();
   const {cardsList} = useCardsList();
   cards.value = cardsList.value;
+
+  if (filters.value.description) {
+    await updateTransactions();
+  }
+
   emitter.emit('ui:stopLoading', 'default');
 });
 
@@ -181,13 +230,7 @@ watch(() => financeStore.transactionsResponse, (newTransactions) => {
 </script>
 
 <style
- lang="scss">
-.filters {
-  display: flex;
-  flex-wrap: wrap;
+ lang="scss"
+ src="./styles.scss">
 
-  .filter-item {
-    width: 50%;
-  }
-}
 </style>

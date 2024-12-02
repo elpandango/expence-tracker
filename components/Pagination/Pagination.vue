@@ -19,7 +19,7 @@
            @click="gotoPage(page)"
            size="medium"
            :aria-label="`Go to page ${page}`"
-           :variant="props?.data?.currentPage === page ? 'transparent' : 'default'">
+           :variant="props?.data?.currentPage === page ? 'default' : 'transparent'">
             {{ page }}
           </BaseButton>
         </li>

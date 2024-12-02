@@ -7,16 +7,24 @@
      :value="formattedDate"
      @click="toggleCalendar"
      readonly
-     placeholder="Select date"
+     :placeholder="placeholder"
     />
 
     <div
      v-if="calendarVisible"
      class="calendar">
       <div class="calendar-header">
-        <button @click="prevMonth">Prev</button>
-        <span>{{ currentMonth + 1 }} {{ currentYear }}</span>
-        <button @click="nextMonth">Next</button>
+        <BaseButton
+         @click="prevMonth"
+         variant="transparent"
+         size="small">Prev
+        </BaseButton>
+        <span>{{showCurrentMonth }} {{ currentYear }}</span>
+        <BaseButton
+         @click="nextMonth"
+         variant="transparent"
+         size="small">Next
+        </BaseButton>
       </div>
       <div class="calendar-days">
         <div
@@ -34,11 +42,18 @@
 
 <script setup>
 import {ref, computed, watch} from 'vue';
+import BaseButton from "~/components/Buttons/BaseButton.vue";
+
+const monthsFull = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 const props = defineProps({
   modelValue: {
     type: String,
     default: null
+  },
+  placeholder: {
+    type: String,
+    default: 'Select date'
   }
 });
 
@@ -108,6 +123,11 @@ const closeCalendar = (event) => {
     calendarVisible.value = false;
   }
 };
+
+const showCurrentMonth = computed(() => {
+  const monthIndex = currentMonth.value;
+  return monthsFull[monthIndex];
+});
 
 onMounted(() => {
   document.addEventListener('click', closeCalendar);

@@ -1,13 +1,16 @@
 <template>
   <header class="site-header">
     <div class="header-content">
-      <div class="greeting-block">Good {{timeOfDay}}, {{userStore.user.name}}!</div>
+      <div class="greeting-block">Good {{ timeOfDay }}, {{ userStore.user.name }}!</div>
       <div class="actions-block">
-        <div class="search-block">
+        <div
+         class="search-block"
+         v-if="!isTransactionsPage">
           <FloatLabelInput
            v-model="searchValue"
            size="medium"
-           label="Search transaction"/>
+           label="Search transaction"
+           @keydown.enter="searchTransactions"/>
         </div>
         <div class="avatar">
           <img
@@ -27,11 +30,15 @@
 
 <script setup>
 import {ref} from 'vue';
+import {useRoute} from "vue-router";
+import {useRouter} from 'vue-router';
 import {useUserStore} from '~/stores/user';
 import FloatLabelInput from "~/components/Forms/Inputs/FloatLabelInput.vue";
 
 const userStore = useUserStore();
 const searchValue = ref('');
+const route = useRoute();
+const router = useRouter();
 
 const timeOfDay = computed(() => {
   const hours = new Date().getHours();
@@ -44,6 +51,18 @@ const timeOfDay = computed(() => {
     return 'Evening';
   }
 });
+
+const isTransactionsPage = computed(() => route.path === '/transactions');
+
+const searchTransactions = () => {
+  if (searchValue.value.trim()) {
+    router.push({
+      path: '/transactions',
+      query: {description: searchValue.value.trim()}
+    });
+    searchValue.value = '';
+  }
+};
 </script>
 
 <style
