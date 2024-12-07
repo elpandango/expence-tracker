@@ -6,6 +6,7 @@
      type="text"
      :value="formattedDate"
      @click="toggleCalendar"
+     :style="{height: height}"
      readonly
      :placeholder="placeholder"
     />
@@ -48,12 +49,15 @@ const monthsFull = ["January", "February", "March", "April", "May", "June", "Jul
 
 const props = defineProps({
   modelValue: {
-    type: String,
     default: null
   },
   placeholder: {
     type: String,
     default: 'Select date'
+  },
+  height: {
+    type: String,
+    default: '40px'
   }
 });
 

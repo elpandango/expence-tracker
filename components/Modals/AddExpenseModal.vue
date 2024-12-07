@@ -36,11 +36,12 @@
            label="Expense amount"/>
         </div>
         <div class="form-row">
-          <FloatLabelInput
+
+          <Datepicker
+           height="50px"
            v-model="expense.date"
-           size="medium"
-           type="date"
-           label="Expense date"/>
+           placeholder="Select start date"/>
+
         </div>
         <div class="form-row">
           <CategoryDropdown
@@ -76,7 +77,7 @@ import FloatLabelInput from "~/components/Forms/Inputs/FloatLabelInput.vue";
 import Dropdown from "~/components/Dropdown/Dropdown.vue";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
 
-import {useFinanceStore} from "~/stores/financeStore";
+import {useFinanceStore} from "~/stores/finance";
 import {useCategoryStore} from "~/stores/category";
 import {useCardsList} from "~/use/useCardList";
 import CategoryDropdown from "~/components/Dropdown/CategoryDropdown.vue";

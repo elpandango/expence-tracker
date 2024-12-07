@@ -15,25 +15,25 @@
        fill="currentColor"
        xmlns="http://www.w3.org/2000/svg"
       >
-        <path d="M0 3L5 8L10 3H0Z" />
+        <path d="M0 3L5 8L10 3H0Z"/>
       </svg>
     </button>
 
-    <transition name="fade-expand">
-      <ul
-       v-if="isOpen"
-       class="dropdown-menu">
-        <li
-         v-for="option in options"
-         :key="option.value"
-         @click="selectOption(option)"
-         class="dropdown-item"
-         :class="{ selected: option.value === selectedOption?.value }"
-        >
-          {{ option.label }}
-        </li>
-      </ul>
-    </transition>
+    <!--    <transition name="fade-expand">-->
+    <ul
+     v-if="isOpen"
+     class="dropdown-menu">
+      <li
+       v-for="option in options"
+       :key="option.value"
+       @click="selectOption(option)"
+       class="dropdown-item"
+       :class="{ selected: option.value === selectedOption?.value }"
+      >
+        {{ option.label }}
+      </li>
+    </ul>
+    <!--    </transition>-->
   </div>
 </template>
 
@@ -76,8 +76,8 @@ const toggleDropdown = () => {
 };
 
 const selectOption = (option: any) => {
-  selectedOption.value = option;
   isOpen.value = false;
+  selectedOption.value = option;
   emit('update:modelValue', option);
 };
 

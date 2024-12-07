@@ -1,6 +1,8 @@
 .card {
   padding: 20px;
   width: 100%;
+  display: flex;
+  flex-wrap: wrap;
   box-shadow: var(--box-shadow);
   border-radius: var(--border-radius);
   background-color: var(--card-bg-color);

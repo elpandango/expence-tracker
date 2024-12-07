@@ -68,7 +68,7 @@
  lang="ts">
 import {onMounted, ref} from "vue";
 import Card from "~/components/Card/Card.vue";
-import {useFinanceStore} from "~/stores/financeStore";
+import {useFinanceStore} from "~/stores/finance";
 import {useCardsList} from "~/use/useCardList";
 import {emitter} from "~/classes/uiEventBus";
 import BaseButton from "~/components/Buttons/BaseButton.vue";

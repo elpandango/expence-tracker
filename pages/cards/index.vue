@@ -66,7 +66,7 @@
  setup
  lang="ts">
 import {ref} from "vue";
-import {useFinanceStore} from "~/stores/financeStore";
+import {useFinanceStore} from "~/stores/finance";
 import {useUIStore} from "~/stores/ui";
 import AddEditCardModal from "~/components/Modals/AddEditCardModal.vue";
 import DeleteConfirmationModal from "~/components/Modals/DeleteConfirmationModal.vue";

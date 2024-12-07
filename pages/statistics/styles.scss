@@ -1,0 +1,20 @@
+.charts-page {
+  .charts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .chart-wrapper {
+    display: flex;
+    width: 100%;
+
+    &.w50p {
+      width: 49%;
+    }
+
+    & > div {
+      width: 100%;
+    }
+  }
+}
