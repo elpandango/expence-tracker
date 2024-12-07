@@ -24,7 +24,7 @@
  setup
  lang="ts">
 import {useUIStore} from "~/stores/ui";
-import {useFinanceStore} from "~/stores/financeStore";
+import {useFinanceStore} from "~/stores/finance";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
 
 const uiStore = useUIStore();

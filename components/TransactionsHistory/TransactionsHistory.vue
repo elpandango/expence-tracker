@@ -27,7 +27,7 @@
 <script
  setup
  lang="ts">
-import {useFinanceStore} from "~/stores/financeStore";
+import {useFinanceStore} from "~/stores/finance";
 import {useUIStore} from "~/stores/ui";
 
 const financeStore = useFinanceStore();

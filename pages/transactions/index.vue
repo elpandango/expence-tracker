@@ -113,7 +113,7 @@
  lang="ts">
 import {ref, onMounted, watch} from 'vue';
 import { useRoute } from 'vue-router';
-import {useFinanceStore} from "~/stores/financeStore";
+import {useFinanceStore} from "~/stores/finance";
 import {useUIStore} from "~/stores/ui";
 import {emitter} from "~/classes/uiEventBus";
 import BaseButton from "~/components/Buttons/BaseButton.vue";

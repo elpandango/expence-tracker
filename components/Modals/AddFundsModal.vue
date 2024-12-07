@@ -65,7 +65,7 @@ import FloatLabelInput from "~/components/Forms/Inputs/FloatLabelInput.vue";
 import Dropdown from "~/components/Dropdown/Dropdown.vue";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
 
-import {useFinanceStore} from "~/stores/financeStore";
+import {useFinanceStore} from "~/stores/finance";
 import {useCardsList} from "~/use/useCardList";
 
 const financeStore = useFinanceStore();

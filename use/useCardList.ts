@@ -1,5 +1,5 @@
 import {computed, ref, watch} from "vue";
-import {useFinanceStore} from "~/stores/financeStore";
+import {useFinanceStore} from "~/stores/finance";
 
 export function useCardsList(additionalItems: { value: any; label: string }[] = []) {
   const financeStore = useFinanceStore();
