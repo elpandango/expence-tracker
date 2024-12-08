@@ -1,5 +1,6 @@
 import '~/server/models';
 
+import mongoose from 'mongoose';
 import {CashDepositModel} from '~/server/models/CashDepositModel';
 import {ExpenseModel} from '~/server/models/ExpenseModel';
 import {CardDepositModel} from '~/server/models/CardDepositModel';
@@ -7,6 +8,12 @@ import {groupTransactions} from "~/utils/groupTransactions";
 
 export const getTransactions = async (userId, query) => {
   const {source, groupBy, type, cardId, top, startDate, endDate} = query;
+
+  console.log('TRANSACTIONS_CONTROLLER');
+
+  if (mongoose.connection.readyState === 0) {
+    await mongoose.connect(process.env.MONGODB_URI);
+  }
 
   let transactions = [];
 

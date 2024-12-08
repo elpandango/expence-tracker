@@ -1,3 +1,5 @@
+console.log('Importing CardModel...');
+
 import mongoose, { Schema, Document, Types } from 'mongoose';
 
 export interface ICard extends Document {
