@@ -13,8 +13,9 @@
       width: 49%;
     }
 
-    & > div {
+    & > div:not(.chart-wrapper) {
       width: 100%;
+      min-height: 300px;
     }
   }
 }
