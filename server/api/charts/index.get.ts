@@ -1,3 +1,4 @@
+import '~/server/models';
 import {defineEventHandler, getQuery, getCookie, createError} from 'h3';
 import {getTransactions} from "~/server/controllers/transactionsController/transactionsController";
 

@@ -1,5 +1,5 @@
+import '~/server/models';
 import {defineEventHandler, getQuery, getCookie, createError} from 'h3';
-import {CardModel} from "~/server/models/CardModel";
 import {CashDepositModel} from '~/server/models/CashDepositModel';
 import {ExpenseModel} from '~/server/models/ExpenseModel';
 import {CardDepositModel} from '~/server/models/CardDepositModel';

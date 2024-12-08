@@ -1,11 +1,12 @@
-import {CardModel} from "~/server/models/CardModel";
-import { CashDepositModel } from '~/server/models/CashDepositModel';
-import { ExpenseModel } from '~/server/models/ExpenseModel';
-import { CardDepositModel } from '~/server/models/CardDepositModel';
+import '~/server/models';
+
+import {CashDepositModel} from '~/server/models/CashDepositModel';
+import {ExpenseModel} from '~/server/models/ExpenseModel';
+import {CardDepositModel} from '~/server/models/CardDepositModel';
 import {groupTransactions} from "~/utils/groupTransactions";
 
 export const getTransactions = async (userId, query) => {
-  const { source, groupBy, type, cardId, top, startDate, endDate } = query;
+  const {source, groupBy, type, cardId, top, startDate, endDate} = query;
 
   let transactions = [];
 
@@ -15,7 +16,7 @@ export const getTransactions = async (userId, query) => {
   end.setHours(23, 59, 59, 999);
 
   if (source === 'card' || !source) {
-    const cardDeposits = await CardDepositModel.find({ userId, date: { $gte: start, $lte: end } })
+    const cardDeposits = await CardDepositModel.find({userId, date: {$gte: start, $lte: end}})
       .populate('cardId', 'name number')
       .lean();
 
@@ -31,7 +32,7 @@ export const getTransactions = async (userId, query) => {
   }
 
   if (source === 'cash' || !source) {
-    const cashDeposits = await CashDepositModel.find({ userId, createdAt: { $gte: start, $lte: end } }).lean();
+    const cashDeposits = await CashDepositModel.find({userId, createdAt: {$gte: start, $lte: end}}).lean();
 
     const mappedCashTransactions = cashDeposits.map((cash) => ({
       type: 'deposit',
@@ -43,7 +44,7 @@ export const getTransactions = async (userId, query) => {
     transactions = [...transactions, ...mappedCashTransactions];
   }
 
-  const expenses = await ExpenseModel.find({ userId, date: { $gte: start, $lte: end } })
+  const expenses = await ExpenseModel.find({userId, date: {$gte: start, $lte: end}})
     .populate('category', 'name icon color')
     .lean();
 
