@@ -23,4 +23,4 @@ const cardSchema = new Schema<ICard>(
   }
 );
 
-export const CardModel = mongoose.model<ICard>('Card', cardSchema);
+export const CardModel = mongoose.models.Card || mongoose.model<ICard>('Card', cardSchema);
