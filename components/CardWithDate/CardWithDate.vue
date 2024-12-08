@@ -99,6 +99,9 @@ const applyCustomRange = () => {
  lang="scss">
 
 .period-selector {
+  //height: 30px;
+  min-height: 30px!important;
+
   .dropdown-block {
     width: 208px;
   }

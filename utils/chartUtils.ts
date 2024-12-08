@@ -1,6 +1,6 @@
 import {createBarChartConfig, createPieChartConfig, createIncomeVsExpensesChartConfig, createCashVsCardsChartConfig} from '~/chartsConfigs/chartConfigs.ts';
 
-const processChartData = (data, isAbsolute = false) => {
+export const processChartData = (data, isAbsolute = false) => {
   if (!data) {
     return [];
   }
@@ -10,7 +10,7 @@ const processChartData = (data, isAbsolute = false) => {
   }));
 };
 
-const processChartDataByDate = (data) => {
+export const processChartDataByDate = (data) => {
   if (!data) {
     return [];
   }
@@ -48,9 +48,9 @@ export const generateChartConfigs = (chartStore) => {
   const top5ChartData = processChartData(chartStore.chartDataByType.top5, true);
 
   return {
-    top5ChartOptions: createPieChartConfig(top5ChartData),
-    categoriesChartOptions: createBarChartConfig(categories, barChartData),
-    lineChartOptions: createIncomeVsExpensesChartConfig(incomeDataByDate, expenseDataByDate, 'Income vs Expenses'),
-    cashVsCardsChartOptions: createCashVsCardsChartConfig(incomeCashDataByDate, incomeCardDataByDate, 'Cash vs Card'),
+    top5: createPieChartConfig(top5ChartData),
+    categories: createBarChartConfig(categories, barChartData),
+    expenses_vs_incomes: createIncomeVsExpensesChartConfig(incomeDataByDate, expenseDataByDate, 'Income vs Expenses'),
+    total_expenses: createCashVsCardsChartConfig(incomeCashDataByDate, incomeCardDataByDate, 'Cash vs Card'),
   };
 };
