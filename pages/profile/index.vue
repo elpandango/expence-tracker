@@ -36,7 +36,8 @@
         <Preloader
          height="280px"
          v-if="uiStore.state.isLoading"/>
-        <form v-else>
+        <form class="profile-form"
+              v-else>
           <div class="form-row">
             <FloatLabelInput
              v-model="user.name"
@@ -80,6 +81,7 @@ import FloatLabelInput from "~/components/Forms/Inputs/FloatLabelInput.vue";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
 import type {User} from '~/server/interfaces/user';
 import {useUIStore} from "~/stores/ui";
+import {emitter} from "~/classes/uiEventBus";
 
 const userStore = useUserStore();
 const uiStore = useUIStore();
@@ -165,7 +167,9 @@ const handleRemoveAvatar = async () => {
 };
 
 onMounted(async () => {
+  emitter.emit('ui:startLoading', 'default');
   initializeUserData();
+  emitter.emit('ui:stopLoading', 'default');
 });
 </script>
 

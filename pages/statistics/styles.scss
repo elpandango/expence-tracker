@@ -5,12 +5,25 @@
     gap: 20px;
   }
 
+  .chart-row {
+    display: flex;
+    gap: 20px;
+
+    @media only screen and (max-width: 767px) {
+      flex-wrap: wrap;
+    }
+  }
+
   .chart-wrapper {
     display: flex;
     width: 100%;
 
     &.w50p {
       width: 49%;
+
+      @media only screen and (max-width: 767px) {
+        width: 100%;
+      }
     }
 
     & > div:not(.chart-wrapper) {

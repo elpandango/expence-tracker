@@ -11,7 +11,11 @@
       <div
        class="balance-item balance-card"
        v-for="card in financeStore.cardsList"
-       :key="card._id">Card ({{ card.number }}): <strong>{{ card.balance }}{{ card.currency }}</strong></div>
+       :key="card._id">
+        <div class="card-balance-details">
+          Card <span class="card-number">({{ card.number }}):</span>
+        </div>
+         <strong>{{ card.balance }}{{ card.currency }}</strong></div>
     </div>
     <BaseButton
      size="medium"

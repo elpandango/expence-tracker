@@ -2,14 +2,26 @@
   display: flex;
   gap: 20px;
 
+  @media only screen and (max-width: 991px) {
+    flex-wrap: wrap;
+  }
+
   .title-block {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 8px;
 
+    @media only screen and (max-width: 480px) {
+      flex-wrap: wrap;
+    }
+
     .title {
       margin-bottom: 0;
+
+      @media only screen and (max-width: 991px) {
+        margin-bottom: 8px;
+      }
     }
   }
 
@@ -26,6 +38,10 @@
 
   .card-details-block {
     width: 40%;
+
+    @media only screen and (max-width: 991px) {
+      width: 100%;
+    }
   }
 
   .statistics-block {
@@ -33,6 +49,14 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+
+    @media only screen and (max-width: 991px) {
+      width: 100%;
+    }
+
+    .card {
+      justify-content: center;
+    }
   }
 
   .period-buttons {
@@ -40,6 +64,11 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: 16px;
+
+    @media only screen and (max-width: 480px) {
+      flex-wrap: wrap;
+      gap: 8px;
+    }
 
     .period {
       display: flex;

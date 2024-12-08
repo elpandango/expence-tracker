@@ -15,6 +15,9 @@
 
     <div class="content-block">
       <div class="transaction-description">
+        <div class="transaction-amount"
+             :class="[transaction.type === 'deposit' ? 'green' : 'red']">{{ transaction.amount }} $
+        </div>
         <div class="category-name">{{ categoryName }}</div>
         <div
          v-if="transaction.source === 'card' && transaction.type === 'deposit'"
