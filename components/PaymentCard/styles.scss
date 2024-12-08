@@ -8,6 +8,16 @@
   position: relative;
   overflow: hidden;
 
+  @media only screen and (max-width: 480px) {
+    width: 320px;
+    height: 200px;
+  }
+
+  @media only screen and (max-width: 380px) {
+    width: 260px;
+    height: 160px;
+  }
+
   .card-details {
     position: absolute;
     left: 0;

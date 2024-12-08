@@ -18,6 +18,16 @@
   color: var(--btn-transparent-color);
   cursor: pointer;
 
+  @media only screen and (max-width: 480px) {
+    width: 320px;
+    height: 200px;
+  }
+
+  @media only screen and (max-width: 380px) {
+    width: 260px;
+    height: 160px;
+  }
+
   .plus-icon {
     font-size: 24px;
   }

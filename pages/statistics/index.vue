@@ -3,70 +3,74 @@
     <h1>Statistics</h1>
 
     <div class="charts">
-      <CardWithDate
-       class="chart-wrapper w50p"
-       @date-changed="handleDateChanged('expenses_vs_incomes', $event)">
-        <template v-if="isHighchartsLoaded && chartsLoadingState.expenses_vs_incomes">
-          <HighchartsComponent
-           v-if="chartConfigs.expenses_vs_incomes"
-           :options="chartConfigs.expenses_vs_incomes"/>
-        </template>
-        <template v-else>
-          <Preloader height="300px"/>
-        </template>
-      </CardWithDate>
+      <div class="chart-row">
+        <CardWithDate
+         class="chart-wrapper w50p"
+         @date-changed="handleDateChanged('expenses_vs_incomes', $event)">
+          <template v-if="isHighchartsLoaded && chartsLoadingState.expenses_vs_incomes">
+            <HighchartsComponent
+             v-if="chartConfigs.expenses_vs_incomes"
+             :options="chartConfigs.expenses_vs_incomes"/>
+          </template>
+          <template v-else>
+            <Preloader height="300px"/>
+          </template>
+        </CardWithDate>
 
-      <CardWithDate
-       class="chart-wrapper w50p"
-       @date-changed="handleDateChanged('top5', $event)">
-        <template v-if="isHighchartsLoaded && chartsLoadingState.top5">
-          <HighchartsComponent
-           v-if="chartConfigs.top5"
-           :options="chartConfigs.top5"/>
-        </template>
-        <template v-else>
-          <Preloader height="300px"/>
-        </template>
-      </CardWithDate>
+        <CardWithDate
+         class="chart-wrapper w50p"
+         @date-changed="handleDateChanged('top5', $event)">
+          <template v-if="isHighchartsLoaded && chartsLoadingState.top5">
+            <HighchartsComponent
+             v-if="chartConfigs.top5"
+             :options="chartConfigs.top5"/>
+          </template>
+          <template v-else>
+            <Preloader height="300px"/>
+          </template>
+        </CardWithDate>
+      </div>
 
-      <CardWithDate
-       class="chart-wrapper w50p"
-       @date-changed="handleDateChanged('categories', $event)">
-        <template v-if="isHighchartsLoaded && chartsLoadingState.categories">
-          <HighchartsComponent
-           v-if="chartConfigs.categories"
-           :options="chartConfigs.categories"/>
-        </template>
-        <template v-else>
-          <Preloader height="300px"/>
-        </template>
-      </CardWithDate>
+      <div class="chart-row">
+        <CardWithDate
+         class="chart-wrapper w50p"
+         @date-changed="handleDateChanged('categories', $event)">
+          <template v-if="isHighchartsLoaded && chartsLoadingState.categories">
+            <HighchartsComponent
+             v-if="chartConfigs.categories"
+             :options="chartConfigs.categories"/>
+          </template>
+          <template v-else>
+            <Preloader height="300px"/>
+          </template>
+        </CardWithDate>
 
-      <CardWithDate
-       class="chart-wrapper w50p"
-       @date-changed="handleDateChanged('total_expenses', $event)">
-        <template v-if="isHighchartsLoaded && chartsLoadingState.total_expenses">
-          <HighchartsComponent
-           v-if="chartConfigs.total_expenses"
-           :options="chartConfigs.total_expenses"/>
-        </template>
-        <template v-else>
-          <Preloader height="300px"/>
-        </template>
-      </CardWithDate>
+        <CardWithDate
+         class="chart-wrapper w50p"
+         @date-changed="handleDateChanged('total_expenses', $event)">
+          <template v-if="isHighchartsLoaded && chartsLoadingState.total_expenses">
+            <HighchartsComponent
+             v-if="chartConfigs.total_expenses"
+             :options="chartConfigs.total_expenses"/>
+          </template>
+          <template v-else>
+            <Preloader height="300px"/>
+          </template>
+        </CardWithDate>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
 import {ref, reactive, onMounted} from 'vue';
-import {useChartStore} from "~/stores/charts.ts";
-import {processChartDataByDate, processChartData, generateChartConfigs} from "~/utils/chartUtils.ts";
+import {useChartStore} from "~/stores/charts";
+import {processChartDataByDate, processChartData, generateChartConfigs} from "~/utils/chartUtils";
 import {
   createBarChartConfig, createCashVsCardsChartConfig,
   createIncomeVsExpensesChartConfig,
   createPieChartConfig
-} from "~/chartsConfigs/chartConfigs.ts";
+} from "~/chartsConfigs/chartConfigs";
 
 const chartStore = useChartStore();
 

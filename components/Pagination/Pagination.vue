@@ -8,7 +8,7 @@
            size="medium"
            :disabled="!props?.data?.hasPrevPage"
            @click="prevPage">
-            Previous
+            Prev
           </BaseButton>
         </li>
 

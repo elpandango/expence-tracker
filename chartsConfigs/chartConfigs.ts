@@ -41,10 +41,11 @@ export const createPieChartConfig = (data) => ({
   },
   plotOptions: {
     pie: {
-      innerSize: '50%',
+      innerSize: '0%',
       dataLabels: {
         enabled: true,
         format: '{point.name}: {point.y:.2f} €',
+        // connectorWidth: 0
       },
     },
   },

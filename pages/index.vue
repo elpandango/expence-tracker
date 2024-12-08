@@ -57,7 +57,14 @@
     </div>
     <div class="statistics-block">
       <Card>
-        Transactions Statistics
+        <template v-if="isHighchartsLoaded && topChartIsLoaded">
+          <HighchartsComponent
+           v-if="chartConfig"
+           :options="chartConfig"/>
+        </template>
+        <template v-else>
+          <Preloader height="300px"/>
+        </template>
       </Card>
     </div>
   </div>
@@ -66,15 +73,23 @@
 <script
  setup
  lang="ts">
-import {onMounted, ref} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import Card from "~/components/Card/Card.vue";
+import {useChartStore} from "~/stores/charts";
 import {useFinanceStore} from "~/stores/finance";
 import {useCardsList} from "~/use/useCardList";
 import {emitter} from "~/classes/uiEventBus";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
+import {createPieChartConfig} from "~/chartsConfigs/chartConfigs";
+import {processChartData} from "~/utils/chartUtils";
 
+const chartStore = useChartStore();
 const financeStore = useFinanceStore();
 const transactions = ref([]);
+const isHighchartsLoaded = ref(false);
+const topChartIsLoaded = ref(false);
+let HighchartsComponent: any = null;
+const chartConfig = ref({});
 
 useHead({
   htmlAttrs: {
@@ -134,6 +149,28 @@ const changePeriod = async (period: string) => {
   await updateParams(newParams);
 };
 
+const fetchChartData = async () => {
+  try {
+    const {default: component} = await import('~/components/HighchartComponent/HighchartComponent.vue');
+    HighchartsComponent = component;
+  } catch (err) {
+    console.log(err);
+  } finally {
+    isHighchartsLoaded.value = true;
+  }
+
+  try {
+    await chartStore.getChartsData('top5', `?type=expense&top=5&groupBy=category`);
+
+    const top5ChartData = processChartData(chartStore.chartDataByType.top5, true);
+    topChartIsLoaded.value = true;
+    chartConfig.value = createPieChartConfig(top5ChartData);
+  } catch (err) {
+    console.log(err);
+  }
+
+};
+
 onMounted(async () => {
   emitter.emit('ui:startLoading', 'default');
 
@@ -146,6 +183,8 @@ onMounted(async () => {
   await changePeriod('week');
   transactionsHistoryOptions.value = cardsList.value;
   emitter.emit('ui:stopLoading', 'default');
+
+  await fetchChartData();
 });
 
 </script>

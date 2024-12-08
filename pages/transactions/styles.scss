@@ -26,7 +26,11 @@
   }
 
   .filter-item {
-    width: 49%;
+    width: 48%;
+
+    @media only screen and (max-width: 540px) {
+      width: 100%;
+    }
   }
   .no-results {
     width: 100%;

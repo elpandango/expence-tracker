@@ -1,4 +1,8 @@
 .profile-page {
+  .profile-form {
+    width: 100%;
+  }
+
   .avatar-block {
     display: flex;
     flex-wrap: wrap;
@@ -20,7 +24,7 @@
         box-shadow: var(--box-shadow);
       }
     }
-    
+
     .avatar-placeholder {
       width: 100%;
       height: 100%;
@@ -54,6 +58,18 @@
     display: flex;
     justify-content: space-between;
     gap: 1rem;
+
+    @media only screen and (max-width: 1024px) {
+      flex-wrap: wrap;
+    }
+
+    .card {
+      @media only screen and (max-width: 1024px) {
+        width: 100%;
+        max-width: 100% !important;
+      }
+    }
+
   }
 
   .btn-block {
