@@ -42,6 +42,9 @@ const setActiveTab = (tabId) => {
 </script>
 
 <style>
+.tabs {
+  width: 100%;
+}
 .tabs-header {
   display: flex;
   list-style: none;
