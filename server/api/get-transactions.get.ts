@@ -30,9 +30,9 @@ export default defineEventHandler(async (event) => {
 
   const cashDeposits = await CashDepositModel.find({userId}).lean();
 
-  // const cardDeposits = await CardDepositModel.find({userId})
-  //   .populate('cardId', 'name number')
-  //   .lean();
+  const cardDeposits = await CardDepositModel.find({userId})
+    .populate('cardId', 'name number')
+    .lean();
 
   const mappedExpenses = expenses.map((expense) => ({
     id: expense._id,
@@ -58,19 +58,18 @@ export default defineEventHandler(async (event) => {
     source: 'cash',
   }));
 
-  const mappedCardTransactions = [];
-  // const mappedCardTransactions = cardDeposits.map((deposit) => ({
-  //   id: deposit._id,
-  //   type: 'deposit',
-  //   amount: deposit.amount,
-  //   date: deposit.date || deposit.createdAt || new Date(),
-  //   category: `Card - ${deposit.cardId?.name || 'Unnamed Card'}`,
-  //   sourceCategory: 'Card Deposit',
-  //   description: deposit.description || 'Card deposit',
-  //   source: 'card',
-  //   cardId: deposit.cardId?._id,
-  //   number: deposit.cardId?.number,
-  // }));
+  const mappedCardTransactions = cardDeposits.map((deposit) => ({
+    id: deposit._id,
+    type: 'deposit',
+    amount: deposit.amount,
+    date: deposit.date || deposit.createdAt || new Date(),
+    category: `Card - ${deposit.cardId?.name || 'Unnamed Card'}`,
+    sourceCategory: 'Card Deposit',
+    description: deposit.description || 'Card deposit',
+    source: 'card',
+    cardId: deposit.cardId?._id,
+    number: deposit.cardId?.number,
+  }));
 
   let allTransactions = [
     ...mappedExpenses,
