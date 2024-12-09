@@ -57,14 +57,14 @@
     </div>
     <div class="statistics-block">
       <Card>
-<!--        <template v-if="isHighchartsLoaded && topChartIsLoaded">-->
-<!--          <HighchartsComponent-->
-<!--           v-if="chartConfig"-->
-<!--           :options="chartConfig"/>-->
-<!--        </template>-->
-<!--        <template v-else>-->
-<!--          <Preloader height="300px"/>-->
-<!--        </template>-->
+        <template v-if="isHighchartsLoaded && topChartIsLoaded">
+          <HighchartsComponent
+           v-if="chartConfig"
+           :options="chartConfig"/>
+        </template>
+        <template v-else>
+          <Preloader height="300px"/>
+        </template>
       </Card>
     </div>
   </div>
