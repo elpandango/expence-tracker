@@ -83,6 +83,7 @@ import BaseButton from "~/components/Buttons/BaseButton.vue";
 import {createPieChartConfig} from "~/chartsConfigs/chartConfigs";
 import {processChartData} from "~/utils/chartUtils";
 
+const route = useRoute();
 const chartStore = useChartStore();
 const financeStore = useFinanceStore();
 const transactions = ref([]);
@@ -90,6 +91,21 @@ const isHighchartsLoaded = ref(false);
 const topChartIsLoaded = ref(false);
 let HighchartsComponent: any = null;
 const chartConfig = ref({});
+
+const currentUrl = computed(() => process.client ? `${window.location.origin}${route.fullPath}` : '');
+
+useSeoMeta({
+  title: 'Главная - Expendango',
+  description: 'Expendango — это удобный инструмент для управления финансами, анализа расходов и доходов. Держите свои финансы под контролем.',
+  ogTitle: 'Главная - Expendango',
+  ogDescription: 'Управляйте своими финансами с помощью Expendango. Трекер расходов и доходов с аналитикой и графиками для полного контроля.',
+  ogImage: '/images/expendango-hero.webp',
+  ogUrl: currentUrl,
+  twitterTitle: 'Главная - Expendango',
+  twitterDescription: 'Expendango — ваш личный помощник для управления финансами. Следите за своими доходами и расходами с максимальной лёгкостью.',
+  twitterImage: '/images/expendango-hero.webp',
+  twitterCard: 'summary'
+});
 
 useHead({
   htmlAttrs: {

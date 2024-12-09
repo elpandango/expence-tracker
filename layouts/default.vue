@@ -48,23 +48,25 @@ import {useUIStore} from "~/stores/ui";
 import AddExpenseModal from "~/components/Modals/AddExpenseModal.vue";
 import AddFundsModal from "~/components/Modals/AddFundsModal.vue";
 
+const route = useRoute();
 const router = useRouter();
 const userStore = useUserStore();
 const uiStore = useUIStore();
 const isModalOpen = ref(false);
 
 onBeforeMount(async () => {
-  try {
-    if (uiStore.state.isAuthLoading) {
-      await userStore.checkAuth();
-    }
+  if (uiStore.state.isAuthLoading) {
+    await userStore.checkAuth();
+  }
 
-    if (!userStore.isLoggedIn) {
-      await router.push('/auth');
-    }
-  } catch (error) {
-    console.error('Error during authentication:', error);
-    //TODO redirect to error page
+  await nextTick();
+
+  if (!userStore.isLoggedIn) {
+    return router.push('/auth');
+  }
+
+  if (userStore.isLoggedIn && route.path === '/auth') {
+    return router.push('/');
   }
 });
 
@@ -81,7 +83,6 @@ const closeModal = (name?: string) => {
 </script>
 
 <style
- scoped
  lang="scss">
 .page-content {
   display: flex;

@@ -72,6 +72,19 @@ import {
   createPieChartConfig
 } from "~/chartsConfigs/chartConfigs";
 
+useSeoMeta({
+  title: 'Статистика - Expendango',
+  description: 'Просматривайте графики и отчёты, чтобы анализировать свои доходы и расходы в Expendango.',
+  ogTitle: 'Статистика - Expendango',
+  ogDescription: 'Expendango предоставляет удобную визуализацию ваших финансовых данных. Анализируйте доходы и расходы на основе графиков.',
+  ogImage: '/images/expendango-statistics.webp',
+  twitterTitle: 'Статистика - Expendango',
+  twitterDescription: 'Получите полную картину своих финансов с помощью графиков и отчётов в Expendango.',
+  twitterImage: '/images/expendango-statistics.webp',
+  twitterCard: 'summary'
+});
+
+
 const chartStore = useChartStore();
 
 const isHighchartsLoaded = ref(false);

@@ -27,6 +27,19 @@ import {emitter} from "~/classes/uiEventBus";
 import {useCategoryStore} from "~/stores/category";
 import {useUIStore} from "~/stores/ui";
 
+useSeoMeta({
+  title: 'Категории - Expendango',
+  description: 'Создавайте и редактируйте категории для удобного управления своими доходами и расходами в Expendango.',
+  ogTitle: 'Категории - Expendango',
+  ogDescription: 'Организуйте свои финансы, создавая категории для расходов и доходов. Expendango поможет вам всё упорядочить.',
+  ogImage: '/images/expendango-categories.webp',
+  twitterTitle: 'Категории - Expendango',
+  twitterDescription: 'Настройте категории расходов и доходов в Expendango для более детального контроля над финансами.',
+  twitterImage: '/images/expendango-categories.webp',
+  twitterCard: 'summary'
+});
+
+
 const categoryStore = useCategoryStore();
 const uiStore = useUIStore();
 
