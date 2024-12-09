@@ -74,8 +74,10 @@ p {
 
   @media only screen and (max-width: 991px) {
     width: 100%;
+    height: auto;
     left: 0;
-    padding: 10px;
+    padding: 10px 10px calc(16px + env(safe-area-inset-bottom)) 10px;
+    position: relative;
   }
 
   .content {
@@ -86,6 +88,7 @@ p {
 
     @media only screen and (max-width: 991px) {
       min-height: calc(100vh - 20px);
+      margin-bottom: 40px;
     }
   }
 }
