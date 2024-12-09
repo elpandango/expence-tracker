@@ -120,6 +120,19 @@ import BaseButton from "~/components/Buttons/BaseButton.vue";
 import {useCardsList} from "~/use/useCardList";
 import BaseInput from "~/components/Forms/Inputs/BaseInput.vue";
 
+useSeoMeta({
+  title: 'Транзакции - Expendango',
+  description: 'Отслеживайте все свои транзакции в одном месте с помощью Expendango.',
+  ogTitle: 'Транзакции - Expendango',
+  ogDescription: 'Expendango позволяет легко отслеживать и фильтровать ваши транзакции, чтобы лучше понимать свои финансы.',
+  ogImage: '/images/expendango-transactions.webp',
+  twitterTitle: 'Транзакции - Expendango',
+  twitterDescription: 'Следите за всеми своими транзакциями в Expendango для полного контроля над финансами.',
+  twitterImage: '/images/expendango-transactions.webp',
+  twitterCard: 'summary'
+});
+
+
 const financeStore = useFinanceStore();
 const uiStore = useUIStore();
 const currentPage = ref(1);

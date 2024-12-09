@@ -34,11 +34,10 @@
            label="Amount"/>
         </div>
         <div class="form-row">
-          <FloatLabelInput
+          <Datepicker
+           height="50px"
            v-model="transaction.date"
-           size="medium"
-           type="date"
-           label="Date"/>
+           placeholder="Select start date"/>
         </div>
       </form>
     </template>

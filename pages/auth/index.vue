@@ -19,14 +19,28 @@
 
 <script setup lang="ts">
 import Tabs from "~/components/Tabs/Tabs.vue";
+import {useUserStore} from '~/stores/user';
 import repositoryFactory from "~/repositories/repositoryFactory";
 import LoginForm from "~/components/Forms/LoginForm/LoginForm.vue";
 import RegisterForm from "~/components/Forms/RegisterForm/RegisterForm.vue";
+
+useSeoMeta({
+  title: 'Вход и Регистрация - Expendango',
+  description: 'Войдите в Expendango, чтобы управлять своими финансами, или зарегистрируйтесь, чтобы начать пользоваться всеми преимуществами сервиса.',
+  ogTitle: 'Вход и Регистрация - Expendango',
+  ogDescription: 'Создайте аккаунт в Expendango или войдите, чтобы начать отслеживать свои доходы и расходы с помощью удобного инструмента.',
+  ogImage: '/images/expendango-auth.webp',
+  twitterTitle: 'Вход и Регистрация - Expendango',
+  twitterDescription: 'Начните управлять своими финансами уже сегодня. Зарегистрируйтесь или войдите в Expendango.',
+  twitterImage: '/images/expendango-auth.webp',
+  twitterCard: 'summary'
+});
 
 definePageMeta({
   layout: 'not-authorized'
 });
 
+const userStore = useUserStore();
 const router = useRouter();
 
 const tabs = [
@@ -39,6 +53,7 @@ const handleLogin = async (user: { email: string; password: string }) => {
     const {status, userId} = await repositoryFactory.get('Auth').login(user);
 
     if (userId && status === 200) {
+      userStore.isLoggedIn = true;
       await router.push('/');
     }
   } catch (error: any) {
@@ -46,12 +61,12 @@ const handleLogin = async (user: { email: string; password: string }) => {
   }
 };
 
-
 const handleRegister = async (user: any) => {
   try {
     const {status} = await repositoryFactory.get('Auth').register(user);
 
     if (status === 200) {
+      userStore.isLoggedIn = true;
       await router.push('/');
     }
   } catch(error) {

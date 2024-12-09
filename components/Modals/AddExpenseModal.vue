@@ -36,12 +36,10 @@
            label="Expense amount"/>
         </div>
         <div class="form-row">
-
           <Datepicker
            height="50px"
            v-model="expense.date"
            placeholder="Select start date"/>
-
         </div>
         <div class="form-row">
           <CategoryDropdown

@@ -83,6 +83,19 @@ import type {User} from '~/server/interfaces/user';
 import {useUIStore} from "~/stores/ui";
 import {emitter} from "~/classes/uiEventBus";
 
+useSeoMeta({
+  title: 'Профиль - Expendango',
+  description: 'Настройте свой профиль и управляйте персональными данными в Expendango.',
+  ogTitle: 'Профиль - Expendango',
+  ogDescription: 'Редактируйте свои данные, добавляйте аватар и управляйте настройками в Expendango.',
+  ogImage: '/images/expendango-profile.webp',
+  twitterTitle: 'Профиль - Expendango',
+  twitterDescription: 'Обновляйте информацию в своём профиле, чтобы сделать использование Expendango ещё удобнее.',
+  twitterImage: '/images/expendango-profile.webp',
+  twitterCard: 'summary'
+});
+
+
 const userStore = useUserStore();
 const uiStore = useUIStore();
 

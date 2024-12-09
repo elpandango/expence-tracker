@@ -8,13 +8,26 @@
  setup
  lang="ts">
 import { useUserStore } from '~/stores/user';
+import {useUIStore} from "~/stores/ui";
 
+const route = useRoute();
 const router = useRouter();
 const userStore = useUserStore();
+const uiStore = useUIStore();
 
-onMounted(() => {
-  if (userStore.isLoggedIn) {
-    router.push('/');
+onBeforeMount(async () => {
+  if (uiStore.state.isAuthLoading) {
+    await userStore.checkAuth();
+  }
+
+  await nextTick();
+
+  if (!userStore.isLoggedIn) {
+    return router.push('/auth');
+  }
+
+  if (userStore.isLoggedIn && route.path === '/auth') {
+    return router.push('/');
   }
 });
 </script>
