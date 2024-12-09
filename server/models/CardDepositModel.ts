@@ -1,4 +1,6 @@
 import mongoose, { Schema, Document, Types } from 'mongoose';
+import {CardModel} from "~/server/models/CardModel";
+import {UserModel} from "~/server/models/UserModel";
 
 export interface ICardDeposit extends Document {
   userId: Types.ObjectId;
@@ -11,8 +13,8 @@ export interface ICardDeposit extends Document {
 
 const cardDepositSchema = new Schema<ICardDeposit>(
   {
-    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    cardId: { type: Schema.Types.ObjectId, ref: 'Card', required: true },
+    userId: { type: Schema.Types.ObjectId, ref: UserModel.modelName, required: true },
+    cardId: { type: Schema.Types.ObjectId, ref: CardModel.modelName, required: true },
     amount: { type: Number, required: true },
     date: { type: Date, default: Date.now },
     description: { type: String, required: true },

@@ -1,4 +1,4 @@
-import '~/server/models';
+// import '~/server/models';
 import { defineEventHandler, getQuery, getCookie, createError } from 'h3';
 import {getUserExpenses} from "~/server/controllers/expensesController/expensesController";
 import { UserModel } from '~/server/models/UserModel';
