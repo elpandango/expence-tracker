@@ -184,7 +184,7 @@ onMounted(async () => {
   transactionsHistoryOptions.value = cardsList.value;
   emitter.emit('ui:stopLoading', 'default');
 
-  // await fetchChartData();
+  await fetchChartData();
 });
 
 </script>

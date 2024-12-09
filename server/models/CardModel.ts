@@ -1,6 +1,5 @@
-console.log('Importing CardModel...');
-
 import mongoose, { Schema, Document, Types } from 'mongoose';
+import {UserModel} from "~/server/models/UserModel";
 
 export interface ICard extends Document {
     userId: Types.ObjectId;
@@ -14,7 +13,7 @@ export interface ICard extends Document {
 
 const cardSchema = new Schema<ICard>(
   {
-      userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+      userId: { type: Schema.Types.ObjectId, ref: UserModel.modelName, required: true },
       name: { type: String, required: true },
       number: { type: String, unique: true, sparse: true },
       balance: { type: Number, required: true, default: 0 },
