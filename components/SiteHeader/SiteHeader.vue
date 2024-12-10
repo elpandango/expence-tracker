@@ -27,6 +27,8 @@
            class="avatar-placeholder"></div>
         </div>
 
+        <LanguageTrigger />
+
         <button
          class="menu-button"
          @click="toggleMenu"
@@ -136,7 +138,6 @@ import {useRouter} from 'vue-router';
 import {useTheme} from "~/use/useTheme";
 import {useUIStore} from "~/stores/ui";
 import {useUserStore} from '~/stores/user';
-import FloatLabelInput from "~/components/Forms/Inputs/FloatLabelInput.vue";
 import BaseInput from "~/components/Forms/Inputs/BaseInput.vue";
 
 const uiStore = useUIStore();

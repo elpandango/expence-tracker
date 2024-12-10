@@ -87,5 +87,12 @@ const closeModal = (name?: string) => {
 .page-content {
   display: flex;
   flex-wrap: wrap;
+
+  @media only screen and (min-width: 2501px) {
+    max-width: 1920px;
+    margin: 0 auto;
+    position: relative;
+  }
 }
+
 </style>

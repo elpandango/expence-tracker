@@ -66,24 +66,15 @@
  setup
  lang="ts">
 import {ref} from "vue";
+import {useSeoConfig} from "~/use/useSeoConfig";
 import {useFinanceStore} from "~/stores/finance";
 import {useUIStore} from "~/stores/ui";
 import AddEditCardModal from "~/components/Modals/AddEditCardModal.vue";
 import DeleteConfirmationModal from "~/components/Modals/DeleteConfirmationModal.vue";
 import {emitter} from "~/classes/uiEventBus";
 
-useSeoMeta({
-  title: 'Мои Карты - Expendango',
-  description: 'Управляйте своими банковскими картами, отслеживайте расходы и пополнения с Expendango.',
-  ogTitle: 'Мои Карты - Expendango',
-  ogDescription: 'Следите за своими транзакциями по банковским картам с помощью Expendango. Удобный способ держать всё под контролем.',
-  ogImage: '/images/expendango-cards.webp',
-  twitterTitle: 'Мои Карты - Expendango',
-  twitterDescription: 'Добавляйте и управляйте своими банковскими картами в Expendango, чтобы лучше контролировать финансы.',
-  twitterImage: '/images/expendango-cards.webp',
-  twitterCard: 'summary'
-});
-
+const seoMeta = useSeoConfig();
+useSeoMeta(seoMeta.value);
 
 const financeStore = useFinanceStore();
 const uiStore = useUIStore();

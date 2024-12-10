@@ -1,11 +1,13 @@
 .charts-page {
   .charts {
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
   }
 
   .chart-row {
+    width: 100%;
     display: flex;
     gap: 20px;
 

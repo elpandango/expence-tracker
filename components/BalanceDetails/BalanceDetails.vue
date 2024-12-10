@@ -3,9 +3,9 @@
   <div
    v-else
    class="balance-details">
-    <div class="total-balance">Balance: <span>{{ cashTotalBalance + cardsTotalBalance }}USD</span></div>
+    <div class="total-balance">{{ $t('components.balance.title') }}: <span>{{ cashTotalBalance + cardsTotalBalance }}USD</span></div>
     <div class="balance-parts">
-      <div class="balance-item balance-cash">Cash: <strong>{{ cashTotalBalance }}{{
+      <div class="balance-item balance-cash">{{ $t('components.balance.cash') }}: <strong>{{ cashTotalBalance }}{{
           financeStore.cash?.currency ?? 'USD'
         }}</strong></div>
       <div
@@ -19,7 +19,7 @@
     </div>
     <BaseButton
      size="medium"
-     @click="handleAddFunds">Add Funds
+     @click="handleAddFunds">{{ $t('components.buttons.addFundsText') }}
     </BaseButton>
   </div>
 </template>

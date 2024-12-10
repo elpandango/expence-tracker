@@ -1,6 +1,9 @@
-.cards-page {
+.transactions-page {
   display: flex;
   flex-wrap: wrap;
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
 
   .page-title {
     width: 100%;

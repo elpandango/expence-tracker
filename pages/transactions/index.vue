@@ -1,6 +1,10 @@
 <template>
-  <div class="cards-page">
+  <div class="transactions-page">
     <h1 class="page-title">Transactions</h1>
+
+    <Card class="mar-b-6">
+      <BalanceDetails/>
+    </Card>
 
     <div class="page-filters">
       <div class="filters-row">
@@ -112,7 +116,8 @@
  setup
  lang="ts">
 import {ref, onMounted, watch} from 'vue';
-import { useRoute } from 'vue-router';
+import {useRoute} from 'vue-router';
+import {useSeoConfig} from "~/use/useSeoConfig";
 import {useFinanceStore} from "~/stores/finance";
 import {useUIStore} from "~/stores/ui";
 import {emitter} from "~/classes/uiEventBus";
@@ -120,18 +125,8 @@ import BaseButton from "~/components/Buttons/BaseButton.vue";
 import {useCardsList} from "~/use/useCardList";
 import BaseInput from "~/components/Forms/Inputs/BaseInput.vue";
 
-useSeoMeta({
-  title: 'Транзакции - Expendango',
-  description: 'Отслеживайте все свои транзакции в одном месте с помощью Expendango.',
-  ogTitle: 'Транзакции - Expendango',
-  ogDescription: 'Expendango позволяет легко отслеживать и фильтровать ваши транзакции, чтобы лучше понимать свои финансы.',
-  ogImage: '/images/expendango-transactions.webp',
-  twitterTitle: 'Транзакции - Expendango',
-  twitterDescription: 'Следите за всеми своими транзакциями в Expendango для полного контроля над финансами.',
-  twitterImage: '/images/expendango-transactions.webp',
-  twitterCard: 'summary'
-});
-
+const seoMeta = useSeoConfig();
+useSeoMeta(seoMeta.value);
 
 const financeStore = useFinanceStore();
 const uiStore = useUIStore();

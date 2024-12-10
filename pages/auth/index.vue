@@ -18,23 +18,15 @@
 </template>
 
 <script setup lang="ts">
-import Tabs from "~/components/Tabs/Tabs.vue";
 import {useUserStore} from '~/stores/user';
+import {useSeoConfig} from "~/use/useSeoConfig";
 import repositoryFactory from "~/repositories/repositoryFactory";
+import Tabs from "~/components/Tabs/Tabs.vue";
 import LoginForm from "~/components/Forms/LoginForm/LoginForm.vue";
 import RegisterForm from "~/components/Forms/RegisterForm/RegisterForm.vue";
 
-useSeoMeta({
-  title: 'Вход и Регистрация - Expendango',
-  description: 'Войдите в Expendango, чтобы управлять своими финансами, или зарегистрируйтесь, чтобы начать пользоваться всеми преимуществами сервиса.',
-  ogTitle: 'Вход и Регистрация - Expendango',
-  ogDescription: 'Создайте аккаунт в Expendango или войдите, чтобы начать отслеживать свои доходы и расходы с помощью удобного инструмента.',
-  ogImage: '/images/expendango-auth.webp',
-  twitterTitle: 'Вход и Регистрация - Expendango',
-  twitterDescription: 'Начните управлять своими финансами уже сегодня. Зарегистрируйтесь или войдите в Expendango.',
-  twitterImage: '/images/expendango-auth.webp',
-  twitterCard: 'summary'
-});
+const seoMeta = useSeoConfig();
+useSeoMeta(seoMeta.value);
 
 definePageMeta({
   layout: 'not-authorized'
