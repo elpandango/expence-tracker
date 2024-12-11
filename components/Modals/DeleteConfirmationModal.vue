@@ -3,23 +3,23 @@
    v-model="modalValue"
    @update:modelValue="closeModal">
     <template v-slot:header>
-      Confirm Card deletion
+      {{ $t('components.modalsContent.deleteCardModal.deleteTitleText') }}
     </template>
     <template v-slot:body>
       <div>
-        Are you sure you want to delete this card?
+        {{ $t('components.modalsContent.deleteCardModal.deleteConfirmText') }}
       </div>
     </template>
     <template v-slot:footer>
       <BaseButton
        @click="closeModal"
        variant="transparent"
-       size="big">Cancel
+       size="big">{{ $t('components.buttons.cancelText') }}
       </BaseButton>
       <BaseButton
        @click="handleDeleteCard"
        variant="red"
-       size="big">Delete Card
+       size="big">{{ $t('components.buttons.deleteText') }}
       </BaseButton>
     </template>
   </Modal>

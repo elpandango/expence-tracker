@@ -3,37 +3,49 @@
    v-model="modalValue"
    @update:modelValue="closeModal">
     <template v-slot:header>
-      {{ isEditMode ? 'Editing Card' : 'Adding a New Card' }}
+      {{ isEditMode ? $t('components.modalsContent.addCardModal.addTitleText') : $t('components.modalsContent.addCardModal.editTitleText') }}
     </template>
     <template v-slot:body>
       <form>
         <div class="form-row">
-          <FloatLabelInput
+          <BaseInput
            v-model="cardName"
            size="medium"
-           label="Card name"/>
+           :placeholder="$t('components.modalsContent.addCardModal.cardNamePlaceholderText')"
+           :label="$t('components.modalsContent.addCardModal.cardNameLabelText')"/>
         </div>
         <div class="form-row">
-          <FloatLabelInput
-           v-model="formattedCardNumber"
+          <BaseInput v-if="isEditMode"
+           v-model="cardNumber"
            size="medium"
-           label="Card number"
+           :label="$t('components.modalsContent.addCardModal.cardNumberLabelText')"
+           :placeholder="$t('components.modalsContent.addCardModal.cardNumberPlaceholderText')"
            :status="cardNumberError ? 'error' : ''"
            :error-message="cardNumberError ? cardNumberError : ''"
-           :disabled="isEditMode"
+           :disabled="true"/>
+
+          <BaseInput v-else
+           v-model="formattedCardNumber"
+           size="medium"
+           :label="$t('components.modalsContent.addCardModal.cardNumberLabelText')"
+           :placeholder="$t('components.modalsContent.addCardModal.cardNumberPlaceholderText')"
+           :status="cardNumberError ? 'error' : ''"
+           :error-message="cardNumberError ? cardNumberError : ''"
            @input="formatCardNumber"/>
         </div>
         <div class="form-row">
-          <FloatLabelInput
+          <BaseInput
            v-model="cardBalance"
            size="medium"
-           label="Card balance"/>
+           :placeholder="$t('components.modalsContent.addCardModal.cardBalancePlaceholderText')"
+           :label="$t('components.modalsContent.addCardModal.cardBalanceLabelText')"/>
         </div>
         <div class="form-row">
-          <FloatLabelInput
+          <BaseInput
            v-model="cardCurrency"
            size="medium"
-           label="Card currency"/>
+           :placeholder="$t('components.modalsContent.addCardModal.cardCurrencyPlaceholderText')"
+           :label="$t('components.modalsContent.addCardModal.cardCurrencyLabelText')"/>
         </div>
 
       </form>
@@ -42,11 +54,11 @@
       <BaseButton
        @click="closeModal"
        variant="transparent"
-       size="big">Cancel
+       size="big">{{ $t('components.buttons.cancelText') }}
       </BaseButton>
       <BaseButton
        @click="handleSaveCard"
-       size="big">{{ isEditMode ? 'Save Changes' : 'Add a New Card' }}
+       size="big">{{ isEditMode ? $t('components.modalsContent.addCardModal.modalEditCardText') : $t('components.modalsContent.addCardModal.modalAddCardText') }}
       </BaseButton>
     </template>
   </Modal>
@@ -57,9 +69,9 @@
  lang="ts">
 import {ref} from 'vue';
 import Modal from './Modal.vue';
-import FloatLabelInput from "~/components/Forms/Inputs/FloatLabelInput.vue";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
 import {useFormatCardNumber} from "~/use/useFormatCardNumber";
+import BaseInput from "~/components/Forms/Inputs/BaseInput.vue";
 
 const props = defineProps({
   isOpen: {
@@ -125,7 +137,6 @@ watchEffect(() => {
   };
 
   const cardData = newIsEditMode ? newCard : defaultCardData;
-
   cardName.value = cardData.name || '';
   cardNumber.value = cardData.number || '';
   cardBalance.value = cardData.balance || '0';

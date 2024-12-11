@@ -1,6 +1,6 @@
 <template>
   <div class="transactions-page">
-    <h1 class="page-title">Transactions</h1>
+    <h1 class="page-title">{{ $t('components.transactionsPage.pageTitleText') }}</h1>
 
     <Card class="mar-b-6">
       <BalanceDetails/>
@@ -9,6 +9,7 @@
     <div class="page-filters">
       <div class="filters-row">
         <div class="filter-item">
+          <div class="dropdown-label">{{ $t('components.transactionsPage.filters.transactionLabelText') }}</div>
           <Dropdown
            v-model="filters.type"
            :options="transactionTypes"
@@ -17,6 +18,7 @@
         </div>
 
         <div class="filter-item">
+          <div class="dropdown-label">{{ $t('components.transactionsPage.filters.sourceLabelText') }}</div>
           <Dropdown
            v-model="filters.source"
            :options="sources"
@@ -27,6 +29,7 @@
         <div
          class="filter-item"
          v-if="filters?.source?.value === 'card'">
+          <div class="dropdown-label">{{ $t('components.transactionsPage.filters.cardLabelText') }}</div>
           <Dropdown
            v-model="filters.cardId"
            :options="cards"
@@ -37,12 +40,14 @@
       <div class="filters-row">
 
         <div class="filter-item">
+          <div class="dropdown-label">{{ $t('components.transactionsPage.filters.startDataLabelText') }}</div>
           <Datepicker
            v-model="filters.startDate"
            placeholder="Select start date"/>
         </div>
 
         <div class="filter-item">
+          <div class="dropdown-label">{{ $t('components.transactionsPage.filters.endDataLabelText') }}</div>
           <Datepicker
            v-model="filters.endDate"
            placeholder="Select end date"/>
@@ -53,32 +58,35 @@
           <BaseInput
            v-model="filters.minAmount"
            type="number"
-           placeholder="Min amount"/>
+           :placeholder="$t('components.transactionsPage.filters.minAmountPlaceholderText')"
+           :label="$t('components.transactionsPage.filters.minAmountLabelText')"/>
         </div>
 
         <div class="filter-item">
           <BaseInput
            v-model="filters.maxAmount"
            type="number"
-           placeholder="Max amount"/>
+           :placeholder="$t('components.transactionsPage.filters.maxAmountPlaceholderText')"
+           :label="$t('components.transactionsPage.filters.maxAmountLabelText')"/>
         </div>
       </div>
       <div class="filters-row full-length">
         <div class="filter-item">
           <BaseInput
            v-model="filters.description"
-           placeholder="Search description"/>
+           :placeholder="$t('components.transactionsPage.filters.searchDescriptionPlaceholderText')"
+           :label="$t('components.transactionsPage.filters.searchDescriptionLabelText')"/>
         </div>
       </div>
       <div class="filters-row btn-block">
         <BaseButton
          @click="updateTransactions"
-         size="medium">Apply Filters
+         size="medium">{{ $t('components.buttons.applyFilters') }}
         </BaseButton>
         <BaseButton
          @click="clearFilters"
          size="medium"
-         variant="transparent">Clear Filters
+         variant="transparent">{{ $t('components.buttons.clearFilters') }}
         </BaseButton>
       </div>
     </div>
@@ -100,7 +108,7 @@
        class="no-results"
        v-if="financeStore.transactionsResponse?.transactions?.length === 0">
         <Card
-        >Looks like your transactions list is empty. <br/>Why not create one now?
+        >{{ $t('components.transactionsPage.emptyListText') }}
         </Card>
       </div>
 

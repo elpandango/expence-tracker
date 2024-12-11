@@ -3,51 +3,52 @@
    v-model="modalValue"
    @update:modelValue="closeModal">
     <template v-slot:header>
-      Adding a New Expense
+      {{ $t('components.modalsContent.addExpenseModal.addTitleText')}}
     </template>
     <template v-slot:body>
       <form @submit.prevent>
         <div class="form-row">
-
+          <div class="dropdown-label">{{ $t('components.modalsContent.addExpenseModal.expensePaymentTypeLabelText') }}</div>
           <Dropdown
            v-model="selectedCard"
            :options="cards"
            type="form-dropdown"
            size="medium"
-           placeholder="Select payment type"
           />
 
         </div>
         <div class="form-row">
-          <FloatLabelInput
+          <BaseInput
            v-model="expense.description"
            size="medium"
            :status="expenseDescriptionError ? 'error' : ''"
            :error-message="expenseDescriptionError ? expenseDescriptionError : ''"
-           label="Expense description"/>
+           :placeholder="$t('components.modalsContent.addExpenseModal.expenseDescriptionPlaceholderText')"
+           :label="$t('components.modalsContent.addExpenseModal.expenseDescriptionLabelText')"/>
         </div>
         <div class="form-row">
-          <FloatLabelInput
+          <BaseInput
            v-model="expense.amount"
            size="medium"
-           type="number"
+           :type="'number'"
            :status="expenseAmountError ? 'error' : ''"
            :error-message="expenseAmountError ? expenseAmountError : ''"
-           label="Expense amount"/>
+           :placeholder="$t('components.modalsContent.addExpenseModal.expenseAmountPlaceholderText')"
+           :label="$t('components.modalsContent.addExpenseModal.expenseAmountLabelText')"/>
         </div>
         <div class="form-row">
+          <div class="dropdown-label">{{ $t('components.modalsContent.addExpenseModal.expenseDateLabelText') }}</div>
           <Datepicker
            height="50px"
-           v-model="expense.date"
-           placeholder="Select start date"/>
+           v-model="expense.date"/>
         </div>
         <div class="form-row">
+          <div class="dropdown-label">{{ $t('components.modalsContent.addExpenseModal.expenseCategoryLabelText') }}</div>
           <CategoryDropdown
            v-model="expense.category"
            :options="categories"
            type="form-dropdown"
            size="medium"
-           placeholder="Select expense category"
           />
         </div>
       </form>
@@ -56,11 +57,11 @@
       <BaseButton
        @click="closeModal"
        variant="transparent"
-       size="big">Cancel
+       size="big">{{ $t('components.buttons.cancelText') }}
       </BaseButton>
       <BaseButton
        @click="handleAddExpense"
-       size="big">Add a new expense
+       size="big">{{$t('components.modalsContent.addExpenseModal.modalAddExpenseText')}}
       </BaseButton>
     </template>
   </Modal>
@@ -71,7 +72,6 @@
  lang="ts">
 import {ref} from 'vue';
 import Modal from './Modal.vue';
-import FloatLabelInput from "~/components/Forms/Inputs/FloatLabelInput.vue";
 import Dropdown from "~/components/Dropdown/Dropdown.vue";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
 
@@ -79,6 +79,7 @@ import {useFinanceStore} from "~/stores/finance";
 import {useCategoryStore} from "~/stores/category";
 import {useCardsList} from "~/use/useCardList";
 import CategoryDropdown from "~/components/Dropdown/CategoryDropdown.vue";
+import BaseInput from "~/components/Forms/Inputs/BaseInput.vue";
 
 const emit = defineEmits(['close']);
 

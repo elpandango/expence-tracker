@@ -10,15 +10,15 @@
 
             <div class="title-block">
               <h3 class="title">
-                Transactions History
+                {{ $t('components.transactionsHistory.titleText') }}
               </h3>
 
               <div class="sorting-block">
-                <span class="sort-label">Sort by</span>
+                <span class="sort-label">{{ $t('components.transactionsHistory.sortByText') }}</span>
                 <Dropdown
                  v-model="sortBySelected"
                  :options="transactionsHistoryOptions"
-                 placeholder="Choose an option"
+                 :placeholder="$t('components.transactionsHistory.sortPlaceholderText')"
                  @update:modelValue="handleDropdownChanged"
                 />
               </div>
@@ -29,17 +29,17 @@
                 <BaseButton
                  size="small"
                  :variant="periodSelected === 'day' ? 'default' : 'transparent'"
-                 @click="changePeriod('day')">Day
+                 @click="changePeriod('day')">{{ $t('components.transactionsHistory.sortingPeriodDay') }}
                 </BaseButton>
                 <BaseButton
                  size="small"
                  :variant="periodSelected === 'week' ? 'default' : 'transparent'"
-                 @click="changePeriod('week')">Week
+                 @click="changePeriod('week')">{{ $t('components.transactionsHistory.sortingPeriodWeek') }}
                 </BaseButton>
                 <BaseButton
                  size="small"
                  :variant="periodSelected === 'month' ? 'default' : 'transparent'"
-                 @click="changePeriod('month')">Month
+                 @click="changePeriod('month')">{{ $t('components.transactionsHistory.sortingPeriodMonth') }}
                 </BaseButton>
               </div>
               <div class="see-all">

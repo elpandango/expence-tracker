@@ -12,60 +12,54 @@
          to="/"
          class="menu-link">
           <span class="icon material-symbols-outlined">home</span>
-          Dashboard
+          {{ $t('components.menuList.dashboard') }}
         </NuxtLink>
         <NuxtLink
          to="/cards"
          class="menu-link">
           <span class="icon material-symbols-outlined">credit_card</span>
-          My Cards
+          {{ $t('components.menuList.myCards') }}
         </NuxtLink>
         <NuxtLink
          to="/transactions"
          class="menu-link">
           <span class="icon material-symbols-outlined">swap_horiz</span>
-          Transactions
+          {{ $t('components.menuList.transactions') }}
         </NuxtLink>
         <NuxtLink
          to="/statistics"
          class="menu-link">
           <span class="icon material-symbols-outlined">bar_chart</span>
-          Statistics
+          {{ $t('components.menuList.statistics') }}
         </NuxtLink>
         <NuxtLink
          to="/profile"
          class="menu-link">
           <span class="icon material-symbols-outlined">account_circle</span>
-          Profile
+          {{ $t('components.menuList.profile') }}
         </NuxtLink>
         <button
          class="menu-link"
          @click="handleNewExpense">
           <span class="icon material-symbols-outlined">attach_money</span>
-          Add Expense
+          {{ $t('components.menuList.addExpense') }}
         </button>
         <NuxtLink
          to="/categories"
          class="menu-link">
           <span class="icon material-symbols-outlined">category</span>
-          Categories
+          {{ $t('components.menuList.categories') }}
         </NuxtLink>
       </div>
     </div>
     <div class="bottom-block">
-      <NuxtLink
-       to="/settings"
-       class="menu-link">
-        <span class="icon material-symbols-outlined">settings</span>
-        Settings
-      </NuxtLink>
       <div
        class="menu-link"
        @click="toggleTheme">
         <ClientOnly>
           <span class="icon material-symbols-outlined">{{ isDark ? 'light_mode' : 'dark_mode' }}</span>
         </ClientOnly>
-        Theme
+        {{ $t('components.menuList.theme') }}
       </div>
     </div>
   </aside>

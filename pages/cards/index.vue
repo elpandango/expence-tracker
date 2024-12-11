@@ -1,6 +1,6 @@
 <template>
   <div class="cards-page">
-    <h1>Here are all your cards</h1>
+    <h1>{{ $t('components.cardsPage.pageTitleText') }}</h1>
     <Preloader
      height="50vh"
      v-if="uiStore.state.isLoading"/>
@@ -21,7 +21,7 @@
            class="add-card-btn"
            @click="handleAddCardClicked">
             <span class="plus-icon">+</span>
-            <span class="btn-text">Add a new card</span>
+            <span class="btn-text">{{ $t('components.cardsPage.addCardText') }}</span>
           </button>
         </li>
       </ul>
@@ -29,14 +29,13 @@
       <div
        v-else
        class="add-card-block">
-        <h3>Oh, it seems like you haven’t added any cards yet!</h3>
-        <p class="info">Feel free to explore the app without them, but
-          adding cards will let you link transactions and get detailed stats for each one.</p>
+        <h3>{{ $t('components.cardsPage.emptyListTitleText') }}</h3>
+        <p class="info">{{ $t('components.cardsPage.emptyListText') }}</p>
         <button
          class="add-card-btn"
          @click="handleAddCardClicked">
           <span class="plus-icon">+</span>
-          <span class="btn-text">Add a new card</span>
+          <span class="btn-text">{{ $t('components.cardsPage.addCardText') }}</span>
         </button>
       </div>
     </template>

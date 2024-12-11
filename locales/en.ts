@@ -109,7 +109,95 @@ export const en = {
       cancelText: 'Cancel',
     },
     menuList: {
+      dashboard: 'Dashboard',
+      myCards: 'My Cards',
+      transactions: 'Transactions',
+      statistics: 'Statistics',
+      profile: 'Profile',
+      addExpense: 'Add Expense',
+      categories: 'Categories',
+      theme: 'Theme',
+    },
+    transactionsHistory: {
+      titleText: 'Transactions History',
+      sortByText: 'Sort by',
+      sortPlaceholderText: 'Choose an option',
+      emptyListText: 'No transactions found yet. \nStart by adding your first transaction!',
+      sortingPeriodDay: 'Day',
+      sortingPeriodWeek: 'Week',
+      sortingPeriodMonth: 'Month',
+    },
+    profilePage: {
+      pageTitleText: 'Profile',
+      pageSubtitleText: 'Here you can upload or delete your photo, edit your profile, and save the user data.',
+    },
+    statisticsPage: {
+      pageTitleText: 'Statistics',
+    },
+    transactionsPage: {
+      pageTitleText: 'Transactions',
+      emptyListText: 'Looks like your transactions list is empty. \n Why not create one now?',
+      filters: {
+        transactionLabelText: 'Transaction type',
+        sourceLabelText: 'Source',
+        cardLabelText: 'Card',
+        startDataLabelText: 'Start date',
+        endDataLabelText: 'End date',
+        minAmountLabelText: 'Min amount',
+        maxAmountLabelText: 'Max amount',
+        searchDescriptionLabelText: 'Search by transaction description',
+        minAmountPlaceholderText: 'Enter min amount',
+        maxAmountPlaceholderText: 'Enter max amount',
+        searchDescriptionPlaceholderText: 'Enter description text',
+      }
+    },
+    cardsPage: {
+      pageTitleText: 'Here are all your cards',
+      emptyListTitleText: 'Oh, it seems like you haven’t added any cards yet!',
+      emptyListText: 'Feel free to explore the app without them, but\n' +
+        '          adding cards will let you link transactions and get detailed stats for each one.',
+      addCardText: 'Add a new card'
+    },
+    modalsContent: {
+      addCardModal: {
+        addTitleText: 'Adding a New Card',
+        editTitleText: 'Editing Card',
+        cardNamePlaceholderText: 'Enter card name',
+        cardNumberPlaceholderText: 'Enter card number',
+        cardBalancePlaceholderText: 'Enter card balance',
+        cardCurrencyPlaceholderText: 'Enter card currency',
+        cardNameLabelText: 'Card name',
+        cardNumberLabelText: 'Card number',
+        cardBalanceLabelText: 'Card balance',
+        cardCurrencyLabelText: 'Card currency',
+        modalAddCardText: 'Add a New Card',
+        modalEditCardText: 'Save Changes',
+      },
+      addExpenseModal: {
+        addTitleText: 'Adding a New Expense',
+        modalAddExpenseText: 'Add a New Expense',
+        expensePaymentTypeLabelText: 'Payment type',
+        expenseDescriptionLabelText: 'Expense description',
+        expenseAmountLabelText: 'Expense amount',
+        expenseDateLabelText: 'Date',
+        expenseCategoryLabelText: 'Expense category',
+        expenseDescriptionPlaceholderText: 'Enter description of transaction',
+        expenseAmountPlaceholderText: 'Enter expense amount',
+      },
+      deleteCardModal: {
+        deleteTitleText: 'Confirm Card deletion',
+        deleteConfirmText: 'Are you sure you want to delete this card?',
+      },
+      addFundsModal: {
+        addTitleText: 'Adding Funds',
+        fundsAmountLabelText: 'Amount of funds',
+        fundsDateLabelText: 'Date',
+        fundsDescriptionLabelText: 'Transaction description',
 
+        fundsDescriptionPlaceholderText: 'Enter description of transaction',
+        fundsAmountPlaceholderText: 'Enter funds amount',
+        modalAddFundsText: 'Add Funds',
+      }
     }
   }
 };

@@ -1,6 +1,6 @@
 <template>
   <div class="charts-page">
-    <h1>Statistics</h1>
+    <h1>{{ $t('components.statisticsPage.pageTitleText') }}</h1>
 
     <div class="charts">
       <div class="chart-row">
