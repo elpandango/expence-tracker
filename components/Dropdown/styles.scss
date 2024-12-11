@@ -2,6 +2,12 @@
   position: relative;
   display: inline-block;
 
+  &.is-active {
+    .dropdown-toggle {
+      border-color: var(--accent-color);
+    }
+  }
+
   .category-icon {
     width: 40px;
     height: 40px;
@@ -94,6 +100,12 @@
 
 .dropdown.form-dropdown {
   width: 100%;
+
+  &.is-active {
+    .dropdown-toggle {
+      border-color: var(--accent-color);
+    }
+  }
 
   &.small {
     .dropdown-toggle {

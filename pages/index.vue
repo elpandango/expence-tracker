@@ -10,15 +10,15 @@
 
             <div class="title-block">
               <h3 class="title">
-                Transactions History
+                {{ $t('components.transactionsHistory.titleText') }}
               </h3>
 
               <div class="sorting-block">
-                <span class="sort-label">Sort by</span>
+                <span class="sort-label">{{ $t('components.transactionsHistory.sortByText') }}</span>
                 <Dropdown
                  v-model="sortBySelected"
                  :options="transactionsHistoryOptions"
-                 placeholder="Choose an option"
+                 :placeholder="$t('components.transactionsHistory.sortPlaceholderText')"
                  @update:modelValue="handleDropdownChanged"
                 />
               </div>
@@ -29,17 +29,17 @@
                 <BaseButton
                  size="small"
                  :variant="periodSelected === 'day' ? 'default' : 'transparent'"
-                 @click="changePeriod('day')">Day
+                 @click="changePeriod('day')">{{ $t('components.transactionsHistory.sortingPeriodDay') }}
                 </BaseButton>
                 <BaseButton
                  size="small"
                  :variant="periodSelected === 'week' ? 'default' : 'transparent'"
-                 @click="changePeriod('week')">Week
+                 @click="changePeriod('week')">{{ $t('components.transactionsHistory.sortingPeriodWeek') }}
                 </BaseButton>
                 <BaseButton
                  size="small"
                  :variant="periodSelected === 'month' ? 'default' : 'transparent'"
-                 @click="changePeriod('month')">Month
+                 @click="changePeriod('month')">{{ $t('components.transactionsHistory.sortingPeriodMonth') }}
                 </BaseButton>
               </div>
               <div class="see-all">
@@ -73,17 +73,17 @@
 <script
  setup
  lang="ts">
-import {onMounted, reactive, ref} from "vue";
-import Card from "~/components/Card/Card.vue";
+import {onMounted, ref} from "vue";
 import {useChartStore} from "~/stores/charts";
 import {useFinanceStore} from "~/stores/finance";
 import {useCardsList} from "~/use/useCardList";
+import {useSeoConfig} from "~/use/useSeoConfig";
 import {emitter} from "~/classes/uiEventBus";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
 import {createPieChartConfig} from "~/chartsConfigs/chartConfigs";
 import {processChartData} from "~/utils/chartUtils";
+import Card from "~/components/Card/Card.vue";
 
-const route = useRoute();
 const chartStore = useChartStore();
 const financeStore = useFinanceStore();
 const transactions = ref([]);
@@ -92,20 +92,8 @@ const topChartIsLoaded = ref(false);
 let HighchartsComponent: any = null;
 const chartConfig = ref({});
 
-const currentUrl = computed(() => process.client ? `${window.location.origin}${route.fullPath}` : '');
-
-useSeoMeta({
-  title: 'Главная - Expendango',
-  description: 'Expendango — это удобный инструмент для управления финансами, анализа расходов и доходов. Держите свои финансы под контролем.',
-  ogTitle: 'Главная - Expendango',
-  ogDescription: 'Управляйте своими финансами с помощью Expendango. Трекер расходов и доходов с аналитикой и графиками для полного контроля.',
-  ogImage: '/images/expendango-hero.webp',
-  ogUrl: currentUrl,
-  twitterTitle: 'Главная - Expendango',
-  twitterDescription: 'Expendango — ваш личный помощник для управления финансами. Следите за своими доходами и расходами с максимальной лёгкостью.',
-  twitterImage: '/images/expendango-hero.webp',
-  twitterCard: 'summary'
-});
+const seoMeta = useSeoConfig();
+useSeoMeta(seoMeta.value);
 
 useHead({
   htmlAttrs: {

@@ -1,7 +1,7 @@
 <template>
   <div class="profile-page">
-    <h1>Profile</h1>
-    <p class="info">Here you can upload or delete your photo, edit your profile, and save the user data.</p>
+    <h1>{{ $t('components.profilePage.pageTitleText') }}</h1>
+    <p class="info">{{ $t('components.profilePage.pageSubtitleText') }}</p>
     <div class="profile-cols">
       <Card
        max-width="50%">
@@ -22,12 +22,12 @@
             <BaseButton
              @click="handleUploadAvatar"
              variant="transparent"
-             size="big">Upload Photo
+             size="big">{{ $t('components.buttons.uploadPhoto') }}
             </BaseButton>
             <BaseButton
              @click="handleRemoveAvatar"
              variant="transparent"
-             size="big">Remove Photo
+             size="big">{{ $t('components.buttons.removePhoto') }}
             </BaseButton>
           </div>
         </div>
@@ -60,11 +60,11 @@
             <BaseButton
              @click="handleCancel"
              variant="transparent"
-             size="big">Cancel
+             size="big">{{ $t('components.buttons.cancelText') }}
             </BaseButton>
             <BaseButton
              @click="handleSaveChanges"
-             size="big">Save
+             size="big">{{ $t('components.buttons.saveText') }}
             </BaseButton>
           </div>
         </form>
@@ -76,25 +76,16 @@
 <script
  setup
  lang="ts">
-import {useUserStore} from '~/stores/user';
-import FloatLabelInput from "~/components/Forms/Inputs/FloatLabelInput.vue";
-import BaseButton from "~/components/Buttons/BaseButton.vue";
 import type {User} from '~/server/interfaces/user';
+import {useSeoConfig} from "~/use/useSeoConfig";
+import {useUserStore} from '~/stores/user';
 import {useUIStore} from "~/stores/ui";
 import {emitter} from "~/classes/uiEventBus";
+import FloatLabelInput from "~/components/Forms/Inputs/FloatLabelInput.vue";
+import BaseButton from "~/components/Buttons/BaseButton.vue";
 
-useSeoMeta({
-  title: 'Профиль - Expendango',
-  description: 'Настройте свой профиль и управляйте персональными данными в Expendango.',
-  ogTitle: 'Профиль - Expendango',
-  ogDescription: 'Редактируйте свои данные, добавляйте аватар и управляйте настройками в Expendango.',
-  ogImage: '/images/expendango-profile.webp',
-  twitterTitle: 'Профиль - Expendango',
-  twitterDescription: 'Обновляйте информацию в своём профиле, чтобы сделать использование Expendango ещё удобнее.',
-  twitterImage: '/images/expendango-profile.webp',
-  twitterCard: 'summary'
-});
-
+const seoMeta = useSeoConfig();
+useSeoMeta(seoMeta.value);
 
 const userStore = useUserStore();
 const uiStore = useUIStore();

@@ -296,4 +296,3 @@ export const createCashVsCardsChartConfig = (cashData, cardData, title = 'Cash v
     },
   };
 };
-

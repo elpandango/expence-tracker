@@ -1,7 +1,7 @@
 <template>
   <div
    class="dropdown"
-   :class="[type, size]"
+   :class="[type, size, {'is-active': isOpen}]"
    ref="dropdown"
    @click="toggleDropdown">
     <button class="dropdown-toggle">
@@ -19,7 +19,6 @@
       </svg>
     </button>
 
-    <!--    <transition name="fade-expand">-->
     <ul
      v-if="isOpen"
      class="dropdown-menu">
@@ -33,7 +32,6 @@
         {{ option.label }}
       </li>
     </ul>
-    <!--    </transition>-->
   </div>
 </template>
 

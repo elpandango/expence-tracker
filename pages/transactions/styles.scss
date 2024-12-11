@@ -1,6 +1,9 @@
-.cards-page {
+.transactions-page {
   display: flex;
   flex-wrap: wrap;
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
 
   .page-title {
     width: 100%;
@@ -9,6 +12,10 @@
   .page-filters {
     width: 100%;
     max-width: 600px;
+  }
+
+  .dropdown-label {
+    margin-bottom: 8px;
   }
 
   .filters-row {

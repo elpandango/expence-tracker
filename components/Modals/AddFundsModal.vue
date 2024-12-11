@@ -3,12 +3,12 @@
    v-model="modalValue"
    @update:modelValue="closeModal">
     <template v-slot:header>
-      Adding Funds
+      {{ $t('components.modalsContent.addFundsModal.addTitleText')}}
     </template>
     <template v-slot:body>
       <form @submit.prevent>
         <div class="form-row">
-
+          <div class="dropdown-label">{{ $t('components.modalsContent.addExpenseModal.expenseDateLabelText') }}</div>
           <Dropdown
            v-model="selectedCard"
            :options="cards"
@@ -19,21 +19,24 @@
 
         </div>
         <div class="form-row">
-          <FloatLabelInput
+          <BaseInput
            v-model="transaction.description"
            size="medium"
-           label="Funds addition description"/>
+           :placeholder="$t('components.modalsContent.addFundsModal.fundsDescriptionPlaceholderText')"
+           :label="$t('components.modalsContent.addFundsModal.fundsDescriptionLabelText')"/>
         </div>
         <div class="form-row">
-          <FloatLabelInput
+          <BaseInput
            v-model="transaction.amount"
            size="medium"
            type="number"
            :status="transactionAmountError ? 'error' : ''"
            :error-message="transactionAmountError ? transactionAmountError : ''"
-           label="Amount"/>
+           :placeholder="$t('components.modalsContent.addFundsModal.fundsAmountPlaceholderText')"
+           :label="$t('components.modalsContent.addFundsModal.fundsAmountLabelText')"/>
         </div>
         <div class="form-row">
+          <div class="dropdown-label">{{ $t('components.modalsContent.addFundsModal.fundsDateLabelText') }}</div>
           <Datepicker
            height="50px"
            v-model="transaction.date"
@@ -45,11 +48,11 @@
       <BaseButton
        @click="closeModal"
        variant="transparent"
-       size="big">Cancel
+       size="big">{{ $t('components.buttons.cancelText') }}
       </BaseButton>
       <BaseButton
        @click="handleAddFunds"
-       size="big">Add funds
+       size="big">{{$t('components.modalsContent.addFundsModal.modalAddFundsText')}}
       </BaseButton>
     </template>
   </Modal>
@@ -60,12 +63,12 @@
  lang="ts">
 import {ref} from 'vue';
 import Modal from './Modal.vue';
-import FloatLabelInput from "~/components/Forms/Inputs/FloatLabelInput.vue";
 import Dropdown from "~/components/Dropdown/Dropdown.vue";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
 
 import {useFinanceStore} from "~/stores/finance";
 import {useCardsList} from "~/use/useCardList";
+import BaseInput from "~/components/Forms/Inputs/BaseInput.vue";
 
 const financeStore = useFinanceStore();
 

@@ -1,6 +1,6 @@
 <template>
   <div class="charts-page">
-    <h1>Statistics</h1>
+    <h1>{{ $t('components.statisticsPage.pageTitleText') }}</h1>
 
     <div class="charts">
       <div class="chart-row">
@@ -64,26 +64,12 @@
 
 <script setup>
 import {ref, reactive, onMounted} from 'vue';
+import {useSeoConfig} from "~/use/useSeoConfig";
 import {useChartStore} from "~/stores/charts";
-import {processChartDataByDate, processChartData, generateChartConfigs} from "~/utils/chartUtils";
-import {
-  createBarChartConfig, createCashVsCardsChartConfig,
-  createIncomeVsExpensesChartConfig,
-  createPieChartConfig
-} from "~/chartsConfigs/chartConfigs";
+import {generateChartConfigs, generateChartConfigForType} from "~/utils/chartUtils";
 
-useSeoMeta({
-  title: 'Статистика - Expendango',
-  description: 'Просматривайте графики и отчёты, чтобы анализировать свои доходы и расходы в Expendango.',
-  ogTitle: 'Статистика - Expendango',
-  ogDescription: 'Expendango предоставляет удобную визуализацию ваших финансовых данных. Анализируйте доходы и расходы на основе графиков.',
-  ogImage: '/images/expendango-statistics.webp',
-  twitterTitle: 'Статистика - Expendango',
-  twitterDescription: 'Получите полную картину своих финансов с помощью графиков и отчётов в Expendango.',
-  twitterImage: '/images/expendango-statistics.webp',
-  twitterCard: 'summary'
-});
-
+const seoMeta = useSeoConfig();
+useSeoMeta(seoMeta.value);
 
 const chartStore = useChartStore();
 
@@ -105,7 +91,7 @@ const chartsLoadingState = reactive({
 const handleDateChanged = async (type, date) => {
   chartsLoadingState[type] = false;
   await fetchChartsData(type, date);
-  chartConfigs[type] = generateChartConfigForType(type);
+  chartConfigs[type] = generateChartConfigForType(chartStore, type);
   chartsLoadingState[type] = true;
 };
 
@@ -134,32 +120,6 @@ const fetchChartsData = async (type, date) => {
     }
   } catch (err) {
     console.error(`Error fetching data for ${type}:`, err);
-  }
-};
-
-const generateChartConfigForType = (type) => {
-  switch (type) {
-    case 'expenses_vs_incomes': {
-      const incomeDataByDate = processChartDataByDate(chartStore.chartDataByType.totalIncomeAll);
-      const expenseDataByDate = processChartDataByDate(chartStore.chartDataByType.totalExpensesAll);
-      return createIncomeVsExpensesChartConfig(incomeDataByDate, expenseDataByDate, 'Income vs Expenses');
-    }
-    case 'categories': {
-      const categories = chartStore.chartDataByType.categories.map(t => t.category);
-      const barChartData = processChartData(chartStore.chartDataByType.categories, true);
-      return createBarChartConfig(categories, barChartData);
-    }
-    case 'top5': {
-      const top5ChartData = processChartData(chartStore.chartDataByType.top5, true);
-      return createPieChartConfig(top5ChartData);
-    }
-    case 'total_expenses': {
-      const incomeCashDataByDate = processChartDataByDate(chartStore.chartDataByType.totalCashExpenses);
-      const incomeCardDataByDate = processChartDataByDate(chartStore.chartDataByType.totalCardExpenses);
-      return createCashVsCardsChartConfig(incomeCashDataByDate, incomeCardDataByDate, 'Cash vs Card Expenses');
-    }
-    default:
-      return null;
   }
 };
 

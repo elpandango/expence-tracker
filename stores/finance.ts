@@ -145,7 +145,7 @@ export const useFinanceStore = defineStore('finance', () => {
 
     try {
       await repositoryFactory.get('Balance').updateBalance(cardId, payload);
-      await Promise.all([await fetchCards(), await fetchCash()]);
+      await Promise.all([await fetchCards(), await fetchCash(), await fetchTransactions()]);
       emitter.emit('ui:showToast', {
         message: 'Funds added successfully.',
         type: 'success',

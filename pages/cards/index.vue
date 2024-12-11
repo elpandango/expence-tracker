@@ -1,6 +1,6 @@
 <template>
   <div class="cards-page">
-    <h1>Here are all your cards</h1>
+    <h1>{{ $t('components.cardsPage.pageTitleText') }}</h1>
     <Preloader
      height="50vh"
      v-if="uiStore.state.isLoading"/>
@@ -21,7 +21,7 @@
            class="add-card-btn"
            @click="handleAddCardClicked">
             <span class="plus-icon">+</span>
-            <span class="btn-text">Add a new card</span>
+            <span class="btn-text">{{ $t('components.cardsPage.addCardText') }}</span>
           </button>
         </li>
       </ul>
@@ -29,14 +29,13 @@
       <div
        v-else
        class="add-card-block">
-        <h3>Oh, it seems like you haven’t added any cards yet!</h3>
-        <p class="info">Feel free to explore the app without them, but
-          adding cards will let you link transactions and get detailed stats for each one.</p>
+        <h3>{{ $t('components.cardsPage.emptyListTitleText') }}</h3>
+        <p class="info">{{ $t('components.cardsPage.emptyListText') }}</p>
         <button
          class="add-card-btn"
          @click="handleAddCardClicked">
           <span class="plus-icon">+</span>
-          <span class="btn-text">Add a new card</span>
+          <span class="btn-text">{{ $t('components.cardsPage.addCardText') }}</span>
         </button>
       </div>
     </template>
@@ -66,24 +65,15 @@
  setup
  lang="ts">
 import {ref} from "vue";
+import {useSeoConfig} from "~/use/useSeoConfig";
 import {useFinanceStore} from "~/stores/finance";
 import {useUIStore} from "~/stores/ui";
 import AddEditCardModal from "~/components/Modals/AddEditCardModal.vue";
 import DeleteConfirmationModal from "~/components/Modals/DeleteConfirmationModal.vue";
 import {emitter} from "~/classes/uiEventBus";
 
-useSeoMeta({
-  title: 'Мои Карты - Expendango',
-  description: 'Управляйте своими банковскими картами, отслеживайте расходы и пополнения с Expendango.',
-  ogTitle: 'Мои Карты - Expendango',
-  ogDescription: 'Следите за своими транзакциями по банковским картам с помощью Expendango. Удобный способ держать всё под контролем.',
-  ogImage: '/images/expendango-cards.webp',
-  twitterTitle: 'Мои Карты - Expendango',
-  twitterDescription: 'Добавляйте и управляйте своими банковскими картами в Expendango, чтобы лучше контролировать финансы.',
-  twitterImage: '/images/expendango-cards.webp',
-  twitterCard: 'summary'
-});
-
+const seoMeta = useSeoConfig();
+useSeoMeta(seoMeta.value);
 
 const financeStore = useFinanceStore();
 const uiStore = useUIStore();

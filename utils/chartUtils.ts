@@ -30,7 +30,6 @@ export const processChartDataByDate = (data) => {
   }));
 };
 
-
 export const generateChartConfigs = (chartStore) => {
   let categories;
 
@@ -53,4 +52,30 @@ export const generateChartConfigs = (chartStore) => {
     expenses_vs_incomes: createIncomeVsExpensesChartConfig(incomeDataByDate, expenseDataByDate, 'Income vs Expenses'),
     total_expenses: createCashVsCardsChartConfig(incomeCashDataByDate, incomeCardDataByDate, 'Cash vs Card'),
   };
+};
+
+export const generateChartConfigForType = (chartStore, type) => {
+  switch (type) {
+    case 'expenses_vs_incomes': {
+      const incomeDataByDate = processChartDataByDate(chartStore.chartDataByType.totalIncomeAll);
+      const expenseDataByDate = processChartDataByDate(chartStore.chartDataByType.totalExpensesAll);
+      return createIncomeVsExpensesChartConfig(incomeDataByDate, expenseDataByDate, 'Income vs Expenses');
+    }
+    case 'categories': {
+      const categories = chartStore.chartDataByType.categories.map(t => t.category);
+      const barChartData = processChartData(chartStore.chartDataByType.categories, true);
+      return createBarChartConfig(categories, barChartData);
+    }
+    case 'top5': {
+      const top5ChartData = processChartData(chartStore.chartDataByType.top5, true);
+      return createPieChartConfig(top5ChartData);
+    }
+    case 'total_expenses': {
+      const incomeCashDataByDate = processChartDataByDate(chartStore.chartDataByType.totalCashExpenses);
+      const incomeCardDataByDate = processChartDataByDate(chartStore.chartDataByType.totalCardExpenses);
+      return createCashVsCardsChartConfig(incomeCashDataByDate, incomeCardDataByDate, 'Cash vs Card Expenses');
+    }
+    default:
+      return null;
+  }
 };

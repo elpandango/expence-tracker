@@ -72,6 +72,10 @@ p {
   top: 0;
   overflow-y: auto;
 
+  @media only screen and (min-width: 2501px) {
+    position: absolute;
+  }
+
   @media only screen and (max-width: 991px) {
     width: 100%;
     height: auto;

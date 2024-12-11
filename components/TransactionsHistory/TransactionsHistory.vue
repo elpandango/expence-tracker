@@ -18,7 +18,7 @@
         </ul>
       </template>
       <template v-else>
-        <p class="empty-message">No transactions found yet. <br />Start by adding your first transaction!</p>
+        <p class="empty-message">{{ $t('components.transactionsHistory.emptyListText') }}</p>
       </template>
     </div>
   </div>
