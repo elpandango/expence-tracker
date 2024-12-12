@@ -134,6 +134,9 @@ export const de = {
     statisticsPage: {
       pageTitleText: 'Statistiken',
     },
+    categoriesPage: {
+      pageTitleText: 'Alle Kategorien',
+    },
     transactionsPage: {
       pageTitleText: 'Transaktionen',
       emptyListText: 'Es scheint, als wäre Ihre Transaktionsliste leer. \nWarum nicht jetzt eine erstellen?',

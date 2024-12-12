@@ -97,10 +97,15 @@
     <template v-else>
       <Card
        class="mar-b-4"
-       v-for="transaction in financeStore.transactionsResponse.transactions"
-       :key="transaction._id">
+       v-for="transactionsList in financeStore.transactionsResponse.transactions"
+       :key="transactionsList.date"
+       :with-header="true">
+        <template v-slot:header>{{ useFormatDate(transactionsList.date) }}</template>
         <TransactionExtended
-         :transaction="transaction"
+         v-for="dateTransaction in transactionsList.transactions"
+         :key="dateTransaction._id"
+         :transaction="dateTransaction"
+         :show-actions="true"
         />
       </Card>
 
@@ -128,10 +133,11 @@ import {useRoute} from 'vue-router';
 import {useSeoConfig} from "~/use/useSeoConfig";
 import {useFinanceStore} from "~/stores/finance";
 import {useUIStore} from "~/stores/ui";
+import {useCardsList} from "~/use/useCardList";
 import {emitter} from "~/classes/uiEventBus";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
-import {useCardsList} from "~/use/useCardList";
 import BaseInput from "~/components/Forms/Inputs/BaseInput.vue";
+import {useFormatDate} from "~/use/useFormatDate";
 
 const seoMeta = useSeoConfig();
 useSeoMeta(seoMeta.value);

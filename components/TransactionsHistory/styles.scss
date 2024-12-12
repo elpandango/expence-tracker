@@ -2,19 +2,9 @@
   width: 100%;
 
   .transactions-block {
-    max-height: 400px;
+    max-height: 335px;
     overflow-y: auto;
     padding-right: 10px;
-  }
-
-  .items-list {
-    li {
-      margin-bottom: 20px;
-
-      &:last-child {
-        margin-bottom: 0;
-      }
-    }
   }
 
   .empty-message {
@@ -23,5 +13,10 @@
     font-size: 16px;
     margin-top: 20px;
     white-space: pre-wrap;
+  }
+
+  .transactions-date {
+    padding: 10px 0;
+    background-color: var(--bg-color);
   }
 }

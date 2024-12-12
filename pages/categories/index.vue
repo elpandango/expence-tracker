@@ -1,14 +1,6 @@
 <template>
-  <div>
-    <h1>Manage Categories</h1>
-
-    <form @submit.prevent="addCategory">
-      <input
-       v-model="newCategoryName"
-       placeholder="New Category"
-       required/>
-      <button type="submit">Add Category</button>
-    </form>
+  <div class="categories-page">
+    <h1>{{ $t('components.categoriesPage.pageTitleText') }}</h1>
 
     <div class="categories-list">
       <Category
@@ -63,3 +55,7 @@ onMounted(async () => {
   emitter.emit('ui:stopLoading', 'default');
 });
 </script>
+
+<style
+ lang="scss"
+ src="./styles.scss"></style>
