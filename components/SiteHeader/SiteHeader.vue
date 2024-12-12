@@ -67,31 +67,36 @@
       <div class="header-menu">
         <NuxtLink
          to="/"
-         class="menu-link">
+         class="menu-link"
+         @click="closeMenu">
           <span class="icon material-symbols-outlined">home</span>
           {{ $t('components.menuList.dashboard') }}
         </NuxtLink>
         <NuxtLink
          to="/cards"
-         class="menu-link">
+         class="menu-link"
+         @click="closeMenu">
           <span class="icon material-symbols-outlined">credit_card</span>
           {{ $t('components.menuList.myCards') }}
         </NuxtLink>
         <NuxtLink
          to="/transactions"
-         class="menu-link">
+         class="menu-link"
+         @click="closeMenu">
           <span class="icon material-symbols-outlined">swap_horiz</span>
           {{ $t('components.menuList.transactions') }}
         </NuxtLink>
         <NuxtLink
          to="/statistics"
-         class="menu-link">
+         class="menu-link"
+         @click="closeMenu">
           <span class="icon material-symbols-outlined">bar_chart</span>
           {{ $t('components.menuList.statistics') }}
         </NuxtLink>
         <NuxtLink
          to="/profile"
-         class="menu-link">
+         class="menu-link"
+         @click="closeMenu">
           <span class="icon material-symbols-outlined">account_circle</span>
           {{ $t('components.menuList.profile') }}
         </NuxtLink>
@@ -103,7 +108,8 @@
         </button>
         <NuxtLink
          to="/categories"
-         class="menu-link">
+         class="menu-link"
+         @click="closeMenu">
           <span class="icon material-symbols-outlined">category</span>
           {{ $t('components.menuList.categories') }}
         </NuxtLink>
