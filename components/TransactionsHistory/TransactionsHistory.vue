@@ -8,14 +8,18 @@
      v-else
      class="transactions-block">
       <template v-if="financeStore.transactionsResponse?.transactions?.length > 0">
-        <ul class="items-list">
-          <Transaction
-           v-for="expense in financeStore.transactionsResponse.transactions"
-           :key="expense._id"
-           tag="li"
-           :transaction="expense"
+        <Card
+         class="mar-b-4"
+         v-for="transactionsList in financeStore.transactionsResponse.transactions"
+         :key="transactionsList.date"
+         :with-header="true">
+          <template v-slot:header>{{ useFormatDate(transactionsList.date) }}</template>
+          <TransactionExtended
+           v-for="dateTransaction in transactionsList.transactions"
+           :key="dateTransaction._id"
+           :transaction="dateTransaction"
           />
-        </ul>
+        </Card>
       </template>
       <template v-else>
         <p class="empty-message">{{ $t('components.transactionsHistory.emptyListText') }}</p>
@@ -29,6 +33,7 @@
  lang="ts">
 import {useFinanceStore} from "~/stores/finance";
 import {useUIStore} from "~/stores/ui";
+import {useFormatDate} from "~/use/useFormatDate";
 
 const financeStore = useFinanceStore();
 const uiStore = useUIStore();

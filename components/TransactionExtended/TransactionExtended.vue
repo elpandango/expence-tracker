@@ -1,40 +1,42 @@
 <template>
   <component
    :is="tag"
-   class="transaction-item">
-    <template v-if="transaction?.category?.icon">
-      <span
-       class="category-icon material-symbols-outlined"
-       :style="{ backgroundColor: transaction?.category?.color }">{{ transaction.category.icon }}</span>
-    </template>
-    <template v-else-if="transaction?.type === 'deposit'">
-      <span
-       class="category-icon material-symbols-outlined"
-       :style="{ backgroundColor: '#4CAF50' }">payments</span>
-    </template>
-
+   class="transaction-item"
+   :class="[showActions ? 'show-actions' : '']">
     <div class="content-block">
       <div class="transaction-description">
-        <div class="transaction-amount"
-             :class="[transaction.type === 'deposit' ? 'green' : 'red']">{{ transaction.amount }} $
-        </div>
-        <div class="category-name">{{ categoryName }}</div>
-        <div
-         v-if="transaction.source === 'card' && transaction.type === 'deposit'"
-         class="transaction-info">
-          Card number <strong>{{ transaction.number }}</strong> was replenished
-        </div>
         <div
          v-if="transaction.description"
          class="transaction-info">
           {{ transaction.description }}
         </div>
-        <div class="transaction-date">{{ formattedDate }}</div>
       </div>
-      <div
-       class="transaction-amount"
-       :class="[transaction.type === 'deposit' ? 'green' : 'red']">{{ transaction.amount }} $
+
+      <div class="right-side">
+        <div
+         class="transaction-amount"
+         :class="[transaction.type === 'deposit' ? 'green' : 'red']">{{ transaction.amount.toFixed(2) }} $
+        </div>
+        <div class="category">
+          <template v-if="transaction?.category?.icon">
+      <span
+       class="category-icon material-symbols-outlined"
+       :style="{ backgroundColor: transaction?.category?.color }">{{ transaction.category.icon }}</span>
+          </template>
+          <template v-else-if="transaction?.type === 'deposit'">
+      <span
+       class="category-icon material-symbols-outlined"
+       :style="{ backgroundColor: '#4CAF50' }">payments</span>
+          </template>
+          <div class="category-name">{{ categoryName }}</div>
+        </div>
+        <div
+         v-if="showActions"
+         class="action-menu">
+          <span class="material-symbols-outlined">more_vert</span>
+        </div>
       </div>
+
     </div>
   </component>
 </template>
@@ -42,7 +44,6 @@
 <script
  setup
  lang="ts">
-import {useFormatDate} from "~/use/useFormatDate";
 
 const props = defineProps({
   transaction: {
@@ -51,10 +52,13 @@ const props = defineProps({
   tag: {
     type: String,
     default: 'div'
+  },
+  showActions: {
+    type: Boolean,
+    default: false
   }
 });
 
-const formattedDate = useFormatDate(props.transaction?.date);
 const categoryName = computed(() => {
   if (props.transaction?.type === 'deposit') {
     const type = props.transaction.source === 'card' ? '(Card)' : '(Cash)';

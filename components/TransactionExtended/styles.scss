@@ -3,26 +3,29 @@
   justify-content: space-between;
   align-items: flex-start;
   width: 100%;
+  border-bottom: 1px solid var(--input-border-color);
+  padding: 10px 0;
 
   @media only screen and (max-width: 640px) {
     flex-wrap: wrap;
   }
 
-  .category-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-right: 20px;
-
-    @media only screen and (max-width: 640px) {
-      width: 60px;
-      height: 60px;
-      margin-right: 0;
-      margin-bottom: 12px;
+  &.show-actions {
+    .right-side {
+      padding-right: 20px;
     }
+  }
+
+  &:first-child {
+    padding-top: 0;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .transaction-info {
+    font-size: 18px;
   }
 
   .content-block {
@@ -30,50 +33,57 @@
     align-items: center;
     justify-content: space-between;
     flex: 1;
+  }
 
-    @media only screen and (max-width: 640px) {
-     flex: auto;
-      width: 100%;
-    }
+  .transaction-description {
+    max-width: 80%;
+  }
 
-    .transaction-description {
-      .transaction-amount {
-        display: none;
-        margin-bottom: 12px;
-        @media only screen and (max-width: 640px) {
-          display: block;
-        }
-      }
-    }
+  .right-side {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
 
-    .category-name {
-      font-size: 20px;
-      font-weight: 500;
-      margin-bottom: 8px;
-    }
+  .category {
+    display: flex;
+    align-items: center;
+  }
 
-    .transaction-info {
-      margin-bottom: 8px;
-    }
+  .category-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 4px;
+  }
 
-    .transaction-date {
-      font-size: 14px;
-    }
+  .category-name {
+    font-size: 14px;
   }
 
   .transaction-amount {
     font-size: 20px;
-    font-weight: 600;
-
-    @media only screen and (max-width: 640px) {
-      display: none;
-    }
+    text-align: right;
+    margin-bottom: 6px;
 
     &.green {
       color: var(--green-100);
     }
+
     &.red {
       color: var(--red-100);
     }
+  }
+
+  .action-menu {
+    position: absolute;
+    right: -15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
   }
 }

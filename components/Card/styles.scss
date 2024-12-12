@@ -1,5 +1,4 @@
 .card {
-  padding: 20px;
   width: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -10,7 +9,24 @@
   border-width: var(--border-width);
   border-color: var(--border-color);
 
+  &.with-header {
+    .card-header {
+      width: 100%;
+      font-weight: 500;
+      padding: 20px;
+      background-color: var(--bg-color);
+      border-radius: var(--border-radius) var(--border-radius) 0 0;
+    }
+  }
+
   &.with-scroll {
-    padding: 20px 10px 20px 20px;
+    .card-content {
+      padding: 20px 10px 20px 20px;
+    }
+  }
+
+  .card-content {
+    width: 100%;
+    padding: 20px;
   }
 }

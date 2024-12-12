@@ -7,7 +7,7 @@ export const groupTransactions = (transactions, groupBy, top) => {
         totalAmount: 0,
       };
     }
-    acc[groupKey].totalAmount += transaction.amount;
+    acc[groupKey].totalAmount += parseFloat(transaction.amount);
     return acc;
   }, {});
 
@@ -15,7 +15,7 @@ export const groupTransactions = (transactions, groupBy, top) => {
 
   if (top) {
     groupedArray = groupedArray
-      .sort((a, b) => b.totalAmount - a.totalAmount)
+      .sort((a, b) => Math.abs(b.totalAmount) - Math.abs(a.totalAmount))
       .slice(0, parseInt(top, 10));
   }
 

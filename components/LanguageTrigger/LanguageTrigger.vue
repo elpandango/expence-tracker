@@ -24,13 +24,13 @@ const {locale} = useI18n();
 
 const locales = [
   {label: 'EN 🇺🇸', value: 'en'},
-  // {label: 'RU 🇷🇺', value: 'ru'},
+  {label: 'RU 🇷🇺', value: 'ru'},
   {label: 'DE 🇩🇪', value: 'de'},
 ];
 
 const localeFlags: Record<string, string> = {
   en: '🇺🇸',
-  // ru: '🇷🇺',
+  ru: '🇷🇺',
   de: '🇩🇪',
 };
 

@@ -134,6 +134,9 @@ export const ru = {
     statisticsPage: {
       pageTitleText: 'Статистика',
     },
+    categoriesPage: {
+      pageTitleText: 'Все категории',
+    },
     transactionsPage: {
       pageTitleText: 'Транзакции',
       emptyListText: 'Похоже, ваш список транзакций пуст. \nПочему бы не создать его сейчас?',

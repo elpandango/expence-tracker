@@ -114,15 +114,29 @@ export default defineEventHandler(async (event) => {
     );
   }
 
-  allTransactions.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const groupedTransactions = allTransactions.reduce((acc, transaction) => {
+    const transactionDate = new Date(transaction.date).toISOString().split('T')[0];
+    if (!acc[transactionDate]) {
+      acc[transactionDate] = [];
+    }
+    acc[transactionDate].push(transaction);
+    return acc;
+  }, {});
 
-  const totalItems = allTransactions.length;
-  allTransactions = allTransactions.slice((+page - 1) * perPage, +page * perPage);
+  const groupedArray = Object.entries(groupedTransactions)
+    .map(([date, transactions]) => ({
+      date,
+      transactions,
+    }))
+    .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  const totalItems = groupedArray.length;
+  const paginatedResult = groupedArray.slice((+page - 1) * perPage, +page * perPage);
 
   return {
     status: 200,
-    transactions: allTransactions,
-    totalItems: totalItems,
+    transactions: paginatedResult,
+    totalItems,
     currentPage: parseInt(page),
     hasNextPage: perPage * +page < totalItems,
     hasPrevPage: +page > 1,
