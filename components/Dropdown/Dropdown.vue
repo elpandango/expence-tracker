@@ -69,6 +69,10 @@ const props = defineProps({
 const isOpen = ref(false);
 const selectedOption = ref(props.modelValue);
 
+watch(() => props.modelValue, (newValue) => {
+  selectedOption.value = newValue;
+}, { immediate: true });
+
 const toggleDropdown = () => {
   isOpen.value = !isOpen.value;
 };

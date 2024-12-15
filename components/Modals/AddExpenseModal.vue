@@ -148,7 +148,7 @@ const handleAddExpense = async () => {
     description: expense.description,
     amount: expense.amount,
     date: expense.date,
-    category: expense.category.value,
+    category: expense.category?.value || null,
   });
 };
 

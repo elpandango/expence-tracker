@@ -15,6 +15,7 @@ export const useFinanceStore = defineStore('finance', () => {
   const cash = ref([]);
   const cardsList = ref([]);
   const transactionsResponse = ref([]);
+  const editingTransaction = ref({});
 
   const loadingStates = ref<Record<string, boolean>>({
     transactions: false,
@@ -72,8 +73,8 @@ export const useFinanceStore = defineStore('finance', () => {
 
   const fetchCash = async () => {
     setLoading('cash', true);
-    const {deposits} = await repositoryFactory.get('Balance').getCashBalance();
-    cash.value = deposits;
+    const {balance} = await repositoryFactory.get('Balance').getCashBalance();
+    cash.value = balance;
     setLoading('cash', false);
   };
 
@@ -189,6 +190,55 @@ export const useFinanceStore = defineStore('finance', () => {
     );
   };
 
+  const deleteTransaction = async (id: string, source: string, sourceCategory: string) => {
+    emitter.emit('ui:startLoading', 'default');
+
+    try {
+      await repositoryFactory.get('Transactions').deleteTransaction(id, source, sourceCategory);
+      await Promise.all([await fetchCards(), await fetchCash(), await fetchTransactions()]);
+      emitter.emit('ui:showToast', {
+        message: 'Transaction deleted successfully.',
+        type: 'success',
+      });
+    } catch (err) {
+      emitter.emit('ui:showToast', {
+        message: `Transaction deletion failed. ${err?.message}`,
+        type: 'error',
+      });
+    } finally {
+      emitter.emit('ui:stopLoading', 'default');
+    }
+  };
+
+  const updateTransaction = async (id: string, payload: {
+    name: string;
+    number: string;
+    balance: number;
+    currency: string;
+    description: string;
+    source: string;
+    sourceCategory: string;
+    type: string;
+  }) => {
+    emitter.emit('ui:startLoading', 'default');
+
+    try {
+      await repositoryFactory.get('Transactions').updateTransaction(id, payload);
+      await Promise.all([await fetchCards(), await fetchCash(), await fetchTransactions()]);
+      emitter.emit('ui:showToast', {
+        message: 'Transaction updated successfully.',
+        type: 'success',
+      });
+    } catch (err) {
+      emitter.emit('ui:showToast', {
+        message: `Transaction update failed. ${err?.message}`,
+        type: 'error',
+      });
+    } finally {
+      emitter.emit('ui:stopLoading', 'default');
+    }
+  };
+
   const fetchDataIfNeeded = async (data: any, fetchFunction: any) => {
     if (isEmpty(data)) {
       await fetchFunction();
@@ -203,23 +253,31 @@ export const useFinanceStore = defineStore('finance', () => {
     await fetchDataIfNeeded(cash.value, fetchCash);
   };
 
+  const resetEditingTransaction = () => {
+    editingTransaction.value = {};
+  };
+
   return {
     expenses,
     cardsList,
     cash,
     transactionsResponse,
+    editingTransaction,
     setLoading,
     addExpense,
     addFunds,
     addCard,
     updateCard,
+    updateTransaction,
     deleteCard,
+    deleteTransaction,
     fetchCards,
     fetchCash,
     fetchTransactions,
     fetchCardsIfNeeded,
     fetchCashIfNeeded,
     fetchFilteredTransactions,
-    loadingStates
+    loadingStates,
+    resetEditingTransaction
   };
 });

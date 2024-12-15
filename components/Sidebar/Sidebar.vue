@@ -70,11 +70,14 @@
  lang="ts">
 import {useTheme} from "~/use/useTheme";
 import {useUIStore} from "~/stores/ui";
+import {useFinanceStore} from "~/stores/finance";
 
 const {isDark, toggleTheme} = useTheme();
 
+const financeStore = useFinanceStore();
 const uiStore = useUIStore();
 const handleNewExpense = () => {
+  financeStore.resetEditingTransaction();
   uiStore.openAddExpenseModal();
 }
 </script>

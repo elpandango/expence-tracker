@@ -23,13 +23,19 @@ export default defineEventHandler(async (event) => {
     throw createError({statusCode: 400, message: 'Invalid cardId'});
   }
 
-  let categoryId = category;
+  let categoryId = category?.value || category;
+
   if (!categoryId) {
     const otherCategory = await CategoryModel.findOne({ name: 'Other (Expenses)' });
     if (!otherCategory) {
       throw createError({ statusCode: 404, message: 'Category "Other" not found' });
     }
     categoryId = otherCategory._id;
+  } else {
+    const categoryFromDb = await CategoryModel.findById(categoryId);
+    if (!categoryFromDb) {
+      throw createError({ statusCode: 400, message: `Category with ID "${categoryId}" not found` });
+    }
   }
 
   let maskedCardNumber = null;
@@ -46,14 +52,15 @@ export default defineEventHandler(async (event) => {
     maskedCardNumber = card.number;
   } else {
     const cashBalance = await CashBalanceModel.findOne({userId, currency: 'USD'});
+
     if (!cashBalance || cashBalance.amount < numericAmount) {
       throw createError({statusCode: 400, message: 'Insufficient cash balance'});
     }
   }
   const expense = new ExpenseModel({
     userId,
-    cardId,
-    amount,
+    cardId: cardId || null,
+    amount: numericAmount,
     cardNumber: maskedCardNumber,
     description,
     date: date || new Date(),

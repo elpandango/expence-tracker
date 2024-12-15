@@ -8,7 +8,7 @@
     <template v-slot:body>
       <form @submit.prevent>
         <div class="form-row">
-          <div class="dropdown-label">{{ $t('components.modalsContent.addExpenseModal.expenseDateLabelText') }}</div>
+          <div class="dropdown-label">{{ $t('components.modalsContent.addExpenseModal.expensePaymentTypeLabelText') }}</div>
           <Dropdown
            v-model="selectedCard"
            :options="cards"

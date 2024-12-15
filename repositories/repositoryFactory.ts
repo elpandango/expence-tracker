@@ -5,6 +5,7 @@ import ExpenseRepository from "~/repositories/ExpenseRepository";
 import BalanceRepository from "~/repositories/BalanceRepository";
 import CategoriesRepository from "~/repositories/CategoriesRepository";
 import ChartsRepository from "~/repositories/ChartsRepository";
+import TransactionsRepository from "~/repositories/TransactionsRepository";
 
 const repositories: Record<string, any> = {
     'Auth': AuthRepository,
@@ -14,6 +15,7 @@ const repositories: Record<string, any> = {
     'Balance': BalanceRepository,
     'Category': CategoriesRepository,
     'Charts': ChartsRepository,
+    'Transactions': TransactionsRepository,
 }
 export default {
     get: (name: keyof typeof repositories) => repositories[name]
