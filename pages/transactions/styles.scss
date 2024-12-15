@@ -11,7 +11,7 @@
 
   .page-filters {
     width: 100%;
-    max-width: 600px;
+    max-width: 860px;
   }
 
   .dropdown-label {
@@ -33,7 +33,7 @@
   }
 
   .filter-item {
-    width: 48%;
+    width: calc(50% - 6px);
 
     @media only screen and (max-width: 540px) {
       width: 100%;

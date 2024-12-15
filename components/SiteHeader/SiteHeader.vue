@@ -131,8 +131,10 @@ import {useRouter} from 'vue-router';
 import {useTheme} from "~/use/useTheme";
 import {useUIStore} from "~/stores/ui";
 import {useUserStore} from '~/stores/user';
+import {useFinanceStore} from "~/stores/finance";
 import BaseInput from "~/components/Forms/Inputs/BaseInput.vue";
 
+const financeStore = useFinanceStore();
 const uiStore = useUIStore();
 const userStore = useUserStore();
 const searchValue = ref('');
@@ -165,6 +167,7 @@ const closeMenu = () => {
 };
 
 const handleNewExpense = () => {
+  financeStore.resetEditingTransaction();
   uiStore.openAddExpenseModal();
   closeMenu();
 };

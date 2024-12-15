@@ -24,6 +24,7 @@ export default defineEventHandler(async (event) => {
 
   const expenses = await ExpenseModel.find({userId})
     .populate('category', 'name icon color')
+    .populate('cardId', 'number')
     .lean();
 
   const cashDeposits = await CashDepositModel.find({userId}).lean();
@@ -42,7 +43,7 @@ export default defineEventHandler(async (event) => {
     description: expense.description,
     source: expense.cardId ? 'card' : 'cash',
     cardId: expense.cardId,
-    number: expense.number,
+    number: expense?.cardId?.number ?? null,
   }));
 
   const mappedCashTransactions = cashDeposits.map((cash) => ({
@@ -126,7 +127,7 @@ export default defineEventHandler(async (event) => {
   const groupedArray = Object.entries(groupedTransactions)
     .map(([date, transactions]) => ({
       date,
-      transactions,
+      transactions: transactions.sort((a, b) => new Date(b.date) - new Date(a.date)),
     }))
     .sort((a, b) => new Date(b.date) - new Date(a.date));
 

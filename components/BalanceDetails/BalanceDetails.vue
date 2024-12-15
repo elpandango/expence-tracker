@@ -35,14 +35,12 @@ const uiStore = useUIStore();
 const financeStore = useFinanceStore();
 
 const handleAddFunds = () => {
+  financeStore.resetEditingTransaction();
   uiStore.openAddFundsModal();
 }
 
 const cashTotalBalance = computed(() => {
-  const cash = financeStore.cash || [];
-  return cash.reduce((acc, currentValue) => {
-    return acc + +currentValue?.amount;
-  }, 0);
+  return financeStore.cash;
 });
 
 const cardsTotalBalance = computed(() => {

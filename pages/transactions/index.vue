@@ -6,90 +6,99 @@
       <BalanceDetails/>
     </Card>
 
-    <div class="page-filters">
-      <div class="filters-row">
-        <div class="filter-item">
-          <div class="dropdown-label">{{ $t('components.transactionsPage.filters.transactionLabelText') }}</div>
-          <Dropdown
-           v-model="filters.type"
-           :options="transactionTypes"
-           type="form-dropdown"
-           placeholder="Select transaction type"/>
-        </div>
+    <Accordion
+     type="basic"
+     class="mar-b-1">
+      <template v-slot:header>
+        <div class="link-text">Filters</div>
+      </template>
+      <template v-slot:accordion-body>
+        <div class="page-filters">
+          <div class="filters-row">
+            <div class="filter-item">
+              <div class="dropdown-label">{{ $t('components.transactionsPage.filters.transactionLabelText') }}</div>
+              <Dropdown
+               v-model="filters.type"
+               :options="transactionTypes"
+               type="form-dropdown"
+               placeholder="Select transaction type"/>
+            </div>
 
-        <div class="filter-item">
-          <div class="dropdown-label">{{ $t('components.transactionsPage.filters.sourceLabelText') }}</div>
-          <Dropdown
-           v-model="filters.source"
-           :options="sources"
-           type="form-dropdown"
-           placeholder="Select source"/>
-        </div>
+            <div class="filter-item">
+              <div class="dropdown-label">{{ $t('components.transactionsPage.filters.sourceLabelText') }}</div>
+              <Dropdown
+               v-model="filters.source"
+               :options="sources"
+               type="form-dropdown"
+               placeholder="Select source"/>
+            </div>
 
-        <div
-         class="filter-item"
-         v-if="filters?.source?.value === 'card'">
-          <div class="dropdown-label">{{ $t('components.transactionsPage.filters.cardLabelText') }}</div>
-          <Dropdown
-           v-model="filters.cardId"
-           :options="cards"
-           type="form-dropdown"
-           placeholder="Select card"/>
-        </div>
-      </div>
-      <div class="filters-row">
+            <div
+             class="filter-item"
+             v-if="filters?.source?.value === 'card'">
+              <div class="dropdown-label">{{ $t('components.transactionsPage.filters.cardLabelText') }}</div>
+              <Dropdown
+               v-model="filters.cardId"
+               :options="cards"
+               type="form-dropdown"
+               placeholder="Select card"/>
+            </div>
+          </div>
+          <div class="filters-row">
 
-        <div class="filter-item">
-          <div class="dropdown-label">{{ $t('components.transactionsPage.filters.startDataLabelText') }}</div>
-          <Datepicker
-           v-model="filters.startDate"
-           placeholder="Select start date"/>
-        </div>
+            <div class="filter-item">
+              <div class="dropdown-label">{{ $t('components.transactionsPage.filters.startDataLabelText') }}</div>
+              <Datepicker
+               v-model="filters.startDate"
+               placeholder="Select start date"/>
+            </div>
 
-        <div class="filter-item">
-          <div class="dropdown-label">{{ $t('components.transactionsPage.filters.endDataLabelText') }}</div>
-          <Datepicker
-           v-model="filters.endDate"
-           placeholder="Select end date"/>
-        </div>
-      </div>
-      <div class="filters-row">
-        <div class="filter-item">
-          <BaseInput
-           v-model="filters.minAmount"
-           type="number"
-           :placeholder="$t('components.transactionsPage.filters.minAmountPlaceholderText')"
-           :label="$t('components.transactionsPage.filters.minAmountLabelText')"/>
-        </div>
+            <div class="filter-item">
+              <div class="dropdown-label">{{ $t('components.transactionsPage.filters.endDataLabelText') }}</div>
+              <Datepicker
+               v-model="filters.endDate"
+               placeholder="Select end date"/>
+            </div>
+          </div>
+          <div class="filters-row">
+            <div class="filter-item">
+              <BaseInput
+               v-model="filters.minAmount"
+               type="number"
+               :placeholder="$t('components.transactionsPage.filters.minAmountPlaceholderText')"
+               :label="$t('components.transactionsPage.filters.minAmountLabelText')"/>
+            </div>
 
-        <div class="filter-item">
-          <BaseInput
-           v-model="filters.maxAmount"
-           type="number"
-           :placeholder="$t('components.transactionsPage.filters.maxAmountPlaceholderText')"
-           :label="$t('components.transactionsPage.filters.maxAmountLabelText')"/>
+            <div class="filter-item">
+              <BaseInput
+               v-model="filters.maxAmount"
+               type="number"
+               :placeholder="$t('components.transactionsPage.filters.maxAmountPlaceholderText')"
+               :label="$t('components.transactionsPage.filters.maxAmountLabelText')"/>
+            </div>
+          </div>
+          <div class="filters-row full-length">
+            <div class="filter-item">
+              <BaseInput
+               v-model="filters.description"
+               :placeholder="$t('components.transactionsPage.filters.searchDescriptionPlaceholderText')"
+               :label="$t('components.transactionsPage.filters.searchDescriptionLabelText')"/>
+            </div>
+          </div>
+          <div class="filters-row btn-block">
+            <BaseButton
+             @click="updateTransactions"
+             size="medium">{{ $t('components.buttons.applyFilters') }}
+            </BaseButton>
+            <BaseButton
+             @click="clearFilters"
+             size="medium"
+             variant="transparent">{{ $t('components.buttons.clearFilters') }}
+            </BaseButton>
+          </div>
         </div>
-      </div>
-      <div class="filters-row full-length">
-        <div class="filter-item">
-          <BaseInput
-           v-model="filters.description"
-           :placeholder="$t('components.transactionsPage.filters.searchDescriptionPlaceholderText')"
-           :label="$t('components.transactionsPage.filters.searchDescriptionLabelText')"/>
-        </div>
-      </div>
-      <div class="filters-row btn-block">
-        <BaseButton
-         @click="updateTransactions"
-         size="medium">{{ $t('components.buttons.applyFilters') }}
-        </BaseButton>
-        <BaseButton
-         @click="clearFilters"
-         size="medium"
-         variant="transparent">{{ $t('components.buttons.clearFilters') }}
-        </BaseButton>
-      </div>
-    </div>
+      </template>
+    </Accordion>
 
     <Preloader
      height="50vh"
@@ -106,6 +115,8 @@
          :key="dateTransaction._id"
          :transaction="dateTransaction"
          :show-actions="true"
+         @delete-clicked="handleDeleteTransactionOpenModal(dateTransaction)"
+         @edit-clicked="handleEditTransactionOpenModal(dateTransaction)"
         />
       </Card>
 
@@ -122,6 +133,14 @@
        :data="financeStore.transactionsResponse"
        @page-changed="changePage"/>
     </template>
+
+    <template v-if="isDeleteTransactionModalOpen">
+      <DeleteTransactionModal
+       :isOpen="isDeleteTransactionModalOpen"
+       @delete="handleDeleteTransaction"
+       @update:isOpen="isDeleteTransactionModalOpen = $event"
+      />
+    </template>
   </div>
 </template>
 
@@ -134,10 +153,11 @@ import {useSeoConfig} from "~/use/useSeoConfig";
 import {useFinanceStore} from "~/stores/finance";
 import {useUIStore} from "~/stores/ui";
 import {useCardsList} from "~/use/useCardList";
+import {useFormatDate} from "~/use/useFormatDate";
 import {emitter} from "~/classes/uiEventBus";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
 import BaseInput from "~/components/Forms/Inputs/BaseInput.vue";
-import {useFormatDate} from "~/use/useFormatDate";
+import DeleteTransactionModal from "~/components/Modals/DeleteTransactionModal.vue";
 
 const seoMeta = useSeoConfig();
 useSeoMeta(seoMeta.value);
@@ -147,6 +167,13 @@ const uiStore = useUIStore();
 const currentPage = ref(1);
 const totalPages = ref(1);
 const route = useRoute();
+
+const isDeleteTransactionModalOpen = ref(false);
+const objectToDelete = ref({
+  id: null,
+  source: null,
+  sourceCategory: null,
+});
 
 const filters = ref({
   type: null,
@@ -218,6 +245,26 @@ const changePage = async (page: number) => {
     currentPage.value = page;
     await updateTransactions();
   }
+};
+
+const handleDeleteTransactionOpenModal = async (transaction: object) => {
+  isDeleteTransactionModalOpen.value = true;
+
+  objectToDelete.value = {
+    id: transaction.id ?? null,
+    source: transaction.source ?? null,
+    sourceCategory: transaction?.sourceCategory?.toLowerCase() ?? null,
+  }
+};
+
+const handleDeleteTransaction = async () => {
+  isDeleteTransactionModalOpen.value = false;
+  await financeStore.deleteTransaction(objectToDelete.value.id, objectToDelete.value.source, objectToDelete.value.sourceCategory);
+};
+
+const handleEditTransactionOpenModal = async (transaction: object) => {
+  financeStore.editingTransaction.value = {...transaction};
+  uiStore.openAddExpenseModal();
 };
 
 onMounted(async () => {

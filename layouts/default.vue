@@ -17,19 +17,12 @@
           <main></main>
           <slot></slot>
 
-          <template v-if="isAddExpenseModalOpen">
-            <AddExpenseModal
-             :isOpen="isAddExpenseModalOpen"
-             @close="closeModal('expense')"
-             @update:isOpen="isModalOpen = $event"
-            />
-          </template>
-
-          <template v-if="isAddFundsModalOpen">
-            <AddFundsModal
-             :isOpen="isAddFundsModalOpen"
-             @close="closeModal"
-             @update:isOpen="isModalOpen = $event"
+          <template v-if="isAddExpenseModalOpen || isAddFundsModalOpen">
+            <AddEditTransactionModal
+             :transaction-type="isAddExpenseModalOpen ? 'addExpense' : 'addFunds'"
+             :isOpen="isAddExpenseModalOpen ? isAddExpenseModalOpen : isAddFundsModalOpen"
+             @close="() => closeModal(isAddExpenseModalOpen ? 'expense' : 'funds')"
+             @update:isOpen="(value) => isAddExpenseModalOpen ? (isAddExpenseModalOpen = value) : (isAddFundsModalOpen = value)"
             />
           </template>
         </template>
@@ -42,17 +35,14 @@
  setup
  lang="ts">
 import '~/assets/scss/global.scss';
-import {ref} from "vue";
 import {useUserStore} from '~/stores/user';
 import {useUIStore} from "~/stores/ui";
-import AddExpenseModal from "~/components/Modals/AddExpenseModal.vue";
-import AddFundsModal from "~/components/Modals/AddFundsModal.vue";
+import AddEditTransactionModal from "~/components/Modals/AddEditTransactionModal.vue";
 
 const route = useRoute();
 const router = useRouter();
 const userStore = useUserStore();
 const uiStore = useUIStore();
-const isModalOpen = ref(false);
 
 onBeforeMount(async () => {
   if (uiStore.state.isAuthLoading) {

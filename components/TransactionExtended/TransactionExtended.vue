@@ -3,6 +3,7 @@
    :is="tag"
    class="transaction-item"
    :class="[showActions ? 'show-actions' : '']">
+
     <div class="content-block">
       <div class="transaction-description">
         <div
@@ -29,11 +30,24 @@
        :style="{ backgroundColor: '#4CAF50' }">payments</span>
           </template>
           <div class="category-name">{{ categoryName }}</div>
+          <div v-if="transaction.number">{{transaction.number}}</div>
         </div>
         <div
          v-if="showActions"
+         @click="toggleActions"
+         ref="actions"
          class="action-menu">
           <span class="material-symbols-outlined">more_vert</span>
+          <div
+           class="actions-list"
+           v-if="isOpen">
+            <button class="action-btn"
+                    @click="handleEditTransaction">Edit Transaction</button>
+            <button
+             class="action-btn"
+             @click="handleDeleteTransaction">Delete Transaction
+            </button>
+          </div>
         </div>
       </div>
 
@@ -44,6 +58,8 @@
 <script
  setup
  lang="ts">
+
+import {ref} from "vue";
 
 const props = defineProps({
   transaction: {
@@ -59,6 +75,16 @@ const props = defineProps({
   }
 });
 
+const emit = defineEmits(['delete-clicked', 'edit-clicked']);
+
+const isOpen = ref(false);
+const actions = ref(null);
+const handleClickOutside = (event: any) => {
+  if (actions.value && !actions.value.contains(event.target)) {
+    isOpen.value = false;
+  }
+};
+
 const categoryName = computed(() => {
   if (props.transaction?.type === 'deposit') {
     const type = props.transaction.source === 'card' ? '(Card)' : '(Cash)';
@@ -67,6 +93,21 @@ const categoryName = computed(() => {
     return props.transaction?.category?.name;
   }
 });
+
+const toggleActions = () => {
+  isOpen.value = !isOpen.value;
+};
+
+const handleDeleteTransaction = () => {
+  emit('delete-clicked');
+};
+
+const handleEditTransaction = () => {
+  emit('edit-clicked');
+};
+
+onMounted(() => document.addEventListener('click', handleClickOutside));
+onBeforeUnmount(() => document.removeEventListener('click', handleClickOutside));
 </script>
 
 <style

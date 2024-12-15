@@ -1,17 +1,24 @@
 import { defineEventHandler, createError, getCookie } from 'h3';
-import { CashDepositModel } from '~/server/models/CashDepositModel';
+import { CashBalanceModel } from '~/server/models/CashBalanceModel';
 
 export default defineEventHandler(async (event) => {
   const userId = getCookie(event, 'userId');
 
-  const deposits = await CashDepositModel.find({ userId }).sort({ date: -1 });
-
-  if (!deposits) {
+  if (!userId) {
     throw createError({
-      statusCode: 404,
-      message: 'No cash deposits found.',
+      statusCode: 401,
+      message: 'User not authenticated.',
     });
   }
 
-  return { status: 200, deposits };
+  const cashBalance = await CashBalanceModel.findOne({ userId, currency: 'USD' });
+
+  if (!cashBalance) {
+    throw createError({
+      statusCode: 404,
+      message: 'Cash balance not found.',
+    });
+  }
+
+  return { status: 200, balance: cashBalance.amount };
 });

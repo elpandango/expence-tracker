@@ -176,7 +176,19 @@ export const en = {
         modalAddCardText: 'Add a New Card',
         modalEditCardText: 'Save Changes',
       },
+      addEditTransactionModal: {
+        addTitleText: 'Adding',
+        editTitleText: 'Editing',
+        paymentTypeLabel: 'Payment type',
+        descriptionLabelText: 'Description',
+        amountLabelText: 'Amount',
+        dateLabelText: 'Date',
+        categoryLabelText: 'Category',
+        saveBtnText: 'Save',
+        editBtnText: 'Edit',
+      },
       addExpenseModal: {
+        typeLabel: 'Expense',
         addTitleText: 'Adding a New Expense',
         modalAddExpenseText: 'Add a New Expense',
         expensePaymentTypeLabelText: 'Payment type',
@@ -192,6 +204,7 @@ export const en = {
         deleteConfirmText: 'Are you sure you want to delete this card?',
       },
       addFundsModal: {
+        typeLabel: 'Add Funds',
         addTitleText: 'Adding Funds',
         fundsAmountLabelText: 'Amount of funds',
         fundsDateLabelText: 'Date',
