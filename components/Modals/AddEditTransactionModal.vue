@@ -75,6 +75,7 @@
           <div class="dropdown-label">{{ $t('components.modalsContent.addEditTransactionModal.dateLabelText') }}</div>
           <Datepicker
            height="50px"
+           :max-date="new Date().toISOString().substring(0, 10)"
            v-model="transaction.date"/>
         </div>
         <div

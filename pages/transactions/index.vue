@@ -50,14 +50,19 @@
               <div class="dropdown-label">{{ $t('components.transactionsPage.filters.startDataLabelText') }}</div>
               <Datepicker
                v-model="filters.startDate"
-               placeholder="Select start date"/>
+               placeholder="Select start date"
+               :max-date="filters.endDate"
+              />
             </div>
 
             <div class="filter-item">
               <div class="dropdown-label">{{ $t('components.transactionsPage.filters.endDataLabelText') }}</div>
               <Datepicker
                v-model="filters.endDate"
-               placeholder="Select end date"/>
+               placeholder="Select end date"
+               :max-date="new Date().toISOString().substring(0, 10)"
+               :min-date="filters.startDate"
+              />
             </div>
           </div>
           <div class="filters-row">

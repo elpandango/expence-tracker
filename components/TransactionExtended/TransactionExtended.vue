@@ -19,17 +19,19 @@
          :class="[transaction.type === 'deposit' ? 'green' : 'red']">{{ transaction.amount.toFixed(2) }} $
         </div>
         <div class="category">
-          <template v-if="transaction?.category?.icon">
+          <div class="category-wrap">
+            <template v-if="transaction?.category?.icon">
       <span
        class="category-icon material-symbols-outlined"
        :style="{ backgroundColor: transaction?.category?.color }">{{ transaction.category.icon }}</span>
-          </template>
-          <template v-else-if="transaction?.type === 'deposit'">
+            </template>
+            <template v-else-if="transaction?.type === 'deposit'">
       <span
        class="category-icon material-symbols-outlined"
        :style="{ backgroundColor: '#4CAF50' }">payments</span>
-          </template>
-          <div class="category-name">{{ categoryName }}</div>
+            </template>
+            <div class="category-name">{{ categoryName }}</div>
+          </div>
           <div class="card-number" v-if="transaction.number">{{transaction.number}}</div>
         </div>
         <div

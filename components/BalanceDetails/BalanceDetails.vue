@@ -1,12 +1,12 @@
 <template>
-  <Preloader v-if="uiStore.state.isLoading || financeStore.loadingStates.cas"/>
+  <Preloader v-if="uiStore.state.isLoading || financeStore.loadingStates.cash"/>
   <div
    v-else
    class="balance-details">
     <div class="total-balance">{{ $t('components.balance.title') }}: <span>{{ totalBalance }}USD</span></div>
     <div class="balance-parts">
       <div class="balance-item balance-cash">{{ $t('components.balance.cash') }}: <strong>{{ cashTotalBalance }}{{
-          financeStore.cash?.currency ?? 'USD'
+          financeStore?.cash?.currency ?? 'USD'
         }}</strong></div>
       <div
        class="balance-item balance-card"
@@ -41,11 +41,12 @@ const handleAddFunds = () => {
 
 const totalBalance = computed(() => {
   const cards = financeStore.cardsList || [];
+  const cash = +financeStore?.cash || 0;
   const cardsBalance = cards.reduce((acc, currentValue) => {
     return acc + +currentValue?.balance;
   }, 0);
 
-  return (financeStore.cash + cardsBalance).toFixed(2);
+  return (cash + cardsBalance).toFixed(2);
 });
 
 const cashTotalBalance = computed(() => {

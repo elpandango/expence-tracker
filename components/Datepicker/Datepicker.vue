@@ -31,8 +31,8 @@
         <div
          v-for="day in daysInMonth"
          :key="day"
-         :class="['calendar-day', { selected: isSelected(day) }]"
-         @click="selectDate(day)"
+         :class="['calendar-day', { selected: isSelected(day), disabled: isDisabled(day) }]"
+         @click="() => !isDisabled(day) && selectDate(day)"
         >
           {{ day }}
         </div>
@@ -58,6 +58,14 @@ const props = defineProps({
   height: {
     type: String,
     default: '40px'
+  },
+  minDate: {
+    type: String,
+    default: null
+  },
+  maxDate: {
+    type: String,
+    default: null
   }
 });
 
@@ -81,6 +89,16 @@ const formattedDate = computed(() => {
    ? `${selectedDate.value.getDate()}/${selectedDate.value.getMonth() + 1}/${selectedDate.value.getFullYear()}`
    : '';
 });
+
+const minDateObj = computed(() => (props.minDate ? new Date(props.minDate) : null));
+const maxDateObj = computed(() => (props.maxDate ? new Date(props.maxDate) : null));
+
+const isDisabled = (day) => {
+  const date = new Date(currentYear.value, currentMonth.value, day);
+  if (minDateObj.value && date < minDateObj.value) return true;
+  if (maxDateObj.value && date > maxDateObj.value) return true;
+  return false;
+};
 
 watch(() => props.modelValue, (newVal) => {
   if (newVal) {
@@ -119,7 +137,7 @@ const nextMonth = () => {
 };
 
 const isSelected = (day) => {
-  return selectedDate.value && selectedDate.value.getDate() === day;
+  return selectedDate.value && selectedDate.value.getDate() === day && selectedDate.value.getMonth() === currentMonth.value && selectedDate.value.getFullYear() === currentYear.value;
 };
 
 const closeCalendar = (event) => {

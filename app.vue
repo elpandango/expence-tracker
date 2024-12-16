@@ -1,6 +1,7 @@
 <template>
   <SvgSprite/>
-  <PreloaderBrand v-if="!isLoaded"/>
+<!--  <PreloaderBrand v-if="!isLoaded"/>-->
+  <PreloaderBrand v-if="uiStore.state.isAuthLoading"/>
   <div>
     <NuxtLayout>
       <NuxtPage/>
@@ -12,7 +13,7 @@
  setup
  lang="ts">
 import SvgSprite from "~/components/svgComponents/SvgSprite.vue";
-import {ref} from "vue";
+import {useUIStore} from "~/stores/ui";
 
 useHead({
   link: [
@@ -30,11 +31,7 @@ useHead({
   ]
 });
 
-const isLoaded = ref(false);
-
-setTimeout(() => {
-  isLoaded.value = true;
-}, 700);
+const uiStore = useUIStore();
 
 </script>
 

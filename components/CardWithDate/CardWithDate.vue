@@ -17,15 +17,19 @@
           <div class="filters-row">
             <Datepicker
              v-model="startDate"
-             placeholder="Select start date"/>
+             :max-date="endDate || maxSelectableDate"
+             placeholder="Select start date"
+            />
             <Datepicker
              v-model="endDate"
-             placeholder="Select end date"/>
+             :min-date="startDate || ''"
+             :max-date="maxSelectableDate"
+             placeholder="Select end date"
+            />
           </div>
 
           <BaseButton @click="applyCustomRange">Apply</BaseButton>
         </div>
-
       </div>
     </div>
 
@@ -33,10 +37,8 @@
   </Card>
 </template>
 
-<script
- setup
- lang="ts">
-import {ref} from 'vue';
+<script setup lang="ts">
+import { ref, computed } from 'vue';
 import Dropdown from "~/components/Dropdown/Dropdown.vue";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
 
@@ -47,60 +49,64 @@ const selectedPeriod = ref({
   label: 'Last 30 days'
 });
 
-const startDate = ref('');
-const endDate = ref('');
+const startDate = ref<string | null>(null);
+const endDate = ref<string | null>(null);
+
+const maxSelectableDate = computed(() =>
+ new Date().toISOString().substring(0, 10)
+);
+
 const periods = [
-  {value: 7, label: 'Last 7 days'},
-  {value: 30, label: 'Last 30 days'},
-  {value: 90, label: 'Last 3 months'},
-  {value: 180, label: 'Last 6 months'},
-  {value: 365, label: 'Last 12 months'},
-  {value: 'custom', label: 'Custom range'},
+  { value: 7, label: 'Last 7 days' },
+  { value: 30, label: 'Last 30 days' },
+  { value: 90, label: 'Last 3 months' },
+  { value: 180, label: 'Last 6 months' },
+  { value: 365, label: 'Last 12 months' },
+  { value: 'custom', label: 'Custom range' },
 ];
 
 const onPeriodChange = () => {
-  let startDate = new Date();
-  const endDate = new Date();
+  let calculatedStartDate = new Date();
+  const calculatedEndDate = new Date();
 
   switch (selectedPeriod.value.value) {
     case 7:
-      startDate.setDate(startDate.getDate() - 7);
+      calculatedStartDate.setDate(calculatedStartDate.getDate() - 7);
       break;
     case 30:
-      startDate.setDate(startDate.getDate() - 30);
+      calculatedStartDate.setDate(calculatedStartDate.getDate() - 30);
       break;
     case 90:
-      startDate.setMonth(startDate.getMonth() - 3);
+      calculatedStartDate.setMonth(calculatedStartDate.getMonth() - 3);
       break;
     case 180:
-      startDate.setMonth(startDate.getMonth() - 6);
+      calculatedStartDate.setMonth(calculatedStartDate.getMonth() - 6);
       break;
     case 365:
-      startDate.setFullYear(startDate.getFullYear() - 1);
+      calculatedStartDate.setFullYear(calculatedStartDate.getFullYear() - 1);
       break;
   }
 
+  startDate.value = calculatedStartDate.toISOString().substring(0, 10);
+  endDate.value = calculatedEndDate.toISOString().substring(0, 10);
+
   emit('date-changed', {
-    startDate: startDate.toISOString().substring(0, 10),
-    endDate: endDate.toISOString().substring(0, 10)
+    startDate: startDate.value,
+    endDate: endDate.value,
   });
 };
 
 const applyCustomRange = () => {
   emit('date-changed', {
     startDate: startDate.value,
-    endDate: endDate.value
+    endDate: endDate.value,
   });
 };
-
 </script>
 
-<style
- lang="scss">
-
+<style lang="scss">
 .period-selector {
-  //height: 30px;
-  min-height: 30px!important;
+  min-height: 30px !important;
 
   .dropdown-block {
     width: 208px;
@@ -122,5 +128,4 @@ const applyCustomRange = () => {
     }
   }
 }
-
 </style>
