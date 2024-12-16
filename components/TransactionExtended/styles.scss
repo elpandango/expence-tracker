@@ -13,6 +13,10 @@
   &.show-actions {
     .right-side {
       padding-right: 20px;
+
+      @media only screen and (max-width: 480px) {
+        padding-right: 14px;
+      }
     }
   }
 
@@ -26,29 +30,40 @@
 
   .transaction-info {
     font-size: 18px;
+
+    @media only screen and (max-width: 480px) {
+      font-size: 16px;
+    }
   }
 
   .content-block {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     flex: 1;
   }
 
   .transaction-description {
     max-width: 80%;
+    padding-right: 12px;
   }
 
   .right-side {
     display: flex;
     flex-direction: column;
     position: relative;
+    align-items: flex-end;
   }
 
   .category {
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    flex-wrap: wrap;
+
+    @media only screen and (max-width: 480px) {
+      max-width: 50%;
+    }
   }
 
   .category-icon {
@@ -60,16 +75,37 @@
     justify-content: center;
     align-items: center;
     margin-right: 4px;
+
+    @media only screen and (max-width: 480px) {
+      margin-right: 0;
+      margin-bottom: 4px;
+    }
   }
 
   .category-name {
     font-size: 14px;
+
+    @media only screen and (max-width: 480px) {
+      font-size: 12px;
+      text-align: right;
+    }
+  }
+
+  .card-number {
+    @media only screen and (max-width: 480px) {
+      font-size: 12px;
+    }
   }
 
   .transaction-amount {
     font-size: 20px;
     text-align: right;
     margin-bottom: 6px;
+    white-space: nowrap;
+
+    @media only screen and (max-width: 480px) {
+      font-size: 16px;
+    }
 
     &.green {
       color: var(--green-100);

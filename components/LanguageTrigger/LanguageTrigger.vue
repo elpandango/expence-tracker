@@ -26,12 +26,14 @@ const locales = [
   {label: 'EN 🇺🇸', value: 'en'},
   {label: 'RU 🇷🇺', value: 'ru'},
   {label: 'DE 🇩🇪', value: 'de'},
+  {label: 'UA 🇺🇦', value: 'ua'},
 ];
 
 const localeFlags: Record<string, string> = {
   en: '🇺🇸',
   ru: '🇷🇺',
   de: '🇩🇪',
+  ua: '🇺🇦',
 };
 
 const currentLocale = ref(locale.value);

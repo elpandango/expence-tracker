@@ -8,7 +8,8 @@
      :disabled="disabled"
      :class="[size, status]"
      :value="modelValue"
-     :placeholder="placeholder">
+     :placeholder="placeholder"
+     :step="type === 'number' ? 0.1 : null">
 
     <div
      v-if="!!errorMessage"

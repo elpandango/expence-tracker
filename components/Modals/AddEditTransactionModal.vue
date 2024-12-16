@@ -4,29 +4,46 @@
    @update:modelValue="closeModal">
     <template v-slot:header>
       <div class="modal-header header-container">
-<!--        <div class="title">{{-->
-<!--            $t(`components.modalsContent.${transactionTypeLocal === 'addExpense' ? 'addExpenseModal.addTitleText' : 'addFundsModal.addTitleText'}`)-->
-<!--          }}-->
-<!--        </div>-->
-        <div class="type-switcher">
-          <BaseButton
-           v-for="type in transactionTypes"
-           :key="type"
-           size="small"
-           :variant="transactionTypeLocal === type ? '' : 'transparent'"
-           @click="setTransactionType(type)">
-            {{ $t(`components.modalsContent.${type}Modal.addTitleText`) }}
-          </BaseButton>
+        <div
+         class="title"
+         v-if="isEditMode">
+          {{ $t(`components.modalsContent.addEditTransactionModal.editTransactionTitleText`) }}
+        </div>
+        <div
+         v-else
+         class="title">
+          {{
+            $t(`components.modalsContent.addEditTransactionModal.${transactionTypeLocal === 'addExpense' ? 'addExpenseTitleText' : 'addFundsTitleText'}`)
+          }}
         </div>
       </div>
     </template>
     <template v-slot:body>
-      <form @submit.prevent>
+      <form
+       @submit.prevent
+       class="add-edit-transaction-modal">
+        <div class="form-row">
+          <div class="type-switcher">
+            <div class="dropdown-label">{{
+                $t('components.modalsContent.addEditTransactionModal.transactionTypeLabel')
+              }}
+            </div>
+            <BaseButton
+             v-for="type in transactionTypes"
+             :key="type"
+             size="small"
+             :variant="transactionTypeLocal === type ? '' : 'transparent'"
+             @click="setTransactionType(type)">
+              {{ $t(`components.modalsContent.addEditTransactionModal.${type}`) }}
+            </BaseButton>
+          </div>
+        </div>
         <div class="form-row">
           <div class="dropdown-label">{{
               $t('components.modalsContent.addEditTransactionModal.paymentTypeLabel')
             }}
           </div>
+
           <Dropdown
            v-model="selectedPaymentMethod"
            :options="cards"
@@ -125,7 +142,7 @@ const categoryStore = useCategoryStore();
 const modalValue = ref(props.isOpen);
 const transactionTypeLocal = ref(props.transactionType);
 const transactionTypes = ['addExpense', 'addFunds'];
-const selectedCategory = ref({ value: null, label: 'Other' });
+const selectedCategory = ref({value: null, label: 'Other'});
 const selectedPaymentMethod = ref({value: null, label: 'Cash'});
 const cards = ref([]);
 const categories = ref([]);
@@ -181,13 +198,16 @@ const populateTransactionFields = () => {
   transaction.amount = Math.abs(editingTransaction.amount).toString();
   transaction.date = new Date(editingTransaction.date);
 
-  selectedCategory.value = editingTransaction.category
-   ? { value: editingTransaction.category._id, label: editingTransaction.category.name }
-   : { value: null, label: 'Other' };
+  selectedCategory.value = editingTransaction.category._id
+   ? {value: editingTransaction.category._id, label: editingTransaction.category.name}
+   : {value: null, label: 'Other'};
 
   selectedPaymentMethod.value = editingTransaction.source === 'cash'
-   ? { value: null, label: 'Cash' }
-   : { value: editingTransaction?.cardId?._id || null, label: editingTransaction?.cardId?.number || '' };
+   ? {value: null, label: 'Cash'}
+   : {
+     value: editingTransaction?.cardId?._id || null,
+     label: (editingTransaction?.number || editingTransaction?.cardId?.number) || ''
+   };
 };
 
 const handleSaveTransaction = async () => {
@@ -223,18 +243,18 @@ const handleSaveTransaction = async () => {
 
     const newData = {
       type: transactionTypeLocal.value === 'addFunds' ? 'deposit' : 'expense',
-       source: selectedPaymentMethod.value.value ? 'card' : 'cash',
-       sourceCategory: newSourceCategory.toLowerCase(),
-       amount: +transaction.amount,
-       date: transaction.date,
-       category: transactionTypeLocal.value === 'addFunds' ? null : selectedCategory.value.value,
-       description: transaction.description,
-       currency: editingTransaction.currency || 'USD',
-       cardId: selectedPaymentMethod.value.value || null,
+      source: selectedPaymentMethod.value.value ? 'card' : 'cash',
+      sourceCategory: newSourceCategory.toLowerCase(),
+      amount: +transaction.amount,
+      date: transaction.date,
+      category: transactionTypeLocal.value === 'addFunds' ? null : selectedCategory.value.value,
+      description: transaction.description,
+      currency: editingTransaction.currency || 'USD',
+      cardId: selectedPaymentMethod.value.value || null,
     }
 
     try {
-      await financeStore.updateTransaction(editingTransaction.id,  {oldData, newData});
+      await financeStore.updateTransaction(editingTransaction.id, {oldData, newData});
     } catch (error) {
       console.error('Error updating transaction:', error);
     }
@@ -246,7 +266,8 @@ const handleSaveTransaction = async () => {
         description: transaction.description,
         amount: transaction.amount,
         date: transaction.date,
-        category: selectedCategory.value,
+        currency: transaction.currency || 'USD',
+        category: selectedCategory.value.value,
       });
     } else {
       await financeStore.addFunds(selectedPaymentMethod.value.value, transaction);
@@ -259,13 +280,13 @@ const resetTransactionFields = () => {
   transaction.description = '';
   transaction.amount = '';
   transaction.date = new Date();
-  selectedPaymentMethod.value = { value: null, label: 'Cash' };
-  selectedCategory.value = { value: null, label: 'Other' };
+  selectedPaymentMethod.value = {value: null, label: 'Cash'};
+  selectedCategory.value = {value: null, label: 'Other'};
 };
 
 onMounted(async () => {
   await financeStore.fetchCardsIfNeeded();
-  const { cardsList } = useCardsList([{ value: null, label: 'Cash' }]);
+  const {cardsList} = useCardsList([{value: null, label: 'Cash'}]);
   cards.value = cardsList.value;
 
   await populateCategoriesList();
@@ -284,32 +305,40 @@ onMounted(async () => {
 
 <style
  lang="scss">
-.form-row {
-  margin-bottom: 22px;
-}
+.add-edit-transaction-modal {
+  .form-row {
+    margin-bottom: 22px;
+  }
 
-.modal-header.header-container {
-  display: flex;
-  flex-wrap: wrap;
-}
+  .modal-header.header-container {
+    display: flex;
+    flex-wrap: wrap;
+  }
 
-.type {
-  width: 100%;
-}
+  .type {
+    width: 100%;
+  }
 
-.type-switcher {
-  margin-top: 16px;
-  width: 100%;
-  display: flex;
-  gap: 12px;
-}
+  .type-switcher {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
 
-.type-switcher button {
-  padding: 5px 10px;
-  cursor: pointer;
-}
+    .dropdown-label {
+      width: 100%;
+      font-weight: 400;
+      font-size: 16px;
+    }
+  }
 
-.type-switcher button.active {
-  font-weight: bold;
+  .type-switcher button {
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+
+  .button {
+    min-width: 110px;
+  }
 }
 </style>

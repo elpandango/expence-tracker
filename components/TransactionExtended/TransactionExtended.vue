@@ -30,7 +30,7 @@
        :style="{ backgroundColor: '#4CAF50' }">payments</span>
           </template>
           <div class="category-name">{{ categoryName }}</div>
-          <div v-if="transaction.number">{{transaction.number}}</div>
+          <div class="card-number" v-if="transaction.number">{{transaction.number}}</div>
         </div>
         <div
          v-if="showActions"

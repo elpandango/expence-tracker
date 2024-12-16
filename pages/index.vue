@@ -46,7 +46,7 @@
                 <NuxtLink to="/transactions">
                   <BaseButton
                    size="small"
-                   variant="transparent">See All
+                   variant="transparent">{{ $t('components.transactionsHistory.seeAll') }}
                   </BaseButton>
                 </NuxtLink>
               </div>

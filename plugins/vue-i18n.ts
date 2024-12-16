@@ -3,6 +3,7 @@ import { useCookie } from '#app';
 import {de} from '~/locales/de';
 import {en} from '~/locales/en';
 import {ru} from '~/locales/ru';
+import {ua} from '~/locales/ua';
 
 export default defineNuxtPlugin(({ vueApp }) => {
   const localeCookie = useCookie('locale');
@@ -15,7 +16,8 @@ export default defineNuxtPlugin(({ vueApp }) => {
     messages: {
       en,
       ru,
-      de
+      de,
+      ua
     }
   });
 

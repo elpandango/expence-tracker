@@ -23,7 +23,7 @@ export default defineNuxtConfig({
   },
   modules: [['@nuxtjs/google-fonts', {
     families: {
-      Raleway: {
+      Montserrat: {
         wght: [400, 500, 600],
       },
       'Material+Symbols+Outlined': true,

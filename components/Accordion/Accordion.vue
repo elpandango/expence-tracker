@@ -40,7 +40,7 @@ import SvgIcon from "@/components/svgComponents/SvgIcon.vue";
 const props = defineProps({
   height: {
     type: String,
-    default: '38px'
+    default: '50px'
   },
   type: {
     type: String,

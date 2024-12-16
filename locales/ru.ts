@@ -90,9 +90,13 @@ export const ru = {
     }
   },
   components: {
+    header: {
+      searchInputPlaceholder: 'Поиск транзакции',
+    },
     balance: {
-      title: 'Баланс',
-      cash: 'Наличные',
+      title: "Баланс",
+      cash: "Наличные",
+      card: "Карта",
     },
     buttons: {
       addFundsText: 'Добавить средства',
@@ -102,11 +106,11 @@ export const ru = {
       removePhoto: 'Удалить фото',
       applyFilters: 'Применить фильтры',
       clearFilters: 'Очистить фильтры',
-      prevText: 'Предыдущий',
-      nextText: 'Следующий',
+      prevText: 'Назад',
+      nextText: 'Далее',
       editText: 'Редактировать',
       deleteText: 'Удалить',
-      cancelText: 'Отменить',
+      cancelText: 'Отмена',
     },
     menuList: {
       dashboard: 'Панель управления',
@@ -121,15 +125,16 @@ export const ru = {
     transactionsHistory: {
       titleText: 'История транзакций',
       sortByText: 'Сортировать по',
-      sortPlaceholderText: 'Выберите вариант',
-      emptyListText: 'Транзакции пока не найдены. \nНачните с добавления первой транзакции!',
+      seeAll: "Посмотреть все",
+      sortPlaceholderText: 'Выберите опцию',
+      emptyListText: 'Транзакции пока не найдены. \nНачните с добавления своей первой транзакции!',
       sortingPeriodDay: 'День',
       sortingPeriodWeek: 'Неделя',
       sortingPeriodMonth: 'Месяц',
     },
     profilePage: {
       pageTitleText: 'Профиль',
-      pageSubtitleText: 'Здесь вы можете загрузить или удалить ваше фото, отредактировать профиль и сохранить данные пользователя.',
+      pageSubtitleText: 'Здесь вы можете загрузить или удалить фото, отредактировать профиль и сохранить данные пользователя.',
     },
     statisticsPage: {
       pageTitleText: 'Статистика',
@@ -139,26 +144,30 @@ export const ru = {
     },
     transactionsPage: {
       pageTitleText: 'Транзакции',
-      emptyListText: 'Похоже, ваш список транзакций пуст. \nПочему бы не создать его сейчас?',
+      emptyListText: 'Похоже, список транзакций пуст. \nПочему бы не создать одну прямо сейчас?',
+      filtersTitle: 'Фильтры',
       filters: {
         transactionLabelText: 'Тип транзакции',
         sourceLabelText: 'Источник',
         cardLabelText: 'Карта',
         startDataLabelText: 'Дата начала',
         endDataLabelText: 'Дата окончания',
-        minAmountLabelText: 'Мин. сумма',
-        maxAmountLabelText: 'Макс. сумма',
-        searchDescriptionLabelText: 'Поиск по описанию транзакции',
+        minAmountLabelText: 'Минимальная сумма',
+        maxAmountLabelText: 'Максимальная сумма',
+        searchDescriptionLabelText: 'Поиск по описанию',
         minAmountPlaceholderText: 'Введите минимальную сумму',
         maxAmountPlaceholderText: 'Введите максимальную сумму',
         searchDescriptionPlaceholderText: 'Введите текст описания',
-      },
+      }
     },
     cardsPage: {
-      pageTitleText: 'Все ваши карты',
-      emptyListTitleText: 'Ой, похоже, вы еще не добавили ни одной карты!',
-      emptyListText: 'Вы можете использовать приложение и без карт, но\n добавление карт позволит вам связывать транзакции и получать подробную статистику для каждой из них.',
-      addCardText: 'Добавить новую карту',
+      pageTitleText: 'Здесь все ваши карты',
+      emptyListTitleText: 'О, похоже, вы еще не добавили карты!',
+      emptyListText: 'Вы можете пользоваться приложением и без них, но\n' +
+        '          добавление карт позволит связывать транзакции и получать детальную статистику по каждой карте.',
+      addCardText: 'Добавить карту',
+      editCardTitle: 'Редактировать',
+      deleteCardTitle: 'Удалить',
     },
     modalsContent: {
       addCardModal: {
@@ -172,33 +181,33 @@ export const ru = {
         cardNumberLabelText: 'Номер карты',
         cardBalanceLabelText: 'Баланс карты',
         cardCurrencyLabelText: 'Валюта карты',
-        modalAddCardText: 'Добавить новую карту',
+        modalAddCardText: 'Добавить карту',
         modalEditCardText: 'Сохранить изменения',
       },
-      addExpenseModal: {
-        addTitleText: 'Добавление нового расхода',
-        modalAddExpenseText: 'Добавить новый расход',
-        expensePaymentTypeLabelText: 'Тип оплаты',
-        expenseDescriptionLabelText: 'Описание расхода',
-        expenseAmountLabelText: 'Сумма расхода',
-        expenseDateLabelText: 'Дата',
-        expenseCategoryLabelText: 'Категория расхода',
-        expenseDescriptionPlaceholderText: 'Введите описание транзакции',
-        expenseAmountPlaceholderText: 'Введите сумму расхода',
+      addEditTransactionModal: {
+        addExpenseTitleText: 'Добавление нового расхода',
+        addFundsTitleText: 'Добавление средств',
+        editTransactionTitleText: 'Редактирование транзакции',
+        addExpense: 'Расход',
+        addFunds: 'Пополнение',
+        transactionTypeLabel: 'Выберите тип транзакции',
+        paymentTypeLabel: 'Способ оплаты',
+        descriptionLabelText: 'Описание',
+        amountLabelText: 'Сумма',
+        dateLabelText: 'Дата',
+        categoryLabelText: 'Категория',
+        saveBtnText: 'Сохранить',
+        editBtnText: 'Редактировать',
       },
       deleteCardModal: {
         deleteTitleText: 'Подтвердите удаление карты',
         deleteConfirmText: 'Вы уверены, что хотите удалить эту карту?',
       },
-      addFundsModal: {
-        addTitleText: 'Добавление средств',
-        fundsAmountLabelText: 'Сумма средств',
-        fundsDateLabelText: 'Дата',
-        fundsDescriptionLabelText: 'Описание транзакции',
-        fundsDescriptionPlaceholderText: 'Введите описание транзакции',
-        fundsAmountPlaceholderText: 'Введите сумму средств',
-        modalAddFundsText: 'Добавить средства',
-      },
-    },
+    }
   },
+  greetings: {
+    "morning": "Доброе утро",
+    "afternoon": "Добрый день",
+    "evening": "Добрый вечер"
+  }
 };
