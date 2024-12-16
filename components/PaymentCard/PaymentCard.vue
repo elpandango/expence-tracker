@@ -17,12 +17,12 @@
         <BaseButton
          @click="$emit('update-card')"
          variant="green"
-         size="big">Edit
+         size="big">{{ $t('components.cardsPage.editCardTitle') }}
         </BaseButton>
         <BaseButton
          @click="$emit('delete-card')"
          variant="red"
-         size="big">Delete
+         size="big">{{ $t('components.cardsPage.deleteCardTitle') }}
         </BaseButton>
       </div>
     </div>

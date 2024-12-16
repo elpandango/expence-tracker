@@ -90,9 +90,13 @@ export const en = {
     },
   },
   components: {
+    header: {
+      searchInputPlaceholder: 'Search Transaction',
+    },
     balance: {
       title: "Balance",
       cash: "Cash",
+      card: "Card",
     },
     buttons: {
       addFundsText: 'Add Funds',
@@ -121,6 +125,7 @@ export const en = {
     transactionsHistory: {
       titleText: 'Transactions History',
       sortByText: 'Sort by',
+      seeAll: "See All",
       sortPlaceholderText: 'Choose an option',
       emptyListText: 'No transactions found yet. \nStart by adding your first transaction!',
       sortingPeriodDay: 'Day',
@@ -140,6 +145,7 @@ export const en = {
     transactionsPage: {
       pageTitleText: 'Transactions',
       emptyListText: 'Looks like your transactions list is empty. \n Why not create one now?',
+      filtersTitle: 'Filters',
       filters: {
         transactionLabelText: 'Transaction type',
         sourceLabelText: 'Source',
@@ -159,7 +165,9 @@ export const en = {
       emptyListTitleText: 'Oh, it seems like you haven’t added any cards yet!',
       emptyListText: 'Feel free to explore the app without them, but\n' +
         '          adding cards will let you link transactions and get detailed stats for each one.',
-      addCardText: 'Add a new card'
+      addCardText: 'Add a new card',
+      editCardTitle: 'Edit',
+      deleteCardTitle: 'Delete',
     },
     modalsContent: {
       addCardModal: {
@@ -177,8 +185,12 @@ export const en = {
         modalEditCardText: 'Save Changes',
       },
       addEditTransactionModal: {
-        addTitleText: 'Adding',
-        editTitleText: 'Editing',
+        addExpenseTitleText: 'Adding a New Expense',
+        addFundsTitleText: 'Adding Funds',
+        editTransactionTitleText: 'Editing Transaction',
+        addExpense: 'Expense',
+        addFunds: 'Deposit',
+        transactionTypeLabel: 'Choose transaction type',
         paymentTypeLabel: 'Payment type',
         descriptionLabelText: 'Description',
         amountLabelText: 'Amount',
@@ -187,33 +199,15 @@ export const en = {
         saveBtnText: 'Save',
         editBtnText: 'Edit',
       },
-      addExpenseModal: {
-        typeLabel: 'Expense',
-        addTitleText: 'Adding a New Expense',
-        modalAddExpenseText: 'Add a New Expense',
-        expensePaymentTypeLabelText: 'Payment type',
-        expenseDescriptionLabelText: 'Expense description',
-        expenseAmountLabelText: 'Expense amount',
-        expenseDateLabelText: 'Date',
-        expenseCategoryLabelText: 'Expense category',
-        expenseDescriptionPlaceholderText: 'Enter description of transaction',
-        expenseAmountPlaceholderText: 'Enter expense amount',
-      },
       deleteCardModal: {
         deleteTitleText: 'Confirm Card deletion',
         deleteConfirmText: 'Are you sure you want to delete this card?',
       },
-      addFundsModal: {
-        typeLabel: 'Add Funds',
-        addTitleText: 'Adding Funds',
-        fundsAmountLabelText: 'Amount of funds',
-        fundsDateLabelText: 'Date',
-        fundsDescriptionLabelText: 'Transaction description',
-
-        fundsDescriptionPlaceholderText: 'Enter description of transaction',
-        fundsAmountPlaceholderText: 'Enter funds amount',
-        modalAddFundsText: 'Add Funds',
-      }
     }
+  },
+  greetings: {
+    "morning": "Good Morning",
+    "afternoon": "Good Afternoon",
+    "evening": "Good Evening"
   }
 };

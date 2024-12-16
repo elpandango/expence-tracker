@@ -8,15 +8,15 @@
 
     <Accordion
      type="basic"
-     class="mar-b-1">
+     class="mar-b-6">
       <template v-slot:header>
-        <div class="link-text">Filters</div>
+        <div class="link-text">{{ $t('components.transactionsPage.filtersTitle') }}</div>
       </template>
       <template v-slot:accordion-body>
         <div class="page-filters">
           <div class="filters-row">
             <div class="filter-item">
-              <div class="dropdown-label">{{ $t('components.transactionsPage.filters.transactionLabelText') }}</div>
+              <div class="dropdown-label">{{ $t('components.transactionsPage.filters.transactionTypeLabel') }}</div>
               <Dropdown
                v-model="filters.type"
                :options="transactionTypes"
@@ -220,9 +220,8 @@ const updateTransactions = async () => {
   if (filters.value?.source?.value === 'card') {
     updatedFilters.cardId = filters.value?.cardId?.value ?? null;
   }
-
   emitter.emit('ui:startLoading', 'default');
-  await financeStore.fetchTransactions(updatedFilters, currentPage.value, 10);
+  await financeStore.fetchTransactions(updatedFilters, currentPage.value, 5);
   emitter.emit('ui:stopLoading', 'default');
 };
 
@@ -288,7 +287,8 @@ onMounted(async () => {
 
 watch(() => financeStore.transactionsResponse, (newTransactions) => {
   const totalItems = newTransactions.totalItems;
-  totalPages.value = Math.ceil(totalItems / 10);
+  totalPages.value = Math.ceil(totalItems / 5);
+
   paginationData.value = {
     currentPage: currentPage.value,
     lastPage: totalPages.value,

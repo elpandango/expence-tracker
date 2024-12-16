@@ -30,12 +30,11 @@ useHead({
   ]
 });
 
-
 const isLoaded = ref(false);
 
 setTimeout(() => {
   isLoaded.value = true;
-}, 1600);
+}, 700);
 
 </script>
 

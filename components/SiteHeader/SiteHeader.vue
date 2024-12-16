@@ -1,7 +1,7 @@
 <template>
   <header class="site-header">
     <div class="header-content">
-      <div class="greeting-block">Good {{ timeOfDay }}, {{ userStore.user.name }}!</div>
+      <div class="greeting-block">{{ timeOfDay }}, {{ userStore.user.name }}!</div>
 
       <div class="actions-block">
         <div
@@ -10,13 +10,14 @@
           <BaseInput
            v-model="searchValue"
            size="medium"
-           placeholder="Search transaction"
+           :placeholder="$t('components.header.searchInputPlaceholder')"
            @keydown.enter="searchTransactions"/>
-          <span class="icon material-symbols-outlined"
-                @click="searchTransactions">search</span>
+          <span
+           class="icon material-symbols-outlined"
+           @click="searchTransactions">search</span>
         </div>
 
-        <LanguageTrigger />
+        <LanguageTrigger/>
 
         <div class="avatar">
           <img
@@ -60,8 +61,9 @@
          size="medium"
          placeholder="Search transaction"
          @keydown.enter="searchTransactions"/>
-        <span class="icon material-symbols-outlined"
-              @click="searchTransactions">search</span>
+        <span
+         class="icon material-symbols-outlined"
+         @click="searchTransactions">search</span>
       </div>
 
       <div class="header-menu">
@@ -132,8 +134,10 @@ import {useTheme} from "~/use/useTheme";
 import {useUIStore} from "~/stores/ui";
 import {useUserStore} from '~/stores/user';
 import {useFinanceStore} from "~/stores/finance";
+import {useI18n} from 'vue-i18n';
 import BaseInput from "~/components/Forms/Inputs/BaseInput.vue";
 
+const { t } = useI18n();
 const financeStore = useFinanceStore();
 const uiStore = useUIStore();
 const userStore = useUserStore();
@@ -148,11 +152,11 @@ const timeOfDay = computed(() => {
   const hours = new Date().getHours();
 
   if (hours >= 5 && hours < 12) {
-    return 'Morning';
+    return t('greetings.morning');
   } else if (hours >= 12 && hours < 18) {
-    return 'Afternoon';
+    return t('greetings.afternoon');
   } else {
-    return 'Evening';
+    return t('greetings.evening');
   }
 });
 

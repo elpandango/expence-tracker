@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
     maxAmount,
     description,
     page = 1,
-    perPage = 10
+    perPage = 5
   } = getQuery(event);
 
   const expenses = await ExpenseModel.find({userId})
