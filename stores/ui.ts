@@ -1,30 +1,21 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
 import {emitter} from "~/classes/uiEventBus";
 
 export const useUIStore = defineStore("ui", () => {
-  const isAddExpenseModalOpen = ref(false);
-  const isAddFundsModalOpen = ref(false);
+  const modals = reactive({
+    isAddExpenseModalOpen: false,
+    isAddFundsModalOpen: false,
+    isAddAccountModalOpen: false,
+  });
+
   const state = reactive({
     isAuthLoading: true,
     isLoading: true,
     toast: null as { message: string; type: 'success' | 'error' } | null,
   });
 
-  const openAddExpenseModal = () => {
-    isAddExpenseModalOpen.value = true;
-  };
-
-  const closeAddExpenseModal = () => {
-    isAddExpenseModalOpen.value = false;
-  };
-
-  const openAddFundsModal = () => {
-    isAddFundsModalOpen.value = true;
-  };
-
-  const closeAddFundsModal = () => {
-    isAddFundsModalOpen.value = false;
+  const toggleModal = (modalName: keyof typeof modals, isOpen: boolean) => {
+    modals[modalName] = isOpen;
   };
 
   const setLoading = (value: boolean, type: 'auth' | 'default') => {
@@ -37,7 +28,6 @@ export const useUIStore = defineStore("ui", () => {
 
   const showToast = (message: string, type: 'success' | 'error') => {
     state.toast = { message, type };
-
     setTimeout(() => {
       state.toast = null;
     }, 3000);
@@ -57,13 +47,9 @@ export const useUIStore = defineStore("ui", () => {
 
   return {
     state,
-    isAddExpenseModalOpen,
-    isAddFundsModalOpen,
-    openAddExpenseModal,
-    closeAddExpenseModal,
-    openAddFundsModal,
-    closeAddFundsModal,
+    modals,
     setLoading,
     showToast,
+    toggleModal,
   };
 });

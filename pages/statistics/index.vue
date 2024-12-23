@@ -66,7 +66,7 @@
 import {ref, reactive, onMounted} from 'vue';
 import {useSeoConfig} from "~/use/useSeoConfig";
 import {useChartStore} from "~/stores/charts";
-import {generateChartConfigs, generateChartConfigForType} from "~/utils/chartUtils";
+import {generateChartConfigForType} from "~/utils/chartUtils";
 
 const seoMeta = useSeoConfig();
 useSeoMeta(seoMeta.value);
@@ -91,35 +91,31 @@ const chartsLoadingState = reactive({
 const handleDateChanged = async (type, date) => {
   chartsLoadingState[type] = false;
   await fetchChartsData(type, date);
-  chartConfigs[type] = generateChartConfigForType(chartStore, type);
+  chartConfigs[type] = generateChartConfigForType(chartStore.chartDataByType, type);
   chartsLoadingState[type] = true;
 };
 
 const fetchChartsData = async (type, date) => {
-  const dateQuery = `&startDate=${date.startDate}&endDate=${date.endDate}`;
+  const typeMapping = {
+    expenses_vs_incomes: 'allTransactions',
+    categories: 'allCategories',
+    top5: 'topCategories',
+    total_expenses: 'cashAndCards',
+  };
+
+  const chartType = typeMapping[type];
+  if (!chartType) {
+    console.error(`Unknown chart type: ${type}`);
+    return;
+  }
+
+  const dateQuery = `startDate=${date.startDate}&endDate=${date.endDate}&chartType=${chartType}`;
 
   try {
-    if (type === 'expenses_vs_incomes') {
-      await Promise.all([
-        chartStore.getChartsData('totalExpensesAll', `?type=expense${dateQuery}`),
-        chartStore.getChartsData('totalIncomeAll', `?type=deposit${dateQuery}`)
-      ]);
-    } else if (type === 'categories') {
-      await Promise.all([
-        chartStore.getChartsData('categories', `?type=expense&groupBy=category${dateQuery}`)
-      ]);
-    } else if (type === 'top5') {
-      await Promise.all([
-        chartStore.getChartsData('top5', `?type=expense&top=5&groupBy=category${dateQuery}`)
-      ]);
-    } else if (type === 'total_expenses') {
-      await Promise.all([
-        chartStore.getChartsData('totalCashExpenses', `?type=expense&source=cash${dateQuery}`),
-        chartStore.getChartsData('totalCardExpenses', `?type=expense&source=card${dateQuery}`)
-      ]);
-    }
+    const response = await chartStore.getChartsData(`?${dateQuery}`);
+    chartStore.chartDataByType[chartType] = response.data;
   } catch (err) {
-    console.error(`Error fetching data for ${type}:`, err);
+    console.error(`Error fetching data for ${chartType}:`, err);
   }
 };
 
@@ -127,14 +123,23 @@ onMounted(async () => {
   try {
     const {default: component} = await import('~/components/HighchartComponent/HighchartComponent.vue');
     HighchartsComponent = component;
-    await chartStore.getAllChartsData();
+
+    const dateRange = {
+      startDate: new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString().split('T')[0],
+      endDate: new Date().toISOString().split('T')[0],
+    };
+
+    for (const type of ['expenses_vs_incomes', 'categories', 'top5', 'total_expenses']) {
+      await fetchChartsData(type, dateRange);
+      chartConfigs[type] = generateChartConfigForType(chartStore.chartDataByType, type);
+    }
   } catch (err) {
-    console.log(err);
+    console.error('Error loading charts:', err);
   } finally {
-    chartConfigs = generateChartConfigs(chartStore);
     isHighchartsLoaded.value = true;
   }
 });
+
 
 </script>
 

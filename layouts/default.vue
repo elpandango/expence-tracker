@@ -17,9 +17,18 @@
           <main></main>
           <slot></slot>
 
+          <template v-if="isAddAccountModalOpen">
+            <AddEditAccountModal
+             :isOpen="isAddAccountModalOpen"
+             @close="closeModal('account')"
+             @update:isOpen="isAddAccountModalOpen = $event"
+            />
+            account-saved
+          </template>
+
           <template v-if="isAddExpenseModalOpen || isAddFundsModalOpen">
             <AddEditTransactionModal
-             :transaction-type="isAddExpenseModalOpen ? 'addExpense' : 'addFunds'"
+             :transaction-type="isAddExpenseModalOpen ? 'expense' : 'income'"
              :isOpen="isAddExpenseModalOpen ? isAddExpenseModalOpen : isAddFundsModalOpen"
              @close="() => closeModal(isAddExpenseModalOpen ? 'expense' : 'funds')"
              @update:isOpen="(value) => isAddExpenseModalOpen ? (isAddExpenseModalOpen = value) : (isAddFundsModalOpen = value)"
@@ -38,6 +47,7 @@ import '~/assets/scss/global.scss';
 import {useUserStore} from '~/stores/user';
 import {useUIStore} from "~/stores/ui";
 import AddEditTransactionModal from "~/components/Modals/AddEditTransactionModal.vue";
+import AddEditAccountModal from "~/components/Modals/AddEditAccountModal.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -60,14 +70,17 @@ onBeforeMount(async () => {
   }
 });
 
-const isAddExpenseModalOpen = computed(() => uiStore.isAddExpenseModalOpen);
-const isAddFundsModalOpen = computed(() => uiStore.isAddFundsModalOpen);
+const isAddExpenseModalOpen = computed(() => uiStore.modals.isAddExpenseModalOpen);
+const isAddFundsModalOpen = computed(() => uiStore.modals.isAddFundsModalOpen);
+const isAddAccountModalOpen = computed(() => uiStore.modals.isAddAccountModalOpen);
 
 const closeModal = (name?: string) => {
   if (name === 'expense') {
-    uiStore.closeAddExpenseModal();
+    uiStore.toggleModal('isAddExpenseModalOpen', false);
+  } else if (name === 'funds') {
+    uiStore.toggleModal('isAddFundsModalOpen', false);
   } else {
-    uiStore.closeAddFundsModal();
+    uiStore.toggleModal('isAddAccountModalOpen', false);
   }
 };
 </script>

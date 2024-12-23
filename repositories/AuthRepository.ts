@@ -11,6 +11,17 @@ export default {
         }
     },
 
+    async logout() {
+        try {
+            return await $fetch('/api/logout', {
+                method: 'POST',
+            });
+        } catch (error: any) {
+            const message = error?.response?._data?.message || 'Logout failed';
+            throw new Error(message);
+        }
+    },
+
     async register(payload: { name: string; lastName: string; email: string; password: string }) {
         try {
             return await $fetch('/api/register', {

@@ -16,7 +16,7 @@
         <div class="page-filters">
           <div class="filters-row">
             <div class="filter-item">
-              <div class="dropdown-label">{{ $t('components.transactionsPage.filters.transactionTypeLabel') }}</div>
+              <div class="dropdown-label">{{ $t('components.transactionsPage.filters.transactionLabelText') }}</div>
               <Dropdown
                v-model="filters.type"
                :options="transactionTypes"
@@ -25,23 +25,12 @@
             </div>
 
             <div class="filter-item">
-              <div class="dropdown-label">{{ $t('components.transactionsPage.filters.sourceLabelText') }}</div>
+              <div class="dropdown-label">{{ $t('components.transactionsPage.filters.accountsLabelText') }}</div>
               <Dropdown
-               v-model="filters.source"
-               :options="sources"
+               v-model="sortBySelected"
+               :options="transactions"
                type="form-dropdown"
-               placeholder="Select source"/>
-            </div>
-
-            <div
-             class="filter-item"
-             v-if="filters?.source?.value === 'card'">
-              <div class="dropdown-label">{{ $t('components.transactionsPage.filters.cardLabelText') }}</div>
-              <Dropdown
-               v-model="filters.cardId"
-               :options="cards"
-               type="form-dropdown"
-               placeholder="Select card"/>
+               placeholder="Select account"/>
             </div>
           </div>
           <div class="filters-row">
@@ -157,7 +146,6 @@ import {useRoute} from 'vue-router';
 import {useSeoConfig} from "~/use/useSeoConfig";
 import {useFinanceStore} from "~/stores/finance";
 import {useUIStore} from "~/stores/ui";
-import {useCardsList} from "~/use/useCardList";
 import {useFormatDate} from "~/use/useFormatDate";
 import {emitter} from "~/classes/uiEventBus";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
@@ -176,14 +164,11 @@ const route = useRoute();
 const isDeleteTransactionModalOpen = ref(false);
 const objectToDelete = ref({
   id: null,
-  source: null,
-  sourceCategory: null,
 });
 
 const filters = ref({
   type: null,
   source: null,
-  cardId: null,
   startDate: null,
   endDate: null,
   minAmount: null,
@@ -194,16 +179,11 @@ const filters = ref({
 const transactionTypes = [
   {value: null, label: 'All Transactions'},
   {value: 'expense', label: 'Expenses'},
-  {value: 'deposit', label: 'Deposits'},
+  {value: 'income', label: 'Deposits'},
 ];
 
-const sources = [
-  {value: null, label: 'All Sources'},
-  {value: 'card', label: 'Cards'},
-  {value: 'cash', label: 'Cash'},
-];
-
-const cards = ref([]);
+const sortBySelected = ref(null);
+const transactions = ref([]);
 const paginationData = ref({
   currentPage: 1,
   lastPage: 1,
@@ -220,11 +200,9 @@ const updateTransactions = async () => {
     minAmount: filters.value?.minAmount ?? null,
     maxAmount: filters.value?.maxAmount ?? null,
     description: filters.value?.description ?? null,
+    accountId: sortBySelected.value.value ?? null,
   };
 
-  if (filters.value?.source?.value === 'card') {
-    updatedFilters.cardId = filters.value?.cardId?.value ?? null;
-  }
   emitter.emit('ui:startLoading', 'default');
   await financeStore.fetchTransactions(updatedFilters, currentPage.value, 5);
   emitter.emit('ui:stopLoading', 'default');
@@ -234,7 +212,6 @@ const clearFilters = async () => {
   filters.value = {
     type: null,
     source: null,
-    cardId: null,
     startDate: null,
     endDate: null,
     minAmount: null,
@@ -255,20 +232,22 @@ const handleDeleteTransactionOpenModal = async (transaction: object) => {
   isDeleteTransactionModalOpen.value = true;
 
   objectToDelete.value = {
-    id: transaction.id ?? null,
-    source: transaction.source ?? null,
-    sourceCategory: transaction?.sourceCategory?.toLowerCase() ?? null,
+    id: transaction._id ?? null,
   }
 };
 
 const handleDeleteTransaction = async () => {
   isDeleteTransactionModalOpen.value = false;
-  await financeStore.deleteTransaction(objectToDelete.value.id, objectToDelete.value.source, objectToDelete.value.sourceCategory);
+  await financeStore.deleteTransaction(objectToDelete.value.id);
 };
 
 const handleEditTransactionOpenModal = async (transaction: object) => {
   financeStore.editingTransaction.value = {...transaction};
-  uiStore.openAddExpenseModal();
+  if (transaction.type === 'income') {
+    uiStore.toggleModal('isAddFundsModalOpen', true);
+  } else {
+    uiStore.toggleModal('isAddExpenseModalOpen', true);
+  }
 };
 
 onMounted(async () => {
@@ -279,9 +258,16 @@ onMounted(async () => {
   }
 
   await financeStore.fetchTransactions();
-  await financeStore.fetchCardsIfNeeded();
-  const {cardsList} = useCardsList();
-  cards.value = cardsList.value;
+
+  transactions.value = financeStore.accountsList.map(account => ({
+    value: account._id,
+    accountId: account._id,
+    label: `${account.name} (${account.currency})`
+  }));
+
+  transactions.value.unshift({
+    value: null, label: 'All transactions'
+  });
 
   if (filters.value.description) {
     await updateTransactions();

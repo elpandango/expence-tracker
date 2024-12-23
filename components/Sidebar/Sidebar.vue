@@ -15,7 +15,7 @@
           {{ $t('components.menuList.dashboard') }}
         </NuxtLink>
         <NuxtLink
-         to="/cards"
+         to="/accounts"
          class="menu-link">
           <span class="icon material-symbols-outlined">credit_card</span>
           {{ $t('components.menuList.myCards') }}
@@ -78,7 +78,7 @@ const financeStore = useFinanceStore();
 const uiStore = useUIStore();
 const handleNewExpense = () => {
   financeStore.resetEditingTransaction();
-  uiStore.openAddExpenseModal();
+  uiStore.toggleModal('isAddExpenseModalOpen', true);
 }
 </script>
 

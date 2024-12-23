@@ -1,6 +1,5 @@
 <template>
   <SvgSprite/>
-<!--  <PreloaderBrand v-if="!isLoaded"/>-->
   <PreloaderBrand v-if="uiStore.state.isAuthLoading"/>
   <div>
     <NuxtLayout>

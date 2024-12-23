@@ -31,6 +31,10 @@
   border: 1px solid #ccc;
   border-radius: 6px;
   width: 100%;
+
+  &.placeholder-color {
+   color: var(--hover-color);
+  }
 }
 
 .dropdown-toggle span {
@@ -135,6 +139,10 @@
     span {
       text-align: left;
       font-size: inherit;
+    }
+
+    &.placeholder-color {
+     color: var(--hover-color);
     }
   }
 }

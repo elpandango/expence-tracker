@@ -160,7 +160,7 @@ export const ua = {
         searchDescriptionPlaceholderText: 'Введіть текст опису',
       }
     },
-    cardsPage: {
+    accountsPage: {
       pageTitleText: 'Ось всі ваші карти',
       emptyListTitleText: 'Ой, здається, ви ще не додали жодної карти!',
       emptyListText: 'Ви можете використовувати додаток без карток, але додавання карт дозволить вам прив\'язувати транзакції та отримувати детальну статистику для кожної.',
@@ -182,6 +182,18 @@ export const ua = {
         cardCurrencyLabelText: 'Валюта карти',
         modalAddCardText: 'Додати нову карту',
         modalEditCardText: 'Зберегти зміни',
+      },
+      addAccountModal: {
+        addTitleText: 'Adding a New Cash Amount',
+        editTitleText: 'Editing Cash Amount',
+        cardNamePlaceholderText: 'Enter amount name',
+        cardBalancePlaceholderText: 'Enter amount balance',
+        cardCurrencyPlaceholderText: 'Enter amount currency',
+        cardNameLabelText: 'Cash amount name',
+        cardBalanceLabelText: 'Amount balance',
+        cardCurrencyLabelText: 'Amount currency',
+        modalAddCardText: 'Add a New Amount',
+        modalEditCardText: 'Save Changes',
       },
       addEditTransactionModal: {
         addExpenseTitleText: 'Додавання нової витрати',

@@ -19,16 +19,7 @@
 
         <LanguageTrigger/>
 
-        <div class="avatar">
-          <img
-           v-if="userStore.user.avatar"
-           :src="userStore.user.avatar"
-           alt="User Avatar"
-           class="avatar-image"/>
-          <div
-           v-else
-           class="avatar-placeholder"></div>
-        </div>
+        <AvatarDropdown />
 
         <button
          class="menu-button"
@@ -75,7 +66,7 @@
           {{ $t('components.menuList.dashboard') }}
         </NuxtLink>
         <NuxtLink
-         to="/cards"
+         to="/accounts"
          class="menu-link"
          @click="closeMenu">
           <span class="icon material-symbols-outlined">credit_card</span>
@@ -121,6 +112,13 @@
           <span class="icon material-symbols-outlined">{{ isDark ? 'light_mode' : 'dark_mode' }}</span>
           {{ $t('components.menuList.theme') }}
         </div>
+
+        <button
+         class="menu-link"
+         @click="handleLogout">
+          <span class="icon material-symbols-outlined">logout</span>
+          Logout
+        </button>
       </div>
     </div>
   </header>
@@ -134,11 +132,13 @@ import {useTheme} from "~/use/useTheme";
 import {useUIStore} from "~/stores/ui";
 import {useUserStore} from '~/stores/user';
 import {useFinanceStore} from "~/stores/finance";
+import {useAuthStore} from "~/stores/auth";
 import {useI18n} from 'vue-i18n';
 import BaseInput from "~/components/Forms/Inputs/BaseInput.vue";
 
-const { t } = useI18n();
+const {t} = useI18n();
 const financeStore = useFinanceStore();
+const authStore = useAuthStore();
 const uiStore = useUIStore();
 const userStore = useUserStore();
 const searchValue = ref('');
@@ -172,7 +172,7 @@ const closeMenu = () => {
 
 const handleNewExpense = () => {
   financeStore.resetEditingTransaction();
-  uiStore.openAddExpenseModal();
+  uiStore.toggleModal('isAddExpenseModalOpen', true);
   closeMenu();
 };
 
@@ -194,6 +194,14 @@ const searchTransactions = () => {
     searchValue.value = '';
   }
   closeMenu();
+};
+
+const handleLogout = async () => {
+  try {
+    await authStore.logout();
+  } catch (error) {
+    console.log(`Logout failed: ${error.message}`);
+  }
 };
 
 onMounted(() => {

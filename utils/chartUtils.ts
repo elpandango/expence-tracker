@@ -1,81 +1,81 @@
-import {createBarChartConfig, createPieChartConfig, createIncomeVsExpensesChartConfig, createCashVsCardsChartConfig} from '~/chartsConfigs/chartConfigs.ts';
-
-export const processChartData = (data, isAbsolute = false) => {
-  if (!data) {
-    return [];
-  }
-  return data.map(t => ({
-    name: t.category,
-    y: isAbsolute ? Math.abs(t.totalAmount) : t.totalAmount,
-  }));
-};
-
-export const processChartDataByDate = (data) => {
-  if (!data) {
-    return [];
-  }
-
-  const groupedData = data.reduce((acc, transaction) => {
-    const dateKey = new Date(transaction.date).toISOString().split('T')[0];
-    if (!acc[dateKey]) {
-      acc[dateKey] = 0;
-    }
-    acc[dateKey] += transaction.amount || transaction.totalAmount;
-    return acc;
-  }, {});
-
-  return Object.entries(groupedData).map(([name, y]) => ({
-    name,
-    y,
-  }));
-};
-
-export const generateChartConfigs = (chartStore) => {
-  let categories;
-
-  if (chartStore.chartDataByType?.categories) {
-    categories = chartStore.chartDataByType.categories.map(t => t.category);
-  }
-
-  const incomeDataByDate = processChartDataByDate(chartStore.chartDataByType.totalIncomeAll);
-  const expenseDataByDate = processChartDataByDate(chartStore.chartDataByType.totalExpensesAll);
-
-  const incomeCashDataByDate = processChartDataByDate(chartStore.chartDataByType.totalCashExpenses);
-  const incomeCardDataByDate = processChartDataByDate(chartStore.chartDataByType.totalCardExpenses);
-
-  const barChartData = processChartData(chartStore.chartDataByType.categories, true);
-  const top5ChartData = processChartData(chartStore.chartDataByType.top5, true);
-
-  return {
-    top5: createPieChartConfig(top5ChartData),
-    categories: createBarChartConfig(categories, barChartData),
-    expenses_vs_incomes: createIncomeVsExpensesChartConfig(incomeDataByDate, expenseDataByDate, 'Income vs Expenses'),
-    total_expenses: createCashVsCardsChartConfig(incomeCashDataByDate, incomeCardDataByDate, 'Cash vs Card'),
-  };
-};
-
-export const generateChartConfigForType = (chartStore, type) => {
+export const generateChartConfigForType = (chartData, type) => {
   switch (type) {
-    case 'expenses_vs_incomes': {
-      const incomeDataByDate = processChartDataByDate(chartStore.chartDataByType.totalIncomeAll);
-      const expenseDataByDate = processChartDataByDate(chartStore.chartDataByType.totalExpensesAll);
-      return createIncomeVsExpensesChartConfig(incomeDataByDate, expenseDataByDate, 'Income vs Expenses');
-    }
-    case 'categories': {
-      const categories = chartStore.chartDataByType.categories.map(t => t.category);
-      const barChartData = processChartData(chartStore.chartDataByType.categories, true);
-      return createBarChartConfig(categories, barChartData);
-    }
-    case 'top5': {
-      const top5ChartData = processChartData(chartStore.chartDataByType.top5, true);
-      return createPieChartConfig(top5ChartData);
-    }
-    case 'total_expenses': {
-      const incomeCashDataByDate = processChartDataByDate(chartStore.chartDataByType.totalCashExpenses);
-      const incomeCardDataByDate = processChartDataByDate(chartStore.chartDataByType.totalCardExpenses);
-      return createCashVsCardsChartConfig(incomeCashDataByDate, incomeCardDataByDate, 'Cash vs Card Expenses');
-    }
+    case 'expenses_vs_incomes':
+      return {
+        chart: { type: 'line' },
+        title: { text: 'Expenses vs Incomes' },
+        xAxis: {
+          type: 'datetime',
+          title: { text: 'Date' },
+          labels: {
+            formatter: function() {
+              const date = new Date(this.value);
+              const day = date.getDate();
+              const month = date.getMonth() + 1;
+              const year = date.getFullYear();
+              return `${month}/${day}/${year}`;
+            }
+          }
+        },
+        series: [
+          { name: 'Incomes', data: chartData.allTransactions.income.map(({ date, amount }) => [new Date(date).getTime(), amount]) },
+          { name: 'Expenses', data: chartData.allTransactions.expense.map(({ date, amount }) => [new Date(date).getTime(), amount]) },
+        ],
+      };
+
+    case 'top5':
+      return {
+        chart: { type: 'pie' },
+        title: { text: 'Top 5 Categories' },
+        series: [
+          {
+            name: 'Categories',
+            data: chartData.topCategories.map(({ category, amount }) => ({
+              name: category,
+              y: amount,
+            })),
+          },
+        ],
+      };
+    case 'categories':
+      return {
+        chart: { type: 'column' },
+        title: { text: 'All Categories' },
+        series: [
+          {
+            name: 'Categories',
+            data: chartData.allCategories.map(({ category, amount }) => ({
+              name: category,
+              y: amount,
+            })),
+          },
+        ],
+      };
+    case 'total_expenses':
+      return {
+        chart: { type: 'line' },
+        title: { text: 'Total Expenses' },
+        xAxis: {
+          type: 'datetime',
+          title: { text: 'Date' },
+          labels: {
+            formatter: function() {
+              const date = new Date(this.value);
+              const day = date.getDate();
+              const month = date.getMonth() + 1;
+              const year = date.getFullYear();
+              return `${month}/${day}/${year}`;
+            }
+          }
+        },
+        series: [
+          { name: 'Cash', data: chartData.cashAndCards.cash.map(({ date, amount }) => [new Date(date).getTime(), amount]) },
+          { name: 'Card', data: chartData.cashAndCards.card.map(({ date, amount }) => [new Date(date).getTime(), amount]) },
+        ],
+      };
+
     default:
       return null;
   }
 };
+

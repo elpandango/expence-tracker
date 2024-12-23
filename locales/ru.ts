@@ -160,7 +160,7 @@ export const ru = {
         searchDescriptionPlaceholderText: 'Введите текст описания',
       }
     },
-    cardsPage: {
+    accountsPage: {
       pageTitleText: 'Здесь все ваши карты',
       emptyListTitleText: 'О, похоже, вы еще не добавили карты!',
       emptyListText: 'Вы можете пользоваться приложением и без них, но\n' +
@@ -183,6 +183,18 @@ export const ru = {
         cardCurrencyLabelText: 'Валюта карты',
         modalAddCardText: 'Добавить карту',
         modalEditCardText: 'Сохранить изменения',
+      },
+      addAccountModal: {
+        addTitleText: 'Adding a New Cash Amount',
+        editTitleText: 'Editing Cash Amount',
+        cardNamePlaceholderText: 'Enter amount name',
+        cardBalancePlaceholderText: 'Enter amount balance',
+        cardCurrencyPlaceholderText: 'Enter amount currency',
+        cardNameLabelText: 'Cash amount name',
+        cardBalanceLabelText: 'Amount balance',
+        cardCurrencyLabelText: 'Amount currency',
+        modalAddCardText: 'Add a New Amount',
+        modalEditCardText: 'Save Changes',
       },
       addEditTransactionModal: {
         addExpenseTitleText: 'Добавление нового расхода',

@@ -73,15 +73,12 @@
 <script
  setup
  lang="ts">
+import {emitter} from "~/classes/uiEventBus";
 import {onMounted, ref} from "vue";
 import {useChartStore} from "~/stores/charts";
 import {useFinanceStore} from "~/stores/finance";
-import {useCardsList} from "~/use/useCardList";
 import {useSeoConfig} from "~/use/useSeoConfig";
-import {emitter} from "~/classes/uiEventBus";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
-import {createPieChartConfig} from "~/chartsConfigs/chartConfigs";
-import {processChartData} from "~/utils/chartUtils";
 import Card from "~/components/Card/Card.vue";
 
 const chartStore = useChartStore();
@@ -113,23 +110,32 @@ const fetchTransactions = async (query = '') => {
 
 const updateParams = async (newParams: Record<string, any>) => {
   financeStore.setLoading('transactions', true);
-  Object.assign(params.value, newParams);
+
+  const filteredParams = Object.fromEntries(
+   Object.entries(newParams).filter(([_, value]) => value !== '')
+  );
+
+  for (const key of Object.keys(params.value)) {
+    if (!(key in filteredParams) && key !== 'startDate' && key !== 'endDate') {
+      delete params.value[key];
+    }
+  }
+
+  Object.assign(params.value, filteredParams);
+
   await fetchTransactions(params.value);
   financeStore.setLoading('transactions', false);
 };
 
 const handleDropdownChanged = async (option: any) => {
   const newParams: Record<string, string> = {};
-  if (option.label === 'Cash') {
-    newParams.source = 'cash';
-    newParams.cardId = '';
-  } else if (option.label === 'All transactions') {
-    newParams.source = '';
-    newParams.cardId = '';
-  } else if (option.value) {
-    newParams.cardId = option.value;
-    newParams.source = 'card';
+
+  if (option.value) {
+    newParams.accountId = option.accountId;
+  } else {
+    newParams.accountId = '';
   }
+
   await updateParams(newParams);
 };
 
@@ -155,7 +161,7 @@ const changePeriod = async (period: string) => {
 
 const fetchChartData = async () => {
   try {
-    const {default: component} = await import('~/components/HighchartComponent/HighchartComponent.vue');
+    const { default: component } = await import('~/components/HighchartComponent/HighchartComponent.vue');
     HighchartsComponent = component;
   } catch (err) {
     console.log(err);
@@ -164,28 +170,57 @@ const fetchChartData = async () => {
   }
 
   try {
-    await chartStore.getChartsData('top5', `?type=expense&top=5&groupBy=category`);
+    const dateRange = {
+      startDate: new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString().split('T')[0],
+      endDate: new Date().toISOString().split('T')[0],
+    };
 
-    const top5ChartData = processChartData(chartStore.chartDataByType.top5, true);
-    topChartIsLoaded.value = true;
-    chartConfig.value = createPieChartConfig(top5ChartData);
+    const dateQuery = `startDate=${dateRange.startDate}&endDate=${dateRange.endDate}&chartType=topCategories`;
+
+    const response = await chartStore.getChartsData(`?${dateQuery}`);
+
+    chartStore.chartDataByType.topCategories = response.data;
+
+    const top5ChartData = chartStore.chartDataByType.topCategories?.map(t => ({
+      name: t.category,
+      y: Math.abs(t.amount),
+    })) || [];
+
+    chartConfig.value = {
+      chart: {
+        type: 'pie',
+        backgroundColor: '#f9f9f9',
+      },
+      title: {
+        text: 'Top 5 Expense Categories',
+      },
+      series: [
+        {
+          name: 'Expenses',
+          colorByPoint: true,
+          data: top5ChartData,
+        },
+      ],
+    };
   } catch (err) {
     console.log(err);
+  } finally {
+    topChartIsLoaded.value = true;
   }
-
 };
 
 onMounted(async () => {
   emitter.emit('ui:startLoading', 'default');
 
-  const {cardsList} = useCardsList([
-     {value: null, label: 'All transactions'},
-     {value: null, label: 'Cash'}
-   ]
-  );
-
   await changePeriod('week');
-  transactionsHistoryOptions.value = cardsList.value;
+  transactionsHistoryOptions.value = financeStore.accountsList.map(account => ({
+    value: account._id,
+    accountId: account._id,
+    label: `${account.name} (${account.currency})`
+  }));
+
+  transactionsHistoryOptions.value.unshift({value: null, label: 'All transactions'});
+
   emitter.emit('ui:stopLoading', 'default');
 
   await fetchChartData();

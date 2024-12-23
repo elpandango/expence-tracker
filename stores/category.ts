@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import {emitter} from "~/classes/uiEventBus";
 import repositoryFactory from "~/repositories/repositoryFactory";
 
 export const useCategoryStore = defineStore('category', () => {
