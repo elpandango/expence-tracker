@@ -4,7 +4,9 @@
    :class="[type, size, {'is-active': isOpen}]"
    ref="dropdown"
    @click="toggleDropdown">
-    <button class="dropdown-toggle">
+    <button
+     class="dropdown-toggle"
+     :class="[{'placeholder-color': !selectedOption?.label}]">
       <span>{{ selectedOption ? selectedOption.label : placeholder }}</span>
       <svg
        class="dropdown-arrow"
@@ -71,7 +73,7 @@ const selectedOption = ref(props.modelValue);
 
 watch(() => props.modelValue, (newValue) => {
   selectedOption.value = newValue;
-}, { immediate: true });
+}, {immediate: true});
 
 const toggleDropdown = () => {
   isOpen.value = !isOpen.value;

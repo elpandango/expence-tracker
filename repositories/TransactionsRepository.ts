@@ -1,7 +1,13 @@
+import type {
+  CreateTransactionPayload,
+  UpdateTransactionPayload,
+  DeleteTransactionPayload
+} from "~/server/interfaces/transactionPayload";
+
 export default {
-  async deleteTransaction(id: string, source: string, sourceCategory: string) {
+  async deleteTransaction(id: DeleteTransactionPayload) {
     try {
-      return await $fetch(`/api/transactions/${id}?source=${source}&sourceCategory=${sourceCategory}`, {
+      return await $fetch(`/api/transactions/${id}`, {
         method: 'DELETE',
       });
     } catch (error: any) {
@@ -9,15 +15,41 @@ export default {
       throw new Error(message);
     }
   },
-  async updateTransaction(id: string, payload: any) {
+
+  async addTransaction(payload: CreateTransactionPayload) {
+    try {
+      return await $fetch(`/api/transactions`, {
+        method: 'POST',
+        body: payload,
+      });
+    } catch (error: any) {
+      const message = error?.response?._data?.message || 'Transaction creation failed';
+      throw new Error(message);
+    }
+  },
+
+  async updateTransaction(payload: UpdateTransactionPayload) {
+    const { id, ...data } = payload;
     try {
       return await $fetch(`/api/transactions/${id}`, {
         method: 'PUT',
-        body: payload
+        body: data,
       });
     } catch (error: any) {
       const message = error?.response?._data?.message || 'Transaction update failed';
       throw new Error(message);
     }
   },
+
+  async getAllTransactions(query: string = '') {
+    const url = `/api/transactions${query}`;
+    try {
+      return await $fetch(url, {
+        method: 'GET',
+      });
+    } catch (error: any) {
+      const message = error?.response?._data?.message || 'Transactions fetching failed';
+      throw new Error(message);
+    }
+  }
 };

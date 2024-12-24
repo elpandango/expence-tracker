@@ -62,9 +62,9 @@
     align-items: flex-end;
     flex-wrap: wrap;
 
-    @media only screen and (max-width: 480px) {
-      max-width: 70%;
-    }
+    //@media only screen and (max-width: 480px) {
+    //  max-width: 70%;
+    //}
   }
 
   .category-wrap {
@@ -116,6 +116,9 @@
 
     &.red {
       color: var(--red-100);
+      &:before {
+        content: '-';
+      }
     }
   }
 
@@ -152,6 +155,7 @@
         transition: all .3s;
         text-align: left;
         white-space: nowrap;
+        color: var(--main-color);
 
         &:hover {
           background-color: var(--bg-color);

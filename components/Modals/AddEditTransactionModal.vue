@@ -13,7 +13,7 @@
          v-else
          class="title">
           {{
-            $t(`components.modalsContent.addEditTransactionModal.${transactionTypeLocal === 'addExpense' ? 'addExpenseTitleText' : 'addFundsTitleText'}`)
+            $t(`components.modalsContent.addEditTransactionModal.${transactionTypeLocal === 'expense' ? 'addExpenseTitleText' : 'addFundsTitleText'}`)
           }}
         </div>
       </div>
@@ -45,11 +45,11 @@
           </div>
 
           <Dropdown
-           v-model="selectedPaymentMethod"
-           :options="cards"
+           v-model="selectedAccount"
+           :options="accounts"
            type="form-dropdown"
            size="medium"
-           placeholder="Select where to add funds"
+           placeholder="Select account"
           />
         </div>
         <div class="form-row">
@@ -79,7 +79,7 @@
            v-model="transaction.date"/>
         </div>
         <div
-         v-if="transactionTypeLocal === 'addExpense'"
+         v-if="transactionTypeLocal === 'expense'"
          class="form-row">
           <div class="dropdown-label">{{
               $t('components.modalsContent.addEditTransactionModal.categoryLabelText')
@@ -115,10 +115,9 @@
 <script
  setup
  lang="ts">
-import {ref, reactive, onMounted} from 'vue';
+import {ref, reactive, computed, onMounted, watch} from 'vue';
 import {useFinanceStore} from '~/stores/finance';
 import {useCategoryStore} from '~/stores/category';
-import {useCardsList} from '~/use/useCardList';
 import Modal from './Modal.vue';
 import Dropdown from '~/components/Dropdown/Dropdown.vue';
 import BaseButton from '~/components/Buttons/BaseButton.vue';
@@ -127,14 +126,8 @@ import Datepicker from '~/components/Datepicker/Datepicker.vue';
 import CategoryDropdown from '~/components/Dropdown/CategoryDropdown.vue';
 
 const props = defineProps({
-  isOpen: {
-    type: Boolean,
-    required: true
-  },
-  transactionType: {
-    type: String,
-    default: 'addExpense'
-  }
+  isOpen: {type: Boolean, required: true},
+  transactionType: {type: String, default: 'expense'}
 });
 
 const financeStore = useFinanceStore();
@@ -142,39 +135,51 @@ const categoryStore = useCategoryStore();
 
 const modalValue = ref(props.isOpen);
 const transactionTypeLocal = ref(props.transactionType);
-const transactionTypes = ['addExpense', 'addFunds'];
+const transactionTypes = ['expense', 'income'];
+
+const selectedAccount = ref(null);
+
+const accounts = ref([]);
 const selectedCategory = ref({value: null, label: 'Other'});
-const selectedPaymentMethod = ref({value: null, label: 'Cash'});
-const cards = ref([]);
 const categories = ref([]);
+
 const transaction = reactive({
-  cardId: '',
+  id: null,
+  accountId: null,
+  relatedAccountId: null,
+  currency: '',
   description: '',
   amount: '',
   date: new Date(),
-  source: '',
-  sourceCategory: '',
-  type: '',
+  category: null,
+  type: transactionTypeLocal.value
 });
+
 const transactionDescriptionError = ref<string | null>(null);
 const transactionAmountError = ref<string | null>(null);
 
 const emit = defineEmits(['close']);
 
 watch(modalValue, (newValue) => {
-  if (newValue) {
-    resetTransactionFields();
-  }
+  if (newValue) resetTransactionFields();
 });
 
 const isEditMode = computed(() => !!financeStore.editingTransaction.value);
 
-const closeModal = () => {
-  emit('close');
-};
+const closeModal = () => emit('close');
 
 const setTransactionType = (type: string) => {
   transactionTypeLocal.value = type;
+};
+
+const populateAccountsList = async () => {
+  await financeStore.fetchAccountsIfNeeded();
+
+  accounts.value = financeStore.accountsList.map(account => ({
+    value: account._id,
+    currency: account.currency,
+    label: `${account.name} (${account.currency})`
+  }));
 };
 
 const populateCategoriesList = async () => {
@@ -191,111 +196,79 @@ const populateTransactionFields = () => {
   const editingTransaction = financeStore.editingTransaction.value;
   if (!editingTransaction) return;
 
-  transaction.cardId = editingTransaction.cardId || '';
+  transaction.id = editingTransaction._id || null;
+  transaction.accountId = editingTransaction.accountId || null;
+  transaction.relatedAccountId = editingTransaction.relatedAccountId || null;
   transaction.description = editingTransaction.description || '';
-  transaction.source = editingTransaction.source || '';
-  transaction.sourceCategory = editingTransaction.sourceCategory || '';
-  transaction.type = editingTransaction.type || '';
+  transaction.currency = editingTransaction.currency;
   transaction.amount = Math.abs(editingTransaction.amount).toString();
   transaction.date = new Date(editingTransaction.date);
 
-  selectedCategory.value = editingTransaction.category._id
-   ? {value: editingTransaction.category._id, label: editingTransaction.category.name}
-   : {value: null, label: 'Other'};
-
-  selectedPaymentMethod.value = editingTransaction.source === 'cash'
-   ? {value: null, label: 'Cash'}
-   : {
-     value: editingTransaction?.cardId?._id || null,
-     label: (editingTransaction?.number || editingTransaction?.cardId?.number) || ''
-   };
+  selectedAccount.value = accounts.value.find(acc => acc.value === editingTransaction.accountId._id) || {
+    value: null,
+    label: 'Select Account',
+    currency: ''
+  };
+  selectedCategory.value = categories.value.find(cat => cat.value === editingTransaction.category?._id) || {
+    value: null,
+    label: 'Other'
+  };
 };
 
 const handleSaveTransaction = async () => {
-  if (transaction.description === '') {
-    transactionDescriptionError.value = 'Description field must be not empty.';
+  if (!transaction.description) {
+    transactionDescriptionError.value = 'Description field must not be empty.';
     return;
   }
-  if (transaction.amount === '' || transaction.amount === '0') {
-    transactionAmountError.value = 'Amount field must be not empty.';
+  if (!transaction.amount || +transaction.amount === 0) {
+    transactionAmountError.value = 'Amount field must not be empty.';
     return;
   }
 
   transactionDescriptionError.value = null;
   transactionAmountError.value = null;
 
-  closeModal();
+  try {
+    if (isEditMode.value) {
 
-  if (isEditMode.value) {
-    const editingTransaction = financeStore.editingTransaction.value;
-    const newSourceCategory = transactionTypeLocal.value === 'addFunds' ? `${selectedPaymentMethod.value.value ? 'card deposit' : 'cash deposit'}` : 'expense';
+      transaction.accountId = selectedAccount.value.value;
+      transaction.currency = selectedAccount.value.currency;
+      transaction.amount = parseFloat(transaction.amount);
 
-    const oldData = {
-      type: editingTransaction?.type?.toLowerCase(),
-      source: editingTransaction?.source?.toLowerCase(),
-      sourceCategory: editingTransaction?.sourceCategory?.toLowerCase(),
-      amount: +editingTransaction.amount,
-      date: editingTransaction.date,
-      category: editingTransaction.category?._id || null,
-      description: editingTransaction.description,
-      currency: editingTransaction.currency || 'USD',
-      cardId: editingTransaction.cardId || null,
-    };
-
-    const newData = {
-      type: transactionTypeLocal.value === 'addFunds' ? 'deposit' : 'expense',
-      source: selectedPaymentMethod.value.value ? 'card' : 'cash',
-      sourceCategory: newSourceCategory.toLowerCase(),
-      amount: +transaction.amount,
-      date: transaction.date,
-      category: transactionTypeLocal.value === 'addFunds' ? null : selectedCategory.value.value,
-      description: transaction.description,
-      currency: editingTransaction.currency || 'USD',
-      cardId: selectedPaymentMethod.value.value || null,
-    }
-
-    try {
-      await financeStore.updateTransaction(editingTransaction.id, {oldData, newData});
-    } catch (error) {
-      console.error('Error updating transaction:', error);
-    }
-
-  } else {
-    if (transactionTypeLocal.value === 'addExpense') {
-      await financeStore.addExpense({
-        cardId: selectedPaymentMethod.value.value !== '' ? selectedPaymentMethod.value.value : null,
-        description: transaction.description,
-        amount: transaction.amount,
-        date: transaction.date,
-        currency: transaction.currency || 'USD',
-        category: selectedCategory.value.value,
+      await financeStore.updateTransaction({
+        ...transaction,
+        type: transactionTypeLocal.value,
+        category: selectedCategory.value.value
       });
     } else {
-      await financeStore.addFunds(selectedPaymentMethod.value.value, transaction);
+      transaction.accountId = selectedAccount.value.value;
+      transaction.currency = selectedAccount.value.currency;
+      transaction.amount = parseFloat(transaction.amount);
+      transaction.category = selectedCategory.value.value;
+
+      await financeStore.addTransaction({...transaction});
     }
+    closeModal();
+  } catch (error) {
+    console.error('Error saving transaction:', error);
   }
 };
 
 const resetTransactionFields = () => {
-  transaction.cardId = '';
+  transaction.accountId = null;
+  transaction.relatedAccountId = null;
   transaction.description = '';
   transaction.amount = '';
   transaction.date = new Date();
-  selectedPaymentMethod.value = {value: null, label: 'Cash'};
+  selectedAccount.value = null;
   selectedCategory.value = {value: null, label: 'Other'};
 };
 
 onMounted(async () => {
-  await financeStore.fetchCardsIfNeeded();
-  const {cardsList} = useCardsList([{value: null, label: 'Cash'}]);
-  cards.value = cardsList.value;
-
+  await populateAccountsList();
   await populateCategoriesList();
 
-  if (financeStore.editingTransaction?.value && JSON.stringify(financeStore.editingTransaction?.value) !== '{}') {
-    const transactionType = financeStore.editingTransaction?.value?.type === 'deposit' ? 'addFunds' : 'addExpense';
-    setTransactionType(transactionType);
-
+  if (isEditMode.value) {
     populateTransactionFields();
   } else {
     resetTransactionFields();
@@ -303,6 +276,7 @@ onMounted(async () => {
   }
 });
 </script>
+
 
 <style
  lang="scss">

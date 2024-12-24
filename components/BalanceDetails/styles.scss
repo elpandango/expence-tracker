@@ -1,4 +1,4 @@
-.balance-details {
+.balance-details-block {
   width: 100%;
 
   .total-balance {
@@ -35,11 +35,17 @@
     padding: 10px 0;
     border-top: 1px solid var(--input-border-color);
 
-    .card-number {
-      @media only screen and (max-width: 767px) {
-        display: block;
-        width: 100%;
-      }
+    .account-type {
+      font-weight: 500;
+      font-size: 12px;
+      margin-top: 6px;
+    }
+
+    .account-name {
+      //@media only screen and (max-width: 767px) {
+      //  display: block;
+      //  width: 100%;
+      //}
     }
   }
 }

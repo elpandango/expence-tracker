@@ -6,7 +6,7 @@
      class="form-input"
      @input="$emit('update:modelValue', $event.target.value)"
      :disabled="disabled"
-     :class="[size, status]"
+     :class="[size, status, {'disabled': disabled}]"
      :value="modelValue"
      :placeholder="placeholder"
      :step="type === 'number' ? 0.1 : null">
@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-import './styles.scss';
+// import './styles.scss';
 
 const props = defineProps({
   modelValue: {
@@ -77,7 +77,7 @@ const emits = defineEmits(['update:modelValue']);
 
     &::placeholder {
       transition: opacity .3s;
-      color: var(--main-color);
+      color: var(--hover-color);
     }
 
     &:focus, &:active {
@@ -93,6 +93,10 @@ const emits = defineEmits(['update:modelValue']);
         top: -5px;
         z-index: 6;
       }
+    }
+
+    &.disabled {
+      background-color: var(--bg-color);
     }
   }
 }

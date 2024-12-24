@@ -1,88 +1,63 @@
-import {CardModel} from "~/server/models/CardModel";
-import {CashDepositModel} from "~/server/models/CashDepositModel";
-import {CardDepositModel} from "~/server/models/CardDepositModel";
-import {CashBalanceModel} from "~/server/models/CashBalanceModel";
-import {ExpenseModel} from "~/server/models/ExpenseModel";
+import { TransactionModel } from "~/server/models/TransactionModel";
+import { AccountModel } from "~/server/models/AccountModel";
 
 export default defineEventHandler(async (event) => {
-  const {id} = event.context.params;
-  const {source, sourceCategory} = getQuery(event);
-  if (!id || !source) {
-    throw createError({statusCode: 400, message: 'Missing required parameters'});
+  const { id } = event.context.params;
+
+  if (!id) {
+    throw createError({ statusCode: 400, message: "Transaction ID is required" });
   }
 
-  let deletedTransaction;
-
-  switch (source) {
-    case 'cash':
-      switch (sourceCategory) {
-        case 'cash deposit':
-          deletedTransaction = await CashDepositModel.findByIdAndDelete(id);
-          if (!deletedTransaction) {
-            throw createError({statusCode: 404, message: 'Transaction not found'});
-          }
-
-          await CashBalanceModel.findOneAndUpdate(
-            {userId: deletedTransaction.userId, currency: deletedTransaction.currency || 'USD'},
-            {$inc: {amount: -deletedTransaction.amount}}
-          );
-          break;
-
-        case 'expense':
-          deletedTransaction = await ExpenseModel.findByIdAndDelete(id);
-          if (!deletedTransaction) {
-            throw createError({statusCode: 404, message: 'Transaction not found'});
-          }
-
-          await CashBalanceModel.findOneAndUpdate(
-            {userId: deletedTransaction.userId, currency: deletedTransaction.currency || 'USD'},
-            {$inc: {amount: Math.abs(deletedTransaction.amount)}}
-          );
-          break;
-
-        default:
-          throw createError({statusCode: 400, message: 'Invalid sourceCategory for cash'});
-      }
-
-      break;
-
-    case 'card':
-      switch (sourceCategory) {
-        case 'card deposit':
-          deletedTransaction = await CardDepositModel.findByIdAndDelete(id);
-          if (!deletedTransaction) {
-            throw createError({statusCode: 404, message: 'Transaction not found'});
-          }
-          await CardModel.findByIdAndUpdate(deletedTransaction.cardId, {
-            $inc: {balance: -deletedTransaction.amount},
-          });
-          break;
-
-        case 'expense':
-          deletedTransaction = await ExpenseModel.findByIdAndDelete(id);
-          if (!deletedTransaction) {
-            throw createError({statusCode: 404, message: 'Transaction not found'});
-          }
-          await CardModel.findByIdAndUpdate(deletedTransaction.cardId, {
-            $inc: {balance: Math.abs(deletedTransaction.amount)},
-          });
-          break;
-
-        default:
-          throw createError({statusCode: 400, message: 'Invalid sourceCategory for card'});
-      }
-      break;
-
-    default:
-      throw createError({statusCode: 400, message: 'Invalid transaction source'});
+  const transaction = await TransactionModel.findById(id).lean();
+  if (!transaction) {
+    throw createError({ statusCode: 404, message: "Transaction not found" });
   }
 
-  if (!deletedTransaction) {
-    throw createError({statusCode: 404, message: 'Transaction not found'});
+  const { accountId, relatedAccountId, type, amount, currency } = transaction;
+
+  await TransactionModel.findByIdAndDelete(id);
+
+  if (type === "expense" || type === "income") {
+    const balanceUpdate = type === "expense" ? amount : -amount;
+
+    const account = await AccountModel.findById(accountId);
+    if (!account) {
+      throw createError({ statusCode: 404, message: "Account not found" });
+    }
+    if (account.currency !== currency) {
+      throw createError({
+        statusCode: 400,
+        message: `Currency mismatch: Account currency (${account.currency}) does not match transaction currency (${currency}).`,
+      });
+    }
+
+    await AccountModel.findByIdAndUpdate(accountId, { $inc: { balance: balanceUpdate } });
+  }
+
+  if (type === "transfer" && relatedAccountId) {
+    const sourceUpdate = -amount;
+    const destinationUpdate = amount;
+
+    const sourceAccount = await AccountModel.findById(accountId);
+    const destinationAccount = await AccountModel.findById(relatedAccountId);
+
+    if (!sourceAccount || !destinationAccount) {
+      throw createError({ statusCode: 404, message: "Source or destination account not found" });
+    }
+
+    if (sourceAccount.currency !== currency || destinationAccount.currency !== currency) {
+      throw createError({
+        statusCode: 400,
+        message: `Currency mismatch: Account currencies must match transaction currency (${currency}).`,
+      });
+    }
+
+    await AccountModel.findByIdAndUpdate(accountId, { $inc: { balance: sourceUpdate } });
+    await AccountModel.findByIdAndUpdate(relatedAccountId, { $inc: { balance: destinationUpdate } });
   }
 
   return {
     status: 200,
-    message: 'Transaction deleted successfully',
+    message: "Transaction deleted successfully",
   };
 });

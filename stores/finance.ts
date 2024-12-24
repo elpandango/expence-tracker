@@ -2,52 +2,27 @@ import {defineStore} from 'pinia';
 import {ref} from 'vue';
 import repositoryFactory from "~/repositories/repositoryFactory";
 import {emitter} from "~/classes/uiEventBus";
+import type {
+  CreateTransactionPayload,
+  UpdateTransactionPayload,
+  DeleteTransactionPayload
+} from "~/server/interfaces/transactionPayload";
 
-const errorMessages = {
-  createCard: 'Card creation failed. Please try again.',
-  updateCard: 'Card update failed. Please check the data.',
-  deleteCard: 'Card deletion failed. Could not find the card.',
-  default: 'Something went wrong during the process.',
-};
+import type {
+  CreateAccountPayload,
+  UpdateAccountPayload,
+  DeleteAccountPayload
+} from "~/server/interfaces/accountsPayload";
 
 export const useFinanceStore = defineStore('finance', () => {
-  const expenses = ref([]);
-  const cash = ref([]);
-  const cardsList = ref([]);
   const transactionsResponse = ref([]);
   const editingTransaction = ref({});
+  const editingAccount = ref({});
+  const accountsList = ref([]);
 
   const loadingStates = ref<Record<string, boolean>>({
     transactions: false,
-    expenses: false,
-    cash: false,
-    cards: false,
   });
-
-  const handleCardOperation = async (
-    operation: () => Promise<void>,
-    successMessage: string,
-    errorMessageKey: keyof typeof errorMessages
-  ) => {
-    emitter.emit('ui:startLoading', 'default');
-    try {
-      await operation();
-      await fetchCards();
-      emitter.emit('ui:showToast', {
-        message: successMessage,
-        type: 'success',
-      });
-    } catch (e) {
-      const errorMessage = errorMessages[errorMessageKey] || errorMessages.default;
-      emitter.emit('ui:stopLoading', 'default');
-      emitter.emit('ui:showToast', {
-        message: errorMessage,
-        type: 'error',
-      });
-    } finally {
-      emitter.emit('ui:stopLoading', 'default');
-    }
-  };
 
   const isEmpty = (data: any) => {
     if (Array.isArray(data)) {
@@ -66,16 +41,9 @@ export const useFinanceStore = defineStore('finance', () => {
     }
   };
 
-  const fetchCards = async () => {
-    const {cards} = await repositoryFactory.get('Card').getAllCards();
-    cardsList.value = cards;
-  };
-
-  const fetchCash = async () => {
-    setLoading('cash', true);
-    const {balance} = await repositoryFactory.get('Balance').getCashBalance();
-    cash.value = balance;
-    setLoading('cash', false);
+  const fetchAccounts = async () => {
+    const {accounts} = await repositoryFactory.get('Accounts').getAllAccounts();
+    accountsList.value = accounts;
   };
 
   const fetchTransactions = async (filters: Record<string, any> = {}, page: number = 1, limit: number = 10) => {
@@ -90,7 +58,7 @@ export const useFinanceStore = defineStore('finance', () => {
       queryParams.append('limit', limit.toString());
 
       const queryString = queryParams.toString() ? `?${queryParams.toString()}` : '';
-      const response = await repositoryFactory.get('Balance').getAllTransactions(queryString);
+      const response = await repositoryFactory.get('Transactions').getAllTransactions(queryString);
 
       transactionsResponse.value = response;
     } catch (error) {
@@ -98,159 +66,131 @@ export const useFinanceStore = defineStore('finance', () => {
     }
   };
 
-  const fetchFilteredTransactions = async (filters: Record<string, any>, page: number = 1) => {
-    const transformedFilters = {
-      type: filters.type || null,
-      source: filters.source || null,
-      cardId: filters.cardId || null,
-      startDate: filters.startDate ? new Date(filters.startDate).toISOString() : null,
-      endDate: filters.endDate ? new Date(filters.endDate).toISOString() : null,
-      minAmount: filters.minAmount || null,
-      maxAmount: filters.maxAmount || null,
-      description: filters.description || null,
-      page: filters.value || 1,
-      limit: 10,
-    };
-
-    await fetchTransactions(transformedFilters, page);
-  };
-
-  const addExpense = async (payload: {
-    cardId: string | null;
-    description: string;
-    amount: number;
-    date: string;
-    category: string
-  }) => {
-    emitter.emit('ui:startLoading', 'default');
-
+  const addAccount = async (payload: CreateAccountPayload) => {
     try {
-      await repositoryFactory.get('Expense').createExpense(payload);
-      await Promise.all([await fetchCards(), await fetchCash(), await fetchTransactions()]);
-      emitter.emit('ui:showToast', {
-        message: 'Expense added successfully.',
-        type: 'success',
-      });
-    } catch (err) {
-      emitter.emit('ui:showToast', {
-        message: `Expense addition failed. ${err?.message}`,
-        type: 'error',
-      });
-    } finally {
-      emitter.emit('ui:stopLoading', 'default');
-    }
-  };
-
-  const addFunds = async (cardId: string, payload: { balance: number }) => {
-    emitter.emit('ui:startLoading', 'default');
-
-    try {
-      await repositoryFactory.get('Balance').updateBalance(cardId, payload);
-      await Promise.all([await fetchCards(), await fetchCash(), await fetchTransactions()]);
-      emitter.emit('ui:showToast', {
-        message: 'Funds added successfully.',
-        type: 'success',
-      });
+      await repositoryFactory.get('Accounts').createAccount(payload);
+      await fetchAccounts();
     } catch (e) {
       emitter.emit('ui:showToast', {
-        message: 'Funds addition failed.',
+        message: 'Account addition failed.',
         type: 'error',
       });
     } finally {
+      emitter.emit('ui:showToast', {
+        message: 'Account added successfully.',
+        type: 'success',
+      });
+    }
+  };
+
+  const updateAccount = async (payload: UpdateAccountPayload) => {
+    emitter.emit('ui:startLoading', 'default');
+
+    try {
+      await repositoryFactory.get('Accounts').updateAccount(payload);
+      await Promise.all([await fetchAccounts(), await fetchTransactions()]);
+    } catch (err) {
+      emitter.emit('ui:showToast', {
+        message: `Account update failed. ${err?.message}`,
+        type: 'error',
+      });
+    } finally {
+      emitter.emit('ui:showToast', {
+        message: 'Account updated successfully.',
+        type: 'success',
+      });
       emitter.emit('ui:stopLoading', 'default');
     }
   };
 
-  const addCard = async (payload: { name: string; number: string; balance: number; currency: string }) => {
-    await handleCardOperation(
-      () => repositoryFactory.get('Card').createCard(payload),
-      'New card added successfully.',
-      'createCard'
-    );
-  };
-
-  const updateCard = async (cardId: string, payload: {
-    name: string;
-    number: string;
-    balance: number;
-    currency: string
-  }) => {
-    await handleCardOperation(
-      () => repositoryFactory.get('Card').updateCard(cardId, payload),
-      'Card updated successfully.',
-      'updateCard'
-    );
-  };
-
-  const deleteCard = async (cardId: string) => {
-    await handleCardOperation(
-      () => repositoryFactory.get('Card').deleteCard(cardId),
-      'Card deleted successfully.',
-      'deleteCard'
-    );
-  };
-
-  const deleteTransaction = async (id: string, source: string, sourceCategory: string) => {
+  const deleteAccount = async (accountId: DeleteAccountPayload) => {
     emitter.emit('ui:startLoading', 'default');
 
     try {
-      await repositoryFactory.get('Transactions').deleteTransaction(id, source, sourceCategory);
-      await Promise.all([await fetchCards(), await fetchCash(), await fetchTransactions()]);
+      await repositoryFactory.get('Accounts').deleteAccount(accountId);
+      await Promise.all([await fetchAccounts(), await fetchTransactions()]);
+    } catch (err) {
       emitter.emit('ui:showToast', {
-        message: 'Transaction deleted successfully.',
+        message: `Account deletion failed. ${err?.message}`,
+        type: 'error',
+      });
+    } finally {
+      emitter.emit('ui:showToast', {
+        message: 'Account deleted successfully.',
         type: 'success',
       });
+      emitter.emit('ui:stopLoading', 'default');
+    }
+  };
+
+  const addTransaction = async (payload: CreateTransactionPayload) => {
+    emitter.emit('ui:startLoading', 'default');
+
+    try {
+      await repositoryFactory.get('Transactions').addTransaction(payload);
+      await Promise.all([await fetchAccounts(), await fetchTransactions()]);
+    } catch (err) {
+      emitter.emit('ui:showToast', {
+        message: `Transaction creation failed. ${err?.message}`,
+        type: 'error',
+      });
+    } finally {
+      emitter.emit('ui:showToast', {
+        message: 'Transaction created successfully.',
+        type: 'success',
+      });
+      emitter.emit('ui:stopLoading', 'default');
+    }
+  };
+
+  const deleteTransaction = async (payload: DeleteTransactionPayload) => {
+    emitter.emit('ui:startLoading', 'default');
+
+    try {
+      await repositoryFactory.get('Transactions').deleteTransaction(payload);
+      await Promise.all([await fetchAccounts(), await fetchTransactions()]);
     } catch (err) {
       emitter.emit('ui:showToast', {
         message: `Transaction deletion failed. ${err?.message}`,
         type: 'error',
       });
     } finally {
+      emitter.emit('ui:showToast', {
+        message: 'Transaction deleted successfully.',
+        type: 'success',
+      });
       emitter.emit('ui:stopLoading', 'default');
     }
   };
 
-  const updateTransaction = async (id: string, payload: {
-    name: string;
-    number: string;
-    balance: number;
-    currency: string;
-    description: string;
-    source: string;
-    sourceCategory: string;
-    type: string;
-  }) => {
+  const updateTransaction = async (payload: UpdateTransactionPayload) => {
     emitter.emit('ui:startLoading', 'default');
 
     try {
-      await repositoryFactory.get('Transactions').updateTransaction(id, payload);
-      await Promise.all([await fetchCards(), await fetchCash(), await fetchTransactions()]);
-      emitter.emit('ui:showToast', {
-        message: 'Transaction updated successfully.',
-        type: 'success',
-      });
+      await repositoryFactory.get('Transactions').updateTransaction(payload);
+      await Promise.all([await fetchAccounts(), await fetchTransactions()]);
     } catch (err) {
       emitter.emit('ui:showToast', {
         message: `Transaction update failed. ${err?.message}`,
         type: 'error',
       });
     } finally {
+      emitter.emit('ui:showToast', {
+        message: 'Transaction updated successfully.',
+        type: 'success',
+      });
       emitter.emit('ui:stopLoading', 'default');
     }
   };
 
-  const fetchDataIfNeeded = async (data: any, fetchFunction: any) => {
-    if (isEmpty(data)) {
-      await fetchFunction();
+  const fetchAccountsIfNeeded = async () => {
+    if (isEmpty(accountsList.value)) {
+      await fetchAccounts()
     }
   };
 
-  const fetchCardsIfNeeded = async () => {
-    await fetchDataIfNeeded(cardsList.value, fetchCards);
-  };
-
-  const fetchCashIfNeeded = async () => {
-    await fetchDataIfNeeded(cash.value, fetchCash);
+  const resetEditingAccount = () => {
+    editingAccount.value = {};
   };
 
   const resetEditingTransaction = () => {
@@ -258,26 +198,22 @@ export const useFinanceStore = defineStore('finance', () => {
   };
 
   return {
-    expenses,
-    cardsList,
-    cash,
+    accountsList,
     transactionsResponse,
     editingTransaction,
-    setLoading,
-    addExpense,
-    addFunds,
-    addCard,
-    updateCard,
-    updateTransaction,
-    deleteCard,
-    deleteTransaction,
-    fetchCards,
-    fetchCash,
-    fetchTransactions,
-    fetchCardsIfNeeded,
-    fetchCashIfNeeded,
-    fetchFilteredTransactions,
+    editingAccount,
     loadingStates,
-    resetEditingTransaction
+    setLoading,
+    addAccount,
+    updateAccount,
+    deleteAccount,
+    addTransaction,
+    updateTransaction,
+    deleteTransaction,
+    fetchAccounts,
+    fetchTransactions,
+    fetchAccountsIfNeeded,
+    resetEditingTransaction,
+    resetEditingAccount,
   };
 });

@@ -18,9 +18,8 @@
 </template>
 
 <script setup lang="ts">
-import {useUserStore} from '~/stores/user';
+import {useAuthStore} from "~/stores/auth";
 import {useSeoConfig} from "~/use/useSeoConfig";
-import repositoryFactory from "~/repositories/repositoryFactory";
 import Tabs from "~/components/Tabs/Tabs.vue";
 import LoginForm from "~/components/Forms/LoginForm/LoginForm.vue";
 import RegisterForm from "~/components/Forms/RegisterForm/RegisterForm.vue";
@@ -32,8 +31,7 @@ definePageMeta({
   layout: 'not-authorized'
 });
 
-const userStore = useUserStore();
-const router = useRouter();
+const authStore = useAuthStore();
 
 const tabs = [
   {id: 'login', label: 'Login', slotName: 'login'},
@@ -42,27 +40,17 @@ const tabs = [
 
 const handleLogin = async (user: { email: string; password: string }) => {
   try {
-    const {status, userId} = await repositoryFactory.get('Auth').login(user);
-
-    if (userId && status === 200) {
-      userStore.isLoggedIn = true;
-      await router.push('/');
-    }
-  } catch (error: any) {
+    await authStore.login(user);
+  } catch (error) {
     console.log(`Login failed: ${error.message}`);
   }
 };
 
 const handleRegister = async (user: any) => {
   try {
-    const {status} = await repositoryFactory.get('Auth').register(user);
-
-    if (status === 200) {
-      userStore.isLoggedIn = true;
-      await router.push('/');
-    }
-  } catch(error) {
-    console.log(error);
+    await authStore.register(user);
+  } catch (error) {
+    console.log(`Registration failed: ${error.message}`);
   }
 };
 </script>
@@ -80,5 +68,6 @@ const handleRegister = async (user: any) => {
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
+  padding: 16px;
 }
 </style>

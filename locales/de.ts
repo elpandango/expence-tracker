@@ -160,7 +160,7 @@ export const de = {
         searchDescriptionPlaceholderText: 'Beschreibungstext eingeben',
       }
     },
-    cardsPage: {
+    accountsPage: {
       pageTitleText: 'Hier sind alle Ihre Karten',
       emptyListTitleText: 'Oh, es scheint, dass Sie noch keine Karten hinzugefügt haben!',
       emptyListText: 'Sie können die App trotzdem nutzen, aber\n' +
@@ -183,6 +183,18 @@ export const de = {
         cardCurrencyLabelText: 'Währung',
         modalAddCardText: 'Neue Karte hinzufügen',
         modalEditCardText: 'Änderungen speichern',
+      },
+      addAccountModal: {
+        addTitleText: 'Adding a New Cash Amount',
+        editTitleText: 'Editing Cash Amount',
+        cardNamePlaceholderText: 'Enter amount name',
+        cardBalancePlaceholderText: 'Enter amount balance',
+        cardCurrencyPlaceholderText: 'Enter amount currency',
+        cardNameLabelText: 'Cash amount name',
+        cardBalanceLabelText: 'Amount balance',
+        cardCurrencyLabelText: 'Amount currency',
+        modalAddCardText: 'Add a New Amount',
+        modalEditCardText: 'Save Changes',
       },
       addEditTransactionModal: {
         addExpenseTitleText: 'Neue Ausgabe hinzufügen',

@@ -1,5 +1,13 @@
 <template>
   <div>
+    <transition name="toast-fade">
+      <Toast
+       v-if="uiStore.state?.toast?.message"
+       :message="uiStore.state.toast.message"
+       :type="uiStore.state.toast.type"
+       :duration="3000"
+      />
+    </transition>
     <slot></slot>
   </div>
 </template>

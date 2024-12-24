@@ -42,7 +42,7 @@ export default {
   },
   async getAllCategories(): Promise<CategoryResponse[]> {
     try {
-      return await $fetch('/api/get-categories', {
+      return await $fetch('/api/category', {
         method: 'GET',
       });
     } catch (error: any) {

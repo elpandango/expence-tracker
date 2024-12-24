@@ -16,23 +16,25 @@
       <div class="right-side">
         <div
          class="transaction-amount"
-         :class="[transaction.type === 'deposit' ? 'green' : 'red']">{{ transaction.amount.toFixed(2) }} $
+         :class="[transaction.type === 'income' ? 'green' : 'red']">{{ transaction.amount.toFixed(2) }} {{transaction.currency}}
         </div>
         <div class="category">
           <div class="category-wrap">
-            <template v-if="transaction?.category?.icon">
-      <span
-       class="category-icon material-symbols-outlined"
-       :style="{ backgroundColor: transaction?.category?.color }">{{ transaction.category.icon }}</span>
+            <template v-if="transaction?.type !== 'income' && transaction?.category?.icon">
+              <div
+               class="category-icon material-symbols-outlined"
+               :style="{ backgroundColor: transaction?.category?.color }">{{ transaction.category.icon }}
+              </div>
             </template>
-            <template v-else-if="transaction?.type === 'deposit'">
-      <span
-       class="category-icon material-symbols-outlined"
-       :style="{ backgroundColor: '#4CAF50' }">payments</span>
+            <template v-else-if="transaction?.type === 'income'">
+              <div
+               class="category-icon material-symbols-outlined"
+               :style="{ backgroundColor: '#4CAF50' }">payments
+              </div>
             </template>
             <div class="category-name">{{ categoryName }}</div>
           </div>
-          <div class="card-number" v-if="transaction.number">{{transaction.number}}</div>
+          <div class="card-number">{{ transaction.accountId.name }}</div>
         </div>
         <div
          v-if="showActions"
@@ -43,11 +45,13 @@
           <div
            class="actions-list"
            v-if="isOpen">
-            <button class="action-btn"
-                    @click="handleEditTransaction">Edit Transaction</button>
             <button
              class="action-btn"
-             @click="handleDeleteTransaction">Delete Transaction
+             @click="$emit('edit-clicked')">Edit Transaction
+            </button>
+            <button
+             class="action-btn"
+             @click="$emit('delete-clicked')">Delete Transaction
             </button>
           </div>
         </div>
@@ -88,9 +92,8 @@ const handleClickOutside = (event: any) => {
 };
 
 const categoryName = computed(() => {
-  if (props.transaction?.type === 'deposit') {
-    const type = props.transaction.source === 'card' ? '(Card)' : '(Cash)';
-    return 'Deposit ' + type;
+  if (props.transaction?.type === 'income') {
+    return 'Deposit';
   } else {
     return props.transaction?.category?.name;
   }
@@ -98,14 +101,6 @@ const categoryName = computed(() => {
 
 const toggleActions = () => {
   isOpen.value = !isOpen.value;
-};
-
-const handleDeleteTransaction = () => {
-  emit('delete-clicked');
-};
-
-const handleEditTransaction = () => {
-  emit('edit-clicked');
 };
 
 onMounted(() => document.addEventListener('click', handleClickOutside));
