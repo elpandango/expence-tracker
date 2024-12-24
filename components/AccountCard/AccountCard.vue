@@ -4,18 +4,18 @@
    :class="props.class">
     <div class="account-details">
       <div class="details-row">
-        <div class="row-name">Account name:</div>
+        <div class="row-name">{{ $t('components.accountsPage.accountName') }}:</div>
         <div class="row-value">{{ data.name }}</div>
       </div>
 
       <div class="details-row">
-        <div class="row-name">Account type:</div>
+        <div class="row-name">{{ $t('components.accountsPage.accountName') }}:</div>
         <div class="row-value">{{ data.type }}</div>
       </div>
 
       <div class="details-row">
-        <div class="row-name">Balance:</div>
-        <div class="row-value">{{ data.balance }}{{ data.currency }}</div>
+        <div class="row-name">{{ $t('components.accountsPage.balance') }}:</div>
+        <div class="row-value">{{ formatCurrency(data.balance, data.currency) }}</div>
       </div>
     </div>
 
@@ -29,11 +29,11 @@
        v-if="isOpen">
         <button
          class="action-btn"
-         @click="$emit('update-account')">Edit Account
+         @click="$emit('update-account')">{{ $t('components.accountsPage.editAccountTitle') }}
         </button>
         <button
          class="action-btn"
-         @click="$emit('delete-account')">Delete Account
+         @click="$emit('delete-account')">{{ $t('components.accountsPage.deleteAccountTitle') }}
         </button>
       </div>
     </div>
@@ -44,6 +44,7 @@
  setup
  lang="ts">
 import {ref} from "vue";
+import {useCurrencyFormatter} from "~/use/useCurrencyFormatter";
 
 const props = defineProps({
   class: {
@@ -56,6 +57,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update-account', 'delete-account']);
 
+const {formatCurrency} = useCurrencyFormatter();
 const isOpen = ref(false);
 const actions = ref(null);
 

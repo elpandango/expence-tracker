@@ -21,7 +21,7 @@
            class="add-account-btn"
            @click="handleAddAmount">
             <span class="plus-icon">+</span>
-            <span class="btn-text">{{ $t('components.accountsPage.addCardText') }}</span>
+            <span class="btn-text">{{ $t('components.accountsPage.addAccountText') }}</span>
           </button>
         </li>
       </ul>
@@ -35,7 +35,7 @@
          class="add-card-btn"
          @click="handleAddAmount">
           <span class="plus-icon">+</span>
-          <span class="btn-text">{{ $t('components.accountsPage.addCardText') }}</span>
+          <span class="btn-text">{{ $t('components.accountsPage.addAccountText') }}</span>
         </button>
       </div>
     </template>

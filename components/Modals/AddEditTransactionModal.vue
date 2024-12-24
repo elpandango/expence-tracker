@@ -118,6 +118,7 @@
 import {ref, reactive, computed, onMounted, watch} from 'vue';
 import {useFinanceStore} from '~/stores/finance';
 import {useCategoryStore} from '~/stores/category';
+import {useCurrencyFormatter} from "~/use/useCurrencyFormatter";
 import Modal from './Modal.vue';
 import Dropdown from '~/components/Dropdown/Dropdown.vue';
 import BaseButton from '~/components/Buttons/BaseButton.vue';
@@ -130,6 +131,7 @@ const props = defineProps({
   transactionType: {type: String, default: 'expense'}
 });
 
+const {formatCurrency} = useCurrencyFormatter();
 const financeStore = useFinanceStore();
 const categoryStore = useCategoryStore();
 
@@ -174,11 +176,10 @@ const setTransactionType = (type: string) => {
 
 const populateAccountsList = async () => {
   await financeStore.fetchAccountsIfNeeded();
-
   accounts.value = financeStore.accountsList.map(account => ({
     value: account._id,
     currency: account.currency,
-    label: `${account.name} (${account.currency})`
+    label: `${account.name}: ${formatCurrency(account.balance, account.currency)}`
   }));
 };
 

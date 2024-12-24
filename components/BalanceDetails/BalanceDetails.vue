@@ -11,16 +11,17 @@
        :key="account._id">
         <div class="balance-details">
           <span class="account-name">{{ account.name }}</span>
-          <div class="account-type">{{account.type}} {{ account.cardNumber ? `| ${account.cardNumber}` : '' }}</div>
+          <div class="account-type">{{ account.type }} {{ account.cardNumber ? `| ${account.cardNumber}` : '' }}</div>
         </div>
-        <strong>{{ account.balance?.toFixed(2) }} {{ account.currency }}</strong></div>
+        <strong>{{ formatCurrency(account.balance, account.currency) }}</strong>
+      </div>
     </div>
 
     <template v-if="financeStore.accountsList.length === 0">
       <p class="info">{{ $t('components.accountsPage.emptyListTitleText') }}</p>
       <BaseButton
        size="medium"
-       @click="handleAddAmount">Add Account
+       @click="handleAddAmount">{{ $t('components.accountsPage.addAccountText') }}
       </BaseButton>
     </template>
 
@@ -37,10 +38,12 @@
  lang="ts">
 import {useUIStore} from "~/stores/ui";
 import {useFinanceStore} from "~/stores/finance";
+import {useCurrencyFormatter} from "~/use/useCurrencyFormatter";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
 
 const uiStore = useUIStore();
 const financeStore = useFinanceStore();
+const {formatCurrency} = useCurrencyFormatter();
 
 const handleAddFunds = () => {
   financeStore.resetEditingTransaction();
