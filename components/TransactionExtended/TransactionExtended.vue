@@ -16,7 +16,8 @@
       <div class="right-side">
         <div
          class="transaction-amount"
-         :class="[transaction.type === 'income' ? 'green' : 'red']">{{ transaction.amount.toFixed(2) }} {{transaction.currency}}
+         :class="[transaction.type === 'income' ? 'green' : 'red']">
+          {{ formatCurrency(transaction.amount, transaction.currency) }}
         </div>
         <div class="category">
           <div class="category-wrap">
@@ -47,11 +48,13 @@
            v-if="isOpen">
             <button
              class="action-btn"
-             @click="$emit('edit-clicked')">Edit Transaction
+             @click="$emit('edit-clicked')">
+              {{ $t(`components.modalsContent.addEditTransactionModal.transactionEditText`) }}
             </button>
             <button
              class="action-btn"
-             @click="$emit('delete-clicked')">Delete Transaction
+             @click="$emit('delete-clicked')">
+              {{ $t(`components.modalsContent.addEditTransactionModal.transactionDeleteText`) }}
             </button>
           </div>
         </div>
@@ -64,8 +67,8 @@
 <script
  setup
  lang="ts">
-
 import {ref} from "vue";
+import {useCurrencyFormatter} from "~/use/useCurrencyFormatter";
 
 const props = defineProps({
   transaction: {
@@ -83,6 +86,7 @@ const props = defineProps({
 
 const emit = defineEmits(['delete-clicked', 'edit-clicked']);
 
+const {formatCurrency} = useCurrencyFormatter();
 const isOpen = ref(false);
 const actions = ref(null);
 const handleClickOutside = (event: any) => {

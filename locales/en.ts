@@ -165,9 +165,12 @@ export const en = {
       emptyListTitleText: 'Oh, it seems like you haven’t added any account yet!',
       emptyListText: 'Feel free to explore the app without them, but\n' +
         '          adding accounts will let you link transactions and get detailed stats for each one.',
-      addCardText: 'Add a new account',
-      editCardTitle: 'Edit',
-      deleteCardTitle: 'Delete',
+      addAccountText: 'Add a new account',
+      editAccountTitle: 'Edit account',
+      deleteAccountTitle: 'Delete account',
+      accountName: 'Account name',
+      accountType: 'Account type',
+      balance: 'Balance',
     },
     modalsContent: {
       addCardModal: {
@@ -212,6 +215,8 @@ export const en = {
         categoryLabelText: 'Category',
         saveBtnText: 'Save',
         editBtnText: 'Edit',
+        transactionEditText: 'Edit Transaction',
+        transactionDeleteText: 'Delete Transaction',
       },
       deleteCardModal: {
         deleteTitleText: 'Confirm Card deletion',
