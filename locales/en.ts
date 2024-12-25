@@ -171,6 +171,8 @@ export const en = {
       accountName: 'Account name',
       accountType: 'Account type',
       balance: 'Balance',
+      emptyAccountsText: 'or try out the app with pre-generated examples',
+      generateBtnText: 'Generate test data'
     },
     modalsContent: {
       addCardModal: {

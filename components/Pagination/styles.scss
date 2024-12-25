@@ -4,6 +4,11 @@
   margin-top: 2rem;
   margin-bottom: 2rem;
 
+  .dots {
+    display: inline-block;
+    padding: 0 8px;
+    color: #aaa;
+  }
 
   .pagination {
     display: flex;

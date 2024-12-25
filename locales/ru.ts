@@ -170,6 +170,8 @@ export const ru = {
       accountName: 'Название счёта',
       accountType: 'Тип счёта',
       balance: 'Баланс',
+      emptyAccountsText: 'или попробуйте приложение с готовыми примерами',
+      generateBtnText: 'Генерация тестовых данных'
     },
     modalsContent: {
       addCardModal: {

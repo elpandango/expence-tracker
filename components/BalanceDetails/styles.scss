@@ -40,12 +40,15 @@
       font-size: 12px;
       margin-top: 6px;
     }
+  }
 
-    .account-name {
-      //@media only screen and (max-width: 767px) {
-      //  display: block;
-      //  width: 100%;
-      //}
+  .btn-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .button {
+      min-width: 130px;
     }
   }
 }

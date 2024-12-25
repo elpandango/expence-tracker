@@ -23,7 +23,6 @@
              @close="closeModal('account')"
              @update:isOpen="isAddAccountModalOpen = $event"
             />
-            account-saved
           </template>
 
           <template v-if="isAddExpenseModalOpen || isAddFundsModalOpen">

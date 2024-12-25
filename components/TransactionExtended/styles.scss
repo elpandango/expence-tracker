@@ -94,6 +94,9 @@
 
   .card-number {
     margin-top: 4px;
+    font-size: 12px;
+    text-align: right;
+
     @media only screen and (max-width: 480px) {
       font-size: 11px;
       white-space: nowrap;

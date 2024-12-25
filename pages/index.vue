@@ -59,8 +59,9 @@
       <Card>
         <template v-if="isHighchartsLoaded && topChartIsLoaded">
           <HighchartsComponent
-           v-if="chartConfig"
+           v-if="chartConfig && chartConfig.series[0].data.length > 0"
            :options="chartConfig"/>
+          <NoChartsData v-else/>
         </template>
         <template v-else>
           <Preloader height="300px"/>
@@ -98,7 +99,10 @@ useHead({
   },
 });
 
-const sortBySelected = ref(null);
+const sortBySelected = ref({
+  value: null,
+  label: 'All Transactions'
+});
 const periodSelected = ref('week');
 const transactionsHistoryOptions = ref([]);
 const params = ref<Record<string, string | Date>>({});
@@ -161,7 +165,7 @@ const changePeriod = async (period: string) => {
 
 const fetchChartData = async () => {
   try {
-    const { default: component } = await import('~/components/HighchartComponent/HighchartComponent.vue');
+    const {default: component} = await import('~/components/HighchartComponent/HighchartComponent.vue');
     HighchartsComponent = component;
   } catch (err) {
     console.log(err);
@@ -202,6 +206,7 @@ const fetchChartData = async () => {
         },
       ],
     };
+
   } catch (err) {
     console.log(err);
   } finally {

@@ -159,7 +159,7 @@ const handleSaveAccount = async () => {
     } else {
       await financeStore.addAccount({
         name: accountName.value,
-        initialBalance: parseFloat(accountBalance.value),
+        initialBalance: accountBalance.value ? parseFloat(accountBalance.value) : 0,
         currency: selectedCurrency.value.value,
         type: accountType.value.value,
         cardNumber: cardNumber.value ?? null,
