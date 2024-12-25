@@ -89,8 +89,18 @@ export const useGenerateTestData = () => {
       };
     });
 
-    for (const transaction of transactions) {
-      await createTransaction(transaction);
+    const chunkTransactions = (arr, chunkSize) => {
+      const result = [];
+      for (let i = 0; i < arr.length; i += chunkSize) {
+        result.push(arr.slice(i, i + chunkSize));
+      }
+      return result;
+    };
+
+    const chunks = chunkTransactions(transactions, 10);
+
+    for (const chunk of chunks) {
+      await Promise.all(chunk.map(createTransaction));
     }
   };
 
@@ -111,5 +121,5 @@ export const useGenerateTestData = () => {
     }
   };
 
-  return {generateTestData};
+  return { generateTestData };
 };
