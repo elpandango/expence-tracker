@@ -12,7 +12,8 @@ export default defineEventHandler(async (event) => {
   const userData = verifyToken(token);
   const userId = userData?.userId;
 
-  const user = await UserModel.findById(userId, 'name lastName email avatar');
+  // const user = await UserModel.findById(userId, 'name lastName email avatar');
+  const user = await UserModel.findById(userId, 'name lastName email');
 
   if (!user) {
     throw createError({statusCode: 404, message: 'User not found'});
@@ -24,7 +25,7 @@ export default defineEventHandler(async (event) => {
       name: user.name,
       lastName: user.lastName,
       email: user.email,
-      avatar: user.avatar,
+      // avatar: user.avatar,
     }
   };
 });
