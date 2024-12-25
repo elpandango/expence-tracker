@@ -4,12 +4,11 @@ import { useRoute } from 'vue-router';
 export const useSeoConfig = () => {
   const { t } = useI18n();
   const route = useRoute();
-
   const currentUrl = computed(() => {
     if (process.client) {
       return `${window.location.origin}${route.fullPath}`;
     }
-    return `https://expence-tracker-nu.vercel.app/${route.fullPath}`;
+    return `https://expence-tracker-nu.vercel.app${route.fullPath}`;
   });
 
   return computed(() => {
