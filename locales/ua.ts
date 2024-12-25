@@ -170,6 +170,8 @@ export const ua = {
       accountName: 'Назва рахунку',
       accountType: 'Тип рахунку',
       balance: 'Баланс',
+      emptyAccountsText: 'або спробуйте додаток із попередньо згенерованими прикладами',
+      generateBtnText: 'Створення тестових даних'
     },
     modalsContent: {
       addCardModal: {

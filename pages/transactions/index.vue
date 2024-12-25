@@ -182,7 +182,10 @@ const transactionTypes = [
   {value: 'income', label: 'Deposits'},
 ];
 
-const sortBySelected = ref(null);
+const sortBySelected = ref({
+  value: null,
+  label: 'All Transactions'
+});
 const transactions = ref([]);
 const paginationData = ref({
   currentPage: 1,

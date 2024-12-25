@@ -170,6 +170,8 @@ export const de = {
       accountName: 'Kontoname',
       accountType: 'Kontotyp',
       balance: 'Kontostand',
+      emptyAccountsText: 'oder probieren Sie die App mit vorgenerierten Beispielen aus',
+      generateBtnText: 'Testdaten generieren'
     },
     modalsContent: {
       addCardModal: {

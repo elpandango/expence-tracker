@@ -77,6 +77,20 @@ watch(() => props.modelValue, (newValue) => {
 
 const toggleDropdown = () => {
   isOpen.value = !isOpen.value;
+
+  if (isOpen.value) {
+    nextTick(() => {
+      const rect = dropdown.value.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const menu = dropdown.value.querySelector('.dropdown-menu');
+      if (spaceBelow < 210) {
+        menu.style.bottom = '60px';
+        menu.style.top = 'unset';
+      } else {
+        menu.style.top = '100%';
+      }
+    });
+  }
 };
 
 const selectOption = (option: any) => {

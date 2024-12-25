@@ -32,7 +32,7 @@
         <h3>{{ $t('components.accountsPage.emptyListTitleText') }}</h3>
         <p class="info">{{ $t('components.accountsPage.emptyListText') }}</p>
         <button
-         class="add-card-btn"
+         class="add-account-btn small"
          @click="handleAddAmount">
           <span class="plus-icon">+</span>
           <span class="btn-text">{{ $t('components.accountsPage.addAccountText') }}</span>

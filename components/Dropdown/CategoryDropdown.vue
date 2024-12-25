@@ -15,28 +15,26 @@
        fill="currentColor"
        xmlns="http://www.w3.org/2000/svg"
       >
-        <path d="M0 3L5 8L10 3H0Z" />
+        <path d="M0 3L5 8L10 3H0Z"/>
       </svg>
     </button>
 
-    <transition name="fade-expand">
-      <ul
-       v-if="isOpen"
-       class="dropdown-menu">
-        <li
-         v-for="option in options"
-         :key="option.value"
-         @click="selectOption(option)"
-         class="dropdown-item"
-         :class="{ selected: option.value === selectedOption?.value }"
-        >
+    <ul
+     v-if="isOpen"
+     class="dropdown-menu">
+      <li
+       v-for="option in options"
+       :key="option.value"
+       @click="selectOption(option)"
+       class="dropdown-item"
+       :class="{ selected: option.value === selectedOption?.value }"
+      >
           <span
            class="category-icon material-symbols-outlined"
            :style="{ backgroundColor: option?.color }">{{ option.icon }}</span>
-          {{ option.label }}
-        </li>
-      </ul>
-    </transition>
+        {{ option.label }}
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -76,10 +74,24 @@ const selectedOption = ref(props.modelValue);
 
 watch(() => props.modelValue, (newValue) => {
   selectedOption.value = newValue;
-}, { immediate: true });
+}, {immediate: true});
 
 const toggleDropdown = () => {
   isOpen.value = !isOpen.value;
+
+  if (isOpen.value) {
+    nextTick(() => {
+      const rect = dropdown.value.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const menu = dropdown.value.querySelector('.dropdown-menu');
+      if (spaceBelow < 210) {
+        menu.style.bottom = '60px';
+        menu.style.top = 'unset';
+      } else {
+        menu.style.top = '100%';
+      }
+    });
+  }
 };
 
 const selectOption = (option: any) => {

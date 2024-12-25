@@ -9,8 +9,9 @@
          @date-changed="handleDateChanged('expenses_vs_incomes', $event)">
           <template v-if="isHighchartsLoaded && chartsLoadingState.expenses_vs_incomes">
             <HighchartsComponent
-             v-if="chartConfigs.expenses_vs_incomes"
+             v-if="chartConfigs.expenses_vs_incomes.series[0].data.length > 0"
              :options="chartConfigs.expenses_vs_incomes"/>
+            <NoChartsData v-else/>
           </template>
           <template v-else>
             <Preloader height="300px"/>
@@ -22,8 +23,9 @@
          @date-changed="handleDateChanged('top5', $event)">
           <template v-if="isHighchartsLoaded && chartsLoadingState.top5">
             <HighchartsComponent
-             v-if="chartConfigs.top5"
+             v-if="chartConfigs.top5 && chartConfigs.top5.series[0].data.length > 0"
              :options="chartConfigs.top5"/>
+            <NoChartsData v-else/>
           </template>
           <template v-else>
             <Preloader height="300px"/>
@@ -37,8 +39,9 @@
          @date-changed="handleDateChanged('categories', $event)">
           <template v-if="isHighchartsLoaded && chartsLoadingState.categories">
             <HighchartsComponent
-             v-if="chartConfigs.categories"
+             v-if="chartConfigs.categories && chartConfigs.categories.series[0].data.length > 0"
              :options="chartConfigs.categories"/>
+            <NoChartsData v-else/>
           </template>
           <template v-else>
             <Preloader height="300px"/>
@@ -50,8 +53,9 @@
          @date-changed="handleDateChanged('total_expenses', $event)">
           <template v-if="isHighchartsLoaded && chartsLoadingState.total_expenses">
             <HighchartsComponent
-             v-if="chartConfigs.total_expenses"
+             v-if="chartConfigs.total_expenses && chartConfigs.total_expenses.series[0].data.length > 0"
              :options="chartConfigs.total_expenses"/>
+            <NoChartsData v-else/>
           </template>
           <template v-else>
             <Preloader height="300px"/>

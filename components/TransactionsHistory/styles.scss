@@ -5,6 +5,15 @@
     max-height: 335px;
     overflow-y: auto;
     padding-right: 10px;
+
+    .card {
+      box-shadow: none;
+      border: 1px solid var(--input-border-color);
+
+      &:last-child {
+        margin-bottom: 0 !important;
+      }
+    }
   }
 
   .empty-message {

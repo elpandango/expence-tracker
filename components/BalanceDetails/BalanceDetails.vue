@@ -23,13 +23,28 @@
        size="medium"
        @click="handleAddAmount">{{ $t('components.accountsPage.addAccountText') }}
       </BaseButton>
+
+      <p class="mar-t-4">{{ $t('components.accountsPage.emptyAccountsText') }}:</p>
+
+      <BaseButton
+       size="medium"
+       @click="handleCreateTestData">{{ $t('components.accountsPage.generateBtnText') }}
+      </BaseButton>
     </template>
 
-    <BaseButton
-     v-if="financeStore.accountsList.length > 0"
-     size="medium"
-     @click="handleAddFunds">{{ $t('components.buttons.addFundsText') }}
-    </BaseButton>
+    <div
+     class="btn-block"
+     v-if="financeStore.accountsList.length > 0">
+      <BaseButton
+       size="medium"
+       @click="handleAddFunds">{{ $t('components.buttons.addFundsText') }}
+      </BaseButton>
+
+      <BaseButton
+       size="medium"
+       @click="handleNewExpense">{{ $t('components.menuList.addExpense') }}
+      </BaseButton>
+    </div>
   </div>
 </template>
 
@@ -39,11 +54,14 @@
 import {useUIStore} from "~/stores/ui";
 import {useFinanceStore} from "~/stores/finance";
 import {useCurrencyFormatter} from "~/use/useCurrencyFormatter";
+import {useGenerateTestData} from "~/use/useGenerateTestData";
+import {emitter} from "~/classes/uiEventBus";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
 
 const uiStore = useUIStore();
 const financeStore = useFinanceStore();
 const {formatCurrency} = useCurrencyFormatter();
+const { generateTestData } = useGenerateTestData();
 
 const handleAddFunds = () => {
   financeStore.resetEditingTransaction();
@@ -54,6 +72,18 @@ const handleAddAmount = () => {
   financeStore.resetEditingAccount();
   uiStore.toggleModal('isAddAccountModalOpen', true);
 }
+
+const handleNewExpense = () => {
+  financeStore.resetEditingTransaction();
+  uiStore.toggleModal('isAddExpenseModalOpen', true);
+}
+
+const handleCreateTestData = async () => {
+  emitter.emit('ui:startLoading', 'default');
+  await generateTestData();
+  emitter.emit('ui:stopLoading', 'default');
+  window.location.reload();
+};
 
 onMounted(async () => {
   try {

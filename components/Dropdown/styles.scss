@@ -87,7 +87,8 @@
 
 .fade-expand-enter-active,
 .fade-expand-leave-active {
-  transition: opacity 0.3s ease, max-height 0.3s ease;
+  transition: opacity 0.3s ease;
+  //transition: opacity 0.3s ease, max-height 0.3s ease;
 }
 
 .fade-expand-enter-from,
