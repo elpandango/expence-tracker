@@ -9,7 +9,7 @@ export const ru = {
       twitterTitle: 'Главная - Expendango',
       twitterDescription: 'Expendango — ваш личный помощник для управления финансами...',
       twitterImage: '/images/expendango-hero.webp',
-      twitterCard: 'summary',
+      twitterCard: 'summary_large_image',
     },
     auth: {
       title: 'Авторизация - Expendango',
@@ -20,7 +20,7 @@ export const ru = {
       twitterTitle: 'Авторизация - Expendango',
       twitterDescription: 'Войдите в Expendango и начните отслеживать свои доходы...',
       twitterImage: '/images/expendango-auth.webp',
-      twitterCard: 'summary',
+      twitterCard: 'summary_large_image',
     },
     cards: {
       title: 'Мои Карты - Expendango',
@@ -31,7 +31,7 @@ export const ru = {
       twitterTitle: 'Мои Карты - Expendango',
       twitterDescription: 'Добавляйте и управляйте своими банковскими картами в Expendango, чтобы лучше контролировать финансы.',
       twitterImage: '/images/expendango-cards.webp',
-      twitterCard: 'summary'
+      twitterCard: 'summary_large_image'
     },
     categories: {
       title: 'Категории - Expendango',
@@ -42,7 +42,7 @@ export const ru = {
       twitterTitle: 'Категории - Expendango',
       twitterDescription: 'Настройте категории расходов и доходов в Expendango для более детального контроля над финансами.',
       twitterImage: '/images/expendango-categories.webp',
-      twitterCard: 'summary'
+      twitterCard: 'summary_large_image'
     },
     profile: {
       title: 'Профиль - Expendango',
@@ -53,7 +53,7 @@ export const ru = {
       twitterTitle: 'Профиль - Expendango',
       twitterDescription: 'Обновляйте информацию в своём профиле, чтобы сделать использование Expendango ещё удобнее.',
       twitterImage: '/images/expendango-profile.webp',
-      twitterCard: 'summary'
+      twitterCard: 'summary_large_image'
     },
     settings: {
       title: 'Настройки - Expendango',
@@ -64,7 +64,7 @@ export const ru = {
       twitterTitle: 'Настройки - Expendango',
       twitterDescription: 'Управляйте настройками Expendango для ещё более удобного отслеживания финансов.',
       twitterImage: '/images/expendango-settings.webp',
-      twitterCard: 'summary'
+      twitterCard: 'summary_large_image'
     },
     statistics: {
       title: 'Статистика - Expendango',
@@ -75,7 +75,7 @@ export const ru = {
       twitterTitle: 'Статистика - Expendango',
       twitterDescription: 'Получите полную картину своих финансов с помощью графиков и отчётов в Expendango.',
       twitterImage: '/images/expendango-statistics.webp',
-      twitterCard: 'summary'
+      twitterCard: 'summary_large_image'
     },
     transactions: {
       title: 'Транзакции - Expendango',
@@ -86,7 +86,7 @@ export const ru = {
       twitterTitle: 'Транзакции - Expendango',
       twitterDescription: 'Следите за всеми своими транзакциями в Expendango для полного контроля над финансами.',
       twitterImage: '/images/expendango-transactions.webp',
-      twitterCard: 'summary'
+      twitterCard: 'summary_large_image'
     }
   },
   components: {

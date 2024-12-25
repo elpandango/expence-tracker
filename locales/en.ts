@@ -9,7 +9,7 @@ export const en = {
       twitterTitle: 'Home - Expendango',
       twitterDescription: 'Expendango is your personal assistant for managing finances. Track your income and expenses with ease.',
       twitterImage: '/images/expendango-hero.webp',
-      twitterCard: 'summary',
+      twitterCard: 'summary_large_image',
     },
     auth: {
       title: 'Auth - Expendango',
@@ -20,7 +20,7 @@ export const en = {
       twitterTitle: 'Auth - Expendango',
       twitterDescription: 'Sign in to Expendango and start tracking your income and expenses today.',
       twitterImage: '/images/expendango-auth.webp',
-      twitterCard: 'summary',
+      twitterCard: 'summary_large_image',
     },
     accounts: {
       title: 'My Accounts - Expendango',
@@ -31,7 +31,7 @@ export const en = {
       twitterTitle: 'My Accounts - Expendango',
       twitterDescription: 'Add and manage your accounts in Expendango to better control your finances.',
       twitterImage: '/images/expendango-cards.webp',
-      twitterCard: 'summary',
+      twitterCard: 'summary_large_image',
     },
     categories: {
       title: 'Categories - Expendango',
@@ -42,7 +42,7 @@ export const en = {
       twitterTitle: 'Categories - Expendango',
       twitterDescription: 'Set up expense and income categories in Expendango for more detailed financial control.',
       twitterImage: '/images/expendango-categories.webp',
-      twitterCard: 'summary',
+      twitterCard: 'summary_large_image',
     },
     profile: {
       title: 'Profile - Expendango',
@@ -53,7 +53,7 @@ export const en = {
       twitterTitle: 'Profile - Expendango',
       twitterDescription: 'Update your profile information to make Expendango even more convenient to use.',
       twitterImage: '/images/expendango-profile.webp',
-      twitterCard: 'summary',
+      twitterCard: 'summary_large_image',
     },
     settings: {
       title: 'Settings - Expendango',
@@ -64,7 +64,7 @@ export const en = {
       twitterTitle: 'Settings - Expendango',
       twitterDescription: 'Manage Expendango settings for even more convenient financial tracking.',
       twitterImage: '/images/expendango-settings.webp',
-      twitterCard: 'summary',
+      twitterCard: 'summary_large_image',
     },
     statistics: {
       title: 'Statistics - Expendango',
@@ -75,7 +75,7 @@ export const en = {
       twitterTitle: 'Statistics - Expendango',
       twitterDescription: 'Get a complete picture of your finances with charts and reports in Expendango.',
       twitterImage: '/images/expendango-statistics.webp',
-      twitterCard: 'summary',
+      twitterCard: 'summary_large_image',
     },
     transactions: {
       title: 'Transactions - Expendango',
@@ -86,7 +86,7 @@ export const en = {
       twitterTitle: 'Transactions - Expendango',
       twitterDescription: 'Track all your transactions in Expendango for complete control over your finances.',
       twitterImage: '/images/expendango-transactions.webp',
-      twitterCard: 'summary',
+      twitterCard: 'summary_large_image',
     },
   },
   components: {
