@@ -7,9 +7,9 @@ export const useSeoConfig = () => {
 
   const currentUrl = computed(() => {
     if (process.client) {
-      return `${window.location.origin}${route.fullPath}`; // для клиента
+      return `${window.location.origin}${route.fullPath}`;
     }
-    return `https://yourdomain.com${route.fullPath}`; // на сервере нужно указать домен
+    return `https://expence-tracker-nu.vercel.app/${route.fullPath}`;
   });
 
   return computed(() => {
