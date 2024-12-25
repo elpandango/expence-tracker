@@ -5,9 +5,12 @@ export const useSeoConfig = () => {
   const { t } = useI18n();
   const route = useRoute();
 
-  const currentUrl = computed(() =>
-    process.client ? `${window.location.origin}${route.fullPath}` : ''
-  );
+  const currentUrl = computed(() => {
+    if (process.client) {
+      return `${window.location.origin}${route.fullPath}`; // для клиента
+    }
+    return `https://yourdomain.com${route.fullPath}`; // на сервере нужно указать домен
+  });
 
   return computed(() => {
     const routeName = route.name?.toString() || 'index';

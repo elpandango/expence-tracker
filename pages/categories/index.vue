@@ -35,19 +35,19 @@ const addCategory = () => {
   }
 };
 
-const editCategory = (category) => {
-  const newName = prompt('Edit category name', category.name);
-  if (newName) {
-    category.name = newName;
-  }
-};
-
-const deleteCategory = (id) => {
-  const index = categories.value.findIndex((category) => category.id === id);
-  if (index !== -1) {
-    categories.value.splice(index, 1);
-  }
-};
+// const editCategory = (category) => {
+//   const newName = prompt('Edit category name', category.name);
+//   if (newName) {
+//     category.name = newName;
+//   }
+// };
+//
+// const deleteCategory = (id) => {
+//   const index = categories.value.findIndex((category) => category.id === id);
+//   if (index !== -1) {
+//     categories.value.splice(index, 1);
+//   }
+// };
 
 onMounted(async () => {
   emitter.emit('ui:startLoading', 'default');

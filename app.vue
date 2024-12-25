@@ -13,6 +13,10 @@
  lang="ts">
 import SvgSprite from "~/components/svgComponents/SvgSprite.vue";
 import {useUIStore} from "~/stores/ui";
+import {useSeoConfig} from "~/use/useSeoConfig";
+
+const seoMeta = useSeoConfig();
+useSeoMeta(seoMeta.value);
 
 useHead({
   link: [

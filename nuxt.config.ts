@@ -1,4 +1,5 @@
 export default defineNuxtConfig({
+  ssr: true,
   devtools: { enabled: true },
   nitro: {
     plugins: ["~/server/plugins/mongodb.ts"],

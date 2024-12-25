@@ -82,6 +82,9 @@ import {useSeoConfig} from "~/use/useSeoConfig";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
 import Card from "~/components/Card/Card.vue";
 
+const seoMeta = useSeoConfig();
+useSeoMeta(seoMeta.value);
+
 const chartStore = useChartStore();
 const financeStore = useFinanceStore();
 const transactions = ref([]);
@@ -89,15 +92,6 @@ const isHighchartsLoaded = ref(false);
 const topChartIsLoaded = ref(false);
 let HighchartsComponent: any = null;
 const chartConfig = ref({});
-
-const seoMeta = useSeoConfig();
-useSeoMeta(seoMeta.value);
-
-useHead({
-  htmlAttrs: {
-    lang: 'en'
-  },
-});
 
 const sortBySelected = ref({
   value: null,
