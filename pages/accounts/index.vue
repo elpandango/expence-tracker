@@ -11,7 +11,7 @@
         <li
          v-for="account in financeStore.accountsList"
          :key="account.name">
-          <LazyAccountCard
+          <AccountCard
            :data="account"
            @update-account="handleUpdateCardClicked(account)"
            @delete-account="handleDeleteAccountClicked(account._id)"/>
@@ -41,7 +41,7 @@
     </template>
 
     <template v-if="isDeleteConfirmationModalOpen">
-      <LazyDeleteAccountModal
+      <DeleteAccountModal
        :isOpen="isDeleteConfirmationModalOpen"
        @delete="handleDeleteAccount"
        @update:isOpen="isDeleteConfirmationModalOpen = $event"
@@ -60,8 +60,8 @@ import {useFinanceStore} from "~/stores/finance";
 import {useUIStore} from "~/stores/ui";
 import {emitter} from "~/classes/uiEventBus";
 
-const LazyAccountCard = defineAsyncComponent(() => import('~/components/AccountCard/LazyAccountCard.vue'));
-const LazyDeleteAccountModal = defineAsyncComponent(() => import('~/components/Modals/LazyDeleteAccountModal.vue'));
+const AccountCard = defineAsyncComponent(() => import('~/components/AccountCard/AccountCard.vue'));
+const DeleteAccountModal = defineAsyncComponent(() => import('~/components/Modals/DeleteAccountModal.vue'));
 const seoMeta = useSeoConfig();
 useSeoMeta(seoMeta.value);
 

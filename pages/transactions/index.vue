@@ -129,7 +129,7 @@
     </template>
 
     <template v-if="isDeleteTransactionModalOpen">
-      <LazyDeleteTransactionModal
+      <DeleteTransactionModal
        :isOpen="isDeleteTransactionModalOpen"
        @delete="handleDeleteTransaction"
        @update:isOpen="isDeleteTransactionModalOpen = $event"
@@ -151,7 +151,7 @@ import {emitter} from "~/classes/uiEventBus";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
 import BaseInput from "~/components/Forms/Inputs/BaseInput.vue";
 
-const LazyDeleteTransactionModal = defineAsyncComponent(() => import('~/components/Modals/LazyDeleteTransactionModal.vue'));
+const DeleteTransactionModal = defineAsyncComponent(() => import('~/components/Modals/DeleteTransactionModal.vue'));
 const seoMeta = useSeoConfig();
 useSeoMeta(seoMeta.value);
 
