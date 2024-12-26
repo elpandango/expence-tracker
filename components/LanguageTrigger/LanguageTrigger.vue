@@ -50,13 +50,20 @@ const handleLocaleChange = (newLocale) => {
 };
 </script>
 
-<style scoped>
+<style lang="scss">
 .language-switcher {
   width: 90px;
   margin-right: 18px;
-}
-.language-switcher select {
-  padding: 5px;
-  font-size: 14px;
+
+  select {
+    padding: 5px;
+    font-size: 14px;
+  }
+
+  .dropdown-toggle {
+    @media only screen and (max-width: 767px) {
+      height: 40px!important;
+    }
+  }
 }
 </style>

@@ -124,7 +124,7 @@ import Dropdown from '~/components/Dropdown/Dropdown.vue';
 import BaseButton from '~/components/Buttons/BaseButton.vue';
 import BaseInput from '~/components/Forms/Inputs/BaseInput.vue';
 import Datepicker from '~/components/Datepicker/Datepicker.vue';
-import CategoryDropdown from '~/components/Dropdown/CategoryDropdown.vue';
+const CategoryDropdown = defineAsyncComponent(() => import('~/components/Dropdown/CategoryDropdown.vue'));
 
 const props = defineProps({
   isOpen: {type: Boolean, required: true},

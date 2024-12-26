@@ -152,6 +152,8 @@ import BaseButton from "~/components/Buttons/BaseButton.vue";
 import BaseInput from "~/components/Forms/Inputs/BaseInput.vue";
 
 const DeleteTransactionModal = defineAsyncComponent(() => import('~/components/Modals/DeleteTransactionModal.vue'));
+const Pagination = defineAsyncComponent(() => import('~/components/Pagination/Pagination.vue'));
+
 const seoMeta = useSeoConfig();
 useSeoMeta(seoMeta.value);
 

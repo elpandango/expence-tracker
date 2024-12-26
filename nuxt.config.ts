@@ -30,7 +30,7 @@ export default defineNuxtConfig({
       'Material+Symbols+Outlined': true,
     }
   }], '@pinia/nuxt'],
-  plugins: ['~/plugins/router.ts', '~/plugins/router.ts'],
+  plugins: ['~/plugins/router.ts', '~/plugins/global-components.ts'],
   server: {
     plugins: ['~/server/plugins/initializeCategories.ts'],
   },

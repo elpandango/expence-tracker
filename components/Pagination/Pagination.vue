@@ -110,7 +110,8 @@ const gotoPage = (page: number) => {
 
 const pagesToShow = computed(() => {
   const {currentPage, lastPage} = props.data;
-  const maxVisible = 5;
+  const isMobile = window.innerWidth <= 768;
+  const maxVisible = isMobile ? 1 : 5;
   const pages = [];
 
   const start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
@@ -125,8 +126,40 @@ const pagesToShow = computed(() => {
 });
 </script>
 
-
 <style
- lang="scss"
- src="./styles.scss">
+ lang="scss">
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+
+  .dots {
+    display: inline-block;
+    padding: 0 8px;
+    color: #aaa;
+  }
+
+  .pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .pagination li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 5px;
+  }
+
+  .prev-next-btn {
+    min-width: 100px;
+
+    @media only screen and (max-width: 480px) {
+      min-width: 60px;
+    }
+  }
+}
 </style>
