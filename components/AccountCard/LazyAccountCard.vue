@@ -76,7 +76,79 @@ onBeforeUnmount(() => document.removeEventListener('click', handleClickOutside))
 </script>
 
 <style
- scoped
- lang="scss"
- src="./styles.scss">
+ lang="scss">
+.account-card {
+  height: auto;
+  box-shadow: var(--box-shadow);
+  border-radius: var(--border-radius);
+  background-color: var(--card-bg-color);
+  border-style: var(--border-style);
+  border-width: var(--border-width);
+  border-color: var(--border-color);
+  position: relative;
+  padding: 10px 40px 10px 20px;
+
+  .details-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--input-border-color);
+    padding: 10px 0;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .row-name {
+
+    }
+
+    .row-value {
+      font-weight: 600;
+      text-transform: capitalize;
+    }
+  }
+
+  .action-menu {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+
+    .actions-list {
+      position: absolute;
+      z-index: 10;
+      right: 10px;
+      bottom: 100%;
+      background-color: var(--card-bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      box-shadow: var(--box-shadow);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      padding: 4px;
+
+      .action-btn {
+        padding: 6px 10px;
+        font-size: 16px;
+        width: 100%;
+        border: none;
+        outline: none;
+        background-color: transparent;
+        cursor: pointer;
+        transition: all .3s;
+        text-align: left;
+        white-space: nowrap;
+        color: var(--main-color);
+
+        &:hover {
+          background-color: var(--bg-color);
+        }
+      }
+    }
+  }
+}
 </style>
