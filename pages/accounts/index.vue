@@ -7,7 +7,7 @@
     <template v-else>
       <ul
        v-if="financeStore.accountsList && financeStore.accountsList.length > 0"
-       class="cards-list">
+       class="accounts-list">
         <li
          v-for="account in financeStore.accountsList"
          :key="account.name">

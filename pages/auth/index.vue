@@ -22,7 +22,7 @@ import {useAuthStore} from "~/stores/auth";
 import {useSeoConfig} from "~/use/useSeoConfig";
 import Tabs from "~/components/Tabs/Tabs.vue";
 import LoginForm from "~/components/Forms/LoginForm/LoginForm.vue";
-import RegisterForm from "~/components/Forms/RegisterForm/RegisterForm.vue";
+const RegisterForm = defineAsyncComponent(() => import('~/components/Forms/RegisterForm/RegisterForm.vue'));
 
 const seoMeta = useSeoConfig();
 useSeoMeta(seoMeta.value);

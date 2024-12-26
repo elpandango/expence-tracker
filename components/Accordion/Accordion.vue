@@ -15,7 +15,17 @@
         </slot>
         <div v-if="!noCaret"
              class="icon-wrap">
-          <SvgIcon icon="angle-right-solid"/>
+          <svg
+           class="dropdown-arrow"
+           :class="{'is-active': isOpen}"
+           width="10"
+           height="10"
+           viewBox="0 0 10 10"
+           fill="currentColor"
+           xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 3L5 8L10 3H0Z"/>
+          </svg>
         </div>
       </div>
       <div

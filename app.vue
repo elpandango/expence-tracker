@@ -1,5 +1,4 @@
 <template>
-  <SvgSprite/>
   <PreloaderBrand v-if="uiStore.state.isAuthLoading"/>
   <div>
     <NuxtLayout>
@@ -11,7 +10,6 @@
 <script
  setup
  lang="ts">
-import SvgSprite from "~/components/svgComponents/SvgSprite.vue";
 import {useUIStore} from "~/stores/ui";
 import {useSeoConfig} from "~/use/useSeoConfig";
 

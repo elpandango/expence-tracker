@@ -48,6 +48,7 @@ import {useUIStore} from "~/stores/ui";
 
 const AddEditAccountModal = defineAsyncComponent(() => import('~/components/Modals/AddEditAccountModal.vue'));
 const AddEditTransactionModal = defineAsyncComponent(() => import('~/components/Modals/AddEditTransactionModal.vue'));
+const Toast = defineAsyncComponent(() => import('~/components/Toast/Toast.vue'));
 
 const route = useRoute();
 const router = useRouter();

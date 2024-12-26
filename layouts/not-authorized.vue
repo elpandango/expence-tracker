@@ -17,7 +17,9 @@
  lang="ts">
 import { useUserStore } from '~/stores/user';
 import {useUIStore} from "~/stores/ui";
+import {emitter} from "~/classes/uiEventBus";
 
+const Toast = defineAsyncComponent(() => import('~/components/Toast/Toast.vue'));
 const route = useRoute();
 const router = useRouter();
 const userStore = useUserStore();
@@ -27,6 +29,8 @@ onBeforeMount(async () => {
   if (uiStore.state.isAuthLoading) {
     await userStore.checkAuth();
   }
+
+  emitter.emit('ui:stopLoading', 'auth');
 
   await nextTick();
 
