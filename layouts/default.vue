@@ -18,7 +18,7 @@
           <slot></slot>
 
           <template v-if="isAddAccountModalOpen">
-            <AddEditAccountModal
+            <LazyAddEditAccountModal
              :isOpen="isAddAccountModalOpen"
              @close="closeModal('account')"
              @update:isOpen="isAddAccountModalOpen = $event"
@@ -26,7 +26,7 @@
           </template>
 
           <template v-if="isAddExpenseModalOpen || isAddFundsModalOpen">
-            <AddEditTransactionModal
+            <LazyAddEditTransactionModal
              :transaction-type="isAddExpenseModalOpen ? 'expense' : 'income'"
              :isOpen="isAddExpenseModalOpen ? isAddExpenseModalOpen : isAddFundsModalOpen"
              @close="() => closeModal(isAddExpenseModalOpen ? 'expense' : 'funds')"
@@ -45,8 +45,9 @@
 import '~/assets/scss/global.scss';
 import {useUserStore} from '~/stores/user';
 import {useUIStore} from "~/stores/ui";
-import AddEditTransactionModal from "~/components/Modals/AddEditTransactionModal.vue";
-import AddEditAccountModal from "~/components/Modals/AddEditAccountModal.vue";
+
+const LazyAddEditAccountModal = defineAsyncComponent(() => import('~/components/Modals/LazyAddEditAccountModal.vue'));
+const LazyAddEditTransactionModal = defineAsyncComponent(() => import('~/components/Modals/LazyAddEditTransactionModal.vue'));
 
 const route = useRoute();
 const router = useRouter();
