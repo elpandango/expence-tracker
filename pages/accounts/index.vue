@@ -93,7 +93,7 @@ const handleDeleteAccount = async () => {
 
 onMounted(async () => {
   emitter.emit('ui:startLoading', 'default');
-  await financeStore.fetchAccountsIfNeeded();
+  await financeStore.fetchAccounts();
   emitter.emit('ui:stopLoading', 'default');
 });
 </script>

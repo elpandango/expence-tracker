@@ -1,5 +1,18 @@
+import sharp from 'sharp';
 import {UserModel} from "~/server/models/UserModel";
 import {createError} from 'h3';
+
+const optimizeImage = async (base64Image: string): Promise<string> => {
+  const base64Data = base64Image.replace(/^data:image\/\w+;base64,/, '');
+  const buffer = Buffer.from(base64Data, 'base64');
+
+  const optimizedBuffer = await sharp(buffer)
+    .resize(150, 150, { fit: 'cover' })
+    .jpeg({ quality: 60 })
+    .toBuffer();
+
+  return `data:image/jpeg;base64,${optimizedBuffer.toString('base64')}`;
+};
 
 export const updateProfile = async (
   userId: string,
@@ -25,9 +38,10 @@ export const updateProfile = async (
 
 export const updateAvatar = async (userId: string, avatarBase64: string) => {
   try {
+    const optimizedAvatar = await optimizeImage(avatarBase64);
     const updatedUser = await UserModel.findByIdAndUpdate(
       userId,
-      {$set: {avatar: avatarBase64}},
+      {$set: {avatar: optimizedAvatar}},
       {new: true}
     );
 

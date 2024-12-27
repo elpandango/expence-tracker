@@ -92,9 +92,9 @@ import {computed, ref} from 'vue';
 import {currencies} from "~/utils/currencies";
 import Modal from './Modal.vue';
 import BaseButton from "~/components/Buttons/BaseButton.vue";
-import BaseInput from "~/components/Forms/Inputs/BaseInput.vue";
 import {useFinanceStore} from "~/stores/finance";
 import {useFormatCardNumber} from "~/use/useFormatCardNumber";
+const BaseInput = defineAsyncComponent(() => import('~/components/Forms/Inputs/BaseInput.vue'));
 
 const props = defineProps({
   isOpen: {
@@ -148,6 +148,7 @@ const formatCardNumber = () => {
 };
 
 const handleSaveAccount = async () => {
+  closeModal();
   try {
     if (isEditMode.value) {
       await financeStore.updateAccount({
@@ -165,8 +166,6 @@ const handleSaveAccount = async () => {
         cardNumber: cardNumber.value ?? null,
       });
     }
-
-    closeModal();
   } catch (error) {
     console.error('Error updating account:', error);
   }

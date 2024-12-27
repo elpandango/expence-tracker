@@ -38,12 +38,23 @@
           <span class="icon material-symbols-outlined">account_circle</span>
           {{ $t('components.menuList.profile') }}
         </NuxtLink>
+
         <button
+         v-if="financeStore.accountsList && financeStore.accountsList.length"
          class="menu-link"
          @click="handleNewExpense">
           <span class="icon material-symbols-outlined">attach_money</span>
           {{ $t('components.menuList.addExpense') }}
         </button>
+
+        <button
+         v-else
+         class="menu-link"
+         @click="handleCreateTestData">
+          <span class="icon material-symbols-outlined">auto_mode</span>
+          {{ $t('components.accountsPage.generateBtnText') }}
+        </button>
+
         <NuxtLink
          to="/categories"
          class="menu-link">
@@ -71,15 +82,24 @@
 import {useTheme} from "~/use/useTheme";
 import {useUIStore} from "~/stores/ui";
 import {useFinanceStore} from "~/stores/finance";
+import {emitter} from "~/classes/uiEventBus";
+import {useGenerateTestData} from "~/use/useGenerateTestData";
 
 const {isDark, toggleTheme} = useTheme();
-
+const {generateTestData} = useGenerateTestData();
 const financeStore = useFinanceStore();
 const uiStore = useUIStore();
 const handleNewExpense = () => {
   financeStore.resetEditingTransaction();
   uiStore.toggleModal('isAddExpenseModalOpen', true);
 }
+
+const handleCreateTestData = async () => {
+  emitter.emit('ui:startLoading', 'default');
+  await generateTestData();
+  emitter.emit('ui:stopLoading', 'default');
+  window.location.reload();
+};
 </script>
 
 <style

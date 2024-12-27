@@ -47,4 +47,8 @@ const uiStore = useUIStore();
   opacity: 0.3;
   filter: grayscale(1);
 }
+
+.no-scroll {
+  overflow: hidden;
+}
 </style>

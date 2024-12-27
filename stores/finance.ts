@@ -67,6 +67,8 @@ export const useFinanceStore = defineStore('finance', () => {
   };
 
   const addAccount = async (payload: CreateAccountPayload) => {
+    emitter.emit('ui:startLoading', 'default');
+
     try {
       await repositoryFactory.get('Accounts').createAccount(payload);
       await fetchAccounts();
@@ -80,6 +82,7 @@ export const useFinanceStore = defineStore('finance', () => {
         message: 'Account added successfully.',
         type: 'success',
       });
+      emitter.emit('ui:stopLoading', 'default');
     }
   };
 

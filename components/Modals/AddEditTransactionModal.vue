@@ -122,9 +122,9 @@ import {useCurrencyFormatter} from "~/use/useCurrencyFormatter";
 import Modal from './Modal.vue';
 import Dropdown from '~/components/Dropdown/Dropdown.vue';
 import BaseButton from '~/components/Buttons/BaseButton.vue';
-import BaseInput from '~/components/Forms/Inputs/BaseInput.vue';
 import Datepicker from '~/components/Datepicker/Datepicker.vue';
 const CategoryDropdown = defineAsyncComponent(() => import('~/components/Dropdown/CategoryDropdown.vue'));
+const BaseInput = defineAsyncComponent(() => import('~/components/Forms/Inputs/BaseInput.vue'));
 
 const props = defineProps({
   isOpen: {type: Boolean, required: true},
@@ -175,7 +175,7 @@ const setTransactionType = (type: string) => {
 };
 
 const populateAccountsList = async () => {
-  await financeStore.fetchAccountsIfNeeded();
+  await financeStore.fetchAccounts();
   accounts.value = financeStore.accountsList.map(account => ({
     value: account._id,
     currency: account.currency,
@@ -228,10 +228,10 @@ const handleSaveTransaction = async () => {
 
   transactionDescriptionError.value = null;
   transactionAmountError.value = null;
+  closeModal();
 
   try {
     if (isEditMode.value) {
-
       transaction.accountId = selectedAccount.value.value;
       transaction.currency = selectedAccount.value.currency;
       transaction.amount = parseFloat(transaction.amount);
@@ -249,7 +249,7 @@ const handleSaveTransaction = async () => {
 
       await financeStore.addTransaction({...transaction});
     }
-    closeModal();
+
   } catch (error) {
     console.error('Error saving transaction:', error);
   }

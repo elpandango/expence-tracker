@@ -59,6 +59,13 @@ export const useAuthStore = defineStore('auth', () => {
       await AuthRepository.logout();
       userStore.isLoggedIn = false;
       userId.value = null;
+
+      userStore.user = {
+        name: '',
+        lastName: '',
+        email: '',
+      };
+
       emitter.emit('ui:showToast', {
         message: 'Logged out successfully.',
         type: 'success',
