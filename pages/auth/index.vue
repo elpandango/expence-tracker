@@ -7,9 +7,14 @@
             <LoginForm @login="handleLogin"/>
           </template>
           <template #signup>
-            <form>
-              <RegisterForm @register="handleRegister"/>
-            </form>
+            <Suspense>
+              <template #default>
+                <RegisterForm @register="handleRegister"/>
+              </template>
+              <template #fallback>
+                <div>Loading...</div>
+              </template>
+            </Suspense>
           </template>
         </Tabs>
       </Card>

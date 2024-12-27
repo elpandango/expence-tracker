@@ -74,9 +74,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: #fff;
       border-radius: 8px;
       margin-right: 18px;
+      background-image: url('/images/logo.png');
+      background-repeat: no-repeat;
+      background-size: 120%;
+      background-position: center;
       .icon {
         font-size: 36px;
         color: #0E0E0EFF;

@@ -23,7 +23,7 @@ export const useAuthStore = defineStore('auth', () => {
 
         setTimeout(async () => {
           await router.push('/');
-        }, 500);
+        }, 200);
       }
     } catch (error: any) {
       emitter.emit('ui:showToast', {
@@ -44,7 +44,7 @@ export const useAuthStore = defineStore('auth', () => {
         userStore.isLoggedIn = true;
         setTimeout(async () => {
           await router.push('/');
-        }, 500);
+        }, 200);
       }
     } catch (error: any) {
       emitter.emit('ui:showToast', {

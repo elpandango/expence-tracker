@@ -23,6 +23,13 @@ export default defineEventHandler(async (event) => {
             maxAge: cookieAge,
         });
 
+        setCookie(event, 'isAuthenticated', true, {
+            httpOnly: false,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: cookieAge,
+        });
+
         return { status: 200, userId };
     } catch (err) {
         if (err.message === 'Invalid email') {
