@@ -94,10 +94,18 @@
           {{ $t('components.menuList.profile') }}
         </NuxtLink>
         <button
+         v-if="financeStore.accountsList && financeStore.accountsList.length"
          class="menu-link"
          @click="handleNewExpense">
           <span class="icon material-symbols-outlined">attach_money</span>
           {{ $t('components.menuList.addExpense') }}
+        </button>
+        <button
+         v-else
+         class="menu-link"
+         @click="handleCreateTestData">
+          <span class="icon material-symbols-outlined">auto_mode</span>
+          {{ $t('components.accountsPage.generateBtnText') }}
         </button>
         <NuxtLink
          to="/categories"
@@ -133,8 +141,10 @@ import {useUIStore} from "~/stores/ui";
 import {useUserStore} from '~/stores/user';
 import {useFinanceStore} from "~/stores/finance";
 import {useAuthStore} from "~/stores/auth";
+import {useGenerateTestData} from "~/use/useGenerateTestData";
 import {useI18n} from 'vue-i18n';
-import BaseInput from "~/components/Forms/Inputs/BaseInput.vue";
+import {emitter} from "~/classes/uiEventBus";
+const BaseInput = defineAsyncComponent(() => import('~/components/Forms/Inputs/BaseInput.vue'));
 
 const {t} = useI18n();
 const financeStore = useFinanceStore();
@@ -147,6 +157,7 @@ const router = useRouter();
 const menuOpen = ref(false);
 
 const {isDark, toggleTheme} = useTheme();
+const {generateTestData} = useGenerateTestData();
 
 const timeOfDay = computed(() => {
   const hours = new Date().getHours();
@@ -164,10 +175,12 @@ const isTransactionsPage = computed(() => route.path === '/transactions');
 
 const toggleMenu = () => {
   menuOpen.value = !menuOpen.value;
+  document.body.classList.toggle('no-scroll', menuOpen.value);
 };
 
 const closeMenu = () => {
   menuOpen.value = false;
+  document.body.classList.toggle('no-scroll', false);
 };
 
 const handleNewExpense = () => {
@@ -183,6 +196,13 @@ const handleClickOutside = (event) => {
   if (menuOpen.value && !menu.contains(event.target) && !menuButton.contains(event.target)) {
     closeMenu();
   }
+};
+
+const handleCreateTestData = async () => {
+  emitter.emit('ui:startLoading', 'default');
+  await generateTestData();
+  emitter.emit('ui:stopLoading', 'default');
+  window.location.reload();
 };
 
 const searchTransactions = () => {

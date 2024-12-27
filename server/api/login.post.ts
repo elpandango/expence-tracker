@@ -25,6 +25,11 @@ export default defineEventHandler(async (event) => {
 
         return { status: 200, userId };
     } catch (err) {
+        if (err.message === 'Invalid email') {
+            return { status: 400, field: 'email', message: 'Invalid email address' };
+        } else if (err.message === 'Invalid password') {
+            return { status: 400, field: 'password', message: 'Incorrect password' };
+        }
         throw err;
     }
 });

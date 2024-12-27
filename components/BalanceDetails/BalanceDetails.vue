@@ -11,7 +11,7 @@
        :key="account._id">
         <div class="balance-details">
           <span class="account-name">{{ account.name }}</span>
-          <div class="account-type">{{ account.type }} {{ account.cardNumber ? `| ${account.cardNumber}` : '' }}</div>
+          <div class="account-type"><strong>{{ account.type }}</strong> {{ account.cardNumber ? `| ${account.cardNumber}` : '' }}</div>
         </div>
         <strong>{{ formatCurrency(account.balance, account.currency) }}</strong>
       </div>
@@ -87,7 +87,7 @@ const handleCreateTestData = async () => {
 
 onMounted(async () => {
   try {
-    await financeStore.fetchAccountsIfNeeded();
+    await financeStore.fetchAccounts();
   } catch (e) {
     console.log(e);
   }

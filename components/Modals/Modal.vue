@@ -44,6 +44,14 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue']);
 
+const toggleBodyScroll = (disable: boolean) => {
+  if (disable) {
+    document.body.classList.add('no-scroll');
+  } else {
+    document.body.classList.remove('no-scroll');
+  }
+};
+
 const closeModal = () => {
   emit('update:modelValue', false);
 };
@@ -59,11 +67,13 @@ const handleEscape = (event) => {
 };
 
 onMounted(() => {
+  toggleBodyScroll(true);
   window.addEventListener('keydown', handleEscape);
 });
 
 onUnmounted(() => {
   window.removeEventListener('keydown', handleEscape);
+  toggleBodyScroll(false);
 });
 </script>
 
@@ -81,6 +91,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow-y: auto;
 }
 
 .modal-background {
@@ -94,6 +105,8 @@ onUnmounted(() => {
 }
 
 .modal-content {
+  display: flex;
+  flex-direction: column;
   background-color: var(--modal-body-color);
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -101,13 +114,8 @@ onUnmounted(() => {
   max-width: 32rem;
   position: relative;
   z-index: 10;
-}
-
-.modal-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding: 1rem;
+  max-height: 94vh;
+  overflow: hidden;
 }
 
 .modal-title {
@@ -123,6 +131,7 @@ onUnmounted(() => {
   transition: color 0.2s;
   font-size: 30px;
   line-height: 16px;
+  width: 36px;
 }
 
 .modal-close-button:hover {
@@ -130,13 +139,31 @@ onUnmounted(() => {
 }
 
 .modal-body {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid var(--input-border-color);
+}
+
+
+.modal-header,
+.modal-footer {
+  flex-shrink: 0;
   padding: 1rem;
 }
 
 .modal-footer {
+  border-top: 1px solid var(--input-border-color);
   display: flex;
   justify-content: flex-end;
-  padding: 1rem;
+  gap: 0.5rem;
 }
 
 .footer-slot {

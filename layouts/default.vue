@@ -66,6 +66,10 @@ onBeforeMount(async () => {
     return router.push('/auth');
   }
 
+  if (userStore.isLoggedIn && userStore.user.email === '') {
+    await userStore.checkAuth();
+  }
+
   if (userStore.isLoggedIn && route.path === '/auth') {
     return router.push('/');
   }

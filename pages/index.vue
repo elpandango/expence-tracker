@@ -75,7 +75,7 @@
  setup
  lang="ts">
 import {emitter} from "~/classes/uiEventBus";
-import {onMounted, ref} from "vue";
+import {onMounted, ref, watch} from "vue";
 import {useChartStore} from "~/stores/charts";
 import {useFinanceStore} from "~/stores/finance";
 import {useSeoConfig} from "~/use/useSeoConfig";
@@ -225,6 +225,13 @@ onMounted(async () => {
   await fetchChartData();
 });
 
+watch(
+ () => financeStore.accountsList,
+ async (newVal, oldVal) => {
+   await fetchChartData();
+ },
+ {deep: true}
+);
 </script>
 
 <style
