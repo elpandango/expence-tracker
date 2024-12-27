@@ -2,9 +2,7 @@
   <aside class="sidebar">
     <div class="top-block">
       <div class="logo">
-        <div class="logo-img">
-          <span class="icon material-symbols-outlined">currency_exchange</span>
-        </div>
+        <div class="logo-img"></div>
         <div class="brand-name">Expendango</div>
       </div>
       <div class="sidebar-menu">

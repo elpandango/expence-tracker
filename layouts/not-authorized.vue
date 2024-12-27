@@ -24,9 +24,10 @@ const route = useRoute();
 const router = useRouter();
 const userStore = useUserStore();
 const uiStore = useUIStore();
+const isAuthenticated = useCookie('isAuthenticated');
 
 onBeforeMount(async () => {
-  if (uiStore.state.isAuthLoading) {
+  if (isAuthenticated.value && uiStore.state.isAuthLoading) {
     await userStore.checkAuth();
   }
 
