@@ -99,7 +99,53 @@ onMounted(async () => {
 </script>
 
 <style
- scoped
- lang="scss"
- src="./styles.scss">
+ lang="scss">
+.accounts-page {
+  .accounts-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
+    max-width: 860px;
+    margin: 0 auto;
+
+    li {
+      width: calc(50% - 10px);
+
+      @media only screen and (max-width: 767px) {
+        width: 100%;
+      }
+    }
+  }
+
+  .add-account-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed var(--accent-color);
+    border-radius: var(--border-radius);
+    background-color: transparent;
+    outline: none;
+    width: 100%;
+    height: 100%;
+    min-height: 138px;
+    font-size: 18px;
+    color: var(--btn-transparent-color);
+    cursor: pointer;
+
+    .plus-icon {
+      font-size: 24px;
+    }
+
+    .btn-text {
+      margin-left: 10px;
+    }
+
+    &.small {
+      width: 200px;
+      min-height: 60px;
+      height: 60px;
+    }
+  }
+}
 </style>

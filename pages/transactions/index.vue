@@ -295,7 +295,60 @@ watch(() => financeStore.transactionsResponse, (newTransactions) => {
 </script>
 
 <style
- lang="scss"
- src="./styles.scss">
+ lang="scss">
+.transactions-page {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
 
+  .page-title {
+    width: 100%;
+  }
+
+  .page-filters {
+    width: 100%;
+    max-width: 860px;
+  }
+
+  .dropdown-label {
+    margin-bottom: 8px;
+  }
+
+  .filters-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-bottom: 16px;
+
+    &.full-length {
+      .filter-item {
+        width: 100%;
+      }
+    }
+  }
+
+  .filter-item {
+    width: calc(50% - 6px);
+
+    @media only screen and (max-width: 540px) {
+      width: 100%;
+    }
+  }
+
+  .no-results {
+    width: 100%;
+    font-size: 18px;
+
+    .card {
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+  }
+}
 </style>

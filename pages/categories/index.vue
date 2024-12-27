@@ -57,5 +57,12 @@ onMounted(async () => {
 </script>
 
 <style
- lang="scss"
- src="./styles.scss"></style>
+ lang="scss">
+.categories-page {
+  .categories-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+}
+</style>

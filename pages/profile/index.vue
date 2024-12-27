@@ -36,8 +36,9 @@
         <Preloader
          height="280px"
          v-if="uiStore.state.isLoading"/>
-        <form class="profile-form"
-              v-else>
+        <form
+         class="profile-form"
+         v-else>
           <div class="form-row">
             <FloatLabelInput
              v-model="user.name"
@@ -178,7 +179,93 @@ onMounted(async () => {
 </script>
 
 <style
- src="./styles.scss"
  lang="scss">
+.profile-page {
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
 
+  .profile-form {
+    width: 100%;
+  }
+
+  .avatar-block {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+
+    .avatar {
+      width: 150px;
+      height: 150px;
+      margin-bottom: 20px;
+
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        overflow: hidden;
+        object-fit: cover;
+        box-shadow: var(--box-shadow);
+      }
+    }
+
+    .avatar-placeholder {
+      width: 100%;
+      height: 100%;
+      box-shadow: var(--box-shadow);
+      background-image: url('/images/empty-image.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .avatar-name {
+      width: 100%;
+      text-align: center;
+      font-weight: 500;
+      font-size: 18px;
+      margin-bottom: 14px;
+    }
+
+    .avatar-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .button {
+      min-width: 120px;
+    }
+  }
+
+  .profile-cols {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+
+    @media only screen and (max-width: 1024px) {
+      flex-wrap: wrap;
+    }
+
+    .card {
+      @media only screen and (max-width: 1024px) {
+        width: 100%;
+        max-width: 100% !important;
+      }
+    }
+
+  }
+
+  .btn-block {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+
+    .button {
+      min-width: 120px;
+    }
+  }
+}
 </style>

@@ -133,10 +133,14 @@ onMounted(async () => {
       endDate: new Date().toISOString().split('T')[0],
     };
 
-    for (const type of ['expenses_vs_incomes', 'categories', 'top5', 'total_expenses']) {
-      await fetchChartsData(type, dateRange);
-      chartConfigs[type] = generateChartConfigForType(chartStore.chartDataByType, type);
-    }
+    const chartTypes = ['expenses_vs_incomes', 'categories', 'top5', 'total_expenses'];
+    const chartDataPromises = chartTypes.map((type) =>
+     fetchChartsData(type, dateRange).then(() => {
+       chartConfigs[type] = generateChartConfigForType(chartStore.chartDataByType, type);
+     })
+    );
+
+    await Promise.all(chartDataPromises);
   } catch (err) {
     console.error('Error loading charts:', err);
   } finally {
@@ -148,5 +152,64 @@ onMounted(async () => {
 </script>
 
 <style
- lang="scss"
- src="./styles.scss"></style>
+ lang="scss">
+.index-page {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+
+  flex-wrap: wrap;
+
+  .title-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+
+    @media only screen and (max-width: 480px) {
+      flex-wrap: wrap;
+    }
+
+    .title {
+      margin-bottom: 0;
+
+      @media only screen and (max-width: 991px) {
+        margin-bottom: 8px;
+      }
+    }
+  }
+
+  .sorting-block {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-left: 8px;
+
+    .sort-label {
+      font-size: 14px;
+      margin-right: 8px;
+      white-space: nowrap;
+    }
+  }
+
+  .period-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 22px;
+
+    @media only screen and (max-width: 480px) {
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .period {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  }
+}
+</style>
