@@ -101,13 +101,18 @@ onMounted(async () => {
 <style
  lang="scss">
 .accounts-page {
+  width: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
+
+  @media only screen and (max-width: 1366px) {
+    max-width: 860px;
+  }
+
   .accounts-list {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    width: 100%;
-    max-width: 860px;
-    margin: 0 auto;
 
     li {
       width: calc(50% - 10px);

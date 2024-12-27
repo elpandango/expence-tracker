@@ -59,6 +59,14 @@ onMounted(async () => {
 <style
  lang="scss">
 .categories-page {
+  max-width: 1024px;
+  margin: 0 auto;
+  width: 100%;
+
+  @media only screen and (max-width: 1366px) {
+    max-width: 860px;
+  }
+
   .categories-list {
     display: flex;
     flex-wrap: wrap;

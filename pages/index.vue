@@ -235,11 +235,15 @@ watch(
 .index-page {
   display: flex;
   gap: 20px;
-  width: 100%;
-  max-width: 860px;
   margin: 0 auto;
-
   flex-wrap: wrap;
+  max-width: 1024px;
+  width: 100%;
+
+  @media only screen and (max-width: 1366px) {
+    max-width: 860px;
+  }
+
 
   .title-block {
     display: flex;

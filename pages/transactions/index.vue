@@ -309,7 +309,12 @@ watch(() => financeStore.transactionsResponse, (newTransactions) => {
 
   .page-filters {
     width: 100%;
-    max-width: 860px;
+    max-width: 1024px;
+    margin: 0 auto;
+
+    @media only screen and (max-width: 1366px) {
+      max-width: 860px;
+    }
   }
 
   .dropdown-label {

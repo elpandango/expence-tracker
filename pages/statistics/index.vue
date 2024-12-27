@@ -153,62 +153,46 @@ onMounted(async () => {
 
 <style
  lang="scss">
-.index-page {
-  display: flex;
-  gap: 20px;
-  width: 100%;
-  max-width: 860px;
+.charts-page {
+  max-width: 1024px;
   margin: 0 auto;
 
-  flex-wrap: wrap;
+  @media only screen and (max-width: 1366px) {
+    max-width: 860px;
+  }
 
-  .title-block {
+  .charts {
+    width: 100%;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 8px;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
 
-    @media only screen and (max-width: 480px) {
+  .chart-row {
+    width: 100%;
+    display: flex;
+    gap: 20px;
+
+    @media only screen and (max-width: 767px) {
       flex-wrap: wrap;
     }
+  }
 
-    .title {
-      margin-bottom: 0;
+  .chart-wrapper {
+    display: flex;
+    width: 100%;
 
-      @media only screen and (max-width: 991px) {
-        margin-bottom: 8px;
+    &.w50p {
+      width: 49%;
+
+      @media only screen and (max-width: 767px) {
+        width: 100%;
       }
     }
-  }
 
-  .sorting-block {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    margin-left: 8px;
-
-    .sort-label {
-      font-size: 14px;
-      margin-right: 8px;
-      white-space: nowrap;
-    }
-  }
-
-  .period-buttons {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 22px;
-
-    @media only screen and (max-width: 480px) {
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .period {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    & > div:not(.chart-wrapper) {
+      width: 100%;
+      min-height: 300px;
     }
   }
 }
