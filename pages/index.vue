@@ -96,6 +96,7 @@ const sortBySelected = ref({
 const periodSelected = ref('week');
 const transactionsHistoryOptions = ref([]);
 const params = ref<Record<string, string | Date>>({});
+const isChartDataLoaded = ref(false);
 
 const fetchTransactions = async (query = '') => {
   await financeStore.fetchTransactions(query);
@@ -218,13 +219,21 @@ onMounted(async () => {
 
   emitter.emit('ui:stopLoading', 'default');
 
-  await fetchChartData();
+  if (process.client) {
+    await fetchChartData();
+    isChartDataLoaded.value = true;
+  }
 });
 
 watch(
  () => financeStore.accountsList,
  async (newVal, oldVal) => {
-   await fetchChartData();
+   if (
+    isChartDataLoaded.value &&
+    JSON.stringify(newVal) !== JSON.stringify(oldVal)
+   ) {
+     await fetchChartData();
+   }
  },
  {deep: true}
 );

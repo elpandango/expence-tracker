@@ -171,7 +171,9 @@ export const ua = {
       accountType: 'Тип рахунку',
       balance: 'Баланс',
       emptyAccountsText: 'або спробуйте додаток із попередньо згенерованими прикладами',
-      generateBtnText: 'Створення тестових даних'
+      generateBtnText: 'Створення тестових даних',
+      generateDataText: 'або згенеруйте тестові дані (може зайняти деякий час)',
+      generateDataBtnText: 'Створення тестових даних',
     },
     modalsContent: {
       addCardModal: {
@@ -218,6 +220,9 @@ export const ua = {
         editBtnText: 'Редагувати',
         transactionEditText: 'Редагувати транзакцію',
         transactionDeleteText: 'Видалити транзакцію',
+        emptyAccountsText: 'У вас ще немає облікових записів, тому ви не можете додати витрати.',
+        goToAccountsBtnText: 'Перейдіть до облікового запису',
+        generateTestDataBtnText: 'Створення тестових даних',
       },
       deleteCardModal: {
         deleteTitleText: 'Підтвердіть видалення картки',

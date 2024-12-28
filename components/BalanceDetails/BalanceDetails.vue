@@ -87,7 +87,7 @@ const handleCreateTestData = async () => {
 
 onMounted(async () => {
   try {
-    await financeStore.fetchAccounts();
+    await financeStore.fetchAccountsIfNeeded();
   } catch (e) {
     console.log(e);
   }

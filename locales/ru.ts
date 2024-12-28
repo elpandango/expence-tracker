@@ -171,7 +171,9 @@ export const ru = {
       accountType: 'Тип счёта',
       balance: 'Баланс',
       emptyAccountsText: 'или попробуйте приложение с готовыми примерами',
-      generateBtnText: 'Генерация тестовых данных'
+      generateBtnText: 'Генерация тестовых данных',
+      generateDataText: 'или сгенерировать тестовые данные (может занять некоторое время)',
+      generateDataBtnText: 'Генерировать Тестовые Данные',
     },
     modalsContent: {
       addCardModal: {
@@ -218,6 +220,9 @@ export const ru = {
         editBtnText: 'Редактировать',
         transactionEditText: 'Редактировать транзакцию',
         transactionDeleteText: 'Удалить транзакцию',
+        emptyAccountsText: 'У вас пока нет счетов, поэтому вы не можете добавлять расходы.',
+        goToAccountsBtnText: 'Перейти к аккаунтам',
+        generateTestDataBtnText: 'Генерация тестовых данных',
       },
       deleteCardModal: {
         deleteTitleText: 'Подтвердите удаление карты',

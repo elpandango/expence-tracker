@@ -19,80 +19,101 @@
       </div>
     </template>
     <template v-slot:body>
-      <form
-       @submit.prevent
-       class="add-edit-transaction-modal">
-        <div class="form-row">
-          <div class="type-switcher">
+      <Preloader
+       height="250px"
+       v-if="isLoading"/>
+      <template v-else>
+        <form
+         v-if="financeStore.accountsList && financeStore.accountsList.length"
+         @submit.prevent
+         class="add-edit-transaction-modal">
+          <div class="form-row">
+            <div class="type-switcher">
+              <div class="dropdown-label">{{
+                  $t('components.modalsContent.addEditTransactionModal.transactionTypeLabel')
+                }}
+              </div>
+              <BaseButton
+               v-for="type in transactionTypes"
+               :key="type"
+               size="small"
+               :variant="transactionTypeLocal === type ? '' : 'transparent'"
+               @click="setTransactionType(type)">
+                {{ $t(`components.modalsContent.addEditTransactionModal.${type}`) }}
+              </BaseButton>
+            </div>
+          </div>
+          <div class="form-row">
             <div class="dropdown-label">{{
-                $t('components.modalsContent.addEditTransactionModal.transactionTypeLabel')
+                $t('components.modalsContent.addEditTransactionModal.paymentTypeLabel')
               }}
             </div>
+
+            <Dropdown
+             v-model="selectedAccount"
+             :options="accounts"
+             type="form-dropdown"
+             size="medium"
+             placeholder="Select account"
+            />
+          </div>
+          <div class="form-row">
+            <BaseInput
+             v-model="transaction.description"
+             size="medium"
+             :status="transactionDescriptionError ? 'error' : ''"
+             :error-message="transactionDescriptionError ? transactionDescriptionError : ''"
+             :placeholder="$t('components.modalsContent.addEditTransactionModal.descriptionLabelText')"
+             :label="$t('components.modalsContent.addEditTransactionModal.descriptionLabelText')"/>
+          </div>
+          <div class="form-row">
+            <BaseInput
+             v-model="transaction.amount"
+             size="medium"
+             type="number"
+             :status="transactionAmountError ? 'error' : ''"
+             :error-message="transactionAmountError ? transactionAmountError : ''"
+             :placeholder="$t('components.modalsContent.addEditTransactionModal.amountLabelText')"
+             :label="$t('components.modalsContent.addEditTransactionModal.amountLabelText')"/>
+          </div>
+          <div class="form-row">
+            <div class="dropdown-label">{{ $t('components.modalsContent.addEditTransactionModal.dateLabelText') }}</div>
+            <Datepicker
+             height="50px"
+             :max-date="new Date().toISOString().substring(0, 10)"
+             v-model="transaction.date"/>
+          </div>
+          <div
+           v-if="transactionTypeLocal === 'expense'"
+           class="form-row">
+            <div class="dropdown-label">{{
+                $t('components.modalsContent.addEditTransactionModal.categoryLabelText')
+              }}
+            </div>
+            <CategoryDropdown
+             v-model="selectedCategory"
+             :options="categories"
+             type="form-dropdown"
+             size="medium"
+            />
+          </div>
+        </form>
+        <div
+         v-else
+         class="empty-message">
+          <p>{{ $t('components.modalsContent.addEditTransactionModal.emptyAccountsText') }}</p>
+          <div class="btn-block">
             <BaseButton
-             v-for="type in transactionTypes"
-             :key="type"
-             size="small"
-             :variant="transactionTypeLocal === type ? '' : 'transparent'"
-             @click="setTransactionType(type)">
-              {{ $t(`components.modalsContent.addEditTransactionModal.${type}`) }}
+             @click="goToAccounts"
+             size="medium">{{ $t('components.modalsContent.addEditTransactionModal.goToAccountsBtnText') }}
+            </BaseButton>
+            <BaseButton
+             @click="handleCreateTestData"
+             size="medium">{{ $t('components.modalsContent.addEditTransactionModal.generateTestDataBtnText') }}
             </BaseButton>
           </div>
         </div>
-        <div class="form-row">
-          <div class="dropdown-label">{{
-              $t('components.modalsContent.addEditTransactionModal.paymentTypeLabel')
-            }}
-          </div>
-
-          <Dropdown
-           v-model="selectedAccount"
-           :options="accounts"
-           type="form-dropdown"
-           size="medium"
-           placeholder="Select account"
-          />
-        </div>
-        <div class="form-row">
-          <BaseInput
-           v-model="transaction.description"
-           size="medium"
-           :status="transactionDescriptionError ? 'error' : ''"
-           :error-message="transactionDescriptionError ? transactionDescriptionError : ''"
-           :placeholder="$t('components.modalsContent.addEditTransactionModal.descriptionLabelText')"
-           :label="$t('components.modalsContent.addEditTransactionModal.descriptionLabelText')"/>
-        </div>
-        <div class="form-row">
-          <BaseInput
-           v-model="transaction.amount"
-           size="medium"
-           type="number"
-           :status="transactionAmountError ? 'error' : ''"
-           :error-message="transactionAmountError ? transactionAmountError : ''"
-           :placeholder="$t('components.modalsContent.addEditTransactionModal.amountLabelText')"
-           :label="$t('components.modalsContent.addEditTransactionModal.amountLabelText')"/>
-        </div>
-        <div class="form-row">
-          <div class="dropdown-label">{{ $t('components.modalsContent.addEditTransactionModal.dateLabelText') }}</div>
-          <Datepicker
-           height="50px"
-           :max-date="new Date().toISOString().substring(0, 10)"
-           v-model="transaction.date"/>
-        </div>
-        <div
-         v-if="transactionTypeLocal === 'expense'"
-         class="form-row">
-          <div class="dropdown-label">{{
-              $t('components.modalsContent.addEditTransactionModal.categoryLabelText')
-            }}
-          </div>
-          <CategoryDropdown
-           v-model="selectedCategory"
-           :options="categories"
-           type="form-dropdown"
-           size="medium"
-          />
-        </div>
-      </form>
+      </template>
     </template>
     <template v-slot:footer>
       <BaseButton
@@ -123,6 +144,9 @@ import Modal from './Modal.vue';
 import Dropdown from '~/components/Dropdown/Dropdown.vue';
 import BaseButton from '~/components/Buttons/BaseButton.vue';
 import Datepicker from '~/components/Datepicker/Datepicker.vue';
+import {emitter} from "~/classes/uiEventBus";
+import {useGenerateTestData} from "~/use/useGenerateTestData";
+
 const CategoryDropdown = defineAsyncComponent(() => import('~/components/Dropdown/CategoryDropdown.vue'));
 const BaseInput = defineAsyncComponent(() => import('~/components/Forms/Inputs/BaseInput.vue'));
 
@@ -131,10 +155,12 @@ const props = defineProps({
   transactionType: {type: String, default: 'expense'}
 });
 
+const {generateTestData} = useGenerateTestData();
 const {formatCurrency} = useCurrencyFormatter();
 const financeStore = useFinanceStore();
 const categoryStore = useCategoryStore();
 
+const isLoading = ref(true);
 const modalValue = ref(props.isOpen);
 const transactionTypeLocal = ref(props.transactionType);
 const transactionTypes = ['expense', 'income'];
@@ -175,7 +201,7 @@ const setTransactionType = (type: string) => {
 };
 
 const populateAccountsList = async () => {
-  await financeStore.fetchAccounts();
+  await financeStore.fetchAccountsIfNeeded();
   accounts.value = financeStore.accountsList.map(account => ({
     value: account._id,
     currency: account.currency,
@@ -265,10 +291,23 @@ const resetTransactionFields = () => {
   selectedCategory.value = {value: null, label: 'Other'};
 };
 
-onMounted(async () => {
-  await populateAccountsList();
-  await populateCategoriesList();
+const handleCreateTestData = async () => {
+  emitter.emit('ui:startLoading', 'default');
+  closeModal();
+  await generateTestData();
+  emitter.emit('ui:stopLoading', 'default');
+  window.location.reload();
+};
 
+const goToAccounts = () => {
+  closeModal();
+  navigateTo('/accounts');
+};
+
+onMounted(async () => {
+  isLoading.value = true;
+  await Promise.all([await populateAccountsList(), await populateCategoriesList()]);
+  isLoading.value = false;
   if (isEditMode.value) {
     populateTransactionFields();
   } else {
@@ -316,5 +355,23 @@ onMounted(async () => {
   .button {
     min-width: 110px;
   }
+
 }
+
+.modal-body {
+  .empty-message {
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .btn-block {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 40px;
+    }
+  }
+}
+
 </style>
