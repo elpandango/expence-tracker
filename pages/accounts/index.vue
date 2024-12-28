@@ -37,6 +37,14 @@
           <span class="plus-icon">+</span>
           <span class="btn-text">{{ $t('components.accountsPage.addAccountText') }}</span>
         </button>
+
+        <p class="mar-t-4">{{ $t('components.accountsPage.generateDataText') }}</p>
+
+        <button
+         class="add-account-btn small"
+         @click="handleCreateTestData">
+          <span class="btn-text">{{ $t('components.accountsPage.generateDataBtnText') }}</span>
+        </button>
       </div>
     </template>
 
@@ -59,12 +67,14 @@ import {useSeoConfig} from "~/use/useSeoConfig";
 import {useFinanceStore} from "~/stores/finance";
 import {useUIStore} from "~/stores/ui";
 import {emitter} from "~/classes/uiEventBus";
+import {useGenerateTestData} from "~/use/useGenerateTestData";
 
 const AccountCard = defineAsyncComponent(() => import('~/components/AccountCard/AccountCard.vue'));
 const DeleteAccountModal = defineAsyncComponent(() => import('~/components/Modals/DeleteAccountModal.vue'));
 const seoMeta = useSeoConfig();
 useSeoMeta(seoMeta.value);
 
+const {generateTestData} = useGenerateTestData();
 const financeStore = useFinanceStore();
 const uiStore = useUIStore();
 const isDeleteConfirmationModalOpen = ref(false);
@@ -91,9 +101,16 @@ const handleDeleteAccount = async () => {
   await financeStore.deleteAccount(accountId);
 };
 
+const handleCreateTestData = async () => {
+  emitter.emit('ui:startLoading', 'default');
+  await generateTestData();
+  emitter.emit('ui:stopLoading', 'default');
+  window.location.reload();
+};
+
 onMounted(async () => {
   emitter.emit('ui:startLoading', 'default');
-  await financeStore.fetchAccounts();
+  await financeStore.fetchAccountsIfNeeded();
   emitter.emit('ui:stopLoading', 'default');
 });
 </script>

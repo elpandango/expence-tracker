@@ -188,7 +188,7 @@ export const useFinanceStore = defineStore('finance', () => {
 
   const fetchAccountsIfNeeded = async () => {
     if (isEmpty(accountsList.value)) {
-      await fetchAccounts()
+      await fetchAccounts();
     }
   };
 

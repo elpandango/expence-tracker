@@ -172,7 +172,9 @@ export const en = {
       accountType: 'Account type',
       balance: 'Balance',
       emptyAccountsText: 'or try out the app with pre-generated examples',
-      generateBtnText: 'Generate test data'
+      generateBtnText: 'Generate test data',
+      generateDataText: 'or generate test data (could take some time)',
+      generateDataBtnText: 'Generate Test Data',
     },
     modalsContent: {
       addCardModal: {
@@ -219,6 +221,9 @@ export const en = {
         editBtnText: 'Edit',
         transactionEditText: 'Edit Transaction',
         transactionDeleteText: 'Delete Transaction',
+        emptyAccountsText: 'You don\'t have any accounts yet, so you cannot add expenses.',
+        goToAccountsBtnText: 'Go to Accounts',
+        generateTestDataBtnText: 'Generate Test Data',
       },
       deleteCardModal: {
         deleteTitleText: 'Confirm Card deletion',

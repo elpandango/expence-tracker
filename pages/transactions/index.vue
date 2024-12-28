@@ -7,6 +7,7 @@
     </Card>
 
     <Accordion
+     v-if="financeStore.accountsList && financeStore.accountsList.length > 0"
      type="basic"
      class="mar-b-6">
       <template v-slot:header>

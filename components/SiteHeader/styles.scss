@@ -158,6 +158,40 @@
       flex-wrap: wrap;
     }
 
+    .logo {
+      display: none;
+      align-items: center;
+      flex: 1;
+      @media only screen and (max-width: 991px) {
+        display: flex;
+      }
+
+      .logo-img {
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        margin-right: 10px;
+        background-image: url('/images/logo.png');
+        background-repeat: no-repeat;
+        background-size: 120%;
+        background-position: center;
+
+        .icon {
+          font-size: 36px;
+          color: #0E0E0EFF;
+        }
+      }
+
+      .brand-name {
+        font-size: 16px;
+        font-weight: 500;
+        color: var(--accent-color);
+      }
+    }
+
     .actions-block {
       display: flex;
       align-items: center;
