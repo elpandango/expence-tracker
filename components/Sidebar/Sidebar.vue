@@ -1,10 +1,12 @@
 <template>
   <aside class="sidebar">
     <div class="top-block">
-      <div class="logo">
+      <NuxtLink
+       to="/"
+       class="logo">
         <div class="logo-img"></div>
         <div class="brand-name">Expendango</div>
-      </div>
+      </NuxtLink>
       <div class="sidebar-menu">
         <NuxtLink
          to="/"
@@ -37,7 +39,8 @@
           {{ $t('components.menuList.profile') }}
         </NuxtLink>
 
-        <button class="menu-link"
+        <button
+         class="menu-link"
          @click="handleNewExpense">
           <span class="icon material-symbols-outlined">attach_money</span>
           {{ $t('components.menuList.addExpense') }}

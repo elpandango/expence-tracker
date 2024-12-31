@@ -71,6 +71,10 @@ onMounted(async () => {
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
+
+    @media only screen and (max-width: 767px) {
+      gap: 8px;
+    }
   }
 }
 </style>

@@ -6,8 +6,9 @@
   flex: 1 1 calc(33.333% - 16px);
   box-sizing: border-box;
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     flex: 1 1 calc(50% - 16px);
+    padding: 5px 0;
   }
 
   @media (max-width: 480px) {
@@ -23,6 +24,13 @@
     align-items: center;
     color: var(--text-100);
     margin-right: 20px;
+
+    @media (max-width: 767px) {
+      margin-right: 12px;
+      width: 30px;
+      height: 30px;
+      font-size: 16px;
+    }
   }
 
   .content-block {
@@ -35,6 +43,10 @@
       font-size: 20px;
       font-weight: 500;
       margin-bottom: 8px;
+
+      @media (max-width: 767px) {
+        font-size: 14px;
+      }
     }
   }
 }

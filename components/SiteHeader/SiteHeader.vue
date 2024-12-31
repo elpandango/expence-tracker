@@ -4,10 +4,12 @@
       <div class="greeting-block">{{ timeOfDay }}, {{ userStore.user.name }}!</div>
 
       <div class="actions-block">
-        <div class="logo">
+        <NuxtLink
+         to='/'
+         class="logo">
           <div class="logo-img"></div>
           <div class="brand-name">Expendango</div>
-        </div>
+        </NuxtLink>
         <div
          class="search-block"
          v-if="!isTransactionsPage">
