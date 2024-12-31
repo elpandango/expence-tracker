@@ -164,7 +164,8 @@ onMounted(async () => {
     }
 
     &.small {
-      width: 200px;
+      min-width: 200px;
+      width: auto;
       min-height: 60px;
       height: 60px;
     }

@@ -163,7 +163,7 @@ export const de = {
     accountsPage: {
       pageTitleText: 'Hier sind alle Ihre Konten',
       emptyListTitleText: 'Oh, es sieht so aus, als hätten Sie noch keine Konten hinzugefügt!',
-      emptyListText: 'Sie können die App auch ohne sie erkunden, aber\ndas Hinzufügen von Konten ermöglicht es Ihnen, Transaktionen zu verknüpfen und detaillierte Statistiken für jedes Konto zu erhalten.',
+      emptyListText: 'Um mit der Anwendung arbeiten zu können, müssen Sie mindestens ein Konto hinzufügen, mit dem Sie arbeiten möchten.',
       addAccountText: 'Neues Konto hinzufügen',
       editAccountTitle: 'Konto bearbeiten',
       deleteAccountTitle: 'Konto löschen',

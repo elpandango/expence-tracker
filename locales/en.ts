@@ -163,8 +163,7 @@ export const en = {
     accountsPage: {
       pageTitleText: 'Here are all your accounts',
       emptyListTitleText: 'Oh, it seems like you haven’t added any account yet!',
-      emptyListText: 'Feel free to explore the app without them, but\n' +
-        '          adding accounts will let you link transactions and get detailed stats for each one.',
+      emptyListText: 'To work with the application, you need to add at least one account that you will work with.',
       addAccountText: 'Add a new account',
       editAccountTitle: 'Edit account',
       deleteAccountTitle: 'Delete account',
