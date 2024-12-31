@@ -22,16 +22,16 @@ export const ru = {
       twitterImage: '/images/expendango-auth.webp',
       twitterCard: 'summary',
     },
-    cards: {
-      title: 'Мои Карты - Expendango',
-      description: 'Управляйте своими банковскими картами, отслеживайте расходы и пополнения с Expendango.',
-      ogTitle: 'Мои Карты - Expendango',
-      ogDescription: 'Следите за своими транзакциями по банковским картам с помощью Expendango. Удобный способ держать всё под контролем.',
+    accounts: {
+      title: 'Мои счета - Expendango',
+      description: 'Управляйте своими счетами, отслеживайте расходы и поступления с помощью Expendango.',
+      ogTitle: 'Мои счета - Expendango',
+      ogDescription: 'Следите за своими транзакциями с Expendango. Удобный способ держать всё под контролем.',
       ogImage: '/images/expendango-cards.webp',
-      twitterTitle: 'Мои Карты - Expendango',
-      twitterDescription: 'Добавляйте и управляйте своими банковскими картами в Expendango, чтобы лучше контролировать финансы.',
+      twitterTitle: 'Мои счета - Expendango',
+      twitterDescription: 'Добавляйте и управляйте своими счетами в Expendango, чтобы лучше контролировать свои финансы.',
       twitterImage: '/images/expendango-cards.webp',
-      twitterCard: 'summary'
+      twitterCard: 'summary',
     },
     categories: {
       title: 'Категории - Expendango',
