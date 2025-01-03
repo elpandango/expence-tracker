@@ -37,11 +37,13 @@
      v-if="financeStore.accountsList.length > 0">
       <BaseButton
        size="medium"
+       variant="green"
        @click="handleAddFunds">{{ $t('components.buttons.addFundsText') }}
       </BaseButton>
 
       <BaseButton
        size="medium"
+       variant="red"
        @click="handleNewExpense">{{ $t('components.menuList.addExpense') }}
       </BaseButton>
     </div>

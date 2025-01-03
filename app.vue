@@ -1,5 +1,5 @@
 <template>
-  <PreloaderBrand v-if="uiStore.state.isAuthLoading"/>
+  <PreloaderBrand v-if="uiStore.state.isAuthLoading && $route.name !== 'auth'"/>
   <div>
     <NuxtLayout>
       <NuxtPage/>
