@@ -20,7 +20,7 @@ const initialCategories = [
   { name: 'Technology', icon: 'smartphone', color: '#00BCD4' },
   { name: 'Entertainment', icon: 'stadia_controller', color: '#3F51B5' },
 
-  { name: 'Rental Income', icon: 'business', color: '#3F51B5' },
+  { name: 'Rental Bill', icon: 'business', color: '#3F51B5' },
   { name: 'Energy Bill', icon: 'flash_on', color: '#FFEB3B' },
   { name: 'Water Bill', icon: 'invert_colors', color: '#2196F3' },
   { name: 'Waste Bill', icon: 'delete_forever', color: '#795548' },
@@ -33,7 +33,6 @@ const initialCategories = [
   { name: 'Gifts', icon: 'redeem', color: '#FF4081' },
 
   { name: 'Taxes', icon: 'gavel', color: '#9E9E9E' },
-  { name: 'Cigarettes', icon: 'smoking_rooms', color: '#8D6E63' },
   { name: 'Other (Expenses)', icon: 'category', color: '#BDBDBD' }
 ];
 

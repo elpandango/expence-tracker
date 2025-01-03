@@ -72,16 +72,16 @@ export const useFinanceStore = defineStore('finance', () => {
     try {
       await repositoryFactory.get('Accounts').createAccount(payload);
       await fetchAccounts();
+      emitter.emit('ui:showToast', {
+        message: 'Account added successfully.',
+        type: 'success',
+      });
     } catch (e) {
       emitter.emit('ui:showToast', {
         message: 'Account addition failed.',
         type: 'error',
       });
     } finally {
-      emitter.emit('ui:showToast', {
-        message: 'Account added successfully.',
-        type: 'success',
-      });
       emitter.emit('ui:stopLoading', 'default');
     }
   };
@@ -92,16 +92,17 @@ export const useFinanceStore = defineStore('finance', () => {
     try {
       await repositoryFactory.get('Accounts').updateAccount(payload);
       await Promise.all([await fetchAccounts(), await fetchTransactions()]);
+
+      emitter.emit('ui:showToast', {
+        message: 'Account updated successfully.',
+        type: 'success',
+      });
     } catch (err) {
       emitter.emit('ui:showToast', {
         message: `Account update failed. ${err?.message}`,
         type: 'error',
       });
     } finally {
-      emitter.emit('ui:showToast', {
-        message: 'Account updated successfully.',
-        type: 'success',
-      });
       emitter.emit('ui:stopLoading', 'default');
     }
   };
@@ -112,16 +113,17 @@ export const useFinanceStore = defineStore('finance', () => {
     try {
       await repositoryFactory.get('Accounts').deleteAccount(accountId);
       await Promise.all([await fetchAccounts(), await fetchTransactions()]);
+
+      emitter.emit('ui:showToast', {
+        message: 'Account deleted successfully.',
+        type: 'success',
+      });
     } catch (err) {
       emitter.emit('ui:showToast', {
         message: `Account deletion failed. ${err?.message}`,
         type: 'error',
       });
     } finally {
-      emitter.emit('ui:showToast', {
-        message: 'Account deleted successfully.',
-        type: 'success',
-      });
       emitter.emit('ui:stopLoading', 'default');
     }
   };
@@ -132,16 +134,17 @@ export const useFinanceStore = defineStore('finance', () => {
     try {
       await repositoryFactory.get('Transactions').addTransaction(payload);
       await Promise.all([await fetchAccounts(), await fetchTransactions()]);
+
+      emitter.emit('ui:showToast', {
+        message: 'Transaction created successfully.',
+        type: 'success',
+      });
     } catch (err) {
       emitter.emit('ui:showToast', {
         message: `Transaction creation failed. ${err?.message}`,
         type: 'error',
       });
     } finally {
-      emitter.emit('ui:showToast', {
-        message: 'Transaction created successfully.',
-        type: 'success',
-      });
       emitter.emit('ui:stopLoading', 'default');
     }
   };
@@ -152,16 +155,17 @@ export const useFinanceStore = defineStore('finance', () => {
     try {
       await repositoryFactory.get('Transactions').deleteTransaction(payload);
       await Promise.all([await fetchAccounts(), await fetchTransactions()]);
+
+      emitter.emit('ui:showToast', {
+        message: 'Transaction deleted successfully.',
+        type: 'success',
+      });
     } catch (err) {
       emitter.emit('ui:showToast', {
         message: `Transaction deletion failed. ${err?.message}`,
         type: 'error',
       });
     } finally {
-      emitter.emit('ui:showToast', {
-        message: 'Transaction deleted successfully.',
-        type: 'success',
-      });
       emitter.emit('ui:stopLoading', 'default');
     }
   };
@@ -172,16 +176,17 @@ export const useFinanceStore = defineStore('finance', () => {
     try {
       await repositoryFactory.get('Transactions').updateTransaction(payload);
       await Promise.all([await fetchAccounts(), await fetchTransactions()]);
+
+      emitter.emit('ui:showToast', {
+        message: 'Transaction updated successfully.',
+        type: 'success',
+      });
     } catch (err) {
       emitter.emit('ui:showToast', {
         message: `Transaction update failed. ${err?.message}`,
         type: 'error',
       });
     } finally {
-      emitter.emit('ui:showToast', {
-        message: 'Transaction updated successfully.',
-        type: 'success',
-      });
       emitter.emit('ui:stopLoading', 'default');
     }
   };

@@ -1,11 +1,14 @@
-import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import {defineStore} from 'pinia';
+import {ref} from 'vue';
+import {useI18n} from 'vue-i18n';
 import repositoryFactory from "~/repositories/repositoryFactory";
+import {useLocalizatedCategories} from "~/use/useLocalizatedCategories";
 
 export const useCategoryStore = defineStore('category', () => {
   const categories = ref<{ id: string, name: string, icon: string }[]>([]);
   const isLoading = ref(false);
   const error = ref<string | null>(null);
+  const {locale} = useI18n();
 
   const fetchCategoriesIfNeeded = async () => {
     if (categories.value.length === 0) {
@@ -16,7 +19,14 @@ export const useCategoryStore = defineStore('category', () => {
   const fetchCategories = async () => {
     try {
       const response = await repositoryFactory.get('Category').getAllCategories();
-      categories.value = response.categories;
+      const localizedCategories = response.categories.map((category) => {
+        return {
+          ...category,
+          name: useLocalizatedCategories(category.name, locale.value),
+        };
+      });
+
+      categories.value = localizedCategories;
     } catch (err: any) {
       error.value = err.message || 'Failed to fetch categories';
     }
@@ -24,7 +34,7 @@ export const useCategoryStore = defineStore('category', () => {
 
   const addCategory = async (name: string, icon: string) => {
     try {
-      const newCategory = await repositoryFactory.get('Category').createCategory({ name, icon });
+      const newCategory = await repositoryFactory.get('Category').createCategory({name, icon});
       categories.value.push(newCategory);
     } catch (err: any) {
       error.value = err.message || 'Failed to add category';
@@ -33,7 +43,7 @@ export const useCategoryStore = defineStore('category', () => {
 
   const updateCategory = async (id: string, name: string, icon: string) => {
     try {
-      const updatedCategory = await repositoryFactory.get('Category').updateCategory(id, { name, icon });
+      const updatedCategory = await repositoryFactory.get('Category').updateCategory(id, {name, icon});
       const index = categories.value.findIndex((category) => category.id === id);
       if (index !== -1) {
         categories.value[index] = updatedCategory;
