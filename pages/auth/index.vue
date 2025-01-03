@@ -2,41 +2,47 @@
   <div class="auth-page">
     <div class="intro-block">
       <div class="block-text">
+        <img
+         class="main-img"
+         src="/images/logo.png"
+         alt="Expendango logo"
+         width="150"
+         height="150">
         <h1>Welcome to Expendango</h1>
-        <h3>Track your expenses, manage your income, and take control of your finances with ease. <br/>Empowering your
+        <h3>Track your expenses, manage your income, and take control of your finances with ease. Empowering your
           financial goals, one step at a time.</h3>
       </div>
 
       <div class="auth-forms">
-        <h4>If you have an account, log in below. <br/>New here? Create one to get started!</h4>
         <Card>
-          <Tabs :tabs="tabs">
-            <template #login>
-              <LoginForm @login="handleLogin"/>
-            </template>
-            <template #signup>
-              <Suspense>
-                <template #default>
-                  <RegisterForm @register="handleRegister"/>
-                </template>
-                <template #fallback>
-                  <div>Loading...</div>
-                </template>
-              </Suspense>
-            </template>
-          </Tabs>
+          <div v-if="isLogin">
+            <LoginForm @login="handleLogin"/>
+          </div>
+          <div v-else>
+            <Suspense>
+              <template #default>
+                <RegisterForm @register="handleRegister"/>
+              </template>
+              <template #fallback>
+                <div>Loading...</div>
+              </template>
+            </Suspense>
+          </div>
         </Card>
+
+        <div class="addition-text">
+          <p v-if="isLogin">Don't have an account? <span @click="toggleForm">Sign up!</span></p>
+          <p v-else>Already have an account? <span @click="toggleForm">Login!</span></p>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
-<script
- setup
- lang="ts">
-import {useAuthStore} from "~/stores/auth";
-import {useSeoConfig} from "~/use/useSeoConfig";
-import Tabs from "~/components/Tabs/Tabs.vue";
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useAuthStore } from "~/stores/auth";
+import { useSeoConfig } from "~/use/useSeoConfig";
 import LoginForm from "~/components/Forms/LoginForm/LoginForm.vue";
 
 const RegisterForm = defineAsyncComponent(() => import('~/components/Forms/RegisterForm/RegisterForm.vue'));
@@ -50,10 +56,11 @@ definePageMeta({
 
 const authStore = useAuthStore();
 
-const tabs = [
-  {id: 'login', label: 'Login', slotName: 'login'},
-  {id: 'signup', label: 'Sign Up', slotName: 'signup'},
-];
+const isLogin = ref(true);
+
+const toggleForm = () => {
+  isLogin.value = !isLogin.value;
+};
 
 const handleLogin = async (user: { email: string; password: string }) => {
   try {
@@ -80,13 +87,26 @@ const handleRegister = async (user: any) => {
   flex-wrap: wrap;
   width: 100%;
   min-height: 100vh;
+  background-color: #dae0e0;
   @media only screen and (max-width: 767px) {
-    min-height: 90vh;
+    //min-height: 90vh;
+  }
+
+  .main-img {
+    border-radius: var(--border-radius);
+    margin-bottom: 16px;
+
+    @media only screen and (max-width: 767px) {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 10px;
+    }
   }
 
   .intro-block {
     width: 100%;
     max-width: 700px;
+    min-height: 80vh;
     text-align: center;
 
     @media only screen and (max-width: 767px) {
@@ -105,18 +125,19 @@ const handleRegister = async (user: any) => {
     opacity: 0;
 
     @media only screen and (max-width: 767px) {
-      font-size: 32px;
+      font-size: 28px;
     }
   }
 
   h3 {
     transform: translateY(50px);
     animation: slideUp 1s ease forwards;
-    animation-delay: 0.3s;
+    animation-delay: 0.2s;
     opacity: 0;
+    color: var(--hover-color);
 
     @media only screen and (max-width: 767px) {
-      font-size: 16px;
+      font-size: 14px;
     }
   }
 
@@ -128,7 +149,7 @@ const handleRegister = async (user: any) => {
       opacity: 0;
       transform: translateY(50px);
       animation: slideUp 1s ease forwards;
-      animation-delay: 0.6s;
+      animation-delay: 0.4s;
 
       @media only screen and (max-width: 767px) {
         font-size: 14px;
@@ -139,7 +160,19 @@ const handleRegister = async (user: any) => {
       opacity: 0;
       transform: translateY(50px);
       animation: slideUp 1s ease forwards;
-      animation-delay: 0.9s;
+      animation-delay: 0.6s;
+      margin-bottom: 16px;
+    }
+  }
+
+  .addition-text {
+    opacity: 0;
+    transform: translateY(50px);
+    animation: slideUp 1s ease forwards;
+    animation-delay: 0.8s;
+    span {
+      cursor: pointer;
+      color: var(--accent-color);
     }
   }
 }
@@ -154,16 +187,4 @@ const handleRegister = async (user: any) => {
     transform: translateY(0);
   }
 }
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateX(50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
 </style>
