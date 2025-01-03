@@ -80,11 +80,18 @@ const handleRegister = async (user: any) => {
   flex-wrap: wrap;
   width: 100%;
   min-height: 100vh;
+  @media only screen and (max-width: 767px) {
+    min-height: 90vh;
+  }
 
   .intro-block {
     width: 100%;
     max-width: 700px;
     text-align: center;
+
+    @media only screen and (max-width: 767px) {
+      padding-top: 20px;
+    }
   }
 
   .block-text {
