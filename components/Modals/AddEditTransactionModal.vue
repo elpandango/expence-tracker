@@ -54,7 +54,7 @@
              :options="accounts"
              type="form-dropdown"
              size="medium"
-             placeholder="Select account"
+             :placeholder="selectAccountPlaceholder"
             />
           </div>
           <div class="form-row">
@@ -140,6 +140,7 @@ import {ref, reactive, computed, onMounted, watch} from 'vue';
 import {useFinanceStore} from '~/stores/finance';
 import {useCategoryStore} from '~/stores/category';
 import {useCurrencyFormatter} from "~/use/useCurrencyFormatter";
+import {useI18n} from 'vue-i18n';
 import Modal from './Modal.vue';
 import Dropdown from '~/components/Dropdown/Dropdown.vue';
 import BaseButton from '~/components/Buttons/BaseButton.vue';
@@ -155,6 +156,7 @@ const props = defineProps({
   transactionType: {type: String, default: 'expense'}
 });
 
+const {locale} = useI18n();
 const {generateTestData} = useGenerateTestData();
 const {formatCurrency} = useCurrencyFormatter();
 const financeStore = useFinanceStore();
@@ -168,9 +170,22 @@ const transactionTypes = ['expense', 'income'];
 const selectedAccount = ref(null);
 
 const accounts = ref([]);
-const selectedCategory = ref({value: null, label: 'Other'});
-const categories = ref([]);
+const defaultCategoriesOtherValues = {
+  ru: 'Прочие расходы',
+  ua: 'Інші витрати',
+  en: 'Other',
+  de: 'Sonstige Ausgaben',
+};
 
+const defaultAccountsValues = {
+  ru: 'Выбрать счет',
+  ua: 'Вибрати рахунок',
+  en: 'Select Account',
+  de: 'Konto auswählen',
+};
+
+const selectedCategory = ref({value: null, label: defaultCategoriesOtherValues[locale.value]});
+const categories = ref([]);
 const transaction = reactive({
   id: null,
   accountId: null,
@@ -185,6 +200,9 @@ const transaction = reactive({
 
 const transactionDescriptionError = ref<string | null>(null);
 const transactionAmountError = ref<string | null>(null);
+const selectAccountPlaceholder = computed(() => {
+  return defaultAccountsValues[locale.value];
+});
 
 const emit = defineEmits(['close']);
 
@@ -233,20 +251,17 @@ const populateTransactionFields = () => {
 
   selectedAccount.value = accounts.value.find(acc => acc.value === editingTransaction.accountId._id) || {
     value: null,
-    label: 'Select Account',
+    label: defaultAccountsValues[locale.value],
     currency: ''
   };
+
   selectedCategory.value = categories.value.find(cat => cat.value === editingTransaction.category?._id) || {
     value: null,
-    label: 'Other'
+    label: defaultCategoriesOtherValues[locale.value]
   };
 };
 
 const handleSaveTransaction = async () => {
-  if (!transaction.description) {
-    transactionDescriptionError.value = 'Description field must not be empty.';
-    return;
-  }
   if (!transaction.amount || +transaction.amount === 0) {
     transactionAmountError.value = 'Amount field must not be empty.';
     return;
@@ -288,7 +303,7 @@ const resetTransactionFields = () => {
   transaction.amount = '';
   transaction.date = new Date();
   selectedAccount.value = null;
-  selectedCategory.value = {value: null, label: 'Other'};
+  selectedCategory.value = {value: null, label: defaultCategoriesOtherValues[locale.value]};
 };
 
 const handleCreateTestData = async () => {
