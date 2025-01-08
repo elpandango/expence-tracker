@@ -1,0 +1,309 @@
+<template>
+  <Modal
+   v-model="modalValue"
+   @update:modelValue="closeModal">
+    <template v-slot:header>
+      Calculator
+    </template>
+    <template v-slot:body>
+      <div class="calculator">
+        <div class="calculator-display">
+          <input
+           type="text"
+           v-model="currentValue"
+           readonly
+           class="calculator-display-input"
+          />
+        </div>
+        <div class="calculator-buttons">
+          <div class="row">
+            <button
+             class="calc-btn"
+             @click="handleInput('7')">7
+            </button>
+            <button
+             class="calc-btn"
+             @click="handleInput('8')">8
+            </button>
+            <button
+             class="calc-btn"
+             @click="handleInput('9')">9
+            </button>
+            <button
+             class="calc-btn"
+             @click="handleOperator('/')">÷
+            </button>
+          </div>
+          <div class="row">
+            <button
+             class="calc-btn"
+             @click="handleInput('4')">4
+            </button>
+            <button
+             class="calc-btn"
+             @click="handleInput('5')">5
+            </button>
+            <button
+             class="calc-btn"
+             @click="handleInput('6')">6
+            </button>
+            <button
+             class="calc-btn"
+             @click="handleOperator('*')">×
+            </button>
+          </div>
+          <div class="row">
+            <button
+             class="calc-btn"
+             @click="handleInput('1')">1
+            </button>
+            <button
+             class="calc-btn"
+             @click="handleInput('2')">2
+            </button>
+            <button
+             class="calc-btn"
+             @click="handleInput('3')">3
+            </button>
+            <button
+             class="calc-btn"
+             @click="handleOperator('-')">−
+            </button>
+          </div>
+          <div class="row">
+            <button
+             class="calc-btn"
+             @click="handleInput('0')">0
+            </button>
+            <button
+             class="calc-btn"
+             @click="handleInput('.')">.
+            </button>
+            <button
+             class="calc-btn"
+             @click="handlePercent">%
+            </button>
+            <button
+             class="calc-btn"
+             @click="handleOperator('+')">+
+            </button>
+          </div>
+          <div class="row">
+            <button
+             class="calc-btn double-btn"
+             @click="calculateResult">=
+            </button>
+            <button
+             @click="clear"
+             class="calc-btn">C
+            </button>
+          </div>
+        </div>
+      </div>
+    </template>
+    <template v-slot:footer>
+      <BaseButton
+       @click="closeModal"
+       variant="transparent"
+       size="big">{{ $t('components.buttons.cancelText') }}
+      </BaseButton>
+      <BaseButton
+       @click="handleSaveNewAmount"
+       variant="green"
+       size="big">{{ $t('components.buttons.saveText') }}
+      </BaseButton>
+    </template>
+  </Modal>
+</template>
+
+<script
+ setup
+ lang="ts">
+import {ref} from 'vue';
+import Modal from './Modal.vue';
+import BaseButton from "~/components/Buttons/BaseButton.vue";
+
+const props = defineProps({
+  isOpen: {
+    type: Boolean,
+    required: true
+  },
+});
+
+const modalValue = ref(props.isOpen);
+const currentValue = ref('');
+const operator = ref('');
+const previousValue = ref('');
+
+const emit = defineEmits(['close']);
+
+const closeModal = () => emit('close');
+
+const handleInput = (value: string) => {
+  // console.log('operator.value, currentValue.value, previousValue.value: ', operator.value, currentValue.value, previousValue.value);
+
+  // if (operator.value) {
+  //   previousValue.value = currentValue.value;
+  //   currentValue.value = value;
+  //   operator.value = '';
+  // } else {
+  //   currentValue.value += value;
+  //   operator.value = '';
+  // }
+
+  if (operator.value) {
+    previousValue.value = currentValue.value;
+    currentValue.value = value;
+
+    console.log('currentValue.value: ', currentValue.value);
+    console.log('previousValue.value: ', previousValue.value);
+
+  } else {
+    currentValue.value += value;
+  }
+  // currentValue.value += value;
+
+  // console.log('handleInput operator.value: ', operator.value);
+};
+
+const handleOperator = (op: string) => {
+  if (currentValue.value !== '') {
+    // console.log('operator.value, currentValue.value, previousValue.value: ', operator.value, currentValue.value, previousValue.value);
+
+    if (operator.value) {
+      // previousValue.value = previousValue.value ? currentValue.value : '';
+      calculateResult();
+    } else {
+      // previousValue.value = currentValue.value;
+    }
+
+    console.log('previousValue.value: ', previousValue.value);
+    console.log('currentValue.value: ', currentValue.value);
+
+    // if (operator.value) {
+    //   calculateResult();
+    // } else {
+    //   previousValue.value = currentValue.value;
+    // }
+    operator.value = op;
+
+    console.log('handleOperator operator.value: ', operator.value);
+  }
+};
+
+const handlePercent = () => {
+  if (currentValue.value) {
+    const num = parseFloat(currentValue.value);
+
+    if (operator.value && previousValue.value) {
+      const base = parseFloat(previousValue.value);
+      currentValue.value = ((base * num) / 100).toString();
+    } else {
+      currentValue.value = (num / 100).toString();
+    }
+  }
+};
+
+const calculateResult = () => {
+  if (previousValue.value && operator.value && currentValue.value) {
+    const num1 = parseFloat(previousValue.value);
+    const num2 = parseFloat(currentValue.value);
+    let result = 0;
+    switch (operator.value) {
+      case '+':
+        result = num1 + num2;
+        break;
+      case '-':
+        result = num1 - num2;
+        break;
+      case '*':
+        result = num1 * num2;
+        break;
+      case '/':
+        result = num2 !== 0 ? num1 / num2 : NaN;
+        break;
+      default:
+        console.error('Unsupported operator:', operator.value);
+        return;
+    }
+
+    currentValue.value = result.toString();
+    operator.value = '';
+  }
+};
+
+const clear = () => {
+  currentValue.value = '';
+  operator.value = '';
+  previousValue.value = '';
+};
+
+const handleSaveNewAmount = () => {
+  console.log('save new amount');
+};
+</script>
+
+<style
+ lang="scss">
+.form-row {
+  margin-bottom: 22px;
+}
+
+.calculator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+
+  .calculator-display {
+    margin-bottom: 20px;
+  }
+
+  .calculator-display-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 24px;
+    text-align: right;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .calculator-buttons {
+    display: flex;
+    flex-direction: column;
+
+    .calc-btn {
+      padding: 10px;
+      font-size: 18px;
+      border: none;
+      background-color: #f0f0f0;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 60px;
+      text-align: center;
+
+      &:hover {
+        background-color: #ddd;
+      }
+    }
+
+    .calc-btn.double-btn {
+      width: calc(120px + 5px);
+    }
+
+    .calc-btn.clear-button {
+      width: 100%;
+      background-color: #ff4d4f;
+      color: white;
+    }
+  }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    gap: 5px;
+  }
+
+}
+</style>

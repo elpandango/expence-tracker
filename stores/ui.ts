@@ -6,6 +6,7 @@ export const useUIStore = defineStore("ui", () => {
     isAddExpenseModalOpen: false,
     isAddFundsModalOpen: false,
     isAddAccountModalOpen: false,
+    isCalculatorModalOpen: false,
   });
 
   const state = reactive({

@@ -69,12 +69,19 @@
           <div class="form-row">
             <BaseInput
              v-model="transaction.amount"
+             :has-icon="true"
              size="medium"
              type="number"
              :status="transactionAmountError ? 'error' : ''"
              :error-message="transactionAmountError ? transactionAmountError : ''"
              :placeholder="$t('components.modalsContent.addEditTransactionModal.amountLabelText')"
-             :label="$t('components.modalsContent.addEditTransactionModal.amountLabelText')"/>
+             :label="$t('components.modalsContent.addEditTransactionModal.amountLabelText')">
+              <template v-slot:icon>
+                <span
+                 class="icon material-symbols-outlined"
+                 @click="handleCalculateClick">calculate</span>
+              </template>
+            </BaseInput>
           </div>
           <div class="form-row">
             <div class="dropdown-label">{{ $t('components.modalsContent.addEditTransactionModal.dateLabelText') }}</div>
@@ -140,13 +147,14 @@ import {ref, reactive, computed, onMounted, watch} from 'vue';
 import {useFinanceStore} from '~/stores/finance';
 import {useCategoryStore} from '~/stores/category';
 import {useCurrencyFormatter} from "~/use/useCurrencyFormatter";
+import {useGenerateTestData} from "~/use/useGenerateTestData";
+import {useUIStore} from "~/stores/ui";
 import {useI18n} from 'vue-i18n';
 import Modal from './Modal.vue';
 import Dropdown from '~/components/Dropdown/Dropdown.vue';
 import BaseButton from '~/components/Buttons/BaseButton.vue';
 import Datepicker from '~/components/Datepicker/Datepicker.vue';
 import {emitter} from "~/classes/uiEventBus";
-import {useGenerateTestData} from "~/use/useGenerateTestData";
 
 const CategoryDropdown = defineAsyncComponent(() => import('~/components/Dropdown/CategoryDropdown.vue'));
 const BaseInput = defineAsyncComponent(() => import('~/components/Forms/Inputs/BaseInput.vue'));
@@ -161,6 +169,7 @@ const {generateTestData} = useGenerateTestData();
 const {formatCurrency} = useCurrencyFormatter();
 const financeStore = useFinanceStore();
 const categoryStore = useCategoryStore();
+const uiStore = useUIStore();
 
 const isLoading = ref(true);
 const modalValue = ref(props.isOpen);
@@ -318,6 +327,10 @@ const goToAccounts = () => {
   closeModal();
   navigateTo('/accounts');
 };
+
+const handleCalculateClick = () => {
+  uiStore.toggleModal('isCalculatorModalOpen', true);
+}
 
 onMounted(async () => {
   isLoading.value = true;

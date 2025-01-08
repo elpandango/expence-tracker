@@ -11,6 +11,11 @@
      :placeholder="placeholder"
      :step="type === 'number' ? 0.1 : null">
 
+    <div v-if="hasIcon"
+         class="icon">
+      <slot name="icon"></slot>
+    </div>
+
     <div
      v-if="!!errorMessage"
      class="error-message">
@@ -20,8 +25,6 @@
 </template>
 
 <script setup>
-// import './styles.scss';
-
 const props = defineProps({
   modelValue: {
     type: [String, Number, Date, null],
@@ -55,6 +58,10 @@ const props = defineProps({
   type: {
     type: String,
     default: 'text'
+  },
+  hasIcon: {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -64,6 +71,7 @@ const emits = defineEmits(['update:modelValue']);
 <style lang="scss">
 .form-block.base-input {
   width: 100%;
+  position: relative;
 
   label {
     display: block;
@@ -98,6 +106,14 @@ const emits = defineEmits(['update:modelValue']);
     &.disabled {
       background-color: var(--bg-color);
     }
+  }
+
+  .icon {
+    position: absolute;
+    z-index: 15;
+    right: 20px;
+    top: 20px;
+    cursor: pointer;
   }
 }
 </style>
