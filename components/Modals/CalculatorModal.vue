@@ -140,67 +140,21 @@ const emit = defineEmits(['close']);
 const closeModal = () => emit('close');
 
 const handleInput = (value: string) => {
-  // console.log('operator.value, currentValue.value, previousValue.value: ', operator.value, currentValue.value, previousValue.value);
-
-  // if (operator.value) {
-  //   previousValue.value = currentValue.value;
-  //   currentValue.value = value;
-  //   operator.value = '';
-  // } else {
-  //   currentValue.value += value;
-  //   operator.value = '';
-  // }
-
-  if (operator.value) {
-    previousValue.value = currentValue.value;
+  if (operator.value && currentValue.value === previousValue.value) {
     currentValue.value = value;
-
-    console.log('currentValue.value: ', currentValue.value);
-    console.log('previousValue.value: ', previousValue.value);
-
   } else {
     currentValue.value += value;
   }
-  // currentValue.value += value;
-
-  // console.log('handleInput operator.value: ', operator.value);
 };
 
 const handleOperator = (op: string) => {
   if (currentValue.value !== '') {
-    // console.log('operator.value, currentValue.value, previousValue.value: ', operator.value, currentValue.value, previousValue.value);
-
-    if (operator.value) {
-      // previousValue.value = previousValue.value ? currentValue.value : '';
-      calculateResult();
-    } else {
-      // previousValue.value = currentValue.value;
-    }
-
-    console.log('previousValue.value: ', previousValue.value);
-    console.log('currentValue.value: ', currentValue.value);
-
-    // if (operator.value) {
-    //   calculateResult();
-    // } else {
-    //   previousValue.value = currentValue.value;
-    // }
-    operator.value = op;
-
-    console.log('handleOperator operator.value: ', operator.value);
-  }
-};
-
-const handlePercent = () => {
-  if (currentValue.value) {
-    const num = parseFloat(currentValue.value);
-
     if (operator.value && previousValue.value) {
-      const base = parseFloat(previousValue.value);
-      currentValue.value = ((base * num) / 100).toString();
-    } else {
-      currentValue.value = (num / 100).toString();
+      calculateResult();
     }
+
+    previousValue.value = currentValue.value;
+    operator.value = op;
   }
 };
 
@@ -209,6 +163,7 @@ const calculateResult = () => {
     const num1 = parseFloat(previousValue.value);
     const num2 = parseFloat(currentValue.value);
     let result = 0;
+
     switch (operator.value) {
       case '+':
         result = num1 + num2;
@@ -223,14 +178,16 @@ const calculateResult = () => {
         result = num2 !== 0 ? num1 / num2 : NaN;
         break;
       default:
-        console.error('Unsupported operator:', operator.value);
         return;
     }
 
+    previousValue.value = result.toString();
     currentValue.value = result.toString();
     operator.value = '';
   }
 };
+
+
 
 const clear = () => {
   currentValue.value = '';
