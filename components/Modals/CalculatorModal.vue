@@ -122,6 +122,7 @@
 import {ref} from 'vue';
 import Modal from './Modal.vue';
 import BaseButton from "~/components/Buttons/BaseButton.vue";
+import {useUIStore} from "~/stores/ui";
 
 const props = defineProps({
   isOpen: {
@@ -130,6 +131,7 @@ const props = defineProps({
   },
 });
 
+const uiStore = useUIStore();
 const modalValue = ref(props.isOpen);
 const currentValue = ref('');
 const operator = ref('');
@@ -187,17 +189,34 @@ const calculateResult = () => {
   }
 };
 
-
-
 const clear = () => {
   currentValue.value = '';
   operator.value = '';
   previousValue.value = '';
 };
 
-const handleSaveNewAmount = () => {
-  console.log('save new amount');
+const handlePercent = () => {
+  if (currentValue.value) {
+    const num = parseFloat(currentValue.value);
+
+    if (operator.value && previousValue.value) {
+      const base = parseFloat(previousValue.value);
+      currentValue.value = ((base * num) / 100).toString();
+    } else {
+      currentValue.value = (num / 100).toString();
+    }
+  }
 };
+
+const handleSaveNewAmount = () => {
+  uiStore.setCalculatorValue(currentValue.value);
+  clear();
+  closeModal();
+};
+
+onMounted(() => {
+  currentValue.value = uiStore.calculatorValue || '';
+});
 </script>
 
 <style

@@ -17,7 +17,7 @@
              class="icon-wrap">
           <svg
            class="dropdown-arrow"
-           :class="{'is-active': isOpen}"
+           :class="{'is-active': isActive}"
            width="10"
            height="10"
            viewBox="0 0 10 10"
@@ -45,7 +45,6 @@
 
 <script setup lang="ts">
 import {computed, onMounted, ref} from 'vue';
-import SvgIcon from "@/components/svgComponents/SvgIcon.vue";
 
 const props = defineProps({
   height: {

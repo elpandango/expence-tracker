@@ -9,6 +9,8 @@ export const useUIStore = defineStore("ui", () => {
     isCalculatorModalOpen: false,
   });
 
+  const calculatorValue = ref(null);
+
   const state = reactive({
     isAuthLoading: true,
     isLoading: true,
@@ -34,6 +36,14 @@ export const useUIStore = defineStore("ui", () => {
     }, 3000);
   };
 
+  const setCalculatorValue = (value: any) => {
+    calculatorValue.value = value;
+  };
+
+  const clearCalculatorValue = () => {
+    calculatorValue.value = null;
+  };
+
   emitter.on('ui:startLoading', (type: 'auth' | 'default') => {
     setLoading(true, type);
   });
@@ -49,8 +59,11 @@ export const useUIStore = defineStore("ui", () => {
   return {
     state,
     modals,
+    calculatorValue,
     setLoading,
     showToast,
     toggleModal,
+    setCalculatorValue,
+    clearCalculatorValue,
   };
 });

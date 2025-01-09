@@ -258,6 +258,8 @@ const populateTransactionFields = () => {
   transaction.amount = Math.abs(editingTransaction.amount).toString();
   transaction.date = new Date(editingTransaction.date);
 
+  uiStore.setCalculatorValue(Math.abs(editingTransaction.amount).toString());
+
   selectedAccount.value = accounts.value.find(acc => acc.value === editingTransaction.accountId._id) || {
     value: null,
     label: defaultAccountsValues[locale.value],
@@ -332,6 +334,12 @@ const handleCalculateClick = () => {
   uiStore.toggleModal('isCalculatorModalOpen', true);
 }
 
+watch(() => uiStore.calculatorValue, (newValue) => {
+  if (newValue) {
+    transaction.amount = newValue;
+  }
+});
+
 onMounted(async () => {
   isLoading.value = true;
   await Promise.all([await populateAccountsList(), await populateCategoriesList()]);
@@ -340,6 +348,7 @@ onMounted(async () => {
     populateTransactionFields();
   } else {
     resetTransactionFields();
+    uiStore.clearCalculatorValue();
     setTransactionType(props.transactionType);
   }
 });

@@ -18,7 +18,6 @@
            v-for="dateTransaction in transactionsList.transactions"
            :key="dateTransaction._id"
            :transaction="dateTransaction"
-           :show-actions="true"
           />
         </Card>
       </template>
