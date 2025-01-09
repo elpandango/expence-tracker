@@ -33,6 +33,14 @@
              @update:isOpen="(value) => isAddExpenseModalOpen ? (isAddExpenseModalOpen = value) : (isAddFundsModalOpen = value)"
             />
           </template>
+
+          <template v-if="isCalculatorModalOpen">
+            <CalculatorModal
+             :isOpen="isCalculatorModalOpen"
+             @close="closeModal('calculator')"
+             @update:isOpen="isCalculatorModalOpen = $event"
+            />
+          </template>
         </template>
       </div>
     </div>
@@ -48,6 +56,7 @@ import {useUIStore} from "~/stores/ui";
 
 const AddEditAccountModal = defineAsyncComponent(() => import('~/components/Modals/AddEditAccountModal.vue'));
 const AddEditTransactionModal = defineAsyncComponent(() => import('~/components/Modals/AddEditTransactionModal.vue'));
+const CalculatorModal = defineAsyncComponent(() => import('~/components/Modals/CalculatorModal.vue'));
 const Toast = defineAsyncComponent(() => import('~/components/Toast/Toast.vue'));
 
 const route = useRoute();
@@ -83,13 +92,16 @@ onBeforeMount(async () => {
 const isAddExpenseModalOpen = computed(() => uiStore.modals.isAddExpenseModalOpen);
 const isAddFundsModalOpen = computed(() => uiStore.modals.isAddFundsModalOpen);
 const isAddAccountModalOpen = computed(() => uiStore.modals.isAddAccountModalOpen);
+const isCalculatorModalOpen = computed(() => uiStore.modals.isCalculatorModalOpen);
 
 const closeModal = (name?: string) => {
   if (name === 'expense') {
     uiStore.toggleModal('isAddExpenseModalOpen', false);
   } else if (name === 'funds') {
     uiStore.toggleModal('isAddFundsModalOpen', false);
-  } else {
+  } else if (name === 'calculator') {
+    uiStore.toggleModal('isCalculatorModalOpen', false);
+  }  else {
     uiStore.toggleModal('isAddAccountModalOpen', false);
   }
 };

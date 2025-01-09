@@ -314,7 +314,7 @@ watch(() => financeStore.transactionsResponse, (newTransactions) => {
     margin: 0 auto;
 
     @media only screen and (max-width: 1366px) {
-      max-width: 860px;
+      //max-width: 860px;
     }
   }
 
