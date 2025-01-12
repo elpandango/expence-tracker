@@ -34,8 +34,10 @@ export default defineEventHandler(async (event) => {
   const isAmountChanged = oldTransaction.amount !== updatedTransaction.amount;
   const isAccountChanged = oldTransaction.accountId.toString() !== updatedTransaction.accountId;
   const isTypeChanged = oldTransaction.type !== updatedTransaction.type;
+  const formatDate = (date: string) => new Date(date).toISOString().split('T')[0];
+  const isDateChanged = formatDate(oldTransaction.date) !== formatDate(updatedTransaction.date);
 
-  if (isAmountChanged || isAccountChanged || isTypeChanged) {
+  if (isAmountChanged || isAccountChanged || isTypeChanged || isDateChanged) {
     const oldAccount = await AccountModel.findById(oldTransaction.accountId);
     if (oldAccount) {
       if (oldTransaction.type === "expense") {
