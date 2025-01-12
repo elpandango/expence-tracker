@@ -50,7 +50,7 @@
 <script
  setup
  lang="ts">
-import '~/assets/scss/global.scss';
+// import '~/assets/scss/global.scss';
 import {useUserStore} from '~/stores/user';
 import {useUIStore} from "~/stores/ui";
 
