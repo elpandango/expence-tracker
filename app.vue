@@ -10,7 +10,7 @@
 <script
  setup
  lang="ts">
-import '~/assets/scss/global.scss';
+// import '~/assets/scss/global.scss';
 import {useUIStore} from "~/stores/ui";
 import {useSeoConfig} from "~/use/useSeoConfig";
 
@@ -41,6 +41,7 @@ const uiStore = useUIStore();
 </script>
 
 <style>
+@import '~/assets/scss/global.scss';
 .page-enter-active,
 .page-leave-active {
   transition: all 0.2s;

@@ -7,21 +7,21 @@ export default defineNuxtConfig({
   app: {
     pageTransition: {name: 'page', mode: 'out-in'}
   },
-  // css: ['@/assets/scss/global.scss'],
+  css: [],
   postcss: {
     plugins: {
       autoprefixer: {},
     },
   },
-  vite: {
-    css: {
-      preprocessorOptions: {
-        scss: {
-          additionalData: '@import "@/assets/scss/_variables.scss";'
-        }
-      }
-    }
-  },
+  // vite: {
+  //   css: {
+  //     preprocessorOptions: {
+  //       scss: {
+  //         additionalData: '@import "@/assets/scss/_variables.scss";'
+  //       }
+  //     }
+  //   }
+  // },
   modules: [['@nuxtjs/google-fonts', {
     families: {
       Montserrat: {
@@ -31,7 +31,6 @@ export default defineNuxtConfig({
     }
   }],
     '@pinia/nuxt',
-    // '@vite-pwa/nuxt'
   ],
   plugins: ['~/plugins/router.ts'],
   server: {
