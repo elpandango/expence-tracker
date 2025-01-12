@@ -29,7 +29,10 @@ export default defineNuxtConfig({
       },
       'Material+Symbols+Outlined': true,
     }
-  }], '@pinia/nuxt', '@vite-pwa/nuxt'],
+  }],
+    '@pinia/nuxt',
+    // '@vite-pwa/nuxt'
+  ],
   plugins: ['~/plugins/router.ts'],
   server: {
     plugins: ['~/server/plugins/initializeCategories.ts'],
