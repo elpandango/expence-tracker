@@ -10,6 +10,7 @@
 <script
  setup
  lang="ts">
+import '~/assets/scss/global.scss';
 import {useUIStore} from "~/stores/ui";
 import {useSeoConfig} from "~/use/useSeoConfig";
 

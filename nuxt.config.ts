@@ -7,7 +7,7 @@ export default defineNuxtConfig({
   app: {
     pageTransition: {name: 'page', mode: 'out-in'}
   },
-  css: ['@/assets/scss/global.scss'],
+  // css: ['@/assets/scss/global.scss'],
   postcss: {
     plugins: {
       autoprefixer: {},
