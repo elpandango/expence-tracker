@@ -1,4 +1,4 @@
-import { authLogin } from "~/server/controllers/authController/authLogin";
+import { authLogin } from "~/server/controllers/authController";
 import { readBody, setCookie } from 'h3';
 
 export default defineEventHandler(async (event) => {
