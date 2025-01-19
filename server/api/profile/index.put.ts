@@ -1,4 +1,4 @@
-import { updateProfile } from "~/server/controllers/userController";
+import { updateProfile } from "~/server/controllers/userController/userController";
 import {getCookie, readBody} from 'h3';
 
 export default defineEventHandler(async (event) => {

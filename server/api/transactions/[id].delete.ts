@@ -1,4 +1,4 @@
-import {deleteTransaction} from "~/server/controllers/transactionController";
+import {deleteTransaction} from "~/server/controllers/transactionsController/deleteTransaction";
 
 export default defineEventHandler(async (event) => {
   const {id} = event.context.params;

@@ -1,5 +1,5 @@
 import {defineEventHandler, getCookie, readBody} from "h3";
-import {createTransaction} from "~/server/controllers/transactionController";
+import {createTransaction} from "~/server/controllers/transactionsController/createTransaction";
 
 export default defineEventHandler(async (event) => {
   const userId = getCookie(event, "userId");

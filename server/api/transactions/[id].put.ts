@@ -1,5 +1,5 @@
 import {getCookie} from "h3";
-import {updateTransaction} from "~/server/controllers/transactionController";
+import {updateTransaction} from "~/server/controllers/transactionsController/updateTransaction";
 
 export default defineEventHandler(async (event) => {
   const {id} = event.context.params;
