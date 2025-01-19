@@ -1,4 +1,4 @@
-import { deleteAvatar } from '~/server/controllers/userController';
+import { deleteAvatar } from '~/server/controllers/userController/userController';
 import {getCookie} from "h3";
 
 export default defineEventHandler(async (event) => {
