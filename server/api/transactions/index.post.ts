@@ -21,6 +21,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const account = await AccountModel.findOne({ _id: accountId, userId }).lean();
+
   if (!account) {
     throw createError({ statusCode: 404, message: "Account not found." });
   }
@@ -38,7 +39,7 @@ export default defineEventHandler(async (event) => {
     account.balance += amount;
   }
 
-  if (account.balance < 0) {
+  if (account.balance < 0 && account.type !== 'cash') {
     throw createError({ statusCode: 400, message: "Insufficient funds." });
   }
 
