@@ -45,10 +45,16 @@ export const useUserStore = defineStore('user', () => {
     emitter.emit('ui:stopLoading', 'default');
   };
 
+  const getAvatar = async () => {
+    const response = await repositoryFactory.get('User').getAvatar();
+    avatar.value = response.avatar;
+  };
+
   const updateAvatar = async (avatarBase64: string) => {
     emitter.emit('ui:startLoading', 'default');
     const updatedUser = await repositoryFactory.get('User').updateAvatar(avatarBase64);
-    user.value.avatar = updatedUser.avatar;
+
+    avatar.value = updatedUser.avatar;
     emitter.emit('ui:showToast', {
       message: 'Avatar updated successfully!',
       type: 'success',
@@ -59,7 +65,7 @@ export const useUserStore = defineStore('user', () => {
   const deleteAvatar = async () => {
     emitter.emit('ui:startLoading', 'default');
     await repositoryFactory.get('User').deleteAvatar();
-    user.value.avatar = '';
+    avatar.value = '';
     emitter.emit('ui:showToast', {
       message: 'Avatar deleted successfully!',
       type: 'success',
@@ -67,6 +73,6 @@ export const useUserStore = defineStore('user', () => {
     emitter.emit('ui:stopLoading', 'default');
   };
 
-  return {user, userId, isLoggedIn, avatar, checkAuth, updateProfile, updateAvatar, deleteAvatar};
+  return {user, userId, isLoggedIn, avatar, checkAuth, updateProfile, getAvatar, updateAvatar, deleteAvatar};
 });
 

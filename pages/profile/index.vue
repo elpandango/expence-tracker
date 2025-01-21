@@ -8,8 +8,8 @@
         <div class="avatar-block">
           <div class="avatar">
             <img
-             v-if="user.avatar"
-             :src="user.avatar"
+             v-if="userStore.avatar.avatar"
+             :src="userStore.avatar.avatar"
              alt="User Avatar"
              class="avatar-image"/>
             <div
@@ -107,7 +107,7 @@ const initializeUserData = () => {
   user.name = userStore.user.name;
   user.lastName = userStore.user.lastName;
   user.email = userStore.user.email;
-  user.avatar = userStore.user.avatar;
+  user.avatar = userStore.avatar.avatar;
 
   savedUser.name = userStore.user.name;
   savedUser.lastName = userStore.user.lastName;
@@ -151,7 +151,8 @@ const handleUploadAvatar = async () => {
 
       try {
         await userStore.updateAvatar(avatarBase64);
-        user.avatar = userStore.user.avatar;
+        await userStore.getAvatar();
+        user.avatar = userStore.avatar.avatar;
       } catch (error) {
         console.error('Error updating avatar:', error);
       }
@@ -165,7 +166,8 @@ const handleUploadAvatar = async () => {
 const handleRemoveAvatar = async () => {
   try {
     await userStore.deleteAvatar();
-    user.avatar = userStore.user.avatar;
+    await userStore.getAvatar();
+    user.avatar = userStore.avatar.avatar;
   } catch (error) {
     console.error('Error removing avatar:', error);
   }

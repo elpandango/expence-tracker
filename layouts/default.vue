@@ -86,6 +86,11 @@ onBeforeMount(async () => {
   if (userStore.isLoggedIn && route.path === '/auth') {
     return router.push('/');
   }
+
+  if (userStore.isLoggedIn && userStore.user.email !== '') {
+    await userStore.getAvatar();
+  }
+
 });
 
 const isAddExpenseModalOpen = computed(() => uiStore.modals.isAddExpenseModalOpen);

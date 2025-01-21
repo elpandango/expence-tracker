@@ -5,6 +5,16 @@ export default {
       body: payload,
     });
   },
+  async getAvatar() {
+    try {
+      return await $fetch('/api/profile/avatar', {
+        method: 'GET',
+      });
+    } catch (error: any) {
+      const message = error?.response?._data?.message || 'Not Authorized';
+      throw new Error(message);
+    }
+  },
   async updateAvatar(avatarBase64: string) {
     return await $fetch(`/api/profile/avatar`, {
       method: 'PUT',
