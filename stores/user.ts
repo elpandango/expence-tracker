@@ -47,7 +47,7 @@ export const useUserStore = defineStore('user', () => {
 
   const getAvatar = async () => {
     const response = await repositoryFactory.get('User').getAvatar();
-    avatar.value = response.avatar;
+    avatar.value = response.avatar.avatar;
   };
 
   const updateAvatar = async (avatarBase64: string) => {

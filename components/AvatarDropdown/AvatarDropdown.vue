@@ -6,8 +6,8 @@
      class="avatar"
      @click="toggleDropdown">
       <img
-       v-if="userStore.avatar.avatar"
-       :src="userStore.avatar.avatar"
+       v-if="userStore.avatar"
+       :src="userStore.avatar"
        alt="User Avatar"
        class="avatar-image"/>
       <div
