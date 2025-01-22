@@ -43,8 +43,8 @@
      :class="{active: menuOpen}">
       <div class="user-info">
         <img
-         v-if="userStore.user.avatar"
-         :src="userStore.user.avatar"
+         v-if="userStore.avatar.avatar"
+         :src="userStore.avatar.avatar"
          alt="User Avatar"
          class="avatar-image"/>
         <div class="user-name">{{ userStore.user.name }}</div>
