@@ -27,14 +27,21 @@
          size="small">Next
         </BaseButton>
       </div>
+
+      <div class="calendar-weekdays">
+        <div v-for="weekday in weekdays" :key="weekday" class="calendar-weekday">
+          {{ weekday }}
+        </div>
+      </div>
+
       <div class="calendar-days">
         <div
-         v-for="day in daysInMonth"
-         :key="day"
-         :class="['calendar-day', { selected: isSelected(day), disabled: isDisabled(day) }]"
-         @click="() => !isDisabled(day) && selectDate(day)"
+         v-for="(day, index) in daysWithOffset"
+         :key="index"
+         :class="['calendar-day', { empty: !day, selected: isSelected(day), disabled: day && isDisabled(day) }]"
+         @click="() => day && !isDisabled(day) && selectDate(day)"
         >
-          {{ day }}
+          {{ day || '' }}
         </div>
       </div>
     </div>
@@ -46,6 +53,7 @@ import {ref, computed, watch} from 'vue';
 import BaseButton from "~/components/Buttons/BaseButton.vue";
 
 const monthsFull = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const weekdays = ["MO", "TU", "WE", "TH", "FR", "SA", "SU"];
 
 const props = defineProps({
   modelValue: {
@@ -82,6 +90,13 @@ const daysInMonth = computed(() => {
   const date = new Date(currentYear.value, currentMonth.value + 1, 0);
   const numDays = date.getDate();
   return Array.from({length: numDays}, (_, i) => i + 1);
+});
+
+const daysWithOffset = computed(() => {
+  const firstDayOfMonth = new Date(currentYear.value, currentMonth.value, 1).getDay();
+  const offset = (firstDayOfMonth + 6) % 7;
+  const emptyDays = Array(offset).fill(null);
+  return [...emptyDays, ...daysInMonth.value];
 });
 
 const formattedDate = computed(() => {
