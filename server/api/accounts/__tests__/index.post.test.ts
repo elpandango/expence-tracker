@@ -1,4 +1,4 @@
-import {describe, it, expect, vi, beforeEach} from 'vitest';
+import {beforeEach, describe, expect, it, vi} from 'vitest';
 import handler from '~/server/api/accounts/index.post';
 import {AccountModel} from '~/server/models/AccountModel';
 import {getCookie, readBody} from 'h3';
@@ -20,7 +20,7 @@ vi.mock('h3', async (importOriginal) => {
 
 vi.stubGlobal('createError', vi.fn((error) => error));
 
-describe('Account creation API', () => {
+describe('POST /accounts API', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
@@ -63,8 +63,7 @@ describe('Account creation API', () => {
       initialBalance: 100,
     });
 
-    const saveMock = vi.fn().mockResolvedValue({});
-    AccountModel.prototype.save = saveMock;
+    AccountModel.prototype.save = vi.fn().mockResolvedValue({});
 
     const mockEvent = {};
     const result = await handler(mockEvent);
