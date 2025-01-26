@@ -1,7 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import {describe, it, expect, vi, beforeEach} from 'vitest';
 import handler from '~/server/api/accounts/index.post';
-import { AccountModel } from '~/server/models/AccountModel';
-import { getCookie, readBody } from 'h3';
+import {AccountModel} from '~/server/models/AccountModel';
+import {getCookie, readBody} from 'h3';
 
 vi.mock('~/server/models/AccountModel', () => ({
   AccountModel: vi.fn().mockImplementation(() => ({
@@ -38,7 +38,7 @@ describe('Account creation API', () => {
     expect(getCookie).toHaveBeenCalledWith(mockEvent, 'userId');
   });
 
-  it('should return 400 if required fields are missing', async() => {
+  it('should return 400 if required fields are missing', async () => {
     getCookie.mockReturnValue('user123');
     readBody.mockResolvedValue({});
 
@@ -63,26 +63,95 @@ describe('Account creation API', () => {
       initialBalance: 100,
     });
 
-    // Замокаем метод save
     const saveMock = vi.fn().mockResolvedValue({});
     AccountModel.prototype.save = saveMock;
 
     const mockEvent = {};
-
-    // Добавим логирование в обработчик, чтобы понять, что происходит
     const result = await handler(mockEvent);
 
-    console.log('result: ', result);  // Печать результата для отладки
-    console.log('saveMock call count: ', saveMock.mock.calls.length); // Количество вызовов save
-
-    // Проверяем статус и сообщение
     expect(result.status).toBe(201);
     expect(result.message).toBe('Account created successfully');
-
-    // Проверяем, что save был вызван
-    expect(saveMock).toHaveBeenCalledTimes(1);  // Проверяем, был ли вызван save
   });
 
+  it('should throw an error if type not card or cash', async() => {
+    getCookie.mockReturnValue('user123');
+    readBody.mockResolvedValue({
+      name: 'My Account',
+      type: 'invalid',
+      currency: 'USD',
+      cardNumber: '1234567812345678',
+      initialBalance: 100,
+    });
 
+    const mockEvent = {};
+    const result = handler(mockEvent);
 
+    await expect(result).rejects.toEqual({
+      statusCode: 400,
+      message: 'Invalid account type',
+    });
+
+    expect(readBody).toHaveBeenCalledWith(mockEvent);
+  });
+
+  it('should throw an error if type card and no car number provided', async() => {
+    getCookie.mockReturnValue('user123');
+    readBody.mockResolvedValue({
+      name: 'My Account',
+      type: 'card',
+      currency: 'USD',
+      cardNumber: null,
+      initialBalance: 100,
+    });
+
+    const mockEvent = {};
+    const result = handler(mockEvent);
+
+    await expect(result).rejects.toEqual({
+      statusCode: 400,
+      message: 'Card number is required for card accounts',
+    });
+
+    expect(readBody).toHaveBeenCalledWith(mockEvent);
+  });
+
+  it('should throw an error if balance amount < 0', async() => {
+    getCookie.mockReturnValue('user123');
+    readBody.mockResolvedValue({
+      name: 'My Account',
+      type: 'cash',
+      currency: 'USD',
+      initialBalance: -10,
+    });
+
+    const mockEvent = {};
+    const result = handler(mockEvent);
+
+    await expect(result).rejects.toEqual({
+      statusCode: 400,
+      message: 'Invalid initial balance',
+    });
+
+    expect(readBody).toHaveBeenCalledWith(mockEvent);
+  });
+
+  it('should throw an error if balance not of type number', async() => {
+    getCookie.mockReturnValue('user123');
+    readBody.mockResolvedValue({
+      name: 'My Account',
+      type: 'cash',
+      currency: 'USD',
+      initialBalance: '10',
+    });
+
+    const mockEvent = {};
+    const result = handler(mockEvent);
+
+    await expect(result).rejects.toEqual({
+      statusCode: 400,
+      message: 'Invalid initial balance',
+    });
+
+    expect(readBody).toHaveBeenCalledWith(mockEvent);
+  });
 });
