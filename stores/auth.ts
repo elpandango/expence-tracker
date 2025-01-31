@@ -10,6 +10,7 @@ export const useAuthStore = defineStore('auth', () => {
   const userId = ref<string | null>(null);
 
   const login = async (user: { email: string; password: string }) => {
+    emitter.emit('ui:startLoading', 'default');
     try {
       const {status, userId: id} = await AuthRepository.login(user);
 
@@ -30,10 +31,13 @@ export const useAuthStore = defineStore('auth', () => {
         message: error.message || 'Login failed.',
         type: 'error',
       });
+    } finally {
+      emitter.emit('ui:stopLoading', 'default');
     }
   };
 
   const register = async (user: { name: string; lastName: string; email: string; password: string }) => {
+    emitter.emit('ui:startLoading', 'default');
     try {
       const {status} = await AuthRepository.register(user);
       if (status === 200) {
@@ -51,6 +55,8 @@ export const useAuthStore = defineStore('auth', () => {
         message: error.message || 'Registration failed.',
         type: 'error',
       });
+    } finally {
+      emitter.emit('ui:stopLoading', 'default');
     }
   };
 
