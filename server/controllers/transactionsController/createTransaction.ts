@@ -4,7 +4,7 @@ import {AccountModel} from "~/server/models/AccountModel";
 export const createTransaction = async (transactionData: any, userId: string) => {
   const {accountId, type, amount, currency, description, date, category, relatedAccountId} = transactionData;
 
-  if (!accountId || !type || !amount || !currency) {
+  if (!accountId || !type || amount === null || amount === undefined || !currency) {
     throw createError({statusCode: 400, message: "Missing required fields: accountId, type, amount, or currency."});
   }
 

@@ -35,14 +35,11 @@ describe('DELETE /accounts API', () => {
 
   it('should return 401 if user is not authorized', async () => {
     getCookie.mockReturnValue(undefined);
-
     const mockEvent = {context: {params: {id: 'account123'}}};
-    const result = handler(mockEvent);
 
-    await expect(result).rejects.toEqual({
-      statusCode: 401,
-      message: 'Unauthorized',
-    });
+    await expect(handler(mockEvent)).rejects.toThrowError(
+      expect.objectContaining({statusCode: 401, message: 'Unauthorized'})
+    );
   });
 
   it('should return 400 if account ID is not provided', async () => {

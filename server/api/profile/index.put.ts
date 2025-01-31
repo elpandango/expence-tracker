@@ -1,5 +1,5 @@
 import { updateProfile } from "~/server/controllers/userController/userController";
-import {getCookie, readBody} from 'h3';
+import {getCookie, readBody, defineEventHandler} from 'h3';
 
 export default defineEventHandler(async (event) => {
   const userId = getCookie(event, 'userId');

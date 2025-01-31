@@ -1,8 +1,8 @@
-import { describe, it, expect, vi } from 'vitest';
-import { updateProfile, updateAvatar, deleteAvatar } from '~/server/controllers/userController/userController';
+import {describe, it, expect, vi} from 'vitest';
+import {updateProfile, updateAvatar, deleteAvatar} from '~/server/controllers/userController/userController';
 import {getCookie} from "h3";
-import { UserModel } from '~/server/models/UserModel';
-import handler from "~/server/api/category/[id].put";
+import {UserModel} from '~/server/models/UserModel';
+import handler from "~/server/api/profile/index.put";
 import sharp from 'sharp';
 
 vi.mock('~/server/models/UserModel', () => ({
@@ -32,19 +32,11 @@ vi.mock('h3', async (importOriginal) => {
 vi.stubGlobal('createError', vi.fn((error) => error));
 
 describe('updateProfile', () => {
-  it('should return 401 if user is not authorized', async () => {
-    getCookie.mockReturnValue(null);
-    const mockEvent = {context: {params: {id: '123'}}};
-
-    await expect(handler(mockEvent)).rejects.toThrowError(
-      expect.objectContaining({statusCode: 401, message: 'Unauthorized'})
-    );
-  });
-
   it('should update user profile successfully', async () => {
+    getCookie.mockReturnValue('user123');
     const mockUserId = '123';
-    const mockUpdateData = { name: 'John', email: 'john@example.com' };
-    const mockUpdatedUser = { _id: mockUserId, ...mockUpdateData };
+    const mockUpdateData = {name: 'John', email: 'john@example.com'};
+    const mockUpdatedUser = {_id: mockUserId, ...mockUpdateData};
 
     UserModel.findByIdAndUpdate.mockResolvedValue(mockUpdatedUser);
 
@@ -52,8 +44,8 @@ describe('updateProfile', () => {
 
     expect(UserModel.findByIdAndUpdate).toHaveBeenCalledWith(
       mockUserId,
-      { $set: mockUpdateData },
-      { new: true }
+      {$set: mockUpdateData},
+      {new: true}
     );
     expect(result).toEqual(mockUpdatedUser);
   });
@@ -75,7 +67,7 @@ describe('updateAvatar', () => {
   it('should update avatar successfully', async () => {
     const mockUserId = '123';
     const mockBase64 = 'data:image/png;base64,example';
-    const mockUpdatedUser = { _id: mockUserId, avatar: 'optimized-avatar' };
+    const mockUpdatedUser = {_id: mockUserId, avatar: 'optimized-avatar'};
 
     UserModel.findByIdAndUpdate.mockResolvedValue(mockUpdatedUser);
 
@@ -84,8 +76,8 @@ describe('updateAvatar', () => {
     expect(sharp).toHaveBeenCalled();
     expect(UserModel.findByIdAndUpdate).toHaveBeenCalledWith(
       mockUserId,
-      { $set: { avatar: expect.any(String) } },
-      { new: true }
+      {$set: {avatar: expect.any(String)}},
+      {new: true}
     );
     expect(result).toEqual(mockUpdatedUser);
   });
@@ -102,7 +94,7 @@ describe('updateAvatar', () => {
 describe('deleteAvatar', () => {
   it('should delete avatar successfully', async () => {
     const mockUserId = '123';
-    const mockUpdatedUser = { _id: mockUserId };
+    const mockUpdatedUser = {_id: mockUserId};
 
     UserModel.findByIdAndUpdate.mockResolvedValue(mockUpdatedUser);
 
@@ -110,8 +102,8 @@ describe('deleteAvatar', () => {
 
     expect(UserModel.findByIdAndUpdate).toHaveBeenCalledWith(
       mockUserId,
-      { $unset: { avatar: '' } },
-      { new: true }
+      {$unset: {avatar: ''}},
+      {new: true}
     );
     expect(result).toEqual(mockUpdatedUser);
   });

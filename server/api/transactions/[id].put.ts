@@ -1,12 +1,16 @@
-import {getCookie} from "h3";
+import {createError, getCookie} from "h3";
 import {updateTransaction} from "~/server/controllers/transactionsController/updateTransaction";
 
 export default defineEventHandler(async (event) => {
   const {id} = event.context.params;
-  const userId = getCookie(event, "userId");
   const updatedTransaction = await readBody(event);
 
   try {
+    const userId = getCookie(event, 'userId');
+    if (!userId) {
+      throw createError({statusCode: 401, message: 'Unauthorized'});
+    }
+
     const newTransaction = await updateTransaction(updatedTransaction, id, userId);
 
     if (newTransaction) {
