@@ -3,12 +3,12 @@ import {AccountModel} from "~/server/models/AccountModel";
 
 export default defineEventHandler(async (event) => {
   const userId = getCookie(event, 'userId');
-  const { id } = event.context.params;
+  const {id} = event.context.params;
   if (!userId) {
     throw createError({statusCode: 401, message: 'Unauthorized'});
   }
 
-  const { name, currency} = await readBody(event);
+  const {name, currency} = await readBody(event);
 
   if (!id) {
     throw createError({statusCode: 400, message: 'Account ID is required'});
