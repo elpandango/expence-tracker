@@ -1,6 +1,11 @@
 <template>
   <div class="auth-page">
-    <div class="intro-block">
+    <Preloader
+     height="50vh"
+     v-if="uiStore.state.isLoading"/>
+    <div
+     v-else
+     class="intro-block">
       <div class="block-text">
         <img
          class="main-img"
@@ -39,10 +44,14 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
-import { useAuthStore } from "~/stores/auth";
-import { useSeoConfig } from "~/use/useSeoConfig";
+<script
+ setup
+ lang="ts">
+import {ref} from 'vue';
+import {useAuthStore} from "~/stores/auth";
+import {useUIStore} from "~/stores/ui";
+import {useSeoConfig} from "~/use/useSeoConfig";
+import {emitter} from "~/classes/uiEventBus";
 import LoginForm from "~/components/Forms/LoginForm/LoginForm.vue";
 
 const RegisterForm = defineAsyncComponent(() => import('~/components/Forms/RegisterForm/RegisterForm.vue'));
@@ -54,7 +63,9 @@ definePageMeta({
   layout: 'not-authorized'
 });
 
+emitter.emit('ui:stopLoading', 'default');
 const authStore = useAuthStore();
+const uiStore = useUIStore();
 
 const isLogin = ref(true);
 
@@ -170,6 +181,7 @@ const handleRegister = async (user: any) => {
     transform: translateY(50px);
     animation: slideUp 1s ease forwards;
     animation-delay: 0.8s;
+
     span {
       cursor: pointer;
       color: var(--accent-color);
