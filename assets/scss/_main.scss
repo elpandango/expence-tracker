@@ -1,5 +1,6 @@
 // normalize.scss
 html {
+  height: 100%;
   line-height: 1.15;
   -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
@@ -7,7 +8,11 @@ html {
 
 body {
   margin: 0;
+  height: 100%;
   -webkit-font-smoothing: antialiased;
+  align-items: center;
+  display: flex;
+  justify-content: center;
 }
 
 main {

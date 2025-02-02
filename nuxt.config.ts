@@ -31,6 +31,7 @@ export default defineNuxtConfig({
     }
   }],
     '@pinia/nuxt',
+    '@nuxtjs/tailwindcss'
   ],
   plugins: ['~/plugins/router.ts'],
   server: {

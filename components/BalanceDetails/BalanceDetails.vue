@@ -2,16 +2,16 @@
   <Preloader v-if="uiStore.state.isLoading || financeStore.loadingStates.transactions"/>
   <div
    v-else
-   class="balance-details-block">
-    <div class="total-balance">{{ $t('components.balance.title') }}:</div>
-    <div class="balance-parts">
+   class="w-full">
+    <h2 class="text-xl md:text-2xl font-semibold mb-4">{{ $t('components.balance.title') }}:</h2>
+    <div class="mb-4">
       <div
-       class="balance-item"
+       class="border-top-custom flex justify-between items-center text-lg py-2.5"
        v-for="account in financeStore.accountsList"
        :key="account._id">
-        <div class="balance-details">
-          <span class="account-name">{{ account.name }}</span>
-          <div class="account-type"><strong>{{ account.type }}</strong> {{ account.cardNumber ? `| ${account.cardNumber}` : '' }}</div>
+        <div>
+          <span>{{ account.name }}</span>
+          <div class="font-semibold text-sm mt-1.5"><strong>{{ account.type }}</strong> {{ account.cardNumber ? `| ${account.cardNumber}` : '' }}</div>
         </div>
         <strong>{{ formatCurrency(account.balance, account.currency) }}</strong>
       </div>
@@ -33,17 +33,19 @@
     </template>
 
     <div
-     class="btn-block"
+     class="flex justify-between items-center"
      v-if="financeStore.accountsList.length > 0">
       <BaseButton
        size="medium"
        variant="green"
+       class="w-32 md:w-36 text-sm md:text-base whitespace-nowrap"
        @click="handleAddFunds">{{ $t('components.buttons.addFundsText') }}
       </BaseButton>
 
       <BaseButton
        size="medium"
        variant="red"
+       class="w-32 md:w-36 text-sm md:text-base whitespace-nowrap"
        @click="handleNewExpense">{{ $t('components.menuList.addExpense') }}
       </BaseButton>
     </div>
@@ -96,7 +98,5 @@ onMounted(async () => {
 });
 </script>
 
-<style
- lang="scss"
- src="./styles.scss">
+<style>
 </style>

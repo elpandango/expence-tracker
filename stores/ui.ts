@@ -45,7 +45,6 @@ export const useUIStore = defineStore("ui", () => {
   };
 
   emitter.on('ui:startLoading', (type: 'auth' | 'default') => {
-    console.log('loading!');
     setLoading(true, type);
   });
 

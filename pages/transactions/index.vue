@@ -1,7 +1,6 @@
 <template>
   <div class="transactions-page">
     <h1 class="page-title">{{ $t('components.transactionsPage.pageTitleText') }}</h1>
-
     <Card class="mar-b-6">
       <BalanceDetails/>
     </Card>

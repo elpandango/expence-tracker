@@ -18,17 +18,6 @@
   }
 }
 
-html,
-body {
-  height: 100%;
-}
-
-body {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-}
-
 .loader {
   animation: loader-turn 1s linear infinite;
   border: none!important;

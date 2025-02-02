@@ -4,7 +4,7 @@
       <ul class="pagination">
         <li>
           <BaseButton
-           class="prev-next-btn"
+           class="w-16 md:w-24"
            size="medium"
            :disabled="!props?.data?.hasPrevPage"
            @click="prevPage"
@@ -44,7 +44,7 @@
 
         <li
          v-if="pagesToShow[pagesToShow.length - 1] < props?.data?.lastPage - 1"
-         class="dots">...
+         class="inline-block px-2 text-gray-400">...
         </li>
         <li v-if="pagesToShow[pagesToShow.length - 1] !== props?.data?.lastPage">
           <BaseButton
@@ -59,7 +59,7 @@
 
         <li>
           <BaseButton
-           class="prev-next-btn"
+           class="w-16 md:w-24"
            size="medium"
            :disabled="!props?.data?.hasNextPage"
            @click="nextPage"
@@ -71,7 +71,6 @@
     </nav>
   </div>
 </template>
-
 
 <script
  setup
@@ -152,14 +151,6 @@ const pagesToShow = computed(() => {
     align-items: center;
     justify-content: center;
     margin: 0 5px;
-  }
-
-  .prev-next-btn {
-    min-width: 100px;
-
-    @media only screen and (max-width: 480px) {
-      min-width: 60px;
-    }
   }
 }
 </style>

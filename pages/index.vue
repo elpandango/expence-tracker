@@ -19,7 +19,7 @@
         <template v-slot:header>
 
           <div class="title-block">
-            <h3 class="title">
+            <h3 class="title1 text-lg font-semibold">
               {{ $t('components.transactionsHistory.titleText') }}
             </h3>
 
@@ -37,17 +37,17 @@
           <div class="period-buttons">
             <div class="period">
               <BaseButton
-               size="small"
+               size="smallest"
                :variant="periodSelected === 'day' ? 'default' : 'transparent'"
                @click="changePeriod('day')">{{ $t('components.transactionsHistory.sortingPeriodDay') }}
               </BaseButton>
               <BaseButton
-               size="small"
+               size="smallest"
                :variant="periodSelected === 'week' ? 'default' : 'transparent'"
                @click="changePeriod('week')">{{ $t('components.transactionsHistory.sortingPeriodWeek') }}
               </BaseButton>
               <BaseButton
-               size="small"
+               size="smallest"
                :variant="periodSelected === 'month' ? 'default' : 'transparent'"
                @click="changePeriod('month')">{{ $t('components.transactionsHistory.sortingPeriodMonth') }}
               </BaseButton>
@@ -55,7 +55,7 @@
             <div class="see-all">
               <NuxtLink to="/transactions">
                 <BaseButton
-                 size="small"
+                 size="smallest"
                  variant="transparent">{{ $t('components.transactionsHistory.seeAll') }}
                 </BaseButton>
               </NuxtLink>
