@@ -4,17 +4,18 @@
    :class="[{'active': isActive}, type]">
     <div class="accordion-inner-content">
       <div
-       @click="accordionTrigger"
        :style="{height: props.height}"
        class="header-block"
-       :class="align">
+       :class="align"
+       @click="accordionTrigger">
         <slot name="header">
           <div class="value">
             default value
           </div>
         </slot>
-        <div v-if="!noCaret"
-             class="icon-wrap">
+        <div
+         v-if="!noCaret"
+         class="icon-wrap">
           <svg
            class="dropdown-arrow"
            :class="{'is-active': isActive}"
@@ -32,8 +33,8 @@
        :style="{maxHeight: isActive ? computedHeight  + 'px' : '0px'}"
        class="content-block">
         <div
-         class="content-items-list"
-         ref="contentBlock">
+         ref="contentBlock"
+         class="content-items-list">
           <div class="content-item">
             <slot name="accordion-body">default body</slot>
           </div>
@@ -43,7 +44,9 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script
+ setup
+ lang="ts">
 import {computed, onMounted, ref} from 'vue';
 
 const props = defineProps({
@@ -76,7 +79,7 @@ const computedHeight = computed(() => {
   return contentBlock.value ? contentBlock.value.offsetHeight : 0;
 });
 
-const accordionTrigger = (e: any) => {
+const accordionTrigger = (e: event) => {
   e.stopPropagation();
   isActive.value = !isActive.value;
 };
