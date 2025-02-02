@@ -15,10 +15,10 @@
 
         <li v-if="pagesToShow[0] !== 1">
           <BaseButton
-           @click="gotoPage(1)"
            size="medium"
            :aria-label="'Go to page 1'"
            :variant="props?.data?.currentPage === 1 ? 'default' : 'transparent'"
+           @click="gotoPage(1)"
           >
             1
           </BaseButton>
@@ -33,10 +33,10 @@
          :key="page"
         >
           <BaseButton
-           @click="gotoPage(page)"
            size="medium"
            :aria-label="`Go to page ${page}`"
            :variant="props?.data?.currentPage === page ? 'default' : 'transparent'"
+           @click="gotoPage(page)"
           >
             {{ page }}
           </BaseButton>
@@ -48,10 +48,10 @@
         </li>
         <li v-if="pagesToShow[pagesToShow.length - 1] !== props?.data?.lastPage">
           <BaseButton
-           @click="gotoPage(props?.data?.lastPage)"
            size="medium"
            :aria-label="`Go to page ${props?.data?.lastPage}`"
            :variant="props?.data?.currentPage === props?.data?.lastPage ? 'default' : 'transparent'"
+           @click="gotoPage(props?.data?.lastPage)"
           >
             {{ props?.data?.lastPage }}
           </BaseButton>

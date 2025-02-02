@@ -7,7 +7,7 @@
      type="form-dropdown"
      size="medium"
      placeholder="Select language"
-     @update:modelValue="handleLocaleChange"
+     @update:model-value="handleLocaleChange"
     />
 
   </div>

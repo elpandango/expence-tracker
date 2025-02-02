@@ -6,9 +6,9 @@
     <h2 class="text-xl md:text-2xl font-semibold mb-4">{{ $t('components.balance.title') }}:</h2>
     <div class="mb-4">
       <div
-       class="border-top-custom flex justify-between items-center text-lg py-2.5"
        v-for="account in financeStore.accountsList"
-       :key="account._id">
+       :key="account._id"
+       class="border-top-custom flex justify-between items-center text-lg py-2.5">
         <div>
           <span>{{ account.name }}</span>
           <div class="font-semibold text-sm mt-1.5"><strong>{{ account.type }}</strong> {{ account.cardNumber ? `| ${account.cardNumber}` : '' }}</div>
@@ -33,8 +33,8 @@
     </template>
 
     <div
-     class="flex justify-between items-center"
-     v-if="financeStore.accountsList.length > 0">
+     v-if="financeStore.accountsList.length > 0"
+     class="flex justify-between items-center">
       <BaseButton
        size="medium"
        variant="green"

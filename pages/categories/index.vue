@@ -5,8 +5,8 @@
     <div class="categories-list">
       <Category
        v-for="category in categoryStore.categories"
-       :data="category"
-       :key="category._id"/>
+       :key="category._id"
+       :data="category"/>
     </div>
   </div>
 </template>

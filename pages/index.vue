@@ -16,7 +16,7 @@
     </Card>
     <Card :with-scroll="true">
       <TransactionsHistory>
-        <template v-slot:header>
+        <template #header>
 
           <div class="title-block">
             <h3 class="title1 text-lg font-semibold">
@@ -29,7 +29,7 @@
                v-model="sortBySelected"
                :options="transactionsHistoryOptions"
                :placeholder="$t('components.transactionsHistory.sortPlaceholderText')"
-               @update:modelValue="handleDropdownChanged"
+               @update:model-value="handleDropdownChanged"
               />
             </div>
           </div>
@@ -219,7 +219,7 @@ onMounted(async () => {
 
   emitter.emit('ui:stopLoading', 'default');
 
-  if (process.client) {
+  if (import.meta.client) {
     await fetchChartData();
     isChartDataLoaded.value = true;
   }

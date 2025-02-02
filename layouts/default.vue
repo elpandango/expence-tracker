@@ -14,31 +14,31 @@
       <div class="content">
         <template v-if="!uiStore.state.isAuthLoading">
           <SiteHeader/>
-          <main></main>
-          <slot></slot>
+          <main/>
+          <slot/>
 
           <template v-if="isAddAccountModalOpen">
             <AddEditAccountModal
-             :isOpen="isAddAccountModalOpen"
+             :is-open="isAddAccountModalOpen"
              @close="closeModal('account')"
-             @update:isOpen="isAddAccountModalOpen = $event"
+             @update:is-open="isAddAccountModalOpen = $event"
             />
           </template>
 
           <template v-if="isAddExpenseModalOpen || isAddFundsModalOpen">
             <AddEditTransactionModal
              :transaction-type="isAddExpenseModalOpen ? 'expense' : 'income'"
-             :isOpen="isAddExpenseModalOpen ? isAddExpenseModalOpen : isAddFundsModalOpen"
+             :is-open="isAddExpenseModalOpen ? isAddExpenseModalOpen : isAddFundsModalOpen"
              @close="() => closeModal(isAddExpenseModalOpen ? 'expense' : 'funds')"
-             @update:isOpen="(value) => isAddExpenseModalOpen ? (isAddExpenseModalOpen = value) : (isAddFundsModalOpen = value)"
+             @update:is-open="(value) => isAddExpenseModalOpen ? (isAddExpenseModalOpen = value) : (isAddFundsModalOpen = value)"
             />
           </template>
 
           <template v-if="isCalculatorModalOpen">
             <CalculatorModal
-             :isOpen="isCalculatorModalOpen"
+             :is-open="isCalculatorModalOpen"
              @close="closeModal('calculator')"
-             @update:isOpen="isCalculatorModalOpen = $event"
+             @update:is-open="isCalculatorModalOpen = $event"
             />
           </template>
         </template>

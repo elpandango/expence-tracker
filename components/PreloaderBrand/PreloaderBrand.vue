@@ -1,7 +1,7 @@
 <template>
   <teleport to="body">
     <div class="preloader-wrap">
-      <div class="loader"></div>
+      <div class="loader"/>
     </div>
   </teleport>
 </template>

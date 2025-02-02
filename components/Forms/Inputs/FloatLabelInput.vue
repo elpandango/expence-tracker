@@ -1,14 +1,17 @@
 <template>
   <div class="form-block float-label">
-    <input :type="type"
+    <input
+:type="type"
            class="form-input"
            :class="[size, status]"
            :value="modelValue"
-           @input="$emit('update:modelValue', $event.target.value)"
-           :placeholder="placeholder">
-    <label v-if="label"
+           :placeholder="placeholder"
+           @input="$emit('update:modelValue', $event.target.value)">
+    <label
+v-if="label"
            :class="{frozen: modelValue !== ''}">{{ label }}</label>
-    <div v-if="!!errorMessage"
+    <div
+v-if="!!errorMessage"
          class="error-message">
       {{ errorMessage }}
     </div>

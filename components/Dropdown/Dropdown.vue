@@ -1,8 +1,8 @@
 <template>
   <div
+   ref="dropdown"
    class="dropdown"
    :class="[type, size, {'is-active': isOpen}]"
-   ref="dropdown"
    @click="toggleDropdown">
     <button
      class="dropdown-toggle"
@@ -27,9 +27,9 @@
       <li
        v-for="option in options"
        :key="option.value"
-       @click="selectOption(option)"
        class="dropdown-item"
        :class="{ selected: option.value === selectedOption?.value }"
+       @click="selectOption(option)"
       >
         {{ option.label }}
       </li>

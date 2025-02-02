@@ -1,19 +1,19 @@
 <template>
   <Modal
    v-model="modalValue"
-   @update:modelValue="closeModal">
-    <template v-slot:header>
+   @update:model-value="closeModal">
+    <template #header>
       Calculator
     </template>
-    <template v-slot:body>
+    <template #body>
       <div class="calculator">
         <div class="calculator-display">
           <input
-           type="text"
            v-model="currentValue"
+           type="text"
            readonly
            class="calculator-display-input"
-          />
+          >
         </div>
         <div class="calculator-buttons">
           <div class="row">
@@ -94,23 +94,23 @@
              @click="calculateResult">=
             </button>
             <button
-             @click="clear"
-             class="calc-btn">C
+             class="calc-btn"
+             @click="clear">C
             </button>
           </div>
         </div>
       </div>
     </template>
-    <template v-slot:footer>
+    <template #footer>
       <BaseButton
-       @click="closeModal"
        variant="transparent"
-       size="big">{{ $t('components.buttons.cancelText') }}
+       size="big"
+       @click="closeModal">{{ $t('components.buttons.cancelText') }}
       </BaseButton>
       <BaseButton
-       @click="handleSaveNewAmount"
        variant="green"
-       size="big">{{ $t('components.buttons.saveText') }}
+       size="big"
+       @click="handleSaveNewAmount">{{ $t('components.buttons.saveText') }}
       </BaseButton>
     </template>
   </Modal>

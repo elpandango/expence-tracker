@@ -1,5 +1,6 @@
 <template>
-  <div class="preloader-layout"
+  <div
+class="preloader-layout"
        :class="isFullSize ? 'full-page' : ''"
        :style="{height: height}">
     <svg class="loader" viewBox="0 0 24 24">

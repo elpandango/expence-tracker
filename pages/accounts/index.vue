@@ -2,8 +2,8 @@
   <div class="accounts-page">
     <h1>{{ $t('components.accountsPage.pageTitleText') }}</h1>
     <Preloader
-     height="50vh"
-     v-if="uiStore.state.isLoading"/>
+     v-if="uiStore.state.isLoading"
+     height="50vh"/>
     <template v-else>
       <ul
        v-if="financeStore.accountsList && financeStore.accountsList.length > 0"
@@ -50,9 +50,9 @@
 
     <template v-if="isDeleteConfirmationModalOpen">
       <DeleteAccountModal
-       :isOpen="isDeleteConfirmationModalOpen"
+       :is-open="isDeleteConfirmationModalOpen"
        @delete="handleDeleteAccount"
-       @update:isOpen="isDeleteConfirmationModalOpen = $event"
+       @update:is-open="isDeleteConfirmationModalOpen = $event"
       />
     </template>
 

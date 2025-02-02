@@ -4,7 +4,7 @@
       <NuxtLink
        to="/"
        class="logo">
-        <div class="logo-img"></div>
+        <div class="logo-img"/>
         <div class="brand-name">Expendango</div>
       </NuxtLink>
       <div class="sidebar-menu">

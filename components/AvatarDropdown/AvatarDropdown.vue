@@ -1,7 +1,7 @@
 <template>
   <div
-   class="avatar-dropdown"
-   ref="dropdown">
+   ref="dropdown"
+   class="avatar-dropdown">
     <div
      class="avatar"
      @click="toggleDropdown">
@@ -9,25 +9,25 @@
        v-if="userStore.avatar"
        :src="userStore.avatar"
        alt="User Avatar"
-       class="avatar-image"/>
+       class="avatar-image">
       <div
        v-else
-       class="avatar-placeholder"></div>
+       class="avatar-placeholder"/>
     </div>
 
     <div
      v-if="isOpen"
      class="dropdown-menu">
       <NuxtLink
-       @click="closeMenu"
        to="/profile"
-       class="menu-item">
+       class="menu-item"
+       @click="closeMenu">
         <span class="icon material-symbols-outlined">account_circle</span>
         {{ $t('components.menuList.profile') }}
       </NuxtLink>
       <div
-       @click="handleLogout"
-       class="menu-item">
+       class="menu-item"
+       @click="handleLogout">
         <span class="icon material-symbols-outlined">logout</span>
         Logout
       </div>
@@ -63,7 +63,7 @@ const closeMenu = () => {
   isOpen.value = false;
 };
 
-const handleClickOutside = (event: any) => {
+const handleClickOutside = (event: event) => {
   if (dropdown.value && !dropdown.value.contains(event.target)) {
     isOpen.value = false;
   }

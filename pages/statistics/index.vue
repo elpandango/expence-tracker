@@ -79,7 +79,7 @@ const chartStore = useChartStore();
 
 const isHighchartsLoaded = ref(false);
 let HighchartsComponent = null;
-let chartConfigs = reactive({
+const chartConfigs = reactive({
   expenses_vs_incomes: null,
   categories: null,
   top5: null,

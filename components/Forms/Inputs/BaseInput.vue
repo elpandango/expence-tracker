@@ -4,16 +4,17 @@
     <input
      :type="type"
      class="form-input"
-     @input="$emit('update:modelValue', $event.target.value)"
      :disabled="disabled"
      :class="[size, status, {'disabled': disabled}]"
      :value="modelValue"
      :placeholder="placeholder"
-     :step="type === 'number' ? 0.1 : null">
+     :step="type === 'number' ? 0.1 : null"
+     @input="$emit('update:modelValue', $event.target.value)">
 
-    <div v-if="hasIcon"
+    <div
+v-if="hasIcon"
          class="icon">
-      <slot name="icon"></slot>
+      <slot name="icon"/>
     </div>
 
     <div

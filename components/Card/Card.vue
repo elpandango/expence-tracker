@@ -6,10 +6,10 @@
     <div
      v-if="withHeader"
      class="card-header">
-      <slot name="header"></slot>
+      <slot name="header"/>
     </div>
     <div class="card-content">
-      <slot></slot>
+      <slot/>
     </div>
   </div>
 </template>
@@ -20,7 +20,8 @@
 
 const props = defineProps({
   class: {
-    type: String
+    type: String,
+    default: ''
   },
   maxWidth: {
     type: String,

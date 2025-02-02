@@ -6,7 +6,7 @@ export const useSeoConfig = () => {
   const { t } = useI18n();
   const route = useRoute();
   const currentUrl = computed(() => {
-    if (process.client) {
+    if (import.meta.client) {
       return `${window.location.origin}${route.fullPath}`;
     }
     return `${domain}${route.fullPath}`;

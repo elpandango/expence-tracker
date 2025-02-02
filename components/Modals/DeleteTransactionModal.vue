@@ -1,25 +1,25 @@
 <template>
   <Modal
    v-model="modalValue"
-   @update:modelValue="closeModal">
-    <template v-slot:header>
+   @update:model-value="closeModal">
+    <template #header>
       {{ $t('components.modalsContent.deleteCardModal.deleteTitleText') }}
     </template>
-    <template v-slot:body>
+    <template #body>
       <div>
         {{ $t('components.modalsContent.deleteCardModal.deleteConfirmText') }}
       </div>
     </template>
-    <template v-slot:footer>
+    <template #footer>
       <BaseButton
-       @click="closeModal"
        variant="transparent"
-       size="big">{{ $t('components.buttons.cancelText') }}
+       size="big"
+       @click="closeModal">{{ $t('components.buttons.cancelText') }}
       </BaseButton>
       <BaseButton
-       @click="handleDeleteTransaction"
        variant="red"
-       size="big">{{ $t('components.buttons.deleteText') }}
+       size="big"
+       @click="handleDeleteTransaction">{{ $t('components.buttons.deleteText') }}
       </BaseButton>
     </template>
   </Modal>

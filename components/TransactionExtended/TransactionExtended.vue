@@ -39,13 +39,13 @@
         </div>
         <div
          v-if="showActions"
-         @click="toggleActions"
          ref="actions"
-         class="action-menu">
+         class="action-menu"
+         @click="toggleActions">
           <span class="material-symbols-outlined">more_vert</span>
           <div
-           class="actions-list"
-           v-if="isOpen">
+           v-if="isOpen"
+           class="actions-list">
             <button
              class="action-btn"
              @click="$emit('edit-clicked')">

@@ -11,34 +11,33 @@
              v-if="userStore.avatar"
              :src="userStore.avatar"
              alt="User Avatar"
-             class="avatar-image"/>
+             class="avatar-image">
             <div
              v-else
-             class="avatar-placeholder">
-            </div>
+             class="avatar-placeholder"/>
           </div>
           <div class="avatar-name">{{ savedUser.name }} {{ savedUser.lastName }}</div>
           <div class="avatar-actions">
             <BaseButton
-             @click="handleUploadAvatar"
              variant="transparent"
-             size="big">{{ $t('components.buttons.uploadPhoto') }}
+             size="big"
+             @click="handleUploadAvatar">{{ $t('components.buttons.uploadPhoto') }}
             </BaseButton>
             <BaseButton
-             @click="handleRemoveAvatar"
              variant="transparent"
-             size="big">{{ $t('components.buttons.removePhoto') }}
+             size="big"
+             @click="handleRemoveAvatar">{{ $t('components.buttons.removePhoto') }}
             </BaseButton>
           </div>
         </div>
       </Card>
       <Card max-width="50%">
         <Preloader
-         height="280px"
-         v-if="uiStore.state.isLoading"/>
+         v-if="uiStore.state.isLoading"
+         height="280px"/>
         <form
-         class="profile-form"
-         v-else>
+         v-else
+         class="profile-form">
           <div class="form-row">
             <FloatLabelInput
              v-model="user.name"
@@ -59,13 +58,13 @@
           </div>
           <div class="form-row btn-block">
             <BaseButton
-             @click="handleCancel"
              variant="transparent"
-             size="big">{{ $t('components.buttons.cancelText') }}
+             size="big"
+             @click="handleCancel">{{ $t('components.buttons.cancelText') }}
             </BaseButton>
             <BaseButton
-             @click="handleSaveChanges"
-             size="big">{{ $t('components.buttons.saveText') }}
+             size="big"
+             @click="handleSaveChanges">{{ $t('components.buttons.saveText') }}
             </BaseButton>
           </div>
         </form>

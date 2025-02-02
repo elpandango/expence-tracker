@@ -7,23 +7,23 @@
      @click:outside="clickOutside">
       <div
        class="modal-background"
-       @click="closeModal"></div>
+       @click="closeModal"/>
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title">
-            <slot name="header"></slot>
+            <slot name="header"/>
           </h2>
           <button
-           @click="closeModal"
-           class="modal-close-button">&times;
+           class="modal-close-button"
+           @click="closeModal">&times;
           </button>
         </div>
         <div class="modal-body">
-          <slot name="body"></slot>
+          <slot name="body"/>
         </div>
         <div class="modal-footer">
           <div class="footer-slot">
-            <slot name="footer"></slot>
+            <slot name="footer"/>
           </div>
         </div>
       </div>

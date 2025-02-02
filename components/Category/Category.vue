@@ -21,12 +21,13 @@
  setup
  lang="ts">
 
-const props = defineProps({
+const {data} = defineProps<{
   data: {
-    type: Object
-  },
-});
-
+    icon?: string;
+    color?: string;
+    name?: string;
+  }
+}>();
 </script>
 
 <style

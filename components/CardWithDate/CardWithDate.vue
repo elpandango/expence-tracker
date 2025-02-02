@@ -8,7 +8,7 @@
          type="form-dropdown"
          size="small"
          placeholder="Select period"
-         @update:modelValue="onPeriodChange"
+         @update:model-value="onPeriodChange"
         />
       </div>
 
@@ -33,7 +33,7 @@
       </div>
     </div>
 
-    <slot></slot>
+    <slot/>
   </Card>
 </template>
 
@@ -66,7 +66,7 @@ const periods = [
 ];
 
 const onPeriodChange = () => {
-  let calculatedStartDate = new Date();
+  const calculatedStartDate = new Date();
   const calculatedEndDate = new Date();
 
   switch (selectedPeriod.value.value) {

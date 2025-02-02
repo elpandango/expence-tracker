@@ -1,11 +1,11 @@
 <template>
   <Modal
    v-model="modalValue"
-   @update:modelValue="closeModal">
-    <template v-slot:header>
+   @update:model-value="closeModal">
+    <template #header>
       {{ $t('components.modalsContent.addAccountModal.modalTitleText') }}
     </template>
-    <template v-slot:body>
+    <template #body>
       <form @submit.prevent>
         <div class="form-row">
           <BaseInput
@@ -41,9 +41,9 @@
           <div class="dropdown-label">{{ $t('components.transactionsPage.filters.sourceLabelText') }}</div>
 
           <Dropdown
+           v-if="!isEditMode"
            v-model="accountType"
            :options="accountTypesArray"
-           v-if="!isEditMode"
            type="form-dropdown"
            placeholder="Select source"/>
 
@@ -54,8 +54,8 @@
 
         </div>
         <div
-         class="form-row"
-         v-if="accountType.value === 'card'">
+         v-if="accountType.value === 'card'"
+         class="form-row">
           <BaseInput
            v-model="formattedCardNumber"
            size="medium"
@@ -69,15 +69,15 @@
 
       </form>
     </template>
-    <template v-slot:footer>
+    <template #footer>
       <BaseButton
-       @click="closeModal"
        variant="transparent"
-       size="big">{{ $t('components.buttons.cancelText') }}
+       size="big"
+       @click="closeModal">{{ $t('components.buttons.cancelText') }}
       </BaseButton>
       <BaseButton
-       @click="handleSaveAccount"
-       size="big">{{
+       size="big"
+       @click="handleSaveAccount">{{
           isEditMode ? $t('components.modalsContent.addAccountModal.modalEditCardText') : $t('components.modalsContent.addAccountModal.modalAddCardText')
         }}
       </BaseButton>

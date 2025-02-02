@@ -1,13 +1,13 @@
 <template>
   <div class="title-with-dropdown">
     <h3 class="title">
-      <slot></slot>
+      <slot/>
     </h3>
     <Dropdown
      v-model="selected"
      :options="options"
      :placeholder=props.placeholder
-     @update:modelValue="handleDropdownSelected"
+     @update:model-value="handleDropdownSelected"
     />
   </div>
 </template>

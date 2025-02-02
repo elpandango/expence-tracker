@@ -9,10 +9,10 @@
      v-if="financeStore.accountsList && financeStore.accountsList.length > 0"
      type="basic"
      class="mar-b-6">
-      <template v-slot:header>
+      <template #header>
         <div class="link-text">{{ $t('components.transactionsPage.filtersTitle') }}</div>
       </template>
-      <template v-slot:accordion-body>
+      <template #accordion-body>
         <div class="page-filters">
           <div class="filters-row">
             <div class="filter-item">
@@ -81,13 +81,13 @@
           </div>
           <div class="filters-row btn-block">
             <BaseButton
-             @click="updateTransactions"
-             size="medium">{{ $t('components.buttons.applyFilters') }}
+             size="medium"
+             @click="updateTransactions">{{ $t('components.buttons.applyFilters') }}
             </BaseButton>
             <BaseButton
-             @click="clearFilters"
              size="medium"
-             variant="transparent">{{ $t('components.buttons.clearFilters') }}
+             variant="transparent"
+             @click="clearFilters">{{ $t('components.buttons.clearFilters') }}
             </BaseButton>
           </div>
         </div>
@@ -95,15 +95,15 @@
     </Accordion>
 
     <Preloader
-     height="50vh"
-     v-if="uiStore.state.isLoading"/>
+     v-if="uiStore.state.isLoading"
+     height="50vh"/>
     <template v-else>
       <Card
-       class="mar-b-4"
        v-for="transactionsList in financeStore.transactionsResponse.transactions"
        :key="transactionsList.date"
+       class="mar-b-4"
        :with-header="true">
-        <template v-slot:header>{{ useFormatDate(transactionsList.date) }}</template>
+        <template #header>{{ useFormatDate(transactionsList.date) }}</template>
         <TransactionExtended
          v-for="dateTransaction in transactionsList.transactions"
          :key="dateTransaction._id"
@@ -115,8 +115,8 @@
       </Card>
 
       <div
-       class="no-results"
-       v-if="financeStore.transactionsResponse?.transactions?.length === 0">
+       v-if="financeStore.transactionsResponse?.transactions?.length === 0"
+       class="no-results">
         <Card
         >{{ $t('components.transactionsPage.emptyListText') }}
         </Card>
@@ -130,9 +130,9 @@
 
     <template v-if="isDeleteTransactionModalOpen">
       <DeleteTransactionModal
-       :isOpen="isDeleteTransactionModalOpen"
+       :is-open="isDeleteTransactionModalOpen"
        @delete="handleDeleteTransaction"
-       @update:isOpen="isDeleteTransactionModalOpen = $event"
+       @update:is-open="isDeleteTransactionModalOpen = $event"
       />
     </template>
   </div>

@@ -3,7 +3,7 @@ import { ref, computed, watch } from 'vue';
 export function useTheme() {
   const theme = ref('light');
 
-  if (process.client) {
+  if (import.meta.client) {
     theme.value = localStorage.getItem('theme') || 'light';
   }
 
@@ -14,7 +14,7 @@ export function useTheme() {
   };
 
   watch(theme, (newTheme) => {
-    if (process.client) {
+    if (import.meta.client) {
       localStorage.setItem('theme', newTheme);
       document.documentElement.setAttribute('data-theme', newTheme);
     }

@@ -7,12 +7,12 @@
         <NuxtLink
          to='/'
          class="logo">
-          <div class="logo-img"></div>
+          <div class="logo-img"/>
           <div class="brand-name">Expendango</div>
         </NuxtLink>
         <div
-         class="search-block"
-         v-if="!isTransactionsPage">
+         v-if="!isTransactionsPage"
+         class="search-block">
           <BaseInput
            v-model="searchValue"
            size="medium"
@@ -29,8 +29,8 @@
 
         <button
          class="menu-button"
-         @click="toggleMenu"
-         aria-label="Toggle menu">
+         aria-label="Toggle menu"
+         @click="toggleMenu">
           <span class="material-symbols-outlined">
             {{ menuOpen ? 'close' : 'menu' }}
             </span>
@@ -46,13 +46,13 @@
          v-if="userStore.avatar"
          :src="userStore.avatar"
          alt="User Avatar"
-         class="avatar-image"/>
+         class="avatar-image">
         <div class="user-name">{{ userStore.user.name }}</div>
       </div>
 
       <div
-       class="search-block"
-       v-if="!isTransactionsPage">
+       v-if="!isTransactionsPage"
+       class="search-block">
         <BaseInput
          v-model="searchValue"
          size="medium"
@@ -133,8 +133,7 @@
 
 <script setup>
 import {ref} from 'vue';
-import {useRoute} from "vue-router";
-import {useRouter} from 'vue-router';
+import {useRoute,useRouter} from "vue-router";
 import {useTheme} from "~/use/useTheme";
 import {useUIStore} from "~/stores/ui";
 import {useUserStore} from '~/stores/user';

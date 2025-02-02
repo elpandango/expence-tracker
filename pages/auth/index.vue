@@ -1,8 +1,8 @@
 <template>
   <div class="auth-page">
     <Preloader
-     height="50vh"
-     v-if="uiStore.state.isLoading"/>
+     v-if="uiStore.state.isLoading"
+     height="50vh"/>
     <div
      v-else
      class="intro-block">

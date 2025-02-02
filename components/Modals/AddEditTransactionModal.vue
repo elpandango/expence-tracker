@@ -1,12 +1,12 @@
 <template>
   <Modal
    v-model="modalValue"
-   @update:modelValue="closeModal">
-    <template v-slot:header>
+   @update:model-value="closeModal">
+    <template #header>
       <div class="modal-header header-container">
         <div
-         class="title"
-         v-if="isEditMode">
+         v-if="isEditMode"
+         class="title">
           {{ $t(`components.modalsContent.addEditTransactionModal.editTransactionTitleText`) }}
         </div>
         <div
@@ -18,15 +18,15 @@
         </div>
       </div>
     </template>
-    <template v-slot:body>
+    <template #body>
       <Preloader
-       height="250px"
-       v-if="isLoading"/>
+       v-if="isLoading"
+       height="250px"/>
       <template v-else>
         <form
          v-if="financeStore.accountsList && financeStore.accountsList.length"
-         @submit.prevent
-         class="add-edit-transaction-modal">
+         class="add-edit-transaction-modal"
+         @submit.prevent>
           <div class="form-row">
             <div class="type-switcher">
               <div class="dropdown-label">{{
@@ -76,7 +76,7 @@
              :error-message="transactionAmountError ? transactionAmountError : ''"
              :placeholder="$t('components.modalsContent.addEditTransactionModal.amountLabelText')"
              :label="$t('components.modalsContent.addEditTransactionModal.amountLabelText')">
-              <template v-slot:icon>
+              <template #icon>
                 <span
                  class="icon material-symbols-outlined"
                  @click="handleCalculateClick">calculate</span>
@@ -86,9 +86,9 @@
           <div class="form-row">
             <div class="dropdown-label">{{ $t('components.modalsContent.addEditTransactionModal.dateLabelText') }}</div>
             <Datepicker
+             v-model="transaction.date"
              height="50px"
-             :max-date="new Date().toISOString().substring(0, 10)"
-             v-model="transaction.date"/>
+             :max-date="new Date().toISOString().substring(0, 10)"/>
           </div>
           <div
            v-if="transactionTypeLocal === 'expense'"
@@ -111,26 +111,26 @@
           <p>{{ $t('components.modalsContent.addEditTransactionModal.emptyAccountsText') }}</p>
           <div class="btn-block">
             <BaseButton
-             @click="goToAccounts"
-             size="medium">{{ $t('components.modalsContent.addEditTransactionModal.goToAccountsBtnText') }}
+             size="medium"
+             @click="goToAccounts">{{ $t('components.modalsContent.addEditTransactionModal.goToAccountsBtnText') }}
             </BaseButton>
             <BaseButton
-             @click="handleCreateTestData"
-             size="medium">{{ $t('components.modalsContent.addEditTransactionModal.generateTestDataBtnText') }}
+             size="medium"
+             @click="handleCreateTestData">{{ $t('components.modalsContent.addEditTransactionModal.generateTestDataBtnText') }}
             </BaseButton>
           </div>
         </div>
       </template>
     </template>
-    <template v-slot:footer>
+    <template #footer>
       <BaseButton
-       @click="closeModal"
        variant="transparent"
-       size="big">{{ $t('components.buttons.cancelText') }}
+       size="big"
+       @click="closeModal">{{ $t('components.buttons.cancelText') }}
       </BaseButton>
       <BaseButton
-       @click="handleSaveTransaction"
-       size="big">
+       size="big"
+       @click="handleSaveTransaction">
 
         {{
           $t(`components.modalsContent.addEditTransactionModal.${isEditMode ? 'editBtnText' : 'saveBtnText'}`)

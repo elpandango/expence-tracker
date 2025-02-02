@@ -37,8 +37,8 @@
       </div>
       <div class="form-row btn-block">
         <BaseButton
-         @click="handleRegister"
-         size="big">Register
+         size="big"
+         @click="handleRegister">Register
         </BaseButton>
       </div>
     </form>

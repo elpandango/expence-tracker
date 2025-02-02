@@ -20,20 +20,20 @@
     </div>
 
     <div
-     @click="toggleActions"
      ref="actions"
-     class="action-menu">
+     class="action-menu"
+     @click="toggleActions">
       <span class="material-symbols-outlined">more_vert</span>
       <div
-       class="actions-list"
-       v-if="isOpen">
+       v-if="isOpen"
+       class="actions-list">
         <button
          class="action-btn"
-         @click="$emit('update-account')">{{ $t('components.accountsPage.editAccountTitle') }}
+         @click="emit('update-account')">{{ $t('components.accountsPage.editAccountTitle') }}
         </button>
         <button
          class="action-btn"
-         @click="$emit('delete-account')">{{ $t('components.accountsPage.deleteAccountTitle') }}
+         @click="emit('delete-account')">{{ $t('components.accountsPage.deleteAccountTitle') }}
         </button>
       </div>
     </div>
@@ -48,10 +48,12 @@ import {useCurrencyFormatter} from "~/use/useCurrencyFormatter";
 
 const props = defineProps({
   class: {
-    type: String
+    type: String,
+    default: ''
   },
   data: {
-    type: Object
+    type: Object,
+    default: () => ({})
   }
 });
 
@@ -65,7 +67,7 @@ const toggleActions = () => {
   isOpen.value = !isOpen.value;
 };
 
-const handleClickOutside = (event: any) => {
+const handleClickOutside = (event: event) => {
   if (actions.value && !actions.value.contains(event.target)) {
     isOpen.value = false;
   }

@@ -17,8 +17,8 @@
       </div>
       <div class="form-row btn-block">
         <BaseButton
-         @click="handleLogin"
-         size="big">Login
+         size="big"
+         @click="handleLogin">Login
         </BaseButton>
       </div>
     </form>

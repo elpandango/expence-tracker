@@ -4,7 +4,7 @@
    :disabled="disabled"
    :class="buttonClasses"
   >
-    <slot></slot>
+    <slot/>
   </button>
 </template>
 
@@ -31,7 +31,7 @@ const props = defineProps({
 });
 
 const buttonClasses = computed(() => {
-  let baseClasses = 'font-semibold rounded transition duration-300';
+  const baseClasses = 'font-semibold rounded transition duration-300';
 
   let sizeClasses = '';
   switch (props.size) {
@@ -67,7 +67,7 @@ const buttonClasses = computed(() => {
       break;
   }
 
-  let disabledClasses = props.disabled ? 'cursor-not-allowed' : '';
+  const disabledClasses = props.disabled ? 'cursor-not-allowed' : '';
   return `${baseClasses} ${sizeClasses} ${variantClasses} ${disabledClasses}`;
 });
 </script>

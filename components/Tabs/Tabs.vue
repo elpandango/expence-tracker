@@ -19,7 +19,7 @@
        :data-content-id="tab.id"
        :class="{ active: activeTab === tab.id }"
       >
-        <slot :name="tab.slotName"></slot>
+        <slot :name="tab.slotName"/>
       </div>
     </div>
   </div>

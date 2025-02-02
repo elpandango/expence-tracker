@@ -1,30 +1,30 @@
 <template>
   <div
-   class="datepicker"
-   ref="datepicker">
+   ref="datepicker"
+   class="datepicker">
     <input
      type="text"
      :value="formattedDate"
-     @click="toggleCalendar"
      :style="{height: height}"
      readonly
      :placeholder="placeholder"
-    />
+     @click="toggleCalendar"
+    >
 
     <div
      v-if="calendarVisible"
      class="calendar">
       <div class="calendar-header">
         <BaseButton
-         @click="prevMonth"
          variant="transparent"
-         size="small">Prev
+         size="small"
+         @click="prevMonth">Prev
         </BaseButton>
         <span>{{showCurrentMonth }} {{ currentYear }}</span>
         <BaseButton
-         @click="nextMonth"
          variant="transparent"
-         size="small">Next
+         size="small"
+         @click="nextMonth">Next
         </BaseButton>
       </div>
 
