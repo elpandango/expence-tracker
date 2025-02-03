@@ -5,6 +5,7 @@
         <FloatLabelInput
          v-model="user.email"
          size="medium"
+         type="text"
          label="Email"/>
       </div>
       <div class="form-row">
