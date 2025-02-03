@@ -1,18 +1,19 @@
 <template>
   <div class="form-block float-label">
     <input
-:type="type"
-           class="form-input"
-           :class="[size, status]"
-           :value="modelValue"
-           :placeholder="placeholder"
-           @input="$emit('update:modelValue', $event.target.value)">
+     :type="type"
+     class="form-input"
+     :class="[size, status]"
+     :value="modelValue"
+     :placeholder="placeholder"
+     autocomplete="on"
+     @input="$emit('update:modelValue', $event.target.value)">
     <label
-v-if="label"
-           :class="{frozen: modelValue !== ''}">{{ label }}</label>
+     v-if="label"
+     :class="{frozen: modelValue !== ''}">{{ label }}</label>
     <div
-v-if="!!errorMessage"
-         class="error-message">
+     v-if="!!errorMessage"
+     class="error-message">
       {{ errorMessage }}
     </div>
   </div>
@@ -60,7 +61,9 @@ const props = defineProps({
 const emits = defineEmits(['update:modelValue']);
 </script>
 
-<style scoped lang="scss">
+<style
+ scoped
+ lang="scss">
 .form-block.float-label {
   width: 100%;
   position: relative;
@@ -95,6 +98,7 @@ const emits = defineEmits(['update:modelValue']);
 
     &:focus, &:active {
       border-color: var(--accent-color);
+
       & + label {
         font-size: 12px;
         transform: translateY(0);

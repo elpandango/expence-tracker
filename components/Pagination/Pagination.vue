@@ -1,8 +1,8 @@
 <template>
-  <div class="pagination-container">
+  <div class="flex justify-center my-8">
     <nav aria-label="Page navigation">
-      <ul class="pagination">
-        <li>
+      <ul class="list-none flex p-0 m-0">
+        <li class="flex justify-center items-center mx-1">
           <BaseButton
            class="w-16 md:w-24"
            size="medium"
@@ -13,7 +13,9 @@
           </BaseButton>
         </li>
 
-        <li v-if="pagesToShow[0] !== 1">
+        <li
+         v-if="pagesToShow[0] !== 1"
+         class="flex justify-center items-center mx-1">
           <BaseButton
            size="medium"
            :aria-label="'Go to page 1'"
@@ -25,11 +27,12 @@
         </li>
         <li
          v-if="pagesToShow[0] > 2"
-         class="dots">...
+         class="inline-block px-2 text-gray-400">...
         </li>
 
         <li
          v-for="page in pagesToShow"
+         class="flex justify-center items-center mx-1"
          :key="page"
         >
           <BaseButton
@@ -46,7 +49,9 @@
          v-if="pagesToShow[pagesToShow.length - 1] < props?.data?.lastPage - 1"
          class="inline-block px-2 text-gray-400">...
         </li>
-        <li v-if="pagesToShow[pagesToShow.length - 1] !== props?.data?.lastPage">
+        <li
+         v-if="pagesToShow[pagesToShow.length - 1] !== props?.data?.lastPage"
+         class="flex justify-center items-center mx-1">
           <BaseButton
            size="medium"
            :aria-label="`Go to page ${props?.data?.lastPage}`"
@@ -57,7 +62,7 @@
           </BaseButton>
         </li>
 
-        <li>
+        <li class="flex justify-center items-center mx-1">
           <BaseButton
            class="w-16 md:w-24"
            size="medium"
@@ -125,32 +130,5 @@ const pagesToShow = computed(() => {
 });
 </script>
 
-<style
- lang="scss">
-.pagination-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-
-  .dots {
-    display: inline-block;
-    padding: 0 8px;
-    color: #aaa;
-  }
-
-  .pagination {
-    display: flex;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .pagination li {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 5px;
-  }
-}
+<style>
 </style>

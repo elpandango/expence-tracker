@@ -73,7 +73,6 @@
 import {useTheme} from "~/use/useTheme";
 import {useUIStore} from "~/stores/ui";
 import {useFinanceStore} from "~/stores/finance";
-import {useGenerateTestData} from "~/use/useGenerateTestData";
 
 const {isDark, toggleTheme} = useTheme();
 const financeStore = useFinanceStore();

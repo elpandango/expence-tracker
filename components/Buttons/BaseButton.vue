@@ -33,7 +33,7 @@ const props = defineProps({
 const buttonClasses = computed(() => {
   const baseClasses = 'font-semibold rounded transition duration-300';
 
-  let sizeClasses = '';
+  let sizeClasses;
   switch (props.size) {
     case 'smallest':
       sizeClasses = 'px-2 py-1 text-sm md:px-3';
@@ -50,7 +50,7 @@ const buttonClasses = computed(() => {
       break;
   }
 
-  let variantClasses = '';
+  let variantClasses;
   switch (props.variant) {
     case 'red':
       variantClasses = 'bg-red-600 text-white hover:bg-red-500 disabled:bg-gray-400';

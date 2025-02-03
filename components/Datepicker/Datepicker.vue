@@ -111,8 +111,7 @@ const maxDateObj = computed(() => (props.maxDate ? new Date(props.maxDate) : nul
 const isDisabled = (day) => {
   const date = new Date(currentYear.value, currentMonth.value, day);
   if (minDateObj.value && date < minDateObj.value) return true;
-  if (maxDateObj.value && date > maxDateObj.value) return true;
-  return false;
+  return maxDateObj.value && date > maxDateObj.value;
 };
 
 watch(() => props.modelValue, (newVal) => {

@@ -27,8 +27,12 @@ export const useCategoryStore = defineStore('category', () => {
       });
 
       categories.value = localizedCategories;
-    } catch (err: any) {
-      error.value = err.message || 'Failed to fetch categories';
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        error.value = err.message || 'Failed to fetch categories';
+      } else {
+        error.value = err.message || 'Failed to fetch categories';
+      }
     }
   };
 
@@ -36,8 +40,12 @@ export const useCategoryStore = defineStore('category', () => {
     try {
       const newCategory = await repositoryFactory.get('Category').createCategory({name, icon});
       categories.value.push(newCategory);
-    } catch (err: any) {
-      error.value = err.message || 'Failed to add category';
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        error.value = err.message || 'Failed to add category';
+      } else {
+        error.value = 'Failed to add category';
+      }
     }
   };
 
@@ -48,8 +56,12 @@ export const useCategoryStore = defineStore('category', () => {
       if (index !== -1) {
         categories.value[index] = updatedCategory;
       }
-    } catch (err: any) {
-      error.value = err.message || 'Failed to update category';
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        error.value = err.message || 'Failed to update category';
+      } else {
+        error.value = 'Failed to update category';
+      }
     }
   };
 
@@ -57,8 +69,12 @@ export const useCategoryStore = defineStore('category', () => {
     try {
       await repositoryFactory.get('Category').deleteCategory(id);
       categories.value = categories.value.filter((category) => category.id !== id);
-    } catch (err: any) {
-      error.value = err.message || 'Failed to delete category';
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        error.value = err.message || 'Failed to delete category';
+      } else {
+        error.value = 'Failed to delete category';
+      }
     }
   };
 
