@@ -19,7 +19,7 @@
            :placeholder="$t('components.header.searchInputPlaceholder')"
            @keydown.enter="searchTransactions"/>
           <span
-           class="icon material-symbols-outlined"
+           class="icon material-symbols-outlined absolute z-20 top-3 right-3 cursor-pointer"
            @click="searchTransactions">search</span>
         </div>
 
@@ -59,7 +59,7 @@
          placeholder="Search transaction"
          @keydown.enter="searchTransactions"/>
         <span
-         class="icon material-symbols-outlined"
+         class="icon material-symbols-outlined absolute z-20 top-3 right-3 cursor-pointer"
          @click="searchTransactions">search</span>
       </div>
 

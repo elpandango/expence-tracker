@@ -20,7 +20,6 @@
 </template>
 
 <script setup>
-import './styles.scss';
 
 const props = defineProps({
   modelValue: {

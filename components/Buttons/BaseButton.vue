@@ -31,7 +31,7 @@ const props = defineProps({
 });
 
 const buttonClasses = computed(() => {
-  const baseClasses = 'font-semibold rounded transition duration-300';
+  const baseClasses = 'font-semibold text-sm rounded transition duration-300 min-w-[90px]';
 
   let sizeClasses;
   switch (props.size) {
@@ -42,11 +42,11 @@ const buttonClasses = computed(() => {
       sizeClasses = 'px-2 py-1 text-sm md:py-2 md:px-4';
       break;
     case 'big':
-      sizeClasses = 'px-2 py-1 text-lg md:py-3 md:px-6';
+      sizeClasses = 'px-2 py-2 text-lg md:py-3 md:px-6';
       break;
     case 'medium':
     default:
-      sizeClasses = 'px-2 py-1 md:py-3 md:px-5';
+      sizeClasses = 'px-4 py-2 md:py-3 md:px-5';
       break;
   }
 
@@ -59,11 +59,11 @@ const buttonClasses = computed(() => {
       variantClasses = 'bg-green-600 text-white hover:bg-green-500 disabled:bg-gray-400';
       break;
     case 'transparent':
-      variantClasses = 'bg-transparent border border-gray-300 text-gray-800 hover:bg-gray-200 disabled:bg-gray-200';
+      variantClasses = 'bg-transparent border-[1px] border-stone-400 text-gray-800 hover:bg-blue-600 hover:text-white hover:border-transparent disabled:bg-gray-200 dark:text-white';
       break;
     case 'primary':
     default:
-      variantClasses = 'bg-blue-500 text-white hover:bg-blue-400 disabled:bg-gray-400';
+      variantClasses = 'bg-blue-600 text-white hover:bg-blue-500 disabled:bg-gray-400';
       break;
   }
 

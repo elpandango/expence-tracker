@@ -1,25 +1,26 @@
 <template>
-  <div class="auth-page">
+  <div class="auth-page flex items-center justify-center flex-wrap w-full min-h-screen bg-[#dae0e0]">
     <Preloader
      v-if="uiStore.state.isLoading"
      height="50vh"/>
     <div
      v-else
-     class="intro-block">
-      <div class="block-text">
+     class="intro-block w-full max-w-[700px] min-h-[80vh] text-center pt-5 md:pt-0">
+      <div class="block-text px-4">
         <img
-         class="main-img"
-         src="/images/logo.png"
+         class="main-img m-auto mb-4 w-20 h-20 md:w-36 md:h-36 rounded-lg"
+         src="/images/logo_small.png"
          alt="Expendango logo"
          width="150"
          height="150">
-        <h1>Welcome to Expendango</h1>
-        <h3>Track your expenses, manage your income, and take control of your finances with ease. Empowering your
+        <h1 class="text-2xl md:text-4xl font-semibold mb-4">Welcome to Expendango</h1>
+        <h3 class="font-semibold text-md md:text-lg mb-4">Track your expenses, manage your income, and take control of
+          your finances with ease. Empowering your
           financial goals, one step at a time.</h3>
       </div>
 
-      <div class="auth-forms">
-        <Card>
+      <div class="m-auto p-4 space-y-4">
+        <Card class="py-2">
           <div v-if="isLogin">
             <LoginForm @login="handleLogin"/>
           </div>
@@ -36,8 +37,12 @@
         </Card>
 
         <div class="addition-text">
-          <p v-if="isLogin">Don't have an account? <span @click="toggleForm">Sign up!</span></p>
-          <p v-else>Already have an account? <span @click="toggleForm">Login!</span></p>
+          <p v-if="isLogin">Don't have an account? <span
+           class="cursor-pointer text-blue-600"
+           @click="toggleForm">Sign up!</span></p>
+          <p v-else>Already have an account? <span
+           class="cursor-pointer text-blue-600"
+           @click="toggleForm">Login!</span></p>
         </div>
       </div>
     </div>
@@ -92,52 +97,10 @@ const handleRegister = async (user: any) => {
 
 <style lang="scss">
 .auth-page {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  width: 100%;
-  min-height: 100vh;
-  background-color: #dae0e0;
-  @media only screen and (max-width: 767px) {
-    //min-height: 90vh;
-  }
-
-  .main-img {
-    border-radius: var(--border-radius);
-    margin-bottom: 16px;
-
-    @media only screen and (max-width: 767px) {
-      width: 80px;
-      height: 80px;
-      margin-bottom: 10px;
-    }
-  }
-
-  .intro-block {
-    width: 100%;
-    max-width: 700px;
-    min-height: 80vh;
-    text-align: center;
-
-    @media only screen and (max-width: 767px) {
-      padding-top: 20px;
-    }
-  }
-
-  .block-text {
-    padding: 0 16px;
-  }
-
   h1 {
-    font-size: 36px;
     transform: translateY(50px);
     animation: slideUp 1s ease forwards;
     opacity: 0;
-
-    @media only screen and (max-width: 767px) {
-      font-size: 28px;
-    }
   }
 
   h3 {
@@ -146,34 +109,14 @@ const handleRegister = async (user: any) => {
     animation-delay: 0.2s;
     opacity: 0;
     color: var(--hover-color);
-
-    @media only screen and (max-width: 767px) {
-      font-size: 14px;
-    }
   }
 
-  .auth-forms {
-    margin: 0 auto;
-    padding: 16px;
-
-    h4 {
-      opacity: 0;
-      transform: translateY(50px);
-      animation: slideUp 1s ease forwards;
-      animation-delay: 0.4s;
-
-      @media only screen and (max-width: 767px) {
-        font-size: 14px;
-      }
-    }
-
-    .card {
-      opacity: 0;
-      transform: translateY(50px);
-      animation: slideUp 1s ease forwards;
-      animation-delay: 0.6s;
-      margin-bottom: 16px;
-    }
+  .card {
+    opacity: 0;
+    transform: translateY(50px);
+    animation: slideUp 1s ease forwards;
+    animation-delay: 0.6s;
+    margin-bottom: 16px;
   }
 
   .addition-text {
@@ -181,11 +124,6 @@ const handleRegister = async (user: any) => {
     transform: translateY(50px);
     animation: slideUp 1s ease forwards;
     animation-delay: 0.8s;
-
-    span {
-      cursor: pointer;
-      color: var(--accent-color);
-    }
   }
 }
 
