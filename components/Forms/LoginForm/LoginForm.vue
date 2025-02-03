@@ -11,6 +11,7 @@
         <FloatLabelInput
          v-model="user.password"
          size="medium"
+         type="password"
          label="Password"/>
       </div>
       <div class="form-row btn-block">
