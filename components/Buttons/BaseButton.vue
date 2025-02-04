@@ -59,7 +59,7 @@ const buttonClasses = computed(() => {
       variantClasses = 'bg-green-600 text-white hover:bg-green-500 disabled:bg-gray-400';
       break;
     case 'transparent':
-      variantClasses = 'bg-transparent border-[1px] border-stone-400 text-gray-800 hover:bg-blue-600 hover:text-white hover:border-transparent disabled:bg-gray-200 dark:text-white';
+      variantClasses = 'bg-transparent border-[1px] border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white hover:border-transparent disabled:bg-gray-200 dark:text-white';
       break;
     case 'primary':
     default:

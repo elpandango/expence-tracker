@@ -53,7 +53,7 @@
              v-model="selectedAccount"
              :options="accounts"
              type="form-dropdown"
-             size="medium"
+             size="h-[50px]"
              :placeholder="selectAccountPlaceholder"
             />
           </div>
@@ -101,7 +101,7 @@
              v-model="selectedCategory"
              :options="categories"
              type="form-dropdown"
-             size="medium"
+             size="h-[50px]"
             />
           </div>
         </form>
@@ -353,7 +353,6 @@ onMounted(async () => {
   }
 });
 </script>
-
 
 <style
  lang="scss">

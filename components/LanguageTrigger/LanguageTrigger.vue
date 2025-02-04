@@ -1,11 +1,11 @@
 <template>
-  <div class="language-switcher">
+  <div class="language-switcher w-[90px] mr-4">
 
     <Dropdown
      v-model="currLocale"
      :options="locales"
      type="form-dropdown"
-     size="medium"
+     size="h-[50px]"
      placeholder="Select language"
      @update:model-value="handleLocaleChange"
     />
@@ -51,19 +51,4 @@ const handleLocaleChange = (newLocale) => {
 </script>
 
 <style lang="scss">
-.language-switcher {
-  width: 90px;
-  margin-right: 18px;
-
-  select {
-    padding: 5px;
-    font-size: 14px;
-  }
-
-  .dropdown-toggle {
-    @media only screen and (max-width: 767px) {
-      height: 40px!important;
-    }
-  }
-}
 </style>

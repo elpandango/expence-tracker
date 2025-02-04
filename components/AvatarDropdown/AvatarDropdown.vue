@@ -1,34 +1,34 @@
 <template>
   <div
    ref="dropdown"
-   class="avatar-dropdown">
+   class="relative">
     <div
-     class="avatar"
+     class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-stone-300 cursor-pointer"
      @click="toggleDropdown">
       <img
        v-if="userStore.avatar"
        :src="userStore.avatar"
        alt="User Avatar"
-       class="avatar-image">
+       class="object-cover w-full h-full rounded-full">
       <div
        v-else
-       class="avatar-placeholder"/>
+       class="w-full h-full border-gray-500 rounded-full"/>
     </div>
 
     <div
      v-if="isOpen"
-     class="dropdown-menu">
+     class="dropdown-menu absolute rounded-xl shadow-lg bg-card-bg top-[50px] right-0 w-[150px] p-2 px-1 z-[1000] flex flex-wrap gap-0.5">
       <NuxtLink
        to="/profile"
-       class="menu-item"
+       class="flex w-full items-center cursor-pointer no-underline py-1.5 transition duration-300 hover:bg-list-item-bg"
        @click="closeMenu">
-        <span class="icon material-symbols-outlined">account_circle</span>
+        <span class="icon material-symbols-outlined mr-3">account_circle</span>
         {{ $t('components.menuList.profile') }}
       </NuxtLink>
       <div
-       class="menu-item"
+       class="flex w-full items-center cursor-pointer no-underline py-1.5 transition duration-300 hover:bg-list-item-bg"
        @click="handleLogout">
-        <span class="icon material-symbols-outlined">logout</span>
+        <span class="icon material-symbols-outlined mr-3">logout</span>
         Logout
       </div>
     </div>
@@ -73,8 +73,5 @@ onMounted(() => document.addEventListener('click', handleClickOutside));
 onBeforeUnmount(() => document.removeEventListener('click', handleClickOutside));
 </script>
 
-<style
- scoped
- src="./styles.scss"
- lang="scss">
+<style>
 </style>

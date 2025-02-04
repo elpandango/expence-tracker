@@ -1,16 +1,16 @@
 <template>
   <div
    ref="dropdown"
-   class="dropdown"
-   :class="[type, size, {'is-active': isOpen}]"
+   class="dropdown inline-flex relative w-full"
+   :class="[type]"
    @click="toggleDropdown">
     <button
-     class="dropdown-toggle"
-     :class="[{'placeholder-color': !selectedOption?.label}]">
-      <span>{{ selectedOption ? selectedOption.label : placeholder }}</span>
+     class="dropdown-toggle color-main text-left relative flex flex-wrap items-center justify-between w-full cursor-pointer py-1.5 pr-7 pl-3 bg-card-bg border-[1px] border-stone-200 dark:border-neutral-600 rounded-md"
+     :class="[{'border-stone-200': !selectedOption?.label}, size, {'!border-blue-500': isOpen}]">
+      <span class="flex-1 flex-nowrap">{{ selectedOption ? selectedOption.label : placeholder }}</span>
       <svg
-       class="dropdown-arrow"
-       :class="{'is-active': isOpen}"
+       class="dropdown-arrow absolute right-2 top-[50%] transition duration-300 -translate-y-1/2 rotate-0"
+       :class="{'!rotate-180': isOpen}"
        width="10"
        height="10"
        viewBox="0 0 10 10"
@@ -23,11 +23,11 @@
 
     <ul
      v-if="isOpen"
-     class="dropdown-menu">
+     class="dropdown-menu absolute top-[100%] right-0 z-[1000] rounded-md p-0 min-w-[100%] max-h-[250px] border-stone-200 dark:border-neutral-600 shadow-md bg-card-bg w-max whitespace-nowrap overflow-y-auto translate-y-2">
       <li
        v-for="option in options"
        :key="option.value"
-       class="dropdown-item"
+       class="dropdown-item transition duration-200 flex items-center cursor-pointer py-2 px-3 hover:bg-list-item-bg active:bg-list-item-bg"
        :class="{ selected: option.value === selectedOption?.value }"
        @click="selectOption(option)"
       >
@@ -110,7 +110,5 @@ onMounted(() => document.addEventListener('click', handleClickOutside));
 onBeforeUnmount(() => document.removeEventListener('click', handleClickOutside));
 </script>
 
-<style
- lang="scss"
- src="./styles.scss">
+<style>
 </style>

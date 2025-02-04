@@ -6,7 +6,7 @@
          v-model="selectedPeriod"
          :options="periods"
          type="form-dropdown"
-         size="small"
+         size="h-[30px]"
          placeholder="Select period"
          @update:model-value="onPeriodChange"
         />
