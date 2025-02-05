@@ -7,14 +7,14 @@
     </template>
     <template #body>
       <form @submit.prevent>
-        <div class="form-row mb-5">
+        <div class="mb-5">
           <BaseInput
            v-model="accountName"
            size="medium"
            :placeholder="$t('components.modalsContent.addAccountModal.accountNamePlaceholderText')"
            :label="$t('components.modalsContent.addAccountModal.accountNameLabelText')"/>
         </div>
-        <div class="form-row mb-5">
+        <div class="mb-5">
           <BaseInput
            v-model="accountBalance"
            size="medium"
@@ -23,7 +23,7 @@
            :placeholder="$t('components.modalsContent.addAccountModal.accountBalancePlaceholderText')"
            :label="$t('components.modalsContent.addAccountModal.accountBalanceLabelText')"/>
         </div>
-        <div class="form-row mb-5">
+        <div class="mb-5">
           <div class="dropdown-label">{{
               $t('components.modalsContent.addAccountModal.accountCurrencyLabelText')
             }}
@@ -37,7 +37,7 @@
            :placeholder="$t('components.modalsContent.addAccountModal.chooseCurrencyText')"
           />
         </div>
-        <div class="form-row mb-5">
+        <div class="mb-5">
           <div class="dropdown-label">{{ $t('components.transactionsPage.filters.sourceLabelText') }}</div>
 
           <Dropdown
@@ -56,7 +56,7 @@
         </div>
         <div
          v-if="accountType.value === 'card'"
-         class="form-row mb-5">
+         class="mb-5">
           <BaseInput
            v-model="formattedCardNumber"
            size="medium"

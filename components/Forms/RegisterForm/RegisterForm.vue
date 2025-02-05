@@ -34,7 +34,7 @@
          label="Repeat Password"/>
       </div>
     </div>
-    <div class="form-row btn-block">
+    <div class="btn-block">
       <BaseButton
        size="medium"
        @click="handleRegister">Register

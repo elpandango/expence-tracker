@@ -52,8 +52,5 @@ const handleDeleteTransaction = () => {
 };
 </script>
 
-<style lang="scss">
-.form-row {
-  margin-bottom: 22px;
-}
+<style>
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="accounts-page">
+  <div class="accounts-page w-full max-w-[860] xl:max-w-[1024px] m-auto">
     <h1>{{ $t('components.accountsPage.pageTitleText') }}</h1>
     <Preloader
      v-if="uiStore.state.isLoading"
@@ -7,21 +7,22 @@
     <template v-else>
       <ul
        v-if="financeStore.accountsList && financeStore.accountsList.length > 0"
-       class="accounts-list">
+       class="flex flex-wrap gap-5">
         <li
          v-for="account in financeStore.accountsList"
-         :key="account.name">
+         :key="account.name"
+         class="w-full md:w-[48%]">
           <AccountCard
            :data="account"
            @update-account="handleUpdateCardClicked(account)"
            @delete-account="handleDeleteAccountClicked(account._id)"/>
         </li>
-        <li>
+        <li class="w-full md:w-[48%]">
           <button
-           class="add-account-btn"
+           class="add-account-btn rounded-lg border-[1px] border-dashed border-blue-600 text-blue-600 cursor-pointer w-full h-full min-h-[138px]"
            @click="handleAddAmount">
-            <span class="plus-icon">+</span>
-            <span class="btn-text">{{ $t('components.accountsPage.addAccountText') }}</span>
+            <span class="text-xl">+</span>
+            <span class="ml-2.5">{{ $t('components.accountsPage.addAccountText') }}</span>
           </button>
         </li>
       </ul>
@@ -30,20 +31,20 @@
        v-else
        class="add-card-block">
         <h3>{{ $t('components.accountsPage.emptyListTitleText') }}</h3>
-        <p class="info">{{ $t('components.accountsPage.emptyListText') }}</p>
+        <p class="mb-4">{{ $t('components.accountsPage.emptyListText') }}</p>
         <button
-         class="add-account-btn small"
+         class="add-account-btn small flex items-center justify-center outline-none rounded-lg text-lg border-[1px] border-dashed border-blue-600 text-blue-600 cursor-pointer min-w-[200px] w-auto h-[60px] min-h-[60px]"
          @click="handleAddAmount">
-          <span class="plus-icon">+</span>
-          <span class="btn-text">{{ $t('components.accountsPage.addAccountText') }}</span>
+          <span class="text-xl">+</span>
+          <span class="ml-2.5">{{ $t('components.accountsPage.addAccountText') }}</span>
         </button>
 
-        <p class="mar-t-4">{{ $t('components.accountsPage.generateDataText') }}</p>
+        <p class="mt-4 mb-4">{{ $t('components.accountsPage.generateDataText') }}</p>
 
         <button
-         class="add-account-btn small"
+         class="add-account-btn small text-lg border-[1px] border-dashed border-blue-600 rounded-lg text-blue-600 cursor-pointer min-w-[200px] w-auto h-[60px] min-h-[60px]"
          @click="handleCreateTestData">
-          <span class="btn-text">{{ $t('components.accountsPage.generateDataBtnText') }}</span>
+          <span class="ml-2.5">{{ $t('components.accountsPage.generateDataBtnText') }}</span>
         </button>
       </div>
     </template>
@@ -115,60 +116,5 @@ onMounted(async () => {
 });
 </script>
 
-<style
- lang="scss">
-.accounts-page {
-  width: 100%;
-  max-width: 1024px;
-  margin: 0 auto;
-
-  @media only screen and (max-width: 1366px) {
-    max-width: 860px;
-  }
-
-  .accounts-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-
-    li {
-      width: calc(50% - 10px);
-
-      @media only screen and (max-width: 767px) {
-        width: 100%;
-      }
-    }
-  }
-
-  .add-account-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px dashed var(--accent-color);
-    border-radius: var(--border-radius);
-    background-color: transparent;
-    outline: none;
-    width: 100%;
-    height: 100%;
-    min-height: 138px;
-    font-size: 18px;
-    color: var(--btn-transparent-color);
-    cursor: pointer;
-
-    .plus-icon {
-      font-size: 24px;
-    }
-
-    .btn-text {
-      margin-left: 10px;
-    }
-
-    &.small {
-      min-width: 200px;
-      width: auto;
-      min-height: 60px;
-      height: 60px;
-    }
-  }
-}
+<style>
 </style>

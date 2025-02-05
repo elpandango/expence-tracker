@@ -1,6 +1,6 @@
 <template>
   <div class="index-page">
-    <Card class="mar-b-6">
+    <Card class="mb-1.5">
       <BalanceDetails/>
     </Card>
     <Card>

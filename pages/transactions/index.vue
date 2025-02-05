@@ -1,14 +1,14 @@
 <template>
   <div class="transactions-page flex flex-wrap w-full max-w-[960px] m-auto">
     <h1 class="w-full font-semibold">{{ $t('components.transactionsPage.pageTitleText') }}</h1>
-    <Card class="mar-b-6">
+    <Card class="mb-6">
       <BalanceDetails/>
     </Card>
 
     <Accordion
      v-if="financeStore.accountsList && financeStore.accountsList.length > 0"
      type="basic"
-     class="mar-b-6">
+     class="mb-6">
       <template #header>
         <div class="link-text">{{ $t('components.transactionsPage.filtersTitle') }}</div>
       </template>
@@ -106,7 +106,7 @@
       <Card
        v-for="transactionsList in financeStore.transactionsResponse.transactions"
        :key="transactionsList.date"
-       class="mb-1"
+       class="mb-4"
        :with-header="true">
         <template #header>{{ useFormatDate(transactionsList.date) }}</template>
         <TransactionExtended

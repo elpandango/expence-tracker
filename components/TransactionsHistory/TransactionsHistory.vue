@@ -11,7 +11,7 @@
         <Card
          v-for="transactionsList in financeStore.transactionsResponse.transactions"
          :key="transactionsList.date"
-         class="mar-b-4"
+         class="mb-1"
          :with-header="true">
           <template #header>{{ useFormatDate(transactionsList.date) }}</template>
           <TransactionExtended

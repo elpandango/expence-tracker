@@ -3,7 +3,7 @@
    v-model="modalValue"
    @update:model-value="closeModal">
     <template #header>
-      <div class="modal-header header-container">
+      <div class="flex flex-wrap">
         <div
          v-if="isEditMode"
          class="title">
@@ -27,9 +27,9 @@
          v-if="financeStore.accountsList && financeStore.accountsList.length"
          class="add-edit-transaction-modal"
          @submit.prevent>
-          <div class="form-row">
-            <div class="type-switcher">
-              <div class="dropdown-label">{{
+          <div class="flex gap-2 mb-5 flex-wrap">
+            <div class="w-full flex flex-wrap gap-3">
+              <div class="w-full text-md">{{
                   $t('components.modalsContent.addEditTransactionModal.transactionTypeLabel')
                 }}
               </div>
@@ -43,8 +43,8 @@
               </BaseButton>
             </div>
           </div>
-          <div class="form-row">
-            <div class="dropdown-label">{{
+          <div class="flex gap-2 mb-5 flex-wrap">
+            <div class="w-full text-md">{{
                 $t('components.modalsContent.addEditTransactionModal.paymentTypeLabel')
               }}
             </div>
@@ -57,7 +57,7 @@
              :placeholder="selectAccountPlaceholder"
             />
           </div>
-          <div class="form-row">
+          <div class="flex gap-2 mb-5 flex-wrap">
             <BaseInput
              v-model="transaction.description"
              size="medium"
@@ -66,7 +66,7 @@
              :placeholder="$t('components.modalsContent.addEditTransactionModal.descriptionLabelText')"
              :label="$t('components.modalsContent.addEditTransactionModal.descriptionLabelText')"/>
           </div>
-          <div class="form-row">
+          <div class="flex gap-2 mb-5 flex-wrap">
             <BaseInput
              v-model="transaction.amount"
              :has-icon="true"
@@ -83,8 +83,8 @@
               </template>
             </BaseInput>
           </div>
-          <div class="form-row">
-            <div class="dropdown-label">{{ $t('components.modalsContent.addEditTransactionModal.dateLabelText') }}</div>
+          <div class="flex gap-2 mb-5 flex-wrap">
+            <div class="w-full text-md">{{ $t('components.modalsContent.addEditTransactionModal.dateLabelText') }}</div>
             <Datepicker
              v-model="transaction.date"
              height="50px"
@@ -92,8 +92,8 @@
           </div>
           <div
            v-if="transactionTypeLocal === 'expense'"
-           class="form-row">
-            <div class="dropdown-label">{{
+           class="flex gap-2 mb-5 flex-wrap">
+            <div class="w-full text-md">{{
                 $t('components.modalsContent.addEditTransactionModal.categoryLabelText')
               }}
             </div>
@@ -107,9 +107,9 @@
         </form>
         <div
          v-else
-         class="empty-message">
+         class="empty-message min-h-[250px] flex flex-col justify-center">
           <p>{{ $t('components.modalsContent.addEditTransactionModal.emptyAccountsText') }}</p>
-          <div class="btn-block">
+          <div class="btn-block flex justify-between items-center mt-10">
             <BaseButton
              size="medium"
              @click="goToAccounts">{{ $t('components.modalsContent.addEditTransactionModal.goToAccountsBtnText') }}
@@ -354,60 +354,5 @@ onMounted(async () => {
 });
 </script>
 
-<style
- lang="scss">
-.add-edit-transaction-modal {
-  .form-row {
-    margin-bottom: 22px;
-  }
-
-  .modal-header.header-container {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  .type {
-    width: 100%;
-  }
-
-  .type-switcher {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-
-    .dropdown-label {
-      width: 100%;
-      font-weight: 400;
-      font-size: 16px;
-    }
-  }
-
-  .type-switcher button {
-    padding: 5px 10px;
-    cursor: pointer;
-  }
-
-  .button {
-    min-width: 110px;
-  }
-
-}
-
-.modal-body {
-  .empty-message {
-    min-height: 250px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    .btn-block {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 40px;
-    }
-  }
-}
-
+<style>
 </style>
