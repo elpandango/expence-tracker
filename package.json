@@ -9,7 +9,7 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "test": "vitest",
-    "lint": "eslint .",
+    "lint": "eslint . --ignore-pattern '**/*.test.ts'",
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {

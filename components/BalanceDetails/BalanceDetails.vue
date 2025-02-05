@@ -18,13 +18,13 @@
     </div>
 
     <template v-if="financeStore.accountsList.length === 0">
-      <p class="info">{{ $t('components.accountsPage.emptyListTitleText') }}</p>
+      <p class="mb-2">{{ $t('components.accountsPage.emptyListTitleText') }}</p>
       <BaseButton
        size="medium"
        @click="handleAddAmount">{{ $t('components.accountsPage.addAccountText') }}
       </BaseButton>
 
-      <p class="mar-t-4">{{ $t('components.accountsPage.emptyAccountsText') }}:</p>
+      <p class="mt-4 mb-2">{{ $t('components.accountsPage.emptyAccountsText') }}:</p>
 
       <BaseButton
        size="medium"

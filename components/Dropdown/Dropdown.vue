@@ -83,7 +83,7 @@ const toggleDropdown = () => {
       const rect = dropdown.value.getBoundingClientRect();
       const spaceBelow = window.innerHeight - rect.bottom;
       const menu = dropdown.value.querySelector('.dropdown-menu');
-      if (spaceBelow < 210) {
+      if (spaceBelow < 310) {
         menu.style.bottom = '60px';
         menu.style.top = 'unset';
       } else {

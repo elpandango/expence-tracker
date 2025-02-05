@@ -7,7 +7,7 @@
      :type="type"
      class="w-full border-[1px] border-stone-200 dark:border-neutral-600 bg-transparent dark:bg-gray-800 text-gray-900 dark:text-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 dark:focus:ring-blue-500"
      :disabled="disabled"
-     :class="[sizeClasses[size] || 'p-2 text-base', statusClasses[status], {'disabled': disabled}]"
+     :class="[sizeClasses[size] || 'py-2 px-4 text-base', statusClasses[status], {'disabled': disabled}, classes]"
      :value="modelValue"
      :placeholder="placeholder"
      :step="type === 'number' ? 0.1 : null"
@@ -36,13 +36,14 @@ const props = defineProps({
   errorMessage: { type: String },
   disabled: { type: Boolean, default: false },
   type: { type: String, default: 'text' },
-  hasIcon: { type: Boolean, default: false }
+  hasIcon: { type: Boolean, default: false },
+  classes: {type: String, default: ''}
 });
 
 const emits = defineEmits(['update:modelValue']);
 
 const sizeClasses = {
-  small: "text-sm p-1",
+  small: "text-sm py-1 px-4",
   medium: "text-base py-3 px-4",
   big: "text-lg p-3",
 };

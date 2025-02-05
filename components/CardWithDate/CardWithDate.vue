@@ -1,7 +1,7 @@
 <template>
   <Card>
-    <div class="period-selector mar-b-4">
-      <div class="dropdown-block">
+    <div class="mb-1 !min-h-[30px]">
+      <div class="w-[208px]">
         <Dropdown
          v-model="selectedPeriod"
          :options="periods"
@@ -13,8 +13,8 @@
       </div>
 
       <div v-if="selectedPeriod.value === 'custom'">
-        <div class="filters">
-          <div class="filters-row">
+        <div class="w-full flex pt-2.5">
+          <div class="flex flex-1 gap-3">
             <Datepicker
              v-model="startDate"
              :max-date="endDate || maxSelectableDate"
@@ -28,7 +28,10 @@
             />
           </div>
 
-          <BaseButton @click="applyCustomRange">Apply</BaseButton>
+          <BaseButton
+           @click="applyCustomRange"
+           class="ml-3">Apply
+          </BaseButton>
         </div>
       </div>
     </div>
@@ -37,8 +40,10 @@
   </Card>
 </template>
 
-<script setup lang="ts">
-import { ref, computed } from 'vue';
+<script
+ setup
+ lang="ts">
+import {ref, computed} from 'vue';
 import Dropdown from "~/components/Dropdown/Dropdown.vue";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
 
@@ -57,12 +62,12 @@ const maxSelectableDate = computed(() =>
 );
 
 const periods = [
-  { value: 7, label: 'Last 7 days' },
-  { value: 30, label: 'Last 30 days' },
-  { value: 90, label: 'Last 3 months' },
-  { value: 180, label: 'Last 6 months' },
-  { value: 365, label: 'Last 12 months' },
-  { value: 'custom', label: 'Custom range' },
+  {value: 7, label: 'Last 7 days'},
+  {value: 30, label: 'Last 30 days'},
+  {value: 90, label: 'Last 3 months'},
+  {value: 180, label: 'Last 6 months'},
+  {value: 365, label: 'Last 12 months'},
+  {value: 'custom', label: 'Custom range'},
 ];
 
 const onPeriodChange = () => {
@@ -104,28 +109,5 @@ const applyCustomRange = () => {
 };
 </script>
 
-<style lang="scss">
-.period-selector {
-  min-height: 30px !important;
-
-  .dropdown-block {
-    width: 208px;
-  }
-
-  .filters {
-    display: flex;
-    width: 100%;
-    padding-top: 10px;
-
-    .filters-row {
-      display: flex;
-      flex: 1;
-      gap: 12px;
-    }
-
-    .button {
-      margin-left: 12px;
-    }
-  }
-}
+<style>
 </style>

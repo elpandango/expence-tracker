@@ -7,15 +7,14 @@
     </template>
     <template #body>
       <form @submit.prevent>
-        <div class="form-row">
+        <div class="form-row mb-5">
           <BaseInput
            v-model="accountName"
            size="medium"
            :placeholder="$t('components.modalsContent.addAccountModal.accountNamePlaceholderText')"
            :label="$t('components.modalsContent.addAccountModal.accountNameLabelText')"/>
         </div>
-
-        <div class="form-row">
+        <div class="form-row mb-5">
           <BaseInput
            v-model="accountBalance"
            size="medium"
@@ -24,7 +23,7 @@
            :placeholder="$t('components.modalsContent.addAccountModal.accountBalancePlaceholderText')"
            :label="$t('components.modalsContent.addAccountModal.accountBalanceLabelText')"/>
         </div>
-        <div class="form-row">
+        <div class="form-row mb-5">
           <div class="dropdown-label">{{
               $t('components.modalsContent.addAccountModal.accountCurrencyLabelText')
             }}
@@ -34,10 +33,11 @@
            v-model="selectedCurrency"
            :options="currencies"
            type="form-dropdown"
+           size="h-[50px]"
            :placeholder="$t('components.modalsContent.addAccountModal.chooseCurrencyText')"
           />
         </div>
-        <div class="form-row">
+        <div class="form-row mb-5">
           <div class="dropdown-label">{{ $t('components.transactionsPage.filters.sourceLabelText') }}</div>
 
           <Dropdown
@@ -45,6 +45,7 @@
            v-model="accountType"
            :options="accountTypesArray"
            type="form-dropdown"
+           size="h-[50px]"
            placeholder="Select source"/>
 
           <BaseInput
@@ -55,7 +56,7 @@
         </div>
         <div
          v-if="accountType.value === 'card'"
-         class="form-row">
+         class="form-row mb-5">
           <BaseInput
            v-model="formattedCardNumber"
            size="medium"
@@ -237,8 +238,5 @@ onMounted(async () => {
 });
 </script>
 
-<style lang="scss">
-.form-row {
-  margin-bottom: 22px;
-}
+<style>
 </style>

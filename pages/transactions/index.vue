@@ -1,6 +1,6 @@
 <template>
-  <div class="transactions-page">
-    <h1 class="page-title">{{ $t('components.transactionsPage.pageTitleText') }}</h1>
+  <div class="transactions-page flex flex-wrap w-full max-w-[960px] m-auto">
+    <h1 class="w-full font-semibold">{{ $t('components.transactionsPage.pageTitleText') }}</h1>
     <Card class="mar-b-6">
       <BalanceDetails/>
     </Card>
@@ -13,30 +13,31 @@
         <div class="link-text">{{ $t('components.transactionsPage.filtersTitle') }}</div>
       </template>
       <template #accordion-body>
-        <div class="page-filters">
-          <div class="filters-row">
-            <div class="filter-item">
-              <div class="dropdown-label">{{ $t('components.transactionsPage.filters.transactionLabelText') }}</div>
+        <div class="w-full max-w-[1024px] m-auto">
+          <div class="flex flex-wrap md:flex-nowrap w-full mb-4 gap-3">
+            <div class="w-full md:w-1/2">
+              <div class="dropdown-label mb-2">{{ $t('components.transactionsPage.filters.transactionLabelText') }}</div>
               <Dropdown
                v-model="filters.type"
                :options="transactionTypes"
                type="form-dropdown"
+               size="h-[40px]"
                placeholder="Select transaction type"/>
             </div>
 
-            <div class="filter-item">
-              <div class="dropdown-label">{{ $t('components.transactionsPage.filters.accountsLabelText') }}</div>
+            <div class="w-full md:w-1/2">
+              <div class="mb-2">{{ $t('components.transactionsPage.filters.accountsLabelText') }}</div>
               <Dropdown
                v-model="sortBySelected"
                :options="transactions"
                type="form-dropdown"
+               size="h-[40px]"
                placeholder="Select account"/>
             </div>
           </div>
-          <div class="filters-row">
-
-            <div class="filter-item">
-              <div class="dropdown-label">{{ $t('components.transactionsPage.filters.startDataLabelText') }}</div>
+          <div class="flex flex-wrap md:flex-nowrap w-full mb-4 gap-3">
+            <div class="w-full md:w-1/2">
+              <div class="mb-2">{{ $t('components.transactionsPage.filters.startDataLabelText') }}</div>
               <Datepicker
                v-model="filters.startDate"
                placeholder="Select start date"
@@ -44,8 +45,8 @@
               />
             </div>
 
-            <div class="filter-item">
-              <div class="dropdown-label">{{ $t('components.transactionsPage.filters.endDataLabelText') }}</div>
+            <div class="w-full md:w-1/2">
+              <div class="mb-2">{{ $t('components.transactionsPage.filters.endDataLabelText') }}</div>
               <Datepicker
                v-model="filters.endDate"
                placeholder="Select end date"
@@ -54,32 +55,36 @@
               />
             </div>
           </div>
-          <div class="filters-row">
-            <div class="filter-item">
+          <div class="flex flex-wrap md:flex-nowrap w-full mb-4 gap-3">
+            <div class="w-full md:w-1/2">
               <BaseInput
                v-model="filters.minAmount"
                type="number"
+               size="h-[40px]"
                :placeholder="$t('components.transactionsPage.filters.minAmountPlaceholderText')"
                :label="$t('components.transactionsPage.filters.minAmountLabelText')"/>
             </div>
 
-            <div class="filter-item">
+            <div class="w-full md:w-1/2">
               <BaseInput
                v-model="filters.maxAmount"
                type="number"
+               size="h-[40px]"
                :placeholder="$t('components.transactionsPage.filters.maxAmountPlaceholderText')"
                :label="$t('components.transactionsPage.filters.maxAmountLabelText')"/>
             </div>
           </div>
-          <div class="filters-row full-length">
-            <div class="filter-item">
+          <div class="flex flex-wrap md:flex-nowrap w-full mb-4 gap-3">
+            <div class="w-full">
               <BaseInput
                v-model="filters.description"
+               size="h-[40px]"
+               class="w-full"
                :placeholder="$t('components.transactionsPage.filters.searchDescriptionPlaceholderText')"
                :label="$t('components.transactionsPage.filters.searchDescriptionLabelText')"/>
             </div>
           </div>
-          <div class="filters-row btn-block">
+          <div class="flex flex-wrap w-full mb-4 gap-3">
             <BaseButton
              size="medium"
              @click="updateTransactions">{{ $t('components.buttons.applyFilters') }}
@@ -101,7 +106,7 @@
       <Card
        v-for="transactionsList in financeStore.transactionsResponse.transactions"
        :key="transactionsList.date"
-       class="mar-b-4"
+       class="mb-1"
        :with-header="true">
         <template #header>{{ useFormatDate(transactionsList.date) }}</template>
         <TransactionExtended
@@ -116,8 +121,8 @@
 
       <div
        v-if="financeStore.transactionsResponse?.transactions?.length === 0"
-       class="no-results">
-        <Card
+       class="w-full text-lg">
+        <Card class="flex items-center justify-center h-[120px]"
         >{{ $t('components.transactionsPage.emptyListText') }}
         </Card>
       </div>
@@ -294,66 +299,5 @@ watch(() => financeStore.transactionsResponse, (newTransactions) => {
 });
 </script>
 
-<style
- lang="scss">
-.transactions-page {
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-  max-width: 960px;
-  margin: 0 auto;
-
-  .page-title {
-    width: 100%;
-  }
-
-  .page-filters {
-    width: 100%;
-    max-width: 1024px;
-    margin: 0 auto;
-
-    @media only screen and (max-width: 1366px) {
-      //max-width: 860px;
-    }
-  }
-
-  .dropdown-label {
-    margin-bottom: 8px;
-  }
-
-  .filters-row {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    width: 100%;
-    margin-bottom: 16px;
-
-    &.full-length {
-      .filter-item {
-        width: 100%;
-      }
-    }
-  }
-
-  .filter-item {
-    width: calc(50% - 6px);
-
-    @media only screen and (max-width: 540px) {
-      width: 100%;
-    }
-  }
-
-  .no-results {
-    width: 100%;
-    font-size: 18px;
-
-    .card {
-      height: 120px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
-  }
-}
+<style>
 </style>

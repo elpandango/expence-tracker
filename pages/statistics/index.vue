@@ -3,7 +3,7 @@
     <h1>{{ $t('components.statisticsPage.pageTitleText') }}</h1>
 
     <div class="charts w-full flex flex-wrap gap-5">
-      <div class="chart-row w-full flex gap-5 flex-wrap md:flex-nowrap">
+      <div class="w-full flex gap-5 flex-wrap md:flex-nowrap">
         <CardWithDate
          class="chart-wrapper w-full sm:w-1/2"
          @date-changed="handleDateChanged('expenses_vs_incomes', $event)">
@@ -33,9 +33,9 @@
         </CardWithDate>
       </div>
 
-      <div class="chart-row w-full flex gap-5 flex-wrap md:flex-nowrap">
+      <div class="w-full flex gap-5 flex-wrap md:flex-nowrap">
         <CardWithDate
-         class="chart-wrapper w50p"
+         class="chart-wrapper w-full sm:w-1/2"
          @date-changed="handleDateChanged('categories', $event)">
           <template v-if="isHighchartsLoaded && chartsLoadingState.categories">
             <HighchartsComponent
@@ -49,7 +49,7 @@
         </CardWithDate>
 
         <CardWithDate
-         class="chart-wrapper w50p"
+         class="chart-wrapper w-full sm:w-1/2"
          @date-changed="handleDateChanged('total_expenses', $event)">
           <template v-if="isHighchartsLoaded && chartsLoadingState.total_expenses">
             <HighchartsComponent
