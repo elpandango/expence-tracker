@@ -1,18 +1,23 @@
 <template>
-  <header class="site-header">
-    <div class="header-content">
-      <div class="greeting-block">{{ timeOfDay }}, {{ userStore.user.name }}!</div>
+  <header class="site-header min-h-[50px] mb-3 md:mb-6">
+    <div class="header-content flex items-center justify-between w-full flex-wrap md:flex-nowrap">
+      <div class="greeting-block hidden md:block font-semibold text-lg">{{ timeOfDay }}, {{
+          userStore.user.name
+        }}!
+      </div>
 
-      <div class="actions-block">
+      <div class="actions-block w-full md:w-auto flex items-center justify-end md:justify-end">
         <NuxtLink
          to='/'
-         class="logo">
-          <div class="logo-img"/>
-          <div class="brand-name">Expendango</div>
+         class="logo flex md:hidden items-center text-decoration-none flex-1 md:flex-auto">
+          <div
+           class="logo-img w-8 h-8 rounded-lg bg-cover bg-center bg-no-repeat mr-2"
+           style="background-image: url('/images/logo.png')"></div>
+          <div class="brand-name font-semibold color-blue-600 text-md">Expendango</div>
         </NuxtLink>
         <div
          v-if="!isTransactionsPage"
-         class="search-block">
+         class="hidden md:block relative w-[400px] mr-5">
           <BaseInput
            v-model="searchValue"
            size="medium"
@@ -28,7 +33,7 @@
         <AvatarDropdown/>
 
         <button
-         class="menu-button"
+         class="menu-button block md:hidden text-3xl p-0 cursor-pointer "
          aria-label="Toggle menu"
          @click="toggleMenu">
           <span class="material-symbols-outlined">
@@ -46,20 +51,20 @@
          v-if="userStore.avatar"
          :src="userStore.avatar"
          alt="User Avatar"
-         class="avatar-image">
+         class="avatar-image w-12 h-12 rounded-full object-cover">
         <div class="user-name">{{ userStore.user.name }}</div>
       </div>
 
       <div
        v-if="!isTransactionsPage"
-       class="search-block">
+       class="w-full px-4 mb-3 relative hidden: md:block">
         <BaseInput
          v-model="searchValue"
          size="medium"
          placeholder="Search transaction"
          @keydown.enter="searchTransactions"/>
         <span
-         class="icon material-symbols-outlined absolute z-20 top-3 right-3 cursor-pointer"
+         class="icon material-symbols-outlined absolute z-20 top-3 right-6 cursor-pointer"
          @click="searchTransactions">search</span>
       </div>
 
@@ -133,7 +138,7 @@
 
 <script setup>
 import {ref} from 'vue';
-import {useRoute,useRouter} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import {useTheme} from "~/use/useTheme";
 import {useUIStore} from "~/stores/ui";
 import {useUserStore} from '~/stores/user';

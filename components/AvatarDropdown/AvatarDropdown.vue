@@ -3,7 +3,7 @@
    ref="dropdown"
    class="relative">
     <div
-     class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-stone-300 cursor-pointer"
+     class="hidden md:inline-flex items-center justify-center w-[50px] h-[50px] rounded-full bg-stone-300 cursor-pointer"
      @click="toggleDropdown">
       <img
        v-if="userStore.avatar"
