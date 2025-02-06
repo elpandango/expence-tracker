@@ -15,6 +15,9 @@ export default {
         'card-bg': 'var(--card-bg-color)',
         'list-item-bg': 'var(--list-item-bg-color)',
       },
+      screens: {
+        'max-sm': {'max': '480px'},
+      },
     }
   },
   darkMode: ['class', '[data-theme="dark"]'],

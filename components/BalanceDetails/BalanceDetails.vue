@@ -3,7 +3,7 @@
   <div
    v-else
    class="w-full">
-    <h2 class="text-xl md:text-2xl font-semibold mb-4">{{ $t('components.balance.title') }}:</h2>
+    <h2 class="text-xl md:text-2xl font-medium mb-4">{{ $t('components.balance.title') }}:</h2>
     <div class="mb-4">
       <div
        v-for="account in financeStore.accountsList"
@@ -11,7 +11,9 @@
        class="border-top-custom flex justify-between items-center text-lg py-2.5">
         <div>
           <span>{{ account.name }}</span>
-          <div class="font-semibold text-sm mt-1.5"><strong>{{ account.type }}</strong> {{ account.cardNumber ? `| ${account.cardNumber}` : '' }}</div>
+          <div class="font-medium text-xs"><strong>{{ account.type }}</strong>
+            {{ account.cardNumber ? `| ${account.cardNumber}` : '' }}
+          </div>
         </div>
         <strong>{{ formatCurrency(account.balance, account.currency) }}</strong>
       </div>
@@ -27,9 +29,17 @@
       <p class="mt-4 mb-2">{{ $t('components.accountsPage.emptyAccountsText') }}:</p>
 
       <BaseButton
+       v-if="!generateTestClicked"
        size="medium"
        @click="handleCreateTestData">{{ $t('components.accountsPage.generateBtnText') }}
       </BaseButton>
+      <div
+       v-else
+       class="w-[170px] h-[44px]">
+        <Preloader
+         height="40px"/>
+      </div>
+
     </template>
 
     <div
@@ -65,7 +75,9 @@ import BaseButton from "~/components/Buttons/BaseButton.vue";
 const uiStore = useUIStore();
 const financeStore = useFinanceStore();
 const {formatCurrency} = useCurrencyFormatter();
-const { generateTestData } = useGenerateTestData();
+const {generateTestData} = useGenerateTestData();
+
+const generateTestClicked = ref(false);
 
 const handleAddFunds = () => {
   financeStore.resetEditingTransaction();
@@ -83,9 +95,11 @@ const handleNewExpense = () => {
 }
 
 const handleCreateTestData = async () => {
+  generateTestClicked.value = true;
   emitter.emit('ui:startLoading', 'default');
   await generateTestData();
   emitter.emit('ui:stopLoading', 'default');
+  generateTestClicked.value = false;
   window.location.reload();
 };
 

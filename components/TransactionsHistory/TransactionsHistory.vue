@@ -1,5 +1,5 @@
 <template>
-  <div class="transactions-history">
+  <div class="transactions-history w-full">
     <slot name="header"/>
     <Preloader
      v-if="uiStore.state.isLoading || financeStore.loadingStates.transactions"
@@ -11,7 +11,7 @@
         <Card
          v-for="transactionsList in financeStore.transactionsResponse.transactions"
          :key="transactionsList.date"
-         class="mb-1"
+         class="shadow-none mb-4 border-[1px] border-stone-200 dark:border-neutral-600"
          :with-header="true">
           <template #header>{{ useFormatDate(transactionsList.date) }}</template>
           <TransactionExtended
@@ -22,7 +22,7 @@
         </Card>
       </template>
       <template v-else>
-        <p class="empty-message">{{ $t('components.transactionsHistory.emptyListText') }}</p>
+        <p class="empty-message text-left text-md mt-5 whitespace-pre-wrap text-stone-300">{{ $t('components.transactionsHistory.emptyListText') }}</p>
       </template>
     </div>
   </div>
@@ -39,7 +39,5 @@ const financeStore = useFinanceStore();
 const uiStore = useUIStore();
 </script>
 
-<style
- lang="scss"
- src="./styles.scss">
+<style>
 </style>

@@ -101,10 +101,6 @@ onBeforeUnmount(() => document.removeEventListener('click', handleClickOutside))
       border-bottom: none;
     }
 
-    .row-name {
-
-    }
-
     .row-value {
       font-weight: 600;
       text-transform: capitalize;

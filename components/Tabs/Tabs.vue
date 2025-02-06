@@ -49,7 +49,7 @@ const setActiveTab = (tabId) => {
 }
 
 .tabs-header li.active {
-  border-bottom: 2px solid var(--accent-color);
+  border-bottom: 2px solid rgb(37, 99, 235);
   font-weight: bold;
 }
 

@@ -42,10 +42,18 @@
         <p class="mt-4 mb-4">{{ $t('components.accountsPage.generateDataText') }}</p>
 
         <button
+         v-if="!generateTestClicked"
          class="add-account-btn small text-lg border-[1px] border-dashed border-blue-600 rounded-lg text-blue-600 cursor-pointer min-w-[200px] w-auto h-[60px] min-h-[60px]"
          @click="handleCreateTestData">
           <span class="ml-2.5">{{ $t('components.accountsPage.generateDataBtnText') }}</span>
         </button>
+
+        <div
+         v-else
+         class="border-[1px] border-dashed border-blue-600 rounded-lg text-blue-600 w-[200px] h-[60px]">
+          <Preloader
+           height="50px"/>
+        </div>
       </div>
     </template>
 
@@ -80,6 +88,7 @@ const financeStore = useFinanceStore();
 const uiStore = useUIStore();
 const isDeleteConfirmationModalOpen = ref(false);
 const accountIdToDelete = ref('');
+const generateTestClicked = ref(false);
 
 const handleAddAmount = () => {
   financeStore.resetEditingAccount();
@@ -103,9 +112,11 @@ const handleDeleteAccount = async () => {
 };
 
 const handleCreateTestData = async () => {
+  generateTestClicked.value = true;
   emitter.emit('ui:startLoading', 'default');
   await generateTestData();
   emitter.emit('ui:stopLoading', 'default');
+  generateTestClicked.value = false;
   window.location.reload();
 };
 

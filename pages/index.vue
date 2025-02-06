@@ -1,5 +1,5 @@
 <template>
-  <div class="index-page">
+  <div class="index-page flex flex-wrap gap-5 w-full max-w-[1024px] m-auto">
     <Card class="mb-1.5">
       <BalanceDetails/>
     </Card>
@@ -18,24 +18,25 @@
       <TransactionsHistory>
         <template #header>
 
-          <div class="title-block">
-            <h3 class="title1 text-lg font-semibold">
+          <div class="title-block flex items-center justify-between mb-2 flex-wrap max-sm:flex-nowrap">
+            <h3 class="text-lg font-semibold">
               {{ $t('components.transactionsHistory.titleText') }}
             </h3>
 
-            <div class="sorting-block">
-              <span class="sort-label">{{ $t('components.transactionsHistory.sortByText') }}</span>
+            <div class="sorting-block flex items-center justify-end mr-2">
+              <span class="sort-label whitespace-nowrap mr-2 text-sm">{{ $t('components.transactionsHistory.sortByText') }}</span>
               <Dropdown
                v-model="sortBySelected"
                :options="transactionsHistoryOptions"
                :placeholder="$t('components.transactionsHistory.sortPlaceholderText')"
+               type="text-xs"
                @update:model-value="handleDropdownChanged"
               />
             </div>
           </div>
 
-          <div class="period-buttons">
-            <div class="period">
+          <div class="period-buttons flex items-center justify-between mb-5 max-sm:flex-wrap gap-2">
+            <div class="period flex items-center gap-2">
               <BaseButton
                size="smallest"
                :variant="periodSelected === 'day' ? 'default' : 'transparent'"
@@ -239,69 +240,5 @@ watch(
 );
 </script>
 
-<style
- lang="scss">
-.index-page {
-  display: flex;
-  gap: 20px;
-  margin: 0 auto;
-  flex-wrap: wrap;
-  max-width: 1024px;
-  width: 100%;
-
-  @media only screen and (max-width: 1366px) {
-    max-width: 860px;
-  }
-
-
-  .title-block {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 8px;
-
-    @media only screen and (max-width: 480px) {
-      flex-wrap: wrap;
-    }
-
-    .title {
-      margin-bottom: 0;
-
-      @media only screen and (max-width: 991px) {
-        margin-bottom: 8px;
-      }
-    }
-  }
-
-  .sorting-block {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    margin-left: 8px;
-
-    .sort-label {
-      font-size: 14px;
-      margin-right: 8px;
-      white-space: nowrap;
-    }
-  }
-
-  .period-buttons {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 22px;
-
-    @media only screen and (max-width: 480px) {
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .period {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-  }
-}
+<style>
 </style>

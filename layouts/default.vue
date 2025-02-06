@@ -1,6 +1,5 @@
 <template>
-  <div
-   class="page-content">
+  <div class="page-content1 flex flex-wrap max-w-full mx-auto relative 2xl:max-w-[1920px] 2xl:mx-auto 2xl:relative">
     <Sidebar/>
     <transition name="toast-fade">
       <Toast
@@ -105,23 +104,11 @@ const closeModal = (name?: string) => {
     uiStore.toggleModal('isAddFundsModalOpen', false);
   } else if (name === 'calculator') {
     uiStore.toggleModal('isCalculatorModalOpen', false);
-  }  else {
+  } else {
     uiStore.toggleModal('isAddAccountModalOpen', false);
   }
 };
 </script>
 
-<style
- lang="scss">
-.page-content {
-  display: flex;
-  flex-wrap: wrap;
-
-  @media only screen and (min-width: 2501px) {
-    max-width: 1920px;
-    margin: 0 auto;
-    position: relative;
-  }
-}
-
+<style>
 </style>
