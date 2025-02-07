@@ -10,7 +10,7 @@
       />
     </transition>
     <div class="main-content h-screen md:w-[calc(100%-250px)] fixed md:left-[250px] p-3 md:top-0 md:pt-5 md:pr-4 overflow-y-auto 2xl:absolute">
-      <div class="content bg-card-bg max-sm:p-3 p-5 rounded-lg min-h-screen md:min-h-full">
+      <div class="content bg-card-bg max-sm:p-3 p-5 rounded-lg mb-12 md:mb-0 min-h-screen md:min-h-full">
         <template v-if="!uiStore.state.isAuthLoading">
           <SiteHeader/>
           <main class="block"/>
