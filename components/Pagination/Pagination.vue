@@ -15,7 +15,8 @@
 
         <li
          v-if="pagesToShow[0] !== 1"
-         class="flex justify-center items-center mx-1">
+         class="flex justify-center items-center mx-1"
+        >
           <BaseButton
            size="medium"
            class="w-5 md:w-24 min-w-[70px] md:min-w-[90px]"
@@ -26,10 +27,11 @@
             1
           </BaseButton>
         </li>
+
         <li
          v-if="pagesToShow[0] > 2"
-         class="inline-flex items-center px-2 text-gray-400">...
-        </li>
+         class="inline-flex items-center px-2 text-gray-400"
+        >...</li>
 
         <li
          v-for="page in pagesToShow"
@@ -49,11 +51,13 @@
 
         <li
          v-if="pagesToShow[pagesToShow.length - 1] < props?.data?.lastPage - 1"
-         class="inline-flex items-center px-2 text-gray-400">...
-        </li>
+         class="inline-flex items-center px-2 text-gray-400"
+        >...</li>
+
         <li
          v-if="pagesToShow[pagesToShow.length - 1] !== props?.data?.lastPage"
-         class="flex justify-center items-center mx-1">
+         class="flex justify-center items-center mx-1"
+        >
           <BaseButton
            size="medium"
            class="w-3 md:w-24 min-w-[40px] md:min-w-[90px]"
@@ -65,6 +69,7 @@
           </BaseButton>
         </li>
 
+        <!-- Next Button -->
         <li class="flex justify-center items-center mx-1">
           <BaseButton
            class="w-5 md:w-24 min-w-[70px] md:min-w-[90px]"
