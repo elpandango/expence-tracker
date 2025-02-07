@@ -4,8 +4,8 @@ export default {
       return await $fetch(`api/charts${query}`, {
         method: 'GET',
       });
-    } catch (error: any) {
-      const message = error?.response?._data?.message || 'Summary fetching failed';
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error?.response?._data?.message : 'Summary fetching failed';
       throw new Error(message);
     }
   },

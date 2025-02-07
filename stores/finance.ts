@@ -46,6 +46,7 @@ export const useFinanceStore = defineStore('finance', () => {
     accountsList.value = accounts;
   };
 
+  // eslint-disable-next-line
   const fetchTransactions = async (filters: Record<string, any> = {}, page: number = 1, limit: number = 10) => {
     try {
       const queryParams = new URLSearchParams();

@@ -11,7 +11,7 @@
      :value="modelValue"
      :placeholder="placeholder"
      :step="type === 'number' ? 0.1 : null"
-     @input="emits('update:modelValue', $event.target.value)"/>
+     @input="emits('update:modelValue', $event.target.value)">
 
     <div
      v-if="hasIcon"
@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-const props = defineProps({
+const {modelValue, placeholder, label, size, status, errorMessage, disabled, type, hasIcon, classes} = defineProps({
   modelValue: {type: [String, Number, Date, null], default: null},
   placeholder: {type: String, default: 'Enter text'},
   label: {type: String, default: ''},

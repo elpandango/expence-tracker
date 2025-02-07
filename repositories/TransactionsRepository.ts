@@ -10,8 +10,8 @@ export default {
       return await $fetch(`/api/transactions/${id}`, {
         method: 'DELETE',
       });
-    } catch (error: any) {
-      const message = error?.response?._data?.message || 'Transaction delete failed';
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error?.response?._data?.message : 'Transaction delete failed';
       throw new Error(message);
     }
   },
@@ -22,8 +22,8 @@ export default {
         method: 'POST',
         body: payload,
       });
-    } catch (error: any) {
-      const message = error?.response?._data?.message || 'Transaction creation failed';
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error?.response?._data?.message : 'Transaction creation failed';
       throw new Error(message);
     }
   },
@@ -35,8 +35,8 @@ export default {
         method: 'PUT',
         body: data,
       });
-    } catch (error: any) {
-      const message = error?.response?._data?.message || 'Transaction update failed';
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error?.response?._data?.message : 'Transaction update failed';
       throw new Error(message);
     }
   },
@@ -47,8 +47,8 @@ export default {
       return await $fetch(url, {
         method: 'GET',
       });
-    } catch (error: any) {
-      const message = error?.response?._data?.message || 'Transactions fetching failed';
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error?.response?._data?.message : 'Transactions fetching failed';
       throw new Error(message);
     }
   }

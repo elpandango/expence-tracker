@@ -10,8 +10,8 @@ export default {
       return await $fetch('/api/profile/avatar', {
         method: 'GET',
       });
-    } catch (error: any) {
-      const message = error?.response?._data?.message || 'Not Authorized';
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error?.response?._data?.message : 'Not Authorized';
       throw new Error(message);
     }
   },

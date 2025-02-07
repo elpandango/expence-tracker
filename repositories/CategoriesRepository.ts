@@ -11,11 +11,8 @@ export default {
         body: payload
       });
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        const message = (error as any).response?._data?.message || 'Category creating failed';
-        throw new Error(message);
-      }
-      throw new Error('Unknown error occurred');
+      const message = error instanceof Error ? error.response?._data?.message : 'Category creating failed';
+      throw new Error(message);
     }
   },
   async updateCategory(categoryId: string, payload: { name: string, icon: string }) {

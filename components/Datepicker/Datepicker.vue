@@ -67,6 +67,7 @@ const weekdays = ["MO", "TU", "WE", "TH", "FR", "SA", "SU"];
 
 const props = defineProps({
   modelValue: {
+    type: [Date, String],
     default: null
   },
   placeholder: {

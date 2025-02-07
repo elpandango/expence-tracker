@@ -36,7 +36,7 @@ export const useUIStore = defineStore("ui", () => {
     }, 3000);
   };
 
-  const setCalculatorValue = (value: any) => {
+  const setCalculatorValue = (value: string | number) => {
     calculatorValue.value = value;
   };
 

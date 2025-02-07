@@ -26,9 +26,10 @@ export const useAuthStore = defineStore('auth', () => {
           await router.push('/');
         }, 200);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Login failed.';
       emitter.emit('ui:showToast', {
-        message: error.message || 'Login failed.',
+        message,
         type: 'error',
       });
     } finally {
@@ -50,9 +51,10 @@ export const useAuthStore = defineStore('auth', () => {
           await router.push('/');
         }, 200);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Registration failed.';
       emitter.emit('ui:showToast', {
-        message: error.message || 'Registration failed.',
+        message,
         type: 'error',
       });
     } finally {
@@ -79,9 +81,10 @@ export const useAuthStore = defineStore('auth', () => {
       setTimeout(async () => {
         await router.push('/auth');
       }, 200);
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Logout failed.';
       emitter.emit('ui:showToast', {
-        message: error.message || 'Logout failed.',
+        message,
         type: 'error',
       });
     }

@@ -11,8 +11,8 @@ export default {
         method: 'POST',
         body: payload,
       });
-    } catch (error: any) {
-      const message = error?.response?._data?.message || 'Account creation failed';
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error?.response?._data?.message : 'Account creation failed';
       throw new Error(message);
     }
   },
@@ -23,8 +23,8 @@ export default {
         method: 'PUT',
         body: data,
       });
-    } catch (error: any) {
-      const message = error?.response?._data?.message || 'Card creation failed';
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error?.response?._data?.message : 'Card creation failed';
       throw new Error(message);
     }
   },
@@ -33,8 +33,8 @@ export default {
       return await $fetch(`/api/accounts/${accountId}`, {
         method: 'DELETE',
       });
-    } catch (error: any) {
-      const message = error?.response?._data?.message || 'Account deletion failed';
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error?.response?._data?.message : 'Account deletion failed';
       throw new Error(message);
     }
   },
@@ -43,8 +43,8 @@ export default {
       return await $fetch('/api/accounts', {
         method: 'GET',
       });
-    } catch (error: any) {
-      const message = error?.response?._data?.message || 'No Cards found';
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error?.response?._data?.message : 'No Cards found';
       throw new Error(message);
     }
   },
