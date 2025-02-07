@@ -1,6 +1,6 @@
 <template>
   <div class="accounts-page w-full max-w-[860] xl:max-w-[1024px] m-auto">
-    <h1>{{ $t('components.accountsPage.pageTitleText') }}</h1>
+    <h1 class="font-semibold text-3xl mb-4">{{ $t('components.accountsPage.pageTitleText') }}</h1>
     <Preloader
      v-if="uiStore.state.isLoading"
      height="50vh"/>

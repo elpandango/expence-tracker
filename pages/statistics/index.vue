@@ -1,6 +1,6 @@
 <template>
   <div class="charts-page max-w-4xl lg:max-w-screen-lg m-auto">
-    <h1>{{ $t('components.statisticsPage.pageTitleText') }}</h1>
+    <h1 class="font-semibold text-3xl mb-4">{{ $t('components.statisticsPage.pageTitleText') }}</h1>
 
     <div class="charts w-full flex flex-wrap gap-5">
       <div class="w-full flex gap-5 flex-wrap md:flex-nowrap">

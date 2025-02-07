@@ -1,6 +1,6 @@
 <template>
   <div class="transactions-page flex flex-wrap w-full max-w-[960px] m-auto">
-    <h1 class="w-full font-semibold">{{ $t('components.transactionsPage.pageTitleText') }}</h1>
+    <h1 class="w-full font-semibold text-3xl mb-4">{{ $t('components.transactionsPage.pageTitleText') }}</h1>
     <Card class="mb-6">
       <BalanceDetails/>
     </Card>

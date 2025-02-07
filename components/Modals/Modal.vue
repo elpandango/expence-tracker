@@ -7,10 +7,10 @@
      @click:outside="clickOutside"
     >
       <div
-       class="fixed inset-0 bg-modal-bg opacity-50"
+       class="fixed inset-0 bg-stone-900 opacity-60"
        @click="closeModal"
       />
-      <div class="flex flex-col bg-modal-body rounded-lg shadow-lg w-full max-w-[90%] md:max-w-lg relative z-10 max-h-[94vh] overflow-hidden">
+      <div class="flex flex-col bg-modal-body rounded-lg shadow-lg w-full max-w-[90%] md:max-w-lg relative z-10 max-h-[90vh] overflow-y-auto">
         <div class="flex items-start justify-between p-4 border-b border-stone-200 dark:border-neutral-600">
           <h2 class="text-lg font-medium">
             <slot name="header" />
