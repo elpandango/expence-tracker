@@ -38,25 +38,25 @@
         <form
          v-else
          class="w-full">
-          <div class="form-row">
+          <div class="form-row mb-4">
             <BaseInput
              v-model="user.name"
              size="medium"
              label="Name"/>
           </div>
-          <div class="form-row">
+          <div class="form-row mb-4">
             <BaseInput
              v-model="user.lastName"
              size="medium"
              label="Last name"/>
           </div>
-          <div class="form-row">
+          <div class="form-row mb-4">
             <BaseInput
              v-model="user.email"
              size="medium"
              label="Email"/>
           </div>
-          <div class="form-row btn-block flex justify-end">
+          <div class="form-row btn-block flex justify-end gap-2">
             <BaseButton
              variant="transparent"
              size="big"

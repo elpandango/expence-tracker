@@ -8,7 +8,7 @@
      class="w-full font-semibold py-2 px-5 bg-bg rounded-t-lg">
       <slot name="header"/>
     </div>
-    <div class="w-full p-5">
+    <div class="w-full p-3 md:p-5">
       <slot/>
     </div>
   </div>
