@@ -18,6 +18,7 @@ export default defineEventHandler(async (event) => {
       avatar: updatedUser?.avatar ?? '',
     };
   } catch (err) {
+    console.error("Error during update process: ", err);
     throw err;
   }
 });

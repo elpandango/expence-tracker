@@ -4,8 +4,9 @@
    class="dropdown inline-flex relative w-full"
    :class="[type, size]"
    @click="toggleDropdown">
-    <button  class="dropdown-toggle color-main text-left relative flex flex-wrap items-center justify-between w-full cursor-pointer py-1.5 pr-7 pl-3 bg-card-bg border-[1px] border-stone-200 dark:border-neutral-600 rounded-md"
-             :class="[{'border-stone-200': !selectedOption?.label}, size, {'!border-blue-500': isOpen}]">
+    <button
+     class="dropdown-toggle color-main text-left relative flex flex-wrap items-center justify-between w-full cursor-pointer py-1.5 pr-7 pl-3 bg-card-bg border-[1px] border-stone-200 dark:border-neutral-600 rounded-md"
+     :class="[{'border-stone-200': !selectedOption?.label}, size, {'!border-blue-500': isOpen}]">
       <span class="flex-1 flex-nowrap">{{ selectedOption ? selectedOption.label : placeholder }}</span>
       <svg
        class="dropdown-arrow absolute right-2 top-[50%] transition-all duration-300 -translate-y-1/2 rotate-0"
@@ -66,7 +67,8 @@ const props = defineProps({
   },
   size: {
     type: String,
-    required: false
+    required: false,
+    default: 'h-[30px]'
   },
 });
 
@@ -95,14 +97,14 @@ const toggleDropdown = () => {
   }
 };
 
-const selectOption = (option: any) => {
-  selectedOption.value = option;
+const selectOption = (option: { value: number | string; label: string }) => {
   isOpen.value = false;
+  selectedOption.value = option;
   emit('update:modelValue', option);
 };
 
 const dropdown = ref(null);
-const handleClickOutside = (event: any) => {
+const handleClickOutside = (event: event) => {
   if (dropdown.value && !dropdown.value.contains(event.target)) {
     isOpen.value = false;
   }

@@ -1,4 +1,8 @@
-type EventMap = Record<string, any>;
+type EventMap = {
+  'ui:startLoading': 'auth' | 'default';
+  'ui:stopLoading': 'auth' | 'default';
+  'ui:showToast': { message: string; type: 'success' | 'error' };
+};
 
 export class Emitter<T extends EventMap> {
   private events: { [K in keyof T]?: Array<(payload: T[K]) => void> };

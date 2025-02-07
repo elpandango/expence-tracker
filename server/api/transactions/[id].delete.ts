@@ -10,6 +10,7 @@ export default defineEventHandler(async (event) => {
       message: "Transaction deleted successfully",
     };
   } catch (err) {
+    console.error("Error during delete process: ", err);
     throw err;
   }
 });

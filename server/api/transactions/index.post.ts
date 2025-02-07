@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
   try {
     const userId = getCookie(event, 'userId');
     if (!userId) {
-      throw createError({statusCode: 401, message: 'Unauthorized'});
+      throw createError({ statusCode: 401, message: 'Unauthorized' });
     }
     const savedTransaction = await createTransaction(transactionData, userId);
     return {
@@ -16,6 +16,7 @@ export default defineEventHandler(async (event) => {
       transaction: savedTransaction,
     };
   } catch (err) {
-    throw err;
+    console.error("Error creating transaction:", err);
+    throw createError({ statusCode: 500, message: "Internal Server Error" });
   }
 });

@@ -11,8 +11,7 @@
      :value="modelValue"
      :placeholder="placeholder"
      :step="type === 'number' ? 0.1 : null"
-     @input="emits('update:modelValue', $event.target.value)"
-    />
+     @input="emits('update:modelValue', $event.target.value)"/>
 
     <div
      v-if="hasIcon"
@@ -20,7 +19,9 @@
       <slot name="icon"/>
     </div>
 
-    <div v-if="errorMessage" class="text-red-500 text-sm mt-1">
+    <div
+     v-if="errorMessage"
+     class="text-red-500 text-sm mt-1">
       {{ errorMessage }}
     </div>
   </div>
@@ -28,15 +29,15 @@
 
 <script setup>
 const props = defineProps({
-  modelValue: [String, Number, Date, null],
-  placeholder: { type: String, default: 'Enter text' },
-  label: { type: String, default: '' },
-  size: { type: String, default: 'medium' },
-  status: { type: String },
-  errorMessage: { type: String },
-  disabled: { type: Boolean, default: false },
-  type: { type: String, default: 'text' },
-  hasIcon: { type: Boolean, default: false },
+  modelValue: {type: [String, Number, Date, null], default: null},
+  placeholder: {type: String, default: 'Enter text'},
+  label: {type: String, default: ''},
+  size: {type: String, default: 'medium'},
+  status: {type: String, default: ''},
+  errorMessage: {type: String, default: ''},
+  disabled: {type: Boolean, default: false},
+  type: {type: String, default: 'text'},
+  hasIcon: {type: Boolean, default: false},
   classes: {type: String, default: ''}
 });
 

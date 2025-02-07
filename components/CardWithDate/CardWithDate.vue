@@ -29,8 +29,8 @@
           </div>
 
           <BaseButton
-           @click="applyCustomRange"
-           class="ml-3">Apply
+           class="ml-3"
+           @click="applyCustomRange">Apply
           </BaseButton>
         </div>
       </div>

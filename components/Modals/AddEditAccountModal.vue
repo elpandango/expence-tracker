@@ -102,10 +102,6 @@ const props = defineProps({
     type: Boolean,
     required: true
   },
-  isEditMode: {
-    type: Boolean,
-    default: false
-  },
   account: {
     type: Object,
     default: () => ({})

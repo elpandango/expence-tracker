@@ -36,7 +36,7 @@ const initialCategories = [
   { name: 'Other (Expenses)', icon: 'category', color: '#BDBDBD' }
 ];
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async () => {
   const existingCategories = await CategoryModel.countDocuments();
 
   if (existingCategories === 0) {

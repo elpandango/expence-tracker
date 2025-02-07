@@ -64,7 +64,8 @@ const props = defineProps({
   },
   size: {
     type: String,
-    required: false
+    required: false,
+    default: 'size="h-[50px]"'
   },
 });
 
@@ -93,14 +94,14 @@ const toggleDropdown = () => {
   }
 };
 
-const selectOption = (option: any) => {
+const selectOption = (option: { value: number | string; label: string }) => {
   isOpen.value = false;
   selectedOption.value = option;
   emit('update:modelValue', option);
 };
 
 const dropdown = ref(null);
-const handleClickOutside = (event: any) => {
+const handleClickOutside = (event: event) => {
   if (dropdown.value && !dropdown.value.contains(event.target)) {
     isOpen.value = false;
   }
