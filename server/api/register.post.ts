@@ -32,6 +32,7 @@ export default defineEventHandler(async (event) => {
 
         return { status: 200, userId };
     } catch (err) {
+        console.error("Error during register process: ", err);
         throw err;
     }
 });

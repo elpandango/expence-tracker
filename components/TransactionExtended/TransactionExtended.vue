@@ -89,7 +89,7 @@ const emit = defineEmits(['delete-clicked', 'edit-clicked']);
 const {formatCurrency} = useCurrencyFormatter();
 const isOpen = ref(false);
 const actions = ref(null);
-const handleClickOutside = (event: any) => {
+const handleClickOutside = (event: event) => {
   if (actions.value && !actions.value.contains(event.target)) {
     isOpen.value = false;
   }

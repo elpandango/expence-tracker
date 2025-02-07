@@ -11,7 +11,7 @@
          to='/'
          class="logo flex md:hidden items-center text-decoration-none flex-1 md:flex-auto">
           <div
-           class="logo-img w-8 h-8 rounded-lg bg-cover bg-center bg-no-repeat mr-2 bg-[url(/images/logo.png)]"></div>
+           class="logo-img w-8 h-8 rounded-lg bg-cover bg-center bg-no-repeat mr-2 bg-[url(/images/logo.png)]"/>
           <div class="brand-name font-semibold text-blue-600 text-md">Expendango</div>
         </NuxtLink>
         <div

@@ -10,9 +10,12 @@ export default {
         method: 'POST',
         body: payload
       });
-    } catch (error: any) {
-      const message = error?.response?._data?.message || 'Category creating failed';
-      throw new Error(message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        const message = (error as any).response?._data?.message || 'Category creating failed';
+        throw new Error(message);
+      }
+      throw new Error('Unknown error occurred');
     }
   },
   async updateCategory(categoryId: string, payload: { name: string, icon: string }) {
@@ -23,9 +26,12 @@ export default {
         method: 'PATCH',
         body: payload,
       });
-    } catch (error: any) {
-      const message = error?.response?._data?.message || 'Category update failed';
-      throw new Error(message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        const message = error?.response?._data?.message || 'Category update failed';
+        throw new Error(message);
+      }
+      throw new Error('Unknown error occurred');
     }
   },
   async deleteCategory(categoryId: string,) {
@@ -35,9 +41,12 @@ export default {
       return await $fetch(url, {
         method: 'DELETE',
       });
-    } catch (error: any) {
-      const message = error?.response?._data?.message || 'Category deletion failed';
-      throw new Error(message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        const message = error?.response?._data?.message || 'Category deletion failed';
+        throw new Error(message);
+      }
+      throw new Error('Unknown error occurred');
     }
   },
   async getAllCategories(): Promise<CategoryResponse[]> {
@@ -45,9 +54,12 @@ export default {
       return await $fetch('/api/category', {
         method: 'GET',
       });
-    } catch (error: any) {
-      const message = error?.response?._data?.message || 'Categories fetching failed';
-      throw new Error(message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        const message = error?.response?._data?.message || 'Categories fetching failed';
+        throw new Error(message);
+      }
+      throw new Error('Unknown error occurred');
     }
   },
 };

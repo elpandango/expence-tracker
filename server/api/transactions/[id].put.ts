@@ -26,6 +26,7 @@ export default defineEventHandler(async (event) => {
       };
     }
   } catch (err) {
+    console.error("Error updating transaction:", err);
     throw err;
   }
 });

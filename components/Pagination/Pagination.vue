@@ -35,8 +35,8 @@
 
         <li
          v-for="page in pagesToShow"
-         class="flex justify-center items-center mx-1"
          :key="page"
+         class="flex justify-center items-center mx-1"
         >
           <BaseButton
            size="medium"

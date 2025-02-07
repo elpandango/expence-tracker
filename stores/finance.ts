@@ -4,14 +4,14 @@ import repositoryFactory from "~/repositories/repositoryFactory";
 import {emitter} from "~/classes/uiEventBus";
 import type {
   CreateTransactionPayload,
-  UpdateTransactionPayload,
-  DeleteTransactionPayload
+  DeleteTransactionPayload,
+  UpdateTransactionPayload
 } from "~/server/interfaces/transactionPayload";
 
 import type {
   CreateAccountPayload,
-  UpdateAccountPayload,
-  DeleteAccountPayload
+  DeleteAccountPayload,
+  UpdateAccountPayload
 } from "~/server/interfaces/accountsPayload";
 
 export const useFinanceStore = defineStore('finance', () => {
@@ -24,7 +24,7 @@ export const useFinanceStore = defineStore('finance', () => {
     transactions: false,
   });
 
-  const isEmpty = (data: any) => {
+  const isEmpty = (data: unknown): boolean => {
     if (Array.isArray(data)) {
       return data.length === 0;
     } else if (typeof data === 'object' && data !== null) {
@@ -58,9 +58,7 @@ export const useFinanceStore = defineStore('finance', () => {
       queryParams.append('limit', limit.toString());
 
       const queryString = queryParams.toString() ? `?${queryParams.toString()}` : '';
-      const response = await repositoryFactory.get('Transactions').getAllTransactions(queryString);
-
-      transactionsResponse.value = response;
+      transactionsResponse.value = await repositoryFactory.get('Transactions').getAllTransactions(queryString);
     } catch (error) {
       console.error('Failed to fetch transactions:', error);
     }
@@ -76,7 +74,8 @@ export const useFinanceStore = defineStore('finance', () => {
         message: 'Account added successfully.',
         type: 'success',
       });
-    } catch (e) {
+    } catch (err) {
+      console.log(err);
       emitter.emit('ui:showToast', {
         message: 'Account addition failed.',
         type: 'error',
