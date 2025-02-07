@@ -14,7 +14,7 @@
          width="150"
          height="150">
         <h1 class="text-2xl md:text-4xl font-semibold mb-4">Welcome to Expendango</h1>
-        <h3 class="font-semibold text-md md:text-lg mb-4 text-blue-600">Track your expenses, manage your income, and take control of
+        <h3 class="font-semibold text-md md:text-lg mb-4">Track your expenses, manage your income, and take control of
           your finances with ease. Empowering your
           financial goals, one step at a time.</h3>
       </div>
