@@ -26,14 +26,18 @@ export const updateTransaction = async (updatedTransaction: any, id: string, use
     });
   }
 
-  const isAmountChanged = oldTransaction.amount !== updatedTransaction.amount;
-  const isAccountChanged = oldTransaction.accountId.toString() !== updatedTransaction.accountId;
-  const isTypeChanged = oldTransaction.type !== updatedTransaction.type;
-  const isDescriptionChanged = oldTransaction.description !== updatedTransaction.description;
   const formatDate = (date: string) => new Date(date).toISOString().split('T')[0];
-  const isDateChanged = formatDate(oldTransaction.date) !== formatDate(updatedTransaction.date);
 
-  if (isAmountChanged || isAccountChanged || isTypeChanged || isDateChanged || isDescriptionChanged) {
+  const hasTransactionChanged = [
+    oldTransaction.amount !== updatedTransaction.amount,
+    oldTransaction.category !== updatedTransaction.category,
+    oldTransaction.accountId.toString() !== updatedTransaction.accountId,
+    oldTransaction.type !== updatedTransaction.type,
+    oldTransaction.description !== updatedTransaction.description,
+    formatDate(oldTransaction.date) !== formatDate(updatedTransaction.date)
+  ].some(Boolean);
+
+  if (hasTransactionChanged) {
     const oldAccount = await AccountModel.findById(oldTransaction.accountId);
     if (oldAccount) {
       if (oldTransaction.type === "expense") {

@@ -1,38 +1,38 @@
 <template>
   <div
-   class="account-card"
+   class="account-card h-auto shadow-xl py-2.5 pr-10 pl-5 relative bg-card-bg rounded-xl dark:border-[1px] border-stone-200 dark:border-neutral-600"
    :class="props.class">
     <div class="account-details">
-      <div class="details-row">
+      <div class="details-row flex items-center justify-between py-2.5 border-b-[1px] border-stone-200 dark:border-neutral-600">
         <div class="row-name">{{ $t('components.accountsPage.accountName') }}:</div>
-        <div class="row-value">{{ data.name }}</div>
+        <div class="row-value font-semibold capitalize">{{ data.name }}</div>
       </div>
 
-      <div class="details-row">
+      <div class="details-row flex items-center justify-between py-2.5 border-b-[1px] border-stone-200 dark:border-neutral-600">
         <div class="row-name">{{ $t('components.accountsPage.accountName') }}:</div>
-        <div class="row-value">{{ data.type }}</div>
+        <div class="row-value font-semibold capitalize">{{ data.type }}</div>
       </div>
 
-      <div class="details-row">
+      <div class="details-row flex items-center justify-between py-2.5">
         <div class="row-name">{{ $t('components.accountsPage.balance') }}:</div>
-        <div class="row-value">{{ formatCurrency(data.balance, data.currency) }}</div>
+        <div class="row-value font-semibold capitalize">{{ formatCurrency(data.balance, data.currency) }}</div>
       </div>
     </div>
 
     <div
      ref="actions"
-     class="action-menu"
+     class="action-menu absolute right-1 top-1/2 -translate-y-1/2 cursor-pointer"
      @click="toggleActions">
       <span class="material-symbols-outlined">more_vert</span>
       <div
        v-if="isOpen"
-       class="actions-list">
+       class="actions-list absolute z-10 right-[10px] bottom-full bg-card-bg shadow-xl rounded-md flex flex-col items-start p-1 dark:border-[1px] border-stone-200 dark:border-neutral-600">
         <button
-         class="action-btn"
+         class="action-btn w-full text-md cursor-pointer py-1.5 px-2.5 transition-all duration-300 whitespace-nowrap text-left hover:bg-bg"
          @click="emit('update-account')">{{ $t('components.accountsPage.editAccountTitle') }}
         </button>
         <button
-         class="action-btn"
+         class="action-btn w-full text-md cursor-pointer py-1.5 px-2.5 transition-all duration-300 whitespace-nowrap text-left hover:bg-bg"
          @click="emit('delete-account')">{{ $t('components.accountsPage.deleteAccountTitle') }}
         </button>
       </div>
@@ -77,76 +77,5 @@ onMounted(() => document.addEventListener('click', handleClickOutside));
 onBeforeUnmount(() => document.removeEventListener('click', handleClickOutside));
 </script>
 
-<style
- lang="scss">
-.account-card {
-  height: auto;
-  box-shadow: var(--box-shadow);
-  border-radius: var(--border-radius);
-  background-color: var(--card-bg-color);
-  border-style: var(--border-style);
-  border-width: var(--border-width);
-  border-color: var(--border-color);
-  position: relative;
-  padding: 10px 40px 10px 20px;
-
-  .details-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid var(--input-border-color);
-    padding: 10px 0;
-
-    &:last-child {
-      border-bottom: none;
-    }
-
-    .row-value {
-      font-weight: 600;
-      text-transform: capitalize;
-    }
-  }
-
-  .action-menu {
-    position: absolute;
-    right: 5px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-
-    .actions-list {
-      position: absolute;
-      z-index: 10;
-      right: 10px;
-      bottom: 100%;
-      background-color: var(--card-bg-color);
-      border: 1px solid var(--border-color);
-      border-radius: 4px;
-      box-shadow: var(--box-shadow);
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 4px;
-      padding: 4px;
-
-      .action-btn {
-        padding: 6px 10px;
-        font-size: 16px;
-        width: 100%;
-        border: none;
-        outline: none;
-        background-color: transparent;
-        cursor: pointer;
-        transition: all .3s;
-        text-align: left;
-        white-space: nowrap;
-        color: var(--main-color);
-
-        &:hover {
-          background-color: var(--bg-color);
-        }
-      }
-    }
-  }
-}
+<style>
 </style>

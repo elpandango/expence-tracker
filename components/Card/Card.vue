@@ -1,6 +1,6 @@
 <template>
   <div
-   class="w-full flex flex-wrap shadow-xl rounded-xl bg-card-bg dark:border-[1px] dark:border-neutral-600"
+   class="card w-full flex flex-wrap shadow-xl rounded-xl bg-card-bg dark:border-[1px] dark:border-neutral-600"
    :class="[props.class, withScroll ? 'overflow-auto' : '']"
    :style="{ maxWidth }">
     <div

@@ -1,8 +1,8 @@
 <template>
   <NuxtLayout>
-    <div class="error-page">
-      <Card>
-        <h1>404 - Page Not Found</h1>
+    <div class="error-page flex items-center justify-center min-h-[60vh]">
+      <Card class="h-[400px] text-center items-center justify-center">
+        <h1 class="text-3xl font-semibold mb-5">404 - Page Not Found</h1>
         <p>The page you're looking for doesn't exist or has been moved.</p>
       </Card>
     </div>
@@ -35,18 +35,5 @@ useSeoMeta({
 });
 </script>
 
-<style lang="scss">
-.error-page {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 60vh;
-
-  .card {
-    height: 400px;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-  }
-}
+<style>
 </style>

@@ -24,7 +24,7 @@
 <script
  setup
  lang="ts">
-import {ref, watchEffect} from 'vue';
+import { ref, computed, watchEffect } from 'vue';
 
 const props = defineProps({
   message: {

@@ -10,7 +10,6 @@ export default {
         'main': 'var(--main-color)',
         'accent': 'var(--accent-color)',
         'bg': 'var(--bg-color)',
-        'modal-bg': 'var(--modal-bg-color)',
         'modal-body': 'var(--modal-body-color)',
         'card-bg': 'var(--card-bg-color)',
         'list-item-bg': 'var(--list-item-bg-color)',

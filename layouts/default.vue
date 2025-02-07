@@ -1,5 +1,5 @@
 <template>
-  <div class="page-content1 flex flex-wrap max-w-full mx-auto relative 2xl:max-w-[1920px] 2xl:mx-auto 2xl:relative">
+  <div class="page-content flex flex-wrap max-w-full mx-auto relative 2xl:max-w-[1920px] 2xl:mx-auto 2xl:relative">
     <Sidebar/>
     <transition name="toast-fade">
       <Toast
@@ -9,11 +9,11 @@
        :duration="3000"
       />
     </transition>
-    <div class="main-content">
-      <div class="content">
+    <div class="main-content h-screen md:w-[calc(100%-250px)] fixed md:left-[250px] p-3 md:top-0 md:pt-5 md:pr-4 overflow-y-auto 2xl:absolute">
+      <div class="content bg-card-bg max-sm:p-3 p-5 rounded-lg min-h-screen md:min-h-full">
         <template v-if="!uiStore.state.isAuthLoading">
           <SiteHeader/>
-          <main/>
+          <main class="block"/>
           <slot/>
 
           <template v-if="isAddAccountModalOpen">

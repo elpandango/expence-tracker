@@ -40,5 +40,4 @@ const uiStore = useUIStore();
 </script>
 
 <style>
-@import '~/assets/scss/global.scss';
 </style>

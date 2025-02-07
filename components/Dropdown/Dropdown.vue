@@ -9,7 +9,7 @@
      :class="[{'border-stone-200': !selectedOption?.label}, size, {'!border-blue-500': isOpen}]">
       <span class="flex-1 flex-nowrap">{{ selectedOption ? selectedOption.label : placeholder }}</span>
       <svg
-       class="dropdown-arrow absolute right-2 top-[50%] transition duration-300 -translate-y-1/2 rotate-0"
+       class="dropdown-arrow absolute right-2 top-[50%] transition-all duration-300 -translate-y-1/2 rotate-0"
        :class="{'!rotate-180': isOpen}"
        width="10"
        height="10"
@@ -27,7 +27,7 @@
       <li
        v-for="option in options"
        :key="option.value"
-       class="dropdown-item transition duration-200 flex items-center cursor-pointer py-2 px-3 hover:bg-list-item-bg active:bg-list-item-bg"
+       class="dropdown-item transition-all duration-200 flex items-center cursor-pointer py-2 px-3 hover:bg-list-item-bg active:bg-list-item-bg"
        :class="{ selected: option.value === selectedOption?.value }"
        @click="selectOption(option)"
       >

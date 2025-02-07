@@ -50,5 +50,5 @@ const handleLocaleChange = (newLocale) => {
 };
 </script>
 
-<style lang="scss">
+<style>
 </style>

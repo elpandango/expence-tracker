@@ -7,7 +7,6 @@
 
     <Accordion
      v-if="financeStore.accountsList && financeStore.accountsList.length > 0"
-     type="basic"
      class="mb-6">
       <template #header>
         <div class="link-text">{{ $t('components.transactionsPage.filtersTitle') }}</div>

@@ -10,42 +10,42 @@
       <div class="sidebar-menu flex flex-wrap w-full">
         <NuxtLink
          to="/"
-         class="menu-link flex w-full h-9 items-center px-4 transition duration-300 rounded-md font-medium text-md cursor-pointer hover:bg-card-bg hover:text-color-600 .active:bg-card-bg .active:text-color-600 router-link-active:bg-card-bg router-link-active:text-accent"
+         class="menu-link flex w-full h-9 items-center px-4 transition-all duration-300 rounded-md font-medium text-md cursor-pointer hover:bg-card-bg hover:text-color-600 .active:bg-card-bg .active:text-color-600 router-link-active:bg-card-bg router-link-active:text-accent"
          :class="{'bg-card-bg text-accent': $route.path === '/' }">
           <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">home</span>
           {{ $t('components.menuList.dashboard') }}
         </NuxtLink>
         <NuxtLink
          to="/accounts"
-         class="menu-link flex w-full h-9 items-center px-4 transition duration-300 rounded-md font-medium text-md cursor-pointer hover:bg-card-bg hover:text-color-600 .active:bg-card-bg .active:text-color-600 router-link-active:bg-card-bg router-link-active:text-accent"
+         class="menu-link flex w-full h-9 items-center px-4 transition-all duration-300 rounded-md font-medium text-md cursor-pointer hover:bg-card-bg hover:text-color-600 .active:bg-card-bg .active:text-color-600 router-link-active:bg-card-bg router-link-active:text-accent"
          :class="{'bg-card-bg text-accent': $route.path === '/accounts' }">
           <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">credit_card</span>
           {{ $t('components.menuList.myCards') }}
         </NuxtLink>
         <NuxtLink
          to="/transactions"
-         class="menu-link flex w-full h-9 items-center px-4 transition duration-300 rounded-md font-medium text-md cursor-pointer hover:bg-card-bg hover:text-color-600 .active:bg-card-bg .active:text-color-600 router-link-active:bg-card-bg router-link-active:text-accent"
+         class="menu-link flex w-full h-9 items-center px-4 transition-all duration-300 rounded-md font-medium text-md cursor-pointer hover:bg-card-bg hover:text-color-600 .active:bg-card-bg .active:text-color-600 router-link-active:bg-card-bg router-link-active:text-accent"
          :class="{'bg-card-bg text-accent': $route.path === '/transactions' }">
           <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">swap_horiz</span>
           {{ $t('components.menuList.transactions') }}
         </NuxtLink>
         <NuxtLink
          to="/statistics"
-         class="menu-link flex w-full h-9 items-center px-4 transition duration-300 rounded-md font-medium text-md cursor-pointer hover:bg-card-bg hover:text-color-600 .active:bg-card-bg .active:text-color-600 router-link-active:bg-card-bg router-link-active:text-accent"
+         class="menu-link flex w-full h-9 items-center px-4 transition-all duration-300 rounded-md font-medium text-md cursor-pointer hover:bg-card-bg hover:text-color-600 .active:bg-card-bg .active:text-color-600 router-link-active:bg-card-bg router-link-active:text-accent"
          :class="{'bg-card-bg text-accent': $route.path === '/statistics' }">
           <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">bar_chart</span>
           {{ $t('components.menuList.statistics') }}
         </NuxtLink>
         <NuxtLink
          to="/profile"
-         class="menu-link flex w-full h-9 items-center px-4 transition duration-300 rounded-md font-medium text-md cursor-pointer hover:bg-card-bg hover:text-color-600 .active:bg-card-bg .active:text-color-600 router-link-active:bg-card-bg router-link-active:text-accent"
+         class="menu-link flex w-full h-9 items-center px-4 transition-all duration-300 rounded-md font-medium text-md cursor-pointer hover:bg-card-bg hover:text-color-600 .active:bg-card-bg .active:text-color-600 router-link-active:bg-card-bg router-link-active:text-accent"
          :class="{'bg-card-bg text-accent': $route.path === '/profile' }">
           <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">account_circle</span>
           {{ $t('components.menuList.profile') }}
         </NuxtLink>
 
         <button
-         class="menu-link flex w-full h-9 items-center px-4 transition duration-300 rounded-md font-medium text-md cursor-pointer hover:bg-card-bg hover:text-color-600 .active:bg-card-bg .active:text-color-600 router-link-active:bg-card-bg router-link-active:text-accent"
+         class="menu-link flex w-full h-9 items-center px-4 transition-all duration-300 rounded-md font-medium text-md cursor-pointer hover:bg-card-bg hover:text-color-600 .active:bg-card-bg .active:text-color-600 router-link-active:bg-card-bg router-link-active:text-accent"
          @click="handleNewExpense">
           <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">attach_money</span>
           {{ $t('components.menuList.addExpense') }}
@@ -53,7 +53,7 @@
 
         <NuxtLink
          to="/categories"
-         class="menu-link flex w-full h-9 items-center px-4 transition duration-300 rounded-md font-medium text-md cursor-pointer hover:bg-card-bg hover:text-color-600 .active:bg-card-bg .active:text-color-600 router-link-active:bg-card-bg router-link-active:text-accent"
+         class="menu-link flex w-full h-9 items-center px-4 transition-all duration-300 rounded-md font-medium text-md cursor-pointer hover:bg-card-bg hover:text-color-600 .active:bg-card-bg .active:text-color-600 router-link-active:bg-card-bg router-link-active:text-accent"
          :class="{'bg-card-bg text-accent': $route.path === '/categories' }">
           <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">category</span>
           {{ $t('components.menuList.categories') }}
@@ -62,7 +62,7 @@
     </div>
     <div class="bottom-block">
       <div
-       class="menu-link flex w-full h-9 items-center px-4 transition duration-300 rounded-md font-medium text-md cursor-pointer hover:bg-card-bg hover:text-color-600 .active:bg-card-bg .active:text-color-600 router-link-active:bg-card-bg router-link-active:text-accent"
+       class="menu-link flex w-full h-9 items-center px-4 transition-all duration-300 rounded-md font-medium text-md cursor-pointer hover:bg-card-bg hover:text-color-600 .active:bg-card-bg .active:text-color-600 router-link-active:bg-card-bg router-link-active:text-accent"
        @click="toggleTheme">
         <ClientOnly>
           <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">{{ isDark ? 'light_mode' : 'dark_mode' }}</span>

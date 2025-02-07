@@ -31,7 +31,7 @@ const props = defineProps({
 });
 
 const buttonClasses = computed(() => {
-  const baseClasses = 'font-semibold text-sm rounded transition duration-300 min-w-[90px]';
+  const baseClasses = 'font-semibold text-sm rounded transition-all duration-300 min-w-[90px]';
 
   let sizeClasses;
   switch (props.size) {

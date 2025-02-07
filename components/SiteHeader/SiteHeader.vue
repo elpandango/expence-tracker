@@ -43,7 +43,7 @@
     </div>
 
     <div
-     class="mobile-menu flex sm:hidden md:hidden flex-col items-start shadow-lg bg-bg transition duration-300 border-[1px] border-stone-200 dark:border-neutral-600 absolute h-[calc(100vh-80px)] top-[79px] right-2.5 left-2.5 sm:w-[250px] sm:left-auto"
+     class="mobile-menu flex sm:hidden md:hidden flex-col items-start shadow-lg bg-bg transition-all duration-300 border-[1px] border-stone-200 dark:border-neutral-600 absolute h-[calc(100vh-80px)] top-[79px] right-2.5 left-2.5 sm:w-[250px] sm:left-auto"
      :class="{'hidden md:block': !menuOpen}">
       <div class="user-info flex w-full mb-5 pt-4 pr-2.5 pb-0 pl-2.5">
         <img

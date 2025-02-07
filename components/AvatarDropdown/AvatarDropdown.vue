@@ -20,13 +20,13 @@
      class="dropdown-menu absolute rounded-xl shadow-lg bg-card-bg top-[50px] right-0 w-[150px] p-2 px-1 z-[1000] flex flex-wrap gap-0.5">
       <NuxtLink
        to="/profile"
-       class="flex w-full items-center cursor-pointer no-underline py-1.5 transition duration-300 hover:bg-list-item-bg"
+       class="flex w-full items-center cursor-pointer no-underline py-1.5 transition-all duration-300 hover:bg-list-item-bg"
        @click="closeMenu">
         <span class="icon material-symbols-outlined mr-3">account_circle</span>
         {{ $t('components.menuList.profile') }}
       </NuxtLink>
       <div
-       class="flex w-full items-center cursor-pointer no-underline py-1.5 transition duration-300 hover:bg-list-item-bg"
+       class="flex w-full items-center cursor-pointer no-underline py-1.5 transition-all duration-300 hover:bg-list-item-bg"
        @click="handleLogout">
         <span class="icon material-symbols-outlined mr-3">logout</span>
         Logout
