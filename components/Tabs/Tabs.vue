@@ -29,7 +29,7 @@
 <script setup>
 import {ref} from 'vue';
 
-const props = defineProps({
+const {tabs} = defineProps({
   tabs: {
     type: Array,
     default: () => ([])

@@ -5,8 +5,8 @@ export default {
                 method: 'POST',
                 body: payload,
             });
-        } catch (error: any) {
-            const message = error?.response?._data?.message || 'Login failed';
+        } catch (error: unknown) {
+            const message = error instanceof Error ? error?.response?._data?.message : 'Login failed';
             throw new Error(message);
         }
     },
@@ -16,8 +16,8 @@ export default {
             return await $fetch('/api/logout', {
                 method: 'POST',
             });
-        } catch (error: any) {
-            const message = error?.response?._data?.message || 'Logout failed';
+        } catch (error: unknown) {
+            const message = error instanceof Error ? error?.response?._data?.message : 'Logout failed';
             throw new Error(message);
         }
     },
@@ -28,8 +28,8 @@ export default {
                 method: 'POST',
                 body: payload,
             });
-        } catch (error: any) {
-            const message = error?.response?._data?.message || 'Registration failed';
+        } catch (error: unknown) {
+            const message = error instanceof Error ? error?.response?._data?.message : 'Registration failed';
             throw new Error(message);
         }
     },
@@ -39,8 +39,8 @@ export default {
             return await $fetch('/api/me', {
                 method: 'GET',
             });
-        } catch (error: any) {
-            const message = error?.response?._data?.message || 'Not Authorized';
+        } catch (error: unknown) {
+            const message = error instanceof Error ? error?.response?._data?.message : 'Not Authorized';
             throw new Error(message);
         }
     },

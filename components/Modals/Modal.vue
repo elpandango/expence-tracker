@@ -39,7 +39,7 @@
  setup
  lang="ts">
 
-const props = defineProps({
+const _props = defineProps({
   modelValue: {
     type: Boolean,
     required: true

@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
 import {TransactionModel} from "~/server/models/TransactionModel";
 import {AccountModel} from "~/server/models/AccountModel";
+import type {ITransaction} from "~/server/interfaces/transaction";
 
-export const updateTransaction = async (updatedTransaction: any, id: string, userId: string) => {
+export const updateTransaction = async (updatedTransaction: ITransaction, id: string, userId: string) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     throw createError({statusCode: 400, message: "Invalid transaction ID format"});
   }

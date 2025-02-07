@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
 
   const query = getQuery(event);
   const {type, top = 5, startDate, endDate, chartType} = query;
-
+// eslint-disable-next-line
   const mongoQuery: any = {userId};
 
   if (startDate || endDate) {

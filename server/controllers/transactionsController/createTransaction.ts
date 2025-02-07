@@ -1,7 +1,8 @@
 import {TransactionModel} from "~/server/models/TransactionModel";
 import {AccountModel} from "~/server/models/AccountModel";
+import type {ITransaction} from "~/server/interfaces/transaction";
 
-export const createTransaction = async (transactionData: any, userId: string) => {
+export const createTransaction = async (transactionData: ITransaction, userId: string) => {
   const {accountId, type, amount, currency, description, date, category, relatedAccountId} = transactionData;
 
   if (!accountId || !type || amount === null || amount === undefined || !currency) {

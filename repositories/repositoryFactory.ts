@@ -5,6 +5,7 @@ import ChartsRepository from "~/repositories/ChartsRepository";
 import TransactionsRepository from "~/repositories/TransactionsRepository";
 import AccountRepository from "~/repositories/AccountRepository";
 
+// eslint-disable-next-line
 const repositories: Record<string, any> = {
     'Auth': AuthRepository,
     'User': UserRepository,

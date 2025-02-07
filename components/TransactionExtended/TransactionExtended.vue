@@ -48,12 +48,12 @@
            class="actions-list flex flex-col items-start rounded-md absolute z-10 right-[10px] bottom-full bg-card-bg dark:border-[1px] border-stone-200 dark:border-neutral-600 shadow-xl p-1">
             <button
              class="action-btn py-1.5 px-2.5 w-full cursor-pointer text-left whitespace-nowrap transition-all duration-300 hover:bg-bg"
-             @click="$emit('edit-clicked')">
+             @click="emit('edit-clicked')">
               {{ $t(`components.modalsContent.addEditTransactionModal.transactionEditText`) }}
             </button>
             <button
              class="action-btn py-1.5 px-2.5 w-full cursor-pointer text-left whitespace-nowrap transition-all duration-300 hover:bg-bg"
-             @click="$emit('delete-clicked')">
+             @click="emit('delete-clicked')">
               {{ $t(`components.modalsContent.addEditTransactionModal.transactionDeleteText`) }}
             </button>
           </div>
@@ -70,9 +70,10 @@
 import {ref} from "vue";
 import {useCurrencyFormatter} from "~/use/useCurrencyFormatter";
 
-const props = defineProps({
+const { transaction, tag, showActions } = defineProps({
   transaction: {
-    type: Object
+    type: Object,
+    default: () => ({})
   },
   tag: {
     type: String,
@@ -96,10 +97,10 @@ const handleClickOutside = (event: event) => {
 };
 
 const categoryName = computed(() => {
-  if (props.transaction?.type === 'income') {
+  if (transaction?.type === 'income') {
     return 'Deposit';
   } else {
-    return props.transaction?.category?.name;
+    return transaction?.category?.name;
   }
 });
 

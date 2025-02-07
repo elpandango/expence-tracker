@@ -86,7 +86,7 @@ const handleLogin = async (user: { email: string; password: string }) => {
   }
 };
 
-const handleRegister = async (user: any) => {
+const handleRegister = async (user: {name: string, lastName: string, email: string, password: string, repeatPassword: string}) => {
   try {
     await authStore.register(user);
   } catch (error) {

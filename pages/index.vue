@@ -87,6 +87,7 @@ const financeStore = useFinanceStore();
 const transactions = ref([]);
 const isHighchartsLoaded = ref(false);
 const topChartIsLoaded = ref(false);
+// eslint-disable-next-line
 let HighchartsComponent: any = null;
 const chartConfig = ref({});
 
@@ -104,6 +105,7 @@ const fetchTransactions = async (query = '') => {
   transactions.value = financeStore.transactions;
 };
 
+// eslint-disable-next-line
 const updateParams = async (newParams: Record<string, any>) => {
   financeStore.setLoading('transactions', true);
 
@@ -111,11 +113,13 @@ const updateParams = async (newParams: Record<string, any>) => {
    Object.entries(newParams).filter(([_, value]) => value !== '')
   );
 
-  for (const key of Object.keys(params.value)) {
-    if (!(key in filteredParams) && key !== 'startDate' && key !== 'endDate') {
-      delete params.value[key];
+  //filtering
+  params.value = Object.keys(params.value).reduce((acc, key) => {
+    if (key === 'startDate' || key === 'endDate' || key in filteredParams) {
+      acc[key] = params.value[key];
     }
-  }
+    return acc;
+  }, {});
 
   Object.assign(params.value, filteredParams);
 
@@ -123,7 +127,7 @@ const updateParams = async (newParams: Record<string, any>) => {
   financeStore.setLoading('transactions', false);
 };
 
-const handleDropdownChanged = async (option: any) => {
+const handleDropdownChanged = async (option: { value: number | string; label: string }) => {
   const newParams: Record<string, string> = {};
 
   if (option.value) {
