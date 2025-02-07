@@ -4,7 +4,7 @@
       <ul class="list-none flex p-0 m-0">
         <li class="flex justify-center items-center mx-1">
           <BaseButton
-           class="w-16 md:w-24"
+           class="w-5 md:w-24 min-w-[70px] md:min-w-[90px]"
            size="medium"
            :disabled="!props?.data?.hasPrevPage"
            @click="prevPage"
@@ -18,6 +18,7 @@
          class="flex justify-center items-center mx-1">
           <BaseButton
            size="medium"
+           class="w-5 md:w-24 min-w-[70px] md:min-w-[90px]"
            :aria-label="'Go to page 1'"
            :variant="props?.data?.currentPage === 1 ? 'default' : 'transparent'"
            @click="gotoPage(1)"
@@ -27,7 +28,7 @@
         </li>
         <li
          v-if="pagesToShow[0] > 2"
-         class="inline-block px-2 text-gray-400">...
+         class="inline-flex items-center px-2 text-gray-400">...
         </li>
 
         <li
@@ -37,6 +38,7 @@
         >
           <BaseButton
            size="medium"
+           class="w-3 md:w-24 min-w-[40px] md:min-w-[90px]"
            :aria-label="`Go to page ${page}`"
            :variant="props?.data?.currentPage === page ? 'default' : 'transparent'"
            @click="gotoPage(page)"
@@ -47,13 +49,14 @@
 
         <li
          v-if="pagesToShow[pagesToShow.length - 1] < props?.data?.lastPage - 1"
-         class="inline-block px-2 text-gray-400">...
+         class="inline-flex items-center px-2 text-gray-400">...
         </li>
         <li
          v-if="pagesToShow[pagesToShow.length - 1] !== props?.data?.lastPage"
          class="flex justify-center items-center mx-1">
           <BaseButton
            size="medium"
+           class="w-3 md:w-24 min-w-[40px] md:min-w-[90px]"
            :aria-label="`Go to page ${props?.data?.lastPage}`"
            :variant="props?.data?.currentPage === props?.data?.lastPage ? 'default' : 'transparent'"
            @click="gotoPage(props?.data?.lastPage)"
@@ -64,7 +67,7 @@
 
         <li class="flex justify-center items-center mx-1">
           <BaseButton
-           class="w-16 md:w-24"
+           class="w-5 md:w-24 min-w-[70px] md:min-w-[90px]"
            size="medium"
            :disabled="!props?.data?.hasNextPage"
            @click="nextPage"
