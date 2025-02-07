@@ -37,7 +37,7 @@ export default defineEventHandler(async (event) => {
 
   if (startDate || endDate) {
     const start = startDate ? new Date(startDate) : new Date(0);
-    let end = endDate ? new Date(endDate) : new Date();
+    const end = endDate ? new Date(endDate) : new Date();
     end.setHours(23, 59, 59, 999);
 
     query.date = {$gte: start, $lte: end};

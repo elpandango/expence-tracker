@@ -1,6 +1,5 @@
-import { defineEventHandler } from "h3";
+import { defineEventHandler, getCookie  } from "h3";
 import { AccountModel } from "~/server/models/AccountModel";
-import { getCookie } from "h3";
 
 export default defineEventHandler(async (event) => {
   const userId = getCookie(event, "userId");

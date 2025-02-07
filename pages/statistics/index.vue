@@ -1,11 +1,11 @@
 <template>
-  <div class="charts-page">
+  <div class="charts-page max-w-4xl lg:max-w-screen-lg m-auto">
     <h1>{{ $t('components.statisticsPage.pageTitleText') }}</h1>
 
-    <div class="charts">
-      <div class="chart-row">
+    <div class="charts w-full flex flex-wrap gap-5">
+      <div class="w-full flex gap-5 flex-wrap md:flex-nowrap">
         <CardWithDate
-         class="chart-wrapper w50p"
+         class="chart-wrapper w-full sm:w-1/2"
          @date-changed="handleDateChanged('expenses_vs_incomes', $event)">
           <template v-if="isHighchartsLoaded && chartsLoadingState.expenses_vs_incomes">
             <HighchartsComponent
@@ -19,7 +19,7 @@
         </CardWithDate>
 
         <CardWithDate
-         class="chart-wrapper w50p"
+         class="chart-wrapper w-full sm:w-1/2"
          @date-changed="handleDateChanged('top5', $event)">
           <template v-if="isHighchartsLoaded && chartsLoadingState.top5">
             <HighchartsComponent
@@ -33,9 +33,9 @@
         </CardWithDate>
       </div>
 
-      <div class="chart-row">
+      <div class="w-full flex gap-5 flex-wrap md:flex-nowrap">
         <CardWithDate
-         class="chart-wrapper w50p"
+         class="chart-wrapper w-full sm:w-1/2"
          @date-changed="handleDateChanged('categories', $event)">
           <template v-if="isHighchartsLoaded && chartsLoadingState.categories">
             <HighchartsComponent
@@ -49,7 +49,7 @@
         </CardWithDate>
 
         <CardWithDate
-         class="chart-wrapper w50p"
+         class="chart-wrapper w-full sm:w-1/2"
          @date-changed="handleDateChanged('total_expenses', $event)">
           <template v-if="isHighchartsLoaded && chartsLoadingState.total_expenses">
             <HighchartsComponent
@@ -79,7 +79,7 @@ const chartStore = useChartStore();
 
 const isHighchartsLoaded = ref(false);
 let HighchartsComponent = null;
-let chartConfigs = reactive({
+const chartConfigs = reactive({
   expenses_vs_incomes: null,
   categories: null,
   top5: null,
@@ -151,49 +151,5 @@ onMounted(async () => {
 
 </script>
 
-<style
- lang="scss">
-.charts-page {
-  max-width: 1024px;
-  margin: 0 auto;
-
-  @media only screen and (max-width: 1366px) {
-    max-width: 860px;
-  }
-
-  .charts {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-
-  .chart-row {
-    width: 100%;
-    display: flex;
-    gap: 20px;
-
-    @media only screen and (max-width: 767px) {
-      flex-wrap: wrap;
-    }
-  }
-
-  .chart-wrapper {
-    display: flex;
-    width: 100%;
-
-    &.w50p {
-      width: 49%;
-
-      @media only screen and (max-width: 767px) {
-        width: 100%;
-      }
-    }
-
-    & > div:not(.chart-wrapper) {
-      width: 100%;
-      min-height: 300px;
-    }
-  }
-}
+<style>
 </style>

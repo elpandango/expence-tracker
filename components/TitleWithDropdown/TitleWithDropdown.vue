@@ -1,13 +1,13 @@
 <template>
-  <div class="title-with-dropdown">
-    <h3 class="title">
-      <slot></slot>
+  <div class="title-with-dropdown flex items-center justify-between mb-5">
+    <h3 class="mb-0">
+      <slot/>
     </h3>
     <Dropdown
      v-model="selected"
      :options="options"
      :placeholder=props.placeholder
-     @update:modelValue="handleDropdownSelected"
+     @update:model-value="handleDropdownSelected"
     />
   </div>
 </template>
@@ -36,17 +36,5 @@ const handleDropdownSelected = (option: any) => {
 };
 </script>
 
-<style
- scoped
- lang="scss">
-.title-with-dropdown {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-
-  .title {
-    margin-bottom: 0;
-  }
-}
+<style>
 </style>

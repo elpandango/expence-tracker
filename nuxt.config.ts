@@ -13,15 +13,6 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  // vite: {
-  //   css: {
-  //     preprocessorOptions: {
-  //       scss: {
-  //         additionalData: '@import "@/assets/scss/_variables.scss";'
-  //       }
-  //     }
-  //   }
-  // },
   modules: [['@nuxtjs/google-fonts', {
     families: {
       Montserrat: {
@@ -31,6 +22,8 @@ export default defineNuxtConfig({
     }
   }],
     '@pinia/nuxt',
+    '@nuxtjs/tailwindcss',
+    '@nuxt/eslint'
   ],
   plugins: ['~/plugins/router.ts'],
   server: {

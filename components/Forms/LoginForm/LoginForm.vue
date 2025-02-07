@@ -1,28 +1,26 @@
 <template>
-  <div class="auth-form">
-    <form @keydown.enter="handleLogin">
-      <div class="form-row">
-        <FloatLabelInput
-         v-model="user.email"
-         size="medium"
-         type="text"
-         label="Email"/>
-      </div>
-      <div class="form-row">
-        <FloatLabelInput
-         v-model="user.password"
-         size="medium"
-         type="password"
-         label="Password"/>
-      </div>
-      <div class="form-row btn-block">
-        <BaseButton
-         @click="handleLogin"
-         size="big">Login
-        </BaseButton>
-      </div>
-    </form>
-  </div>
+  <form @keydown.enter="handleLogin">
+    <div class="w-full mb-4">
+      <BaseInput
+       v-model="user.email"
+       size="medium"
+       type="text"
+       label="Email"/>
+    </div>
+    <div class="w-full mb-4">
+      <BaseInput
+       v-model="user.password"
+       size="medium"
+       type="password"
+       label="Password"/>
+    </div>
+    <div class="w-full flex justify-start">
+      <BaseButton
+       size="medium"
+       @click="handleLogin">Login
+      </BaseButton>
+    </div>
+  </form>
 </template>
 
 <script
@@ -30,8 +28,8 @@
  lang="ts">
 
 import {reactive} from 'vue';
-import FloatLabelInput from "~/components/Forms/Inputs/FloatLabelInput.vue";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
+import BaseInput from "~/components/Forms/Inputs/BaseInput.vue";
 
 const emit = defineEmits(['login']);
 
@@ -45,7 +43,5 @@ const handleLogin = () => {
 };
 </script>
 
-<style
- lang="scss">
-
+<style>
 </style>

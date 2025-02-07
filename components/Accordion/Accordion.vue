@@ -1,23 +1,23 @@
 <template>
   <div
-   class="accordion"
-   :class="[{'active': isActive}, type]">
-    <div class="accordion-inner-content">
+   class="accordion w-full overflow-hidden transition-all duration-300 shadow-xl rounded-xl dark:border-[1px] border-stone-200 dark:border-neutral-600 group"
+   :class="[{'active': isActive}]">
+    <div class="accordion-inner-content relative">
       <div
-       @click="accordionTrigger"
        :style="{height: props.height}"
-       class="header-block"
-       :class="align">
+       class="header-block bg-bg px-5 flex items-center justify-between cursor-pointer h-[50px]"
+       :class="align"
+       @click="accordionTrigger">
         <slot name="header">
           <div class="value">
             default value
           </div>
         </slot>
-        <div v-if="!noCaret"
-             class="icon-wrap">
+        <div
+         v-if="!noCaret"
+         class="icon-wrap flex relative w-[18px] h-[18px] cursor-pointer ">
           <svg
-           class="dropdown-arrow"
-           :class="{'is-active': isActive}"
+           class="dropdown-arrow absolute top-1/2 transform -translate-y-1/2 right-2 transition-transform duration-300 group-[.active]:rotate-180"
            width="10"
            height="10"
            viewBox="0 0 10 10"
@@ -30,11 +30,11 @@
       </div>
       <div
        :style="{maxHeight: isActive ? computedHeight  + 'px' : '0px'}"
-       class="content-block">
+       class="content-block overflow-hidden max-h-0 transition-all duration-300 rounded-b-lg ">
         <div
-         class="content-items-list"
-         ref="contentBlock">
-          <div class="content-item">
+         ref="contentBlock"
+         class="content-items-list">
+          <div class="content-item py-4 px-5 ">
             <slot name="accordion-body">default body</slot>
           </div>
         </div>
@@ -43,17 +43,15 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script
+ setup
+ lang="ts">
 import {computed, onMounted, ref} from 'vue';
 
 const props = defineProps({
   height: {
     type: String,
     default: '50px'
-  },
-  type: {
-    type: String,
-    default: ''
   },
   isActiveOnInit: {
     type: Boolean,
@@ -76,7 +74,7 @@ const computedHeight = computed(() => {
   return contentBlock.value ? contentBlock.value.offsetHeight : 0;
 });
 
-const accordionTrigger = (e: any) => {
+const accordionTrigger = (e: event) => {
   e.stopPropagation();
   isActive.value = !isActive.value;
 };
@@ -88,7 +86,5 @@ onMounted(() => {
 });
 </script>
 
-<style
- src="./styles.scss"
- lang="scss">
+<style>
 </style>

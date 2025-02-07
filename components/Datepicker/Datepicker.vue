@@ -1,44 +1,54 @@
 <template>
   <div
-   class="datepicker"
-   ref="datepicker">
+   ref="datepicker"
+   class="w-full relative">
     <input
      type="text"
+     class="w-full px-4 border-[1px] border-stone-200 dark:border-neutral-600 bg-transparent dark:bg-gray-800 text-gray-900 dark:text-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 dark:focus:ring-blue-500"
      :value="formattedDate"
-     @click="toggleCalendar"
      :style="{height: height}"
      readonly
      :placeholder="placeholder"
-    />
+     @click="toggleCalendar"
+    >
 
     <div
      v-if="calendarVisible"
-     class="calendar">
-      <div class="calendar-header">
+     class="bg-card-bg mt-2 border-[1px] border-stone-200 dark:border-neutral-600 p-2.5 rounded-md">
+      <div class="flex items-center justify-between w-full mb-2.5">
         <BaseButton
-         @click="prevMonth"
          variant="transparent"
-         size="small">Prev
+         size="smallest"
+         @click="prevMonth">Prev
         </BaseButton>
-        <span>{{showCurrentMonth }} {{ currentYear }}</span>
+        <span>{{ showCurrentMonth }} {{ currentYear }}</span>
         <BaseButton
-         @click="nextMonth"
          variant="transparent"
-         size="small">Next
+         size="smallest"
+         @click="nextMonth">Next
         </BaseButton>
       </div>
 
-      <div class="calendar-weekdays">
-        <div v-for="weekday in weekdays" :key="weekday" class="calendar-weekday">
+      <div class="grid grid-cols-7 gap-1 mb-5">
+        <div
+         v-for="weekday in weekdays"
+         :key="weekday"
+         class="text-center p-1 text-sm font-bold cursor-default transition-all duration-300">
           {{ weekday }}
         </div>
       </div>
 
-      <div class="calendar-days">
+      <div class="grid grid-cols-7 gap-1">
         <div
          v-for="(day, index) in daysWithOffset"
          :key="index"
-         :class="['calendar-day', { empty: !day, selected: isSelected(day), disabled: day && isDisabled(day) }]"
+         :class="[
+      'p-2 text-center cursor-pointer transition-all duration-300 hover:bg-blue-600 hover:text-white',
+      {
+        'bg-white text-gray-700 hover:bg-white !cursor-not-allowed': !day,
+        'bg-blue-600 text-white': isSelected(day),
+        'bg-gray-200 text-gray-400 !cursor-not-allowed hover:bg-gray-200 hover:text-gray-400': day && isDisabled(day)
+      }]"
          @click="() => day && !isDisabled(day) && selectDate(day)"
         >
           {{ day || '' }}
@@ -111,8 +121,7 @@ const maxDateObj = computed(() => (props.maxDate ? new Date(props.maxDate) : nul
 const isDisabled = (day) => {
   const date = new Date(currentYear.value, currentMonth.value, day);
   if (minDateObj.value && date < minDateObj.value) return true;
-  if (maxDateObj.value && date > maxDateObj.value) return true;
-  return false;
+  return maxDateObj.value && date > maxDateObj.value;
 };
 
 watch(() => props.modelValue, (newVal) => {
@@ -175,7 +184,5 @@ onBeforeUnmount(() => {
 });
 </script>
 
-<style
- lang="scss"
- src="./styles.scss">
+<style>
 </style>

@@ -5,7 +5,7 @@
    :src="src"
    :height="height"
    :width="width"
-   :alt="alt"/>
+   :alt="alt">
 </template>
 
 
@@ -23,7 +23,8 @@ const props = defineProps({
     default: 'Image alt'
   },
   cssClass: {
-    type: String
+    type: String,
+    default: ''
   },
   width: {
     type: String,
@@ -40,7 +41,5 @@ const props = defineProps({
 });
 </script>
 
-<style
- scoped
- lang="scss">
+<style>
 </style>

@@ -1,11 +1,12 @@
 <template>
-  <div class="tabs">
-    <ul class="tabs-header">
+  <div class="w-full">
+    <ul class="tabs-header flex m-0 p-0 list-none">
       <li
        v-for="tab in tabs"
        :key="tab.id"
        :data-tab-id="tab.id"
        :class="{ active: activeTab === tab.id }"
+       class="py-2 px-5 cursor-pointer"
        @click="setActiveTab(tab.id)"
       >
         {{ tab.label }}
@@ -19,7 +20,7 @@
        :data-content-id="tab.id"
        :class="{ active: activeTab === tab.id }"
       >
-        <slot :name="tab.slotName"></slot>
+        <slot :name="tab.slotName"/>
       </div>
     </div>
   </div>
@@ -30,7 +31,8 @@ import {ref} from 'vue';
 
 const props = defineProps({
   tabs: {
-    type: Array
+    type: Array,
+    default: () => ([])
   }
 })
 
@@ -42,24 +44,12 @@ const setActiveTab = (tabId) => {
 </script>
 
 <style>
-.tabs {
-  width: 100%;
-}
-.tabs-header {
-  display: flex;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
 .tabs-header li {
-  padding: 10px 20px;
-  cursor: pointer;
   border-bottom: 2px solid transparent;
 }
 
 .tabs-header li.active {
-  border-bottom: 2px solid var(--accent-color);
+  border-bottom: 2px solid rgb(37, 99, 235);
   font-weight: bold;
 }
 

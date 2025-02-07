@@ -2,28 +2,32 @@
   <Teleport to="body">
     <div
      v-if="modelValue"
-     class="modal-overlay"
+     class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto"
      @keydown.esc="closeModal"
-     @click:outside="clickOutside">
+     @click:outside="clickOutside"
+    >
       <div
-       class="modal-background"
-       @click="closeModal"></div>
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2 class="modal-title">
-            <slot name="header"></slot>
+       class="fixed inset-0 bg-modal-bg opacity-50"
+       @click="closeModal"
+      />
+      <div class="flex flex-col bg-modal-body rounded-lg shadow-lg w-full max-w-[90%] md:max-w-lg relative z-10 max-h-[94vh] overflow-hidden">
+        <div class="flex items-start justify-between p-4 border-b border-stone-200 dark:border-neutral-600">
+          <h2 class="text-lg font-medium">
+            <slot name="header" />
           </h2>
           <button
+           class="text-stone-500 bg-none border-none cursor-pointer transition-colors duration-200 text-2xl leading-[16px] w-9"
            @click="closeModal"
-           class="modal-close-button">&times;
+          >
+            &times;
           </button>
         </div>
-        <div class="modal-body">
-          <slot name="body"></slot>
+        <div class="flex-1 p-4 overflow-y-auto">
+          <slot name="body" />
         </div>
-        <div class="modal-footer">
-          <div class="footer-slot">
-            <slot name="footer"></slot>
+        <div class="flex-shrink-0 p-4 border-t border-stone-200 dark:border-neutral-600 flex justify-end gap-2">
+          <div class="flex gap-2">
+            <slot name="footer" />
           </div>
         </div>
       </div>
@@ -77,97 +81,5 @@ onUnmounted(() => {
 });
 </script>
 
-<style
- scoped
- lang="scss">
-
-.modal-overlay {
-  position: fixed;
-  z-index: 100;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow-y: auto;
-}
-
-.modal-background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--modal-bg-color);
-  opacity: 0.5;
-}
-
-.modal-content {
-  display: flex;
-  flex-direction: column;
-  background-color: var(--modal-body-color);
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: calc(100% - 40px);
-  max-width: 32rem;
-  position: relative;
-  z-index: 10;
-  max-height: 94vh;
-  overflow: hidden;
-}
-
-.modal-title {
-  font-size: 1.125rem;
-  font-weight: 500;
-}
-
-.modal-close-button {
-  color: #6b7280;
-  background: none;
-  border: none;
-  cursor: pointer;
-  transition: color 0.2s;
-  font-size: 30px;
-  line-height: 16px;
-  width: 36px;
-}
-
-.modal-close-button:hover {
-  color: #374151;
-}
-
-.modal-body {
-  flex: 1;
-  padding: 1rem;
-  overflow-y: auto;
-}
-
-.modal-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding: 1rem;
-  border-bottom: 1px solid var(--input-border-color);
-}
-
-
-.modal-header,
-.modal-footer {
-  flex-shrink: 0;
-  padding: 1rem;
-}
-
-.modal-footer {
-  border-top: 1px solid var(--input-border-color);
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.5rem;
-}
-
-.footer-slot {
-  display: flex;
-  gap: 0.5rem;
-}
+<style>
 </style>

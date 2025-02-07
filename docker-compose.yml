@@ -1,6 +1,8 @@
 services:
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     volumes:
@@ -9,3 +11,19 @@ services:
     environment:
       - NODE_ENV=development
     command: ["npm", "run", "dev"]
+    profiles:
+      - development
+
+  app-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    ports:
+      - "8080:3000"
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env
+    command: [ "node", "/app/.output/server/index.mjs" ]
+    profiles:
+      - production

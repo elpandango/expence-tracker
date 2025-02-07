@@ -1,116 +1,116 @@
 <template>
   <Modal
    v-model="modalValue"
-   @update:modelValue="closeModal">
-    <template v-slot:header>
+   @update:model-value="closeModal">
+    <template #header>
       Calculator
     </template>
-    <template v-slot:body>
-      <div class="calculator">
-        <div class="calculator-display">
+    <template #body>
+      <div class="flex flex-col items-center">
+        <div class="mb-5">
           <input
-           type="text"
            v-model="currentValue"
+           type="text"
            readonly
-           class="calculator-display-input"
-          />
+           class="w-full p-2.5 text-2xl text-right rounded-md border-[1px] border-stone-300"
+          >
         </div>
-        <div class="calculator-buttons">
-          <div class="row">
+        <div class="flex flex-col">
+          <div class="flex justify-between mb-2.5 gap-1">
             <button
-             class="calc-btn"
+             class="w-[60px] p-2.5 text-lg border-none rounded-md cursor-pointer bg-gray-200 hover:bg-gray-300 text-center"
              @click="handleInput('7')">7
             </button>
             <button
-             class="calc-btn"
+             class="w-[60px] p-2.5 text-lg border-none rounded-md cursor-pointer bg-gray-200 hover:bg-gray-300 text-center"
              @click="handleInput('8')">8
             </button>
             <button
-             class="calc-btn"
+             class="w-[60px] p-2.5 text-lg border-none rounded-md cursor-pointer bg-gray-200 hover:bg-gray-300 text-center"
              @click="handleInput('9')">9
             </button>
             <button
-             class="calc-btn"
+             class="w-[60px] p-2.5 text-lg border-none rounded-md cursor-pointer bg-gray-200 hover:bg-gray-300 text-center"
              @click="handleOperator('/')">÷
             </button>
           </div>
-          <div class="row">
+          <div class="flex justify-between mb-2.5 gap-1">
             <button
-             class="calc-btn"
+             class="w-[60px] p-2.5 text-lg border-none rounded-md cursor-pointer bg-gray-200 hover:bg-gray-300 text-center"
              @click="handleInput('4')">4
             </button>
             <button
-             class="calc-btn"
+             class="w-[60px] p-2.5 text-lg border-none rounded-md cursor-pointer bg-gray-200 hover:bg-gray-300 text-center"
              @click="handleInput('5')">5
             </button>
             <button
-             class="calc-btn"
+             class="w-[60px] p-2.5 text-lg border-none rounded-md cursor-pointer bg-gray-200 hover:bg-gray-300 text-center"
              @click="handleInput('6')">6
             </button>
             <button
-             class="calc-btn"
+             class="w-[60px] p-2.5 text-lg border-none rounded-md cursor-pointer bg-gray-200 hover:bg-gray-300 text-center"
              @click="handleOperator('*')">×
             </button>
           </div>
-          <div class="row">
+          <div class="flex justify-between mb-2.5 gap-1">
             <button
-             class="calc-btn"
+             class="w-[60px] p-2.5 text-lg border-none rounded-md cursor-pointer bg-gray-200 hover:bg-gray-300 text-center"
              @click="handleInput('1')">1
             </button>
             <button
-             class="calc-btn"
+             class="w-[60px] p-2.5 text-lg border-none rounded-md cursor-pointer bg-gray-200 hover:bg-gray-300 text-center"
              @click="handleInput('2')">2
             </button>
             <button
-             class="calc-btn"
+             class="w-[60px] p-2.5 text-lg border-none rounded-md cursor-pointer bg-gray-200 hover:bg-gray-300 text-center"
              @click="handleInput('3')">3
             </button>
             <button
-             class="calc-btn"
+             class="w-[60px] p-2.5 text-lg border-none rounded-md cursor-pointer bg-gray-200 hover:bg-gray-300 text-center"
              @click="handleOperator('-')">−
             </button>
           </div>
-          <div class="row">
+          <div class="flex justify-between mb-2.5 gap-1">
             <button
-             class="calc-btn"
+             class="w-[60px] p-2.5 text-lg border-none rounded-md cursor-pointer bg-gray-200 hover:bg-gray-300 text-center"
              @click="handleInput('0')">0
             </button>
             <button
-             class="calc-btn"
+             class="w-[60px] p-2.5 text-lg border-none rounded-md cursor-pointer bg-gray-200 hover:bg-gray-300 text-center"
              @click="handleInput('.')">.
             </button>
             <button
-             class="calc-btn"
+             class="w-[60px] p-2.5 text-lg border-none rounded-md cursor-pointer bg-gray-200 hover:bg-gray-300 text-center"
              @click="handlePercent">%
             </button>
             <button
-             class="calc-btn"
+             class="w-[60px] p-2.5 text-lg border-none rounded-md cursor-pointer bg-gray-200 hover:bg-gray-300 text-center"
              @click="handleOperator('+')">+
             </button>
           </div>
-          <div class="row">
+          <div class="flex justify-between mb-2.5 gap-1">
             <button
-             class="calc-btn double-btn"
+             class="w-[126px] p-2.5 text-lg border-none rounded-md cursor-pointer bg-gray-200 hover:bg-gray-300 text-center"
              @click="calculateResult">=
             </button>
             <button
-             @click="clear"
-             class="calc-btn">C
+             class="w-[60px] p-2.5 text-lg border-none rounded-md cursor-pointer bg-gray-200 hover:bg-gray-300 text-center"
+             @click="clear">C
             </button>
           </div>
         </div>
       </div>
     </template>
-    <template v-slot:footer>
+    <template #footer>
       <BaseButton
-       @click="closeModal"
        variant="transparent"
-       size="big">{{ $t('components.buttons.cancelText') }}
+       size="big"
+       @click="closeModal">{{ $t('components.buttons.cancelText') }}
       </BaseButton>
       <BaseButton
-       @click="handleSaveNewAmount"
        variant="green"
-       size="big">{{ $t('components.buttons.saveText') }}
+       size="big"
+       @click="handleSaveNewAmount">{{ $t('components.buttons.saveText') }}
       </BaseButton>
     </template>
   </Modal>
@@ -219,67 +219,5 @@ onMounted(() => {
 });
 </script>
 
-<style
- lang="scss">
-.form-row {
-  margin-bottom: 22px;
-}
-
-.calculator {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-
-  .calculator-display {
-    margin-bottom: 20px;
-  }
-
-  .calculator-display-input {
-    width: 100%;
-    padding: 10px;
-    font-size: 24px;
-    text-align: right;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-
-  .calculator-buttons {
-    display: flex;
-    flex-direction: column;
-
-    .calc-btn {
-      padding: 10px;
-      font-size: 18px;
-      border: none;
-      background-color: #f0f0f0;
-      border-radius: 4px;
-      cursor: pointer;
-      width: 60px;
-      text-align: center;
-
-      &:hover {
-        background-color: #ddd;
-      }
-    }
-
-    .calc-btn.double-btn {
-      width: calc(120px + 5px);
-    }
-
-    .calc-btn.clear-button {
-      width: 100%;
-      background-color: #ff4d4f;
-      color: white;
-    }
-  }
-
-  .row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    gap: 5px;
-  }
-
-}
+<style>
 </style>

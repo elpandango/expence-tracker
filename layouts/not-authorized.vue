@@ -8,7 +8,7 @@
        :duration="3000"
       />
     </transition>
-    <slot></slot>
+    <slot/>
   </div>
 </template>
 

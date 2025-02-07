@@ -1,12 +1,12 @@
 <template>
   <Modal
    v-model="modalValue"
-   @update:modelValue="closeModal">
-    <template v-slot:header>
-      <div class="modal-header header-container">
+   @update:model-value="closeModal">
+    <template #header>
+      <div class="flex flex-wrap">
         <div
-         class="title"
-         v-if="isEditMode">
+         v-if="isEditMode"
+         class="title">
           {{ $t(`components.modalsContent.addEditTransactionModal.editTransactionTitleText`) }}
         </div>
         <div
@@ -18,18 +18,18 @@
         </div>
       </div>
     </template>
-    <template v-slot:body>
+    <template #body>
       <Preloader
-       height="250px"
-       v-if="isLoading"/>
+       v-if="isLoading"
+       height="250px"/>
       <template v-else>
         <form
          v-if="financeStore.accountsList && financeStore.accountsList.length"
-         @submit.prevent
-         class="add-edit-transaction-modal">
-          <div class="form-row">
-            <div class="type-switcher">
-              <div class="dropdown-label">{{
+         class="add-edit-transaction-modal"
+         @submit.prevent>
+          <div class="flex gap-2 mb-5 flex-wrap">
+            <div class="w-full flex flex-wrap gap-3">
+              <div class="w-full text-md">{{
                   $t('components.modalsContent.addEditTransactionModal.transactionTypeLabel')
                 }}
               </div>
@@ -43,8 +43,8 @@
               </BaseButton>
             </div>
           </div>
-          <div class="form-row">
-            <div class="dropdown-label">{{
+          <div class="flex gap-2 mb-5 flex-wrap">
+            <div class="w-full text-md">{{
                 $t('components.modalsContent.addEditTransactionModal.paymentTypeLabel')
               }}
             </div>
@@ -53,11 +53,11 @@
              v-model="selectedAccount"
              :options="accounts"
              type="form-dropdown"
-             size="medium"
+             size="h-[50px]"
              :placeholder="selectAccountPlaceholder"
             />
           </div>
-          <div class="form-row">
+          <div class="flex gap-2 mb-5 flex-wrap">
             <BaseInput
              v-model="transaction.description"
              size="medium"
@@ -66,7 +66,7 @@
              :placeholder="$t('components.modalsContent.addEditTransactionModal.descriptionLabelText')"
              :label="$t('components.modalsContent.addEditTransactionModal.descriptionLabelText')"/>
           </div>
-          <div class="form-row">
+          <div class="flex gap-2 mb-5 flex-wrap">
             <BaseInput
              v-model="transaction.amount"
              :has-icon="true"
@@ -76,24 +76,24 @@
              :error-message="transactionAmountError ? transactionAmountError : ''"
              :placeholder="$t('components.modalsContent.addEditTransactionModal.amountLabelText')"
              :label="$t('components.modalsContent.addEditTransactionModal.amountLabelText')">
-              <template v-slot:icon>
+              <template #icon>
                 <span
-                 class="icon material-symbols-outlined"
+                 class="icon material-symbols-outlined absolute z-20 top-7 right-5 cursor-pointer"
                  @click="handleCalculateClick">calculate</span>
               </template>
             </BaseInput>
           </div>
-          <div class="form-row">
-            <div class="dropdown-label">{{ $t('components.modalsContent.addEditTransactionModal.dateLabelText') }}</div>
+          <div class="flex gap-2 mb-5 flex-wrap">
+            <div class="w-full text-md">{{ $t('components.modalsContent.addEditTransactionModal.dateLabelText') }}</div>
             <Datepicker
+             v-model="transaction.date"
              height="50px"
-             :max-date="new Date().toISOString().substring(0, 10)"
-             v-model="transaction.date"/>
+             :max-date="new Date().toISOString().substring(0, 10)"/>
           </div>
           <div
            v-if="transactionTypeLocal === 'expense'"
-           class="form-row">
-            <div class="dropdown-label">{{
+           class="flex gap-2 mb-5 flex-wrap">
+            <div class="w-full text-md">{{
                 $t('components.modalsContent.addEditTransactionModal.categoryLabelText')
               }}
             </div>
@@ -101,36 +101,36 @@
              v-model="selectedCategory"
              :options="categories"
              type="form-dropdown"
-             size="medium"
+             size="h-[50px]"
             />
           </div>
         </form>
         <div
          v-else
-         class="empty-message">
+         class="empty-message min-h-[250px] flex flex-col justify-center">
           <p>{{ $t('components.modalsContent.addEditTransactionModal.emptyAccountsText') }}</p>
-          <div class="btn-block">
+          <div class="btn-block flex justify-between items-center mt-10">
             <BaseButton
-             @click="goToAccounts"
-             size="medium">{{ $t('components.modalsContent.addEditTransactionModal.goToAccountsBtnText') }}
+             size="medium"
+             @click="goToAccounts">{{ $t('components.modalsContent.addEditTransactionModal.goToAccountsBtnText') }}
             </BaseButton>
             <BaseButton
-             @click="handleCreateTestData"
-             size="medium">{{ $t('components.modalsContent.addEditTransactionModal.generateTestDataBtnText') }}
+             size="medium"
+             @click="handleCreateTestData">{{ $t('components.modalsContent.addEditTransactionModal.generateTestDataBtnText') }}
             </BaseButton>
           </div>
         </div>
       </template>
     </template>
-    <template v-slot:footer>
+    <template #footer>
       <BaseButton
-       @click="closeModal"
        variant="transparent"
-       size="big">{{ $t('components.buttons.cancelText') }}
+       size="big"
+       @click="closeModal">{{ $t('components.buttons.cancelText') }}
       </BaseButton>
       <BaseButton
-       @click="handleSaveTransaction"
-       size="big">
+       size="big"
+       @click="handleSaveTransaction">
 
         {{
           $t(`components.modalsContent.addEditTransactionModal.${isEditMode ? 'editBtnText' : 'saveBtnText'}`)
@@ -354,61 +354,5 @@ onMounted(async () => {
 });
 </script>
 
-
-<style
- lang="scss">
-.add-edit-transaction-modal {
-  .form-row {
-    margin-bottom: 22px;
-  }
-
-  .modal-header.header-container {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  .type {
-    width: 100%;
-  }
-
-  .type-switcher {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-
-    .dropdown-label {
-      width: 100%;
-      font-weight: 400;
-      font-size: 16px;
-    }
-  }
-
-  .type-switcher button {
-    padding: 5px 10px;
-    cursor: pointer;
-  }
-
-  .button {
-    min-width: 110px;
-  }
-
-}
-
-.modal-body {
-  .empty-message {
-    min-height: 250px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    .btn-block {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 40px;
-    }
-  }
-}
-
+<style>
 </style>

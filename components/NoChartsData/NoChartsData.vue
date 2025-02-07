@@ -1,9 +1,9 @@
 <template>
-  <div class="no-data">
+  <div class="no-data h-[400px] flex flex-col items-center justify-center flex-wrap">
     <h3>
       There is no data to display the graph.
     </h3>
-    <p class="info">
+    <p class="text-center">
       Start adding transactions to see visual graphs of your expenses and income.
     </p>
   </div>
@@ -15,15 +15,5 @@
 
 </script>
 
-<style
- scoped
- lang="scss">
-.no-data {
-  height: 400px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-}
+<style>
 </style>

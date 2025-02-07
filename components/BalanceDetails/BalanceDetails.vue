@@ -2,48 +2,60 @@
   <Preloader v-if="uiStore.state.isLoading || financeStore.loadingStates.transactions"/>
   <div
    v-else
-   class="balance-details-block">
-    <div class="total-balance">{{ $t('components.balance.title') }}:</div>
-    <div class="balance-parts">
+   class="w-full">
+    <h2 class="text-xl md:text-2xl font-medium mb-4">{{ $t('components.balance.title') }}:</h2>
+    <div class="mb-4">
       <div
-       class="balance-item"
        v-for="account in financeStore.accountsList"
-       :key="account._id">
-        <div class="balance-details">
-          <span class="account-name">{{ account.name }}</span>
-          <div class="account-type"><strong>{{ account.type }}</strong> {{ account.cardNumber ? `| ${account.cardNumber}` : '' }}</div>
+       :key="account._id"
+       class="border-top-custom flex justify-between items-center text-lg py-2.5">
+        <div>
+          <span>{{ account.name }}</span>
+          <div class="font-medium text-xs"><strong>{{ account.type }}</strong>
+            {{ account.cardNumber ? `| ${account.cardNumber}` : '' }}
+          </div>
         </div>
         <strong>{{ formatCurrency(account.balance, account.currency) }}</strong>
       </div>
     </div>
 
     <template v-if="financeStore.accountsList.length === 0">
-      <p class="info">{{ $t('components.accountsPage.emptyListTitleText') }}</p>
+      <p class="mb-2">{{ $t('components.accountsPage.emptyListTitleText') }}</p>
       <BaseButton
        size="medium"
        @click="handleAddAmount">{{ $t('components.accountsPage.addAccountText') }}
       </BaseButton>
 
-      <p class="mar-t-4">{{ $t('components.accountsPage.emptyAccountsText') }}:</p>
+      <p class="mt-4 mb-2">{{ $t('components.accountsPage.emptyAccountsText') }}:</p>
 
       <BaseButton
+       v-if="!generateTestClicked"
        size="medium"
        @click="handleCreateTestData">{{ $t('components.accountsPage.generateBtnText') }}
       </BaseButton>
+      <div
+       v-else
+       class="w-[170px] h-[44px]">
+        <Preloader
+         height="40px"/>
+      </div>
+
     </template>
 
     <div
-     class="btn-block"
-     v-if="financeStore.accountsList.length > 0">
+     v-if="financeStore.accountsList.length > 0"
+     class="flex justify-between items-center">
       <BaseButton
        size="medium"
        variant="green"
+       class="w-32 md:w-36 text-sm md:text-base whitespace-nowrap"
        @click="handleAddFunds">{{ $t('components.buttons.addFundsText') }}
       </BaseButton>
 
       <BaseButton
        size="medium"
        variant="red"
+       class="w-32 md:w-36 text-sm md:text-base whitespace-nowrap"
        @click="handleNewExpense">{{ $t('components.menuList.addExpense') }}
       </BaseButton>
     </div>
@@ -63,7 +75,9 @@ import BaseButton from "~/components/Buttons/BaseButton.vue";
 const uiStore = useUIStore();
 const financeStore = useFinanceStore();
 const {formatCurrency} = useCurrencyFormatter();
-const { generateTestData } = useGenerateTestData();
+const {generateTestData} = useGenerateTestData();
+
+const generateTestClicked = ref(false);
 
 const handleAddFunds = () => {
   financeStore.resetEditingTransaction();
@@ -81,9 +95,11 @@ const handleNewExpense = () => {
 }
 
 const handleCreateTestData = async () => {
+  generateTestClicked.value = true;
   emitter.emit('ui:startLoading', 'default');
   await generateTestData();
   emitter.emit('ui:stopLoading', 'default');
+  generateTestClicked.value = false;
   window.location.reload();
 };
 
@@ -96,7 +112,5 @@ onMounted(async () => {
 });
 </script>
 
-<style
- lang="scss"
- src="./styles.scss">
+<style>
 </style>

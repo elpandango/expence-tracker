@@ -1,6 +1,6 @@
 <template>
   <PreloaderBrand v-if="uiStore.state.isAuthLoading && $route.name !== 'auth'"/>
-  <div>
+  <div class="w-full">
     <NuxtLayout>
       <NuxtPage/>
     </NuxtLayout>
@@ -10,7 +10,6 @@
 <script
  setup
  lang="ts">
-// import '~/assets/scss/global.scss';
 import {useUIStore} from "~/stores/ui";
 import {useSeoConfig} from "~/use/useSeoConfig";
 
@@ -41,19 +40,4 @@ const uiStore = useUIStore();
 </script>
 
 <style>
-@import '~/assets/scss/global.scss';
-.page-enter-active,
-.page-leave-active {
-  transition: all 0.2s;
-}
-
-.page-enter-from,
-.page-leave-to {
-  opacity: 0.3;
-  filter: grayscale(1);
-}
-
-.no-scroll {
-  overflow: hidden;
-}
 </style>

@@ -1,6 +1,5 @@
 <template>
-  <div
-   class="page-content">
+  <div class="page-content flex flex-wrap max-w-full mx-auto relative 2xl:max-w-[1920px] 2xl:mx-auto 2xl:relative">
     <Sidebar/>
     <transition name="toast-fade">
       <Toast
@@ -10,35 +9,35 @@
        :duration="3000"
       />
     </transition>
-    <div class="main-content">
-      <div class="content">
+    <div class="main-content h-screen md:w-[calc(100%-250px)] fixed md:left-[250px] p-3 md:top-0 md:pt-5 md:pr-4 overflow-y-auto 2xl:absolute">
+      <div class="content bg-card-bg max-sm:p-3 p-5 rounded-lg min-h-screen md:min-h-full">
         <template v-if="!uiStore.state.isAuthLoading">
           <SiteHeader/>
-          <main></main>
-          <slot></slot>
+          <main class="block"/>
+          <slot/>
 
           <template v-if="isAddAccountModalOpen">
             <AddEditAccountModal
-             :isOpen="isAddAccountModalOpen"
+             :is-open="isAddAccountModalOpen"
              @close="closeModal('account')"
-             @update:isOpen="isAddAccountModalOpen = $event"
+             @update:is-open="isAddAccountModalOpen = $event"
             />
           </template>
 
           <template v-if="isAddExpenseModalOpen || isAddFundsModalOpen">
             <AddEditTransactionModal
              :transaction-type="isAddExpenseModalOpen ? 'expense' : 'income'"
-             :isOpen="isAddExpenseModalOpen ? isAddExpenseModalOpen : isAddFundsModalOpen"
+             :is-open="isAddExpenseModalOpen ? isAddExpenseModalOpen : isAddFundsModalOpen"
              @close="() => closeModal(isAddExpenseModalOpen ? 'expense' : 'funds')"
-             @update:isOpen="(value) => isAddExpenseModalOpen ? (isAddExpenseModalOpen = value) : (isAddFundsModalOpen = value)"
+             @update:is-open="(value) => isAddExpenseModalOpen ? (isAddExpenseModalOpen = value) : (isAddFundsModalOpen = value)"
             />
           </template>
 
           <template v-if="isCalculatorModalOpen">
             <CalculatorModal
-             :isOpen="isCalculatorModalOpen"
+             :is-open="isCalculatorModalOpen"
              @close="closeModal('calculator')"
-             @update:isOpen="isCalculatorModalOpen = $event"
+             @update:is-open="isCalculatorModalOpen = $event"
             />
           </template>
         </template>
@@ -105,23 +104,11 @@ const closeModal = (name?: string) => {
     uiStore.toggleModal('isAddFundsModalOpen', false);
   } else if (name === 'calculator') {
     uiStore.toggleModal('isCalculatorModalOpen', false);
-  }  else {
+  } else {
     uiStore.toggleModal('isAddAccountModalOpen', false);
   }
 };
 </script>
 
-<style
- lang="scss">
-.page-content {
-  display: flex;
-  flex-wrap: wrap;
-
-  @media only screen and (min-width: 2501px) {
-    max-width: 1920px;
-    margin: 0 auto;
-    position: relative;
-  }
-}
-
+<style>
 </style>

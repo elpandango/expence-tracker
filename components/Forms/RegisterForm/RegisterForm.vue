@@ -1,48 +1,46 @@
 <template>
-  <div class="auth-form">
-    <form @keydown.enter="handleRegister">
-      <div class="form-row cols">
-        <div class="row-col w50p">
-          <FloatLabelInput
-           v-model="user.name"
-           size="medium"
-           label="Name"/>
-        </div>
-        <div class="row-col w50p">
-          <FloatLabelInput
-           v-model="user.lastName"
-           size="medium"
-           label="Last Name"/>
-        </div>
-      </div>
-      <div class="form-row">
-        <FloatLabelInput
-         v-model="user.email"
+  <form @keydown.enter="handleRegister">
+    <div class="flex flex-wrap md:flex-nowrap gap-2 mb-4">
+      <div class="w-full md:w-1/2 mb-2 md:mb-0">
+        <BaseInput
+         v-model="user.name"
          size="medium"
-         label="Email"/>
+         label="Name"/>
       </div>
-      <div class="form-row cols">
-        <div class="row-col w50p">
-          <FloatLabelInput
-           v-model="user.password"
-           size="medium"
-           label="Password"/>
-        </div>
-        <div class="row-col w50p">
-          <FloatLabelInput
-           v-model="user.repeatPassword"
-           size="medium"
-           label="Repeat Password"/>
-        </div>
+      <div class="w-full md:w-1/2">
+        <BaseInput
+         v-model="user.lastName"
+         size="medium"
+         label="Last Name"/>
       </div>
-      <div class="form-row btn-block">
-        <BaseButton
-         @click="handleRegister"
-         size="big">Register
-        </BaseButton>
+    </div>
+    <div class="w-full">
+      <BaseInput
+       v-model="user.email"
+       size="medium"
+       label="Email"/>
+    </div>
+    <div class="flex flex-wrap md:flex-nowrap gap-2 mb-4">
+      <div class="w-full md:w-1/2 mb-2 md:mb-0">
+        <BaseInput
+         v-model="user.password"
+         size="medium"
+         label="Password"/>
       </div>
-    </form>
-  </div>
+      <div class="w-full md:w-1/2 mb-2 md:mb-0">
+        <BaseInput
+         v-model="user.repeatPassword"
+         size="medium"
+         label="Repeat Password"/>
+      </div>
+    </div>
+    <div class="btn-block">
+      <BaseButton
+       size="medium"
+       @click="handleRegister">Register
+      </BaseButton>
+    </div>
+  </form>
 </template>
 
 <script
@@ -50,8 +48,8 @@
  lang="ts">
 
 import {reactive} from 'vue';
-import FloatLabelInput from "~/components/Forms/Inputs/FloatLabelInput.vue";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
+import BaseInput from "~/components/Forms/Inputs/BaseInput.vue";
 
 const emit = defineEmits(['register']);
 
@@ -68,14 +66,5 @@ const handleRegister = () => {
 };
 </script>
 
-<style
- scoped
- lang="scss">
-.login-form {
-  padding: 24px 0;
-
-  .button {
-    min-width: 140px;
-  }
-}
+<style>
 </style>

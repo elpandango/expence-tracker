@@ -1,15 +1,15 @@
 <template>
   <div
-   class="card"
-   :class="[props.class, withScroll ? 'with-scroll' : '', withHeader ? 'with-header' : '']"
-   :style="{maxWidth}">
+   class="card w-full flex flex-wrap shadow-xl rounded-xl bg-card-bg dark:border-[1px] dark:border-neutral-600"
+   :class="[props.class, withScroll ? 'overflow-auto' : '']"
+   :style="{ maxWidth }">
     <div
      v-if="withHeader"
-     class="card-header">
-      <slot name="header"></slot>
+     class="w-full font-semibold py-2 px-5 bg-bg rounded-t-lg">
+      <slot name="header"/>
     </div>
-    <div class="card-content">
-      <slot></slot>
+    <div class="w-full p-5">
+      <slot/>
     </div>
   </div>
 </template>
@@ -20,7 +20,8 @@
 
 const props = defineProps({
   class: {
-    type: String
+    type: String,
+    default: ''
   },
   maxWidth: {
     type: String,
@@ -37,7 +38,5 @@ const props = defineProps({
 });
 </script>
 
-<style
- lang="scss"
- src="./styles.scss">
+<style>
 </style>

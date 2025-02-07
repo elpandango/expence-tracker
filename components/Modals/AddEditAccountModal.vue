@@ -1,21 +1,20 @@
 <template>
   <Modal
    v-model="modalValue"
-   @update:modelValue="closeModal">
-    <template v-slot:header>
+   @update:model-value="closeModal">
+    <template #header>
       {{ $t('components.modalsContent.addAccountModal.modalTitleText') }}
     </template>
-    <template v-slot:body>
+    <template #body>
       <form @submit.prevent>
-        <div class="form-row">
+        <div class="mb-5">
           <BaseInput
            v-model="accountName"
            size="medium"
            :placeholder="$t('components.modalsContent.addAccountModal.accountNamePlaceholderText')"
            :label="$t('components.modalsContent.addAccountModal.accountNameLabelText')"/>
         </div>
-
-        <div class="form-row">
+        <div class="mb-5">
           <BaseInput
            v-model="accountBalance"
            size="medium"
@@ -24,7 +23,7 @@
            :placeholder="$t('components.modalsContent.addAccountModal.accountBalancePlaceholderText')"
            :label="$t('components.modalsContent.addAccountModal.accountBalanceLabelText')"/>
         </div>
-        <div class="form-row">
+        <div class="mb-5">
           <div class="dropdown-label">{{
               $t('components.modalsContent.addAccountModal.accountCurrencyLabelText')
             }}
@@ -34,17 +33,19 @@
            v-model="selectedCurrency"
            :options="currencies"
            type="form-dropdown"
+           size="h-[50px]"
            :placeholder="$t('components.modalsContent.addAccountModal.chooseCurrencyText')"
           />
         </div>
-        <div class="form-row">
+        <div class="mb-5">
           <div class="dropdown-label">{{ $t('components.transactionsPage.filters.sourceLabelText') }}</div>
 
           <Dropdown
+           v-if="!isEditMode"
            v-model="accountType"
            :options="accountTypesArray"
-           v-if="!isEditMode"
            type="form-dropdown"
+           size="h-[50px]"
            placeholder="Select source"/>
 
           <BaseInput
@@ -54,8 +55,8 @@
 
         </div>
         <div
-         class="form-row"
-         v-if="accountType.value === 'card'">
+         v-if="accountType.value === 'card'"
+         class="mb-5">
           <BaseInput
            v-model="formattedCardNumber"
            size="medium"
@@ -69,15 +70,15 @@
 
       </form>
     </template>
-    <template v-slot:footer>
+    <template #footer>
       <BaseButton
-       @click="closeModal"
        variant="transparent"
-       size="big">{{ $t('components.buttons.cancelText') }}
+       size="big"
+       @click="closeModal">{{ $t('components.buttons.cancelText') }}
       </BaseButton>
       <BaseButton
-       @click="handleSaveAccount"
-       size="big">{{
+       size="big"
+       @click="handleSaveAccount">{{
           isEditMode ? $t('components.modalsContent.addAccountModal.modalEditCardText') : $t('components.modalsContent.addAccountModal.modalAddCardText')
         }}
       </BaseButton>
@@ -237,8 +238,5 @@ onMounted(async () => {
 });
 </script>
 
-<style lang="scss">
-.form-row {
-  margin-bottom: 22px;
-}
+<style>
 </style>

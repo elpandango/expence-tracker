@@ -1,25 +1,29 @@
 <template>
-  <header class="site-header">
-    <div class="header-content">
-      <div class="greeting-block">{{ timeOfDay }}, {{ userStore.user.name }}!</div>
+  <header class="site-header min-h-[50px] mb-3 md:mb-6">
+    <div class="header-content flex items-center justify-between w-full flex-wrap md:flex-nowrap">
+      <div class="hidden md:block font-semibold text-lg">{{ timeOfDay }}, {{
+          userStore.user.name
+        }}!
+      </div>
 
-      <div class="actions-block">
+      <div class="actions-block w-full md:w-auto flex items-center justify-end md:justify-end">
         <NuxtLink
          to='/'
-         class="logo">
-          <div class="logo-img"></div>
-          <div class="brand-name">Expendango</div>
+         class="logo flex md:hidden items-center text-decoration-none flex-1 md:flex-auto">
+          <div
+           class="logo-img w-8 h-8 rounded-lg bg-cover bg-center bg-no-repeat mr-2 bg-[url(/images/logo.png)]"></div>
+          <div class="brand-name font-semibold text-blue-600 text-md">Expendango</div>
         </NuxtLink>
         <div
-         class="search-block"
-         v-if="!isTransactionsPage">
+         v-if="!isTransactionsPage"
+         class="hidden md:block relative w-[400px] mr-5">
           <BaseInput
            v-model="searchValue"
            size="medium"
            :placeholder="$t('components.header.searchInputPlaceholder')"
            @keydown.enter="searchTransactions"/>
           <span
-           class="icon material-symbols-outlined"
+           class="icon material-symbols-outlined absolute z-20 top-3 right-3 cursor-pointer"
            @click="searchTransactions">search</span>
         </div>
 
@@ -28,9 +32,9 @@
         <AvatarDropdown/>
 
         <button
-         class="menu-button"
-         @click="toggleMenu"
-         aria-label="Toggle menu">
+         class="menu-button block md:hidden text-3xl p-0 cursor-pointer "
+         aria-label="Toggle menu"
+         @click="toggleMenu">
           <span class="material-symbols-outlined">
             {{ menuOpen ? 'close' : 'menu' }}
             </span>
@@ -39,91 +43,99 @@
     </div>
 
     <div
-     class="mobile-menu"
-     :class="{active: menuOpen}">
-      <div class="user-info">
+     class="mobile-menu flex sm:hidden md:hidden flex-col items-start shadow-lg bg-bg transition-all duration-300 border-[1px] border-stone-200 dark:border-neutral-600 absolute h-[calc(100vh-80px)] top-[79px] right-2.5 left-2.5 sm:w-[250px] sm:left-auto"
+     :class="{'hidden md:block': !menuOpen}">
+      <div class="user-info flex w-full mb-5 pt-4 pr-2.5 pb-0 pl-2.5">
         <img
          v-if="userStore.avatar"
          :src="userStore.avatar"
          alt="User Avatar"
-         class="avatar-image"/>
-        <div class="user-name">{{ userStore.user.name }}</div>
+         class="avatar-image w-12 h-12 rounded-full object-cover">
+        <div class="user-name flex items-center font-semibold ml-3">{{ userStore.user.name }}</div>
       </div>
 
       <div
-       class="search-block"
-       v-if="!isTransactionsPage">
+       v-if="!isTransactionsPage"
+       class="w-full px-4 mb-3 relative hidden: md:block">
         <BaseInput
          v-model="searchValue"
          size="medium"
          placeholder="Search transaction"
          @keydown.enter="searchTransactions"/>
         <span
-         class="icon material-symbols-outlined"
+         class="icon material-symbols-outlined absolute z-20 top-3 right-6 cursor-pointer"
          @click="searchTransactions">search</span>
       </div>
 
-      <div class="header-menu">
+      <div class="header-menu w-full">
         <NuxtLink
          to="/"
-         class="menu-link"
+         class="menu-link flex items-center w-full px-3 py-2 text-[16px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
+         :class="{'bg-card-bg text-accent': $route.path === '/' }"
          @click="closeMenu">
-          <span class="icon material-symbols-outlined">home</span>
+          <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">home</span>
           {{ $t('components.menuList.dashboard') }}
         </NuxtLink>
         <NuxtLink
          to="/accounts"
-         class="menu-link"
+         class="menu-link flex items-center w-full px-3 py-2 text-[16px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
+         :class="{'bg-card-bg text-accent': $route.path === '/accounts' }"
          @click="closeMenu">
-          <span class="icon material-symbols-outlined">credit_card</span>
+          <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">credit_card</span>
           {{ $t('components.menuList.myCards') }}
         </NuxtLink>
         <NuxtLink
          to="/transactions"
-         class="menu-link"
+         class="menu-link flex items-center w-full px-3 py-2 text-[16px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
+         :class="{'bg-card-bg text-accent': $route.path === '/transactions' }"
          @click="closeMenu">
-          <span class="icon material-symbols-outlined">swap_horiz</span>
+          <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">swap_horiz</span>
           {{ $t('components.menuList.transactions') }}
         </NuxtLink>
         <NuxtLink
          to="/statistics"
-         class="menu-link"
+         class="menu-link flex items-center w-full px-3 py-2 text-[16px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
+         :class="{'bg-card-bg text-accent': $route.path === '/statistics' }"
          @click="closeMenu">
-          <span class="icon material-symbols-outlined">bar_chart</span>
+          <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">bar_chart</span>
           {{ $t('components.menuList.statistics') }}
         </NuxtLink>
         <NuxtLink
          to="/profile"
-         class="menu-link"
+         class="menu-link flex items-center w-full px-3 py-2 text-[16px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
+         :class="{'bg-card-bg text-accent': $route.path === '/profile' }"
          @click="closeMenu">
-          <span class="icon material-symbols-outlined">account_circle</span>
+          <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">account_circle</span>
           {{ $t('components.menuList.profile') }}
         </NuxtLink>
         <button
-         class="menu-link"
+         class="menu-link flex items-center w-full px-3 py-2 text-[16px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
          @click="handleNewExpense">
-          <span class="icon material-symbols-outlined">attach_money</span>
+          <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">attach_money</span>
           {{ $t('components.menuList.addExpense') }}
         </button>
 
         <NuxtLink
          to="/categories"
-         class="menu-link"
+         class="menu-link flex items-center w-full px-3 py-2 text-[16px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
+         :class="{'bg-card-bg text-accent': $route.path === '/categories' }"
          @click="closeMenu">
-          <span class="icon material-symbols-outlined">category</span>
+          <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">category</span>
           {{ $t('components.menuList.categories') }}
         </NuxtLink>
         <div
-         class="menu-link"
+         class="menu-link flex items-center w-full px-3 py-2 text-[16px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
          @click="toggleTheme">
-          <span class="icon material-symbols-outlined">{{ isDark ? 'light_mode' : 'dark_mode' }}</span>
+          <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">{{
+              isDark ? 'light_mode' : 'dark_mode'
+            }}</span>
           {{ $t('components.menuList.theme') }}
         </div>
 
         <button
-         class="menu-link"
+         class="menu-link flex items-center w-full px-3 py-2 text-[16px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
          @click="handleLogout">
-          <span class="icon material-symbols-outlined">logout</span>
+          <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">logout</span>
           Logout
         </button>
       </div>
@@ -133,8 +145,7 @@
 
 <script setup>
 import {ref} from 'vue';
-import {useRoute} from "vue-router";
-import {useRouter} from 'vue-router';
+import {useRoute, useRouter} from "vue-router";
 import {useTheme} from "~/use/useTheme";
 import {useUIStore} from "~/stores/ui";
 import {useUserStore} from '~/stores/user';
@@ -224,7 +235,5 @@ onBeforeUnmount(() => {
 });
 </script>
 
-<style
- lang="scss"
- src="./styles.scss">
+<style>
 </style>
