@@ -48,5 +48,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Deploy to production
-        run: echo "Deploying to production environment..."
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.NETLIFY_SSH_PRIVATE_KEY }}
+
+      - name: Deploy to Netlify
+        uses: netlify/actions/cli@v3
+        with:
+          netlify_auth_token: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          netlify_site_id: ${{ secrets.NETLIFY_SITE_ID }}
