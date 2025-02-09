@@ -38,7 +38,7 @@
 <script
  lang="ts"
  setup>
-import {ref} from 'vue';
+import {ref, onMounted, onBeforeUnmount} from 'vue';
 import {useUserStore} from '~/stores/user';
 import {useAuthStore} from "~/stores/auth";
 

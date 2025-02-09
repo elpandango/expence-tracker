@@ -1,10 +1,10 @@
 <template>
   <div
-   class="preloader-layout"
+   class="preloader-layout flex justify-center items-center w-full"
    :class="isFullSize ? 'full-page' : ''"
    :style="{height: height}">
     <svg
-     class="loader"
+     class="loader w-full h-12"
      viewBox="0 0 24 24">
       <circle
        class="loader__value"
@@ -60,13 +60,6 @@ export default {
  scoped
  lang="scss">
 .preloader-layout {
-  background-color: transparent;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-
   &.full-page {
     position: fixed;
     z-index: 1500;
@@ -81,10 +74,6 @@ export default {
 
 .loader {
   animation: loader-turn 1s linear infinite;
-  border: none!important;
-  max-width: 60px;
-  width: 100%;
-  height: 50px;
 }
 
 @keyframes loader-turn {
@@ -103,34 +92,26 @@ export default {
   stroke-dashoffset: 63;
   stroke-linecap: round;
   stroke-width: 4;
-}
-
-.loader__value:nth-child(1) {
   stroke: rgb(37, 99, 235);
 }
 
 .loader__value:nth-child(2) {
-  stroke: rgb(37, 99, 235);
   animation-delay: 1s;
 }
 
 .loader__value:nth-child(3) {
-  stroke: rgb(37, 99, 235);
   animation-delay: 2s;
 }
 
 .loader__value:nth-child(4) {
-  stroke: rgb(37, 99, 235);
   animation-delay: 3s;
 }
 
 .loader__value:nth-child(5) {
-  stroke: rgb(37, 99, 235);
   animation-delay: 4s;
 }
 
 .loader__value:nth-child(6) {
-  stroke: rgb(37, 99, 235);
   animation-delay: 5s;
 }
 
