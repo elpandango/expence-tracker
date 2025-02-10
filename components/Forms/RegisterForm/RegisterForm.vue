@@ -14,7 +14,7 @@
          label="Last Name"/>
       </div>
     </div>
-    <div class="w-full">
+    <div class="w-full mb-4">
       <BaseInput
        v-model="user.email"
        size="medium"
