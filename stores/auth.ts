@@ -24,7 +24,7 @@ export const useAuthStore = defineStore('auth', () => {
 
         setTimeout(async () => {
           await router.push('/');
-        }, 200);
+        }, 300);
       }
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : 'Login failed.';
@@ -32,7 +32,6 @@ export const useAuthStore = defineStore('auth', () => {
         message,
         type: 'error',
       });
-    } finally {
       emitter.emit('ui:stopLoading', 'default');
     }
   };
@@ -49,7 +48,7 @@ export const useAuthStore = defineStore('auth', () => {
         userStore.isLoggedIn = true;
         setTimeout(async () => {
           await router.push('/');
-        }, 200);
+        }, 300);
       }
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : 'Registration failed.';
@@ -57,7 +56,6 @@ export const useAuthStore = defineStore('auth', () => {
         message,
         type: 'error',
       });
-    } finally {
       emitter.emit('ui:stopLoading', 'default');
     }
   };
@@ -80,7 +78,7 @@ export const useAuthStore = defineStore('auth', () => {
       });
       setTimeout(async () => {
         await router.push('/auth');
-      }, 200);
+      }, 300);
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : 'Logout failed.';
       emitter.emit('ui:showToast', {

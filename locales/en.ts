@@ -228,6 +228,10 @@ export const en = {
         deleteTitleText: 'Confirm Card deletion',
         deleteConfirmText: 'Are you sure you want to delete this card?',
       },
+      deleteTransactionModal: {
+        deleteTitleText: 'Confirm Transaction deletion',
+        deleteConfirmText: 'Are you sure you want to delete this transaction?',
+      },
     }
   },
   greetings: {

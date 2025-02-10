@@ -228,6 +228,10 @@ export const ru = {
         deleteTitleText: 'Подтвердите удаление карты',
         deleteConfirmText: 'Вы уверены, что хотите удалить эту карту?',
       },
+      deleteTransactionModal: {
+        deleteTitleText: 'Подтвердите удаление транзакции',
+        deleteConfirmText: 'Вы уверены, что хотите удалить эту транзакцию?',
+      },
     }
   },
   greetings: {

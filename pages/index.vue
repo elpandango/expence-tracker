@@ -107,6 +107,9 @@ const fetchTransactions = async (query = '') => {
 
 // eslint-disable-next-line
 const updateParams = async (newParams: Record<string, any>) => {
+
+  console.log('newParams: ', newParams);
+
   financeStore.setLoading('transactions', true);
 
   const filteredParams = Object.fromEntries(
@@ -128,13 +131,10 @@ const updateParams = async (newParams: Record<string, any>) => {
 };
 
 const handleDropdownChanged = async (option: { value: number | string; label: string }) => {
-  const newParams: Record<string, string> = {};
-
-  if (option.value) {
-    newParams.accountId = option.accountId;
-  } else {
-    newParams.accountId = '';
-  }
+  const newParams: Record<string, string> = {
+    ...params.value,
+    accountId: option.value ? option.value.toString() : ''
+  };
 
   await updateParams(newParams);
 };
@@ -152,6 +152,7 @@ const changePeriod = async (period: string) => {
   const now = new Date();
 
   const newParams = {
+    ...params.value,
     startDate: `${startDate.getFullYear()}-${(startDate.getMonth() + 1).toString().padStart(2, '0')}-${startDate.getDate().toString().padStart(2, '0')}`,
     endDate: `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}`
   };

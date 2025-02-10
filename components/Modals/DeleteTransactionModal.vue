@@ -3,11 +3,11 @@
    v-model="modalValue"
    @update:model-value="closeModal">
     <template #header>
-      {{ $t('components.modalsContent.deleteCardModal.deleteTitleText') }}
+      {{ $t('components.modalsContent.deleteTransactionModal.deleteTitleText') }}
     </template>
     <template #body>
       <div>
-        {{ $t('components.modalsContent.deleteCardModal.deleteConfirmText') }}
+        {{ $t('components.modalsContent.deleteTransactionModal.deleteConfirmText') }}
       </div>
     </template>
     <template #footer>

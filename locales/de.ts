@@ -228,6 +228,10 @@ export const de = {
         deleteTitleText: 'Kartenlöschung bestätigen',
         deleteConfirmText: 'Möchten Sie diese Karte wirklich löschen?',
       },
+      deleteTransactionModal: {
+        deleteTitleText: 'Transaktionlöschung bestätigen',
+        deleteConfirmText: 'Möchten Sie diese Transaktion wirklich löschen?',
+      },
     }
   },
   greetings: {

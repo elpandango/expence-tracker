@@ -4,7 +4,7 @@
    :class="isFullSize ? 'full-page' : ''"
    :style="{height: height}">
     <svg
-     class="loader w-full h-12"
+     class="loader h-12"
      viewBox="0 0 24 24">
       <circle
        class="loader__value"

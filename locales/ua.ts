@@ -228,6 +228,10 @@ export const ua = {
         deleteTitleText: 'Підтвердіть видалення картки',
         deleteConfirmText: 'Ви впевнені, що хочете видалити цю картку?',
       },
+      deleteTransactionModal: {
+        deleteTitleText: 'Підтвердіть видалення транзакції',
+        deleteConfirmText: 'Ви впевнені, що хочете видалити цю транзакцію?',
+      },
     }
   },
   greetings: {

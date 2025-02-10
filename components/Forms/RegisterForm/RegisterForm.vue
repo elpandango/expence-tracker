@@ -18,6 +18,7 @@
       <BaseInput
        v-model="user.email"
        size="medium"
+       :error-message="emailError"
        label="Email"/>
     </div>
     <div class="flex flex-wrap md:flex-nowrap gap-2 mb-4">
@@ -26,6 +27,7 @@
          v-model="user.password"
          size="medium"
          type="password"
+         :error-message="passwordError"
          label="Password"/>
       </div>
       <div class="w-full md:w-1/2 mb-2 md:mb-0">
@@ -33,6 +35,7 @@
          v-model="user.repeatPassword"
          size="medium"
          type="password"
+         :error-message="passwordError"
          label="Repeat Password"/>
       </div>
     </div>
@@ -49,7 +52,7 @@
  setup
  lang="ts">
 
-import {reactive} from 'vue';
+import {reactive, ref} from 'vue';
 import BaseButton from "~/components/Buttons/BaseButton.vue";
 import BaseInput from "~/components/Forms/Inputs/BaseInput.vue";
 
@@ -63,8 +66,27 @@ const user = reactive({
   repeatPassword: '',
 });
 
+const passwordError = ref("");
+const emailError = ref("");
+
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 const handleRegister = () => {
-  emit('register', user);
+  if (user.password !== user.repeatPassword) {
+    passwordError.value = 'Passwords do not match';
+    return;
+  } else {
+    passwordError.value = "";
+  }
+
+  if (!emailRegex.test(user.email)) {
+    emailError.value = 'Invalid email format';
+    return;
+  } else {
+    emailError.value = '';
+  }
+
+  emit("register", user);
 };
 </script>
 

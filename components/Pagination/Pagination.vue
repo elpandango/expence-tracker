@@ -19,7 +19,7 @@
         >
           <BaseButton
            size="medium"
-           class="w-5 md:w-24 min-w-[70px] md:min-w-[90px]"
+           class="w-[45px] min-w-[45px] sm:min-w-[65px]"
            :aria-label="'Go to page 1'"
            :variant="props?.data?.currentPage === 1 ? 'default' : 'transparent'"
            @click="gotoPage(1)"
