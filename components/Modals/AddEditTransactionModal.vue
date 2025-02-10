@@ -78,7 +78,7 @@
              :label="$t('components.modalsContent.addEditTransactionModal.amountLabelText')">
               <template #icon>
                 <span
-                 class="icon material-symbols-outlined absolute z-20 top-7 right-5 cursor-pointer"
+                 class="icon material-symbols-outlined absolute z-20 top-[33px] right-5 cursor-pointer"
                  @click="handleCalculateClick">calculate</span>
               </template>
             </BaseInput>
