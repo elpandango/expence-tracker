@@ -107,9 +107,6 @@ const fetchTransactions = async (query = '') => {
 
 // eslint-disable-next-line
 const updateParams = async (newParams: Record<string, any>) => {
-
-  console.log('newParams: ', newParams);
-
   financeStore.setLoading('transactions', true);
 
   const filteredParams = Object.fromEntries(
