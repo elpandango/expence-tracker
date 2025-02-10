@@ -25,16 +25,18 @@
         <BaseInput
          v-model="user.password"
          size="medium"
+         type="password"
          label="Password"/>
       </div>
       <div class="w-full md:w-1/2 mb-2 md:mb-0">
         <BaseInput
          v-model="user.repeatPassword"
          size="medium"
+         type="password"
          label="Repeat Password"/>
       </div>
     </div>
-    <div class="btn-block">
+    <div class="btn-block flex justify-start">
       <BaseButton
        size="medium"
        @click="handleRegister">Register
