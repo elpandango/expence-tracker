@@ -1,5 +1,6 @@
 import {defineStore} from 'pinia';
 import {useUserStore} from "~/stores/user";
+import {useFinanceStore} from "~/stores/finance";
 import {useRouter} from 'vue-router';
 import AuthRepository from '~/repositories/AuthRepository';
 import {emitter} from "~/classes/uiEventBus";
@@ -7,6 +8,7 @@ import {emitter} from "~/classes/uiEventBus";
 export const useAuthStore = defineStore('auth', () => {
   const router = useRouter();
   const userStore = useUserStore();
+  const financeStore = useFinanceStore();
   const userId = ref<string | null>(null);
 
   const login = async (user: { email: string; password: string }) => {
@@ -76,9 +78,8 @@ export const useAuthStore = defineStore('auth', () => {
         message: 'Logged out successfully.',
         type: 'success',
       });
-      setTimeout(async () => {
-        await router.push('/auth');
-      }, 300);
+      financeStore.resetDataOnLogout();
+      await router.push('/auth');
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : 'Logout failed.';
       emitter.emit('ui:showToast', {

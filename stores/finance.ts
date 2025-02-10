@@ -205,6 +205,13 @@ export const useFinanceStore = defineStore('finance', () => {
     editingTransaction.value = {};
   };
 
+  const resetDataOnLogout = () => {
+    transactionsResponse.value = [];
+    editingTransaction.value = {};
+    editingAccount.value = {};
+    accountsList.value = [];
+  };
+
   return {
     accountsList,
     transactionsResponse,
@@ -223,5 +230,6 @@ export const useFinanceStore = defineStore('finance', () => {
     fetchAccountsIfNeeded,
     resetEditingTransaction,
     resetEditingAccount,
+    resetDataOnLogout
   };
 });
