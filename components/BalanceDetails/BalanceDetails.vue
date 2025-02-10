@@ -3,7 +3,7 @@
   <div
    v-else
    class="w-full">
-    <h2 class="text-xl md:text-2xl font-medium mb-4">{{ $t('components.balance.title') }}:</h2>
+    <h2 class="balance-details text-xl md:text-2xl font-medium mb-4">{{ $t('components.balance.title') }}:</h2>
     <div class="mb-4">
       <div
        v-for="account in financeStore.accountsList"
@@ -23,7 +23,7 @@
       <p class="mb-2">{{ $t('components.accountsPage.emptyListTitleText') }}</p>
       <BaseButton
        size="medium"
-       @click="handleAddAmount">{{ $t('components.accountsPage.addAccountText') }}
+       @click="handleAddAmount">{{ $t('components.accountsPage.addAccountText') }}  test
       </BaseButton>
 
       <p class="mt-4 mb-2">{{ $t('components.accountsPage.emptyAccountsText') }}:</p>
@@ -44,18 +44,18 @@
 
     <div
      v-if="financeStore.accountsList.length > 0"
-     class="flex justify-between items-center">
+     class="btn-block flex justify-between items-center gap-3">
       <BaseButton
        size="medium"
        variant="green"
-       class="w-32 md:w-36 text-sm md:text-base whitespace-nowrap"
+       class="w-auto md:w-auto text-sm md:text-base whitespace-wrap md:whitespace-nowrap"
        @click="handleAddFunds">{{ $t('components.buttons.addFundsText') }}
       </BaseButton>
 
       <BaseButton
        size="medium"
        variant="red"
-       class="w-32 md:w-36 text-sm md:text-base whitespace-nowrap"
+       class="w-auto md:w-auto text-sm md:text-base whitespace-wrap md:whitespace-nowrap"
        @click="handleNewExpense">{{ $t('components.menuList.addExpense') }}
       </BaseButton>
     </div>

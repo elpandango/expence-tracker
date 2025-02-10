@@ -18,7 +18,7 @@
       <TransactionsHistory>
         <template #header>
 
-          <div class="title-block flex items-center justify-between mb-2 flex-wrap max-sm:flex-nowrap">
+          <div class="title-block flex items-center justify-between mb-2 flex-wrap md:flex-nowrap">
             <h3 class="text-lg font-semibold">
               {{ $t('components.transactionsHistory.titleText') }}
             </h3>

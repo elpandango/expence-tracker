@@ -29,6 +29,10 @@ const props = defineProps({
   disabled: {
     type: Boolean,
     default: false
+  },
+  classes: {
+    type: String,
+    default: ''
   }
 });
 
@@ -70,7 +74,7 @@ const buttonClasses = computed(() => {
   }
 
   const disabledClasses = props.disabled ? 'cursor-not-allowed' : '';
-  return `${baseClasses} ${sizeClasses} ${variantClasses} ${disabledClasses}`;
+  return `${baseClasses} ${sizeClasses} ${variantClasses} ${disabledClasses}${props.classes}`;
 });
 </script>
 
