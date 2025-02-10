@@ -39,17 +39,17 @@
             <div class="period flex items-center gap-2">
               <BaseButton
                size="smallest"
-               :variant="periodSelected === 'day' ? 'default' : 'transparent'"
+               :variant="periodSelected === 'day' ? 'bg-blue-600' : 'transparent'"
                @click="changePeriod('day')">{{ $t('components.transactionsHistory.sortingPeriodDay') }}
               </BaseButton>
               <BaseButton
                size="smallest"
-               :variant="periodSelected === 'week' ? 'default' : 'transparent'"
+               :variant="periodSelected === 'week' ? 'bg-blue-600' : 'transparent'"
                @click="changePeriod('week')">{{ $t('components.transactionsHistory.sortingPeriodWeek') }}
               </BaseButton>
               <BaseButton
                size="smallest"
-               :variant="periodSelected === 'month' ? 'default' : 'transparent'"
+               :variant="periodSelected === 'month' ? 'bg-blue-600' : 'transparent'"
                @click="changePeriod('month')">{{ $t('components.transactionsHistory.sortingPeriodMonth') }}
               </BaseButton>
             </div>
