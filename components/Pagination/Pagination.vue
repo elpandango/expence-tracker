@@ -19,7 +19,7 @@
         >
           <BaseButton
            size="medium"
-           class="w-[45px] min-w-[45px] md:min-w-[65px]"
+           class="w-[45px] min-w-[45px] !px-2"
            :aria-label="'Go to page 1'"
            :variant="props?.data?.currentPage === 1 ? 'default' : 'transparent'"
            @click="gotoPage(1)"
@@ -40,7 +40,7 @@
         >
           <BaseButton
            size="medium"
-           class="w-[45px] min-w-[45px] md:min-w-[65px]"
+           class="w-[45px] min-w-[45px] !px-2"
            :aria-label="`Go to page ${page}`"
            :variant="props?.data?.currentPage === page ? 'default' : 'transparent'"
            @click="gotoPage(page)"
@@ -60,7 +60,7 @@
         >
           <BaseButton
            size="medium"
-           class="w-[45px] min-w-[45px] md:min-w-[65px]"
+           class="w-[45px] min-w-[45px] !px-2"
            :aria-label="`Go to page ${props?.data?.lastPage}`"
            :variant="props?.data?.currentPage === props?.data?.lastPage ? 'default' : 'transparent'"
            @click="gotoPage(props?.data?.lastPage)"
