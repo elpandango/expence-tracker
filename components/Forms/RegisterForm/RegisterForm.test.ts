@@ -30,6 +30,18 @@ describe('RegisterForm.vue', () => {
   it('should emit register event when clicking login button', async () => {
     const wrapper = mount(RegisterForm);
 
+    const nameInput = wrapper.findAllComponents(BaseInput)[0].find('input');
+    const lastNameInput = wrapper.findAllComponents(BaseInput)[1].find('input');
+    const emailInput = wrapper.findAllComponents(BaseInput)[2].find('input');
+    const passwordInput = wrapper.findAllComponents(BaseInput)[3].find('input');
+    const repeatPasswordInput = wrapper.findAllComponents(BaseInput)[4].find('input');
+
+    await nameInput.setValue('user');
+    await lastNameInput.setValue('lastname');
+    await emailInput.setValue('user@user.com');
+    await passwordInput.setValue('password');
+    await repeatPasswordInput.setValue('password');
+
     const button = wrapper.findComponent(BaseButton);
 
     await button.trigger('click');
