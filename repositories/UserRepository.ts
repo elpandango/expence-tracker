@@ -11,7 +11,7 @@ export default {
         method: 'GET',
       });
     } catch (error: unknown) {
-      const message = error instanceof Error ? error?.response?._data?.message : 'Not Authorized';
+      const message = error instanceof Error ? error?.message : 'Not Authorized';
       throw new Error(message);
     }
   },

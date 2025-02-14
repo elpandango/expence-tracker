@@ -6,7 +6,7 @@ export default {
                 body: payload,
             });
         } catch (error: unknown) {
-            const message = error instanceof Error ? error?.response?._data?.message : 'Login failed';
+            const message = error instanceof Error ? error?.message : 'Login failed';
             throw new Error(message);
         }
     },
@@ -17,7 +17,7 @@ export default {
                 method: 'POST',
             });
         } catch (error: unknown) {
-            const message = error instanceof Error ? error?.response?._data?.message : 'Logout failed';
+            const message = error instanceof Error ? error?.message : 'Logout failed';
             throw new Error(message);
         }
     },
@@ -29,7 +29,7 @@ export default {
                 body: payload,
             });
         } catch (error: unknown) {
-            const message = error instanceof Error ? error?.response?._data?.message : 'Registration failed';
+            const message = error instanceof Error ? error?.message : 'Registration failed';
             throw new Error(message);
         }
     },
@@ -40,7 +40,7 @@ export default {
                 method: 'GET',
             });
         } catch (error: unknown) {
-            const message = error instanceof Error ? error?.response?._data?.message : 'Not Authorized';
+            const message = error instanceof Error ? error?.message : 'Not Authorized';
             throw new Error(message);
         }
     },

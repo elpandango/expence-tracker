@@ -12,7 +12,7 @@ export default {
         body: payload,
       });
     } catch (error: unknown) {
-      const message = error instanceof Error ? error?.response?._data?.message : 'Account creation failed';
+      const message = error instanceof Error ? error?.message : 'Account creation failed';
       throw new Error(message);
     }
   },
@@ -24,7 +24,7 @@ export default {
         body: data,
       });
     } catch (error: unknown) {
-      const message = error instanceof Error ? error?.response?._data?.message : 'Card creation failed';
+      const message = error instanceof Error ? error?.message : 'Card creation failed';
       throw new Error(message);
     }
   },
@@ -34,7 +34,7 @@ export default {
         method: 'DELETE',
       });
     } catch (error: unknown) {
-      const message = error instanceof Error ? error?.response?._data?.message : 'Account deletion failed';
+      const message = error instanceof Error ? error?.message : 'Account deletion failed';
       throw new Error(message);
     }
   },
@@ -44,7 +44,7 @@ export default {
         method: 'GET',
       });
     } catch (error: unknown) {
-      const message = error instanceof Error ? error?.response?._data?.message : 'No Cards found';
+      const message = error instanceof Error ? error?.message : 'No Cards found';
       throw new Error(message);
     }
   },

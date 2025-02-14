@@ -1,10 +1,6 @@
-type EventMap = {
-  'ui:startLoading': 'auth' | 'default';
-  'ui:stopLoading': 'auth' | 'default';
-  'ui:showToast': { message: string; type: 'success' | 'error' };
-};
+import type {UiEvents} from "~/types/events";
 
-export class Emitter<T extends EventMap> {
+export class Emitter<T extends UiEvents> {
   private events: { [K in keyof T]?: Array<(payload: T[K]) => void> };
 
   constructor() {
