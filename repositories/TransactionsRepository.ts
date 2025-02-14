@@ -11,7 +11,7 @@ export default {
         method: 'DELETE',
       });
     } catch (error: unknown) {
-      const message = error instanceof Error ? error?.response?._data?.message : 'Transaction delete failed';
+      const message = error instanceof Error ? error?.message : 'Transaction delete failed';
       throw new Error(message);
     }
   },
@@ -23,7 +23,7 @@ export default {
         body: payload,
       });
     } catch (error: unknown) {
-      const message = error instanceof Error ? error?.response?._data?.message : 'Transaction creation failed';
+      const message = error instanceof Error ? error?.message : 'Transaction creation failed';
       throw new Error(message);
     }
   },
@@ -36,7 +36,7 @@ export default {
         body: data,
       });
     } catch (error: unknown) {
-      const message = error instanceof Error ? error?.response?._data?.message : 'Transaction update failed';
+      const message = error instanceof Error ? error?.message : 'Transaction update failed';
       throw new Error(message);
     }
   },
@@ -48,7 +48,7 @@ export default {
         method: 'GET',
       });
     } catch (error: unknown) {
-      const message = error instanceof Error ? error?.response?._data?.message : 'Transactions fetching failed';
+      const message = error instanceof Error ? error?.message : 'Transactions fetching failed';
       throw new Error(message);
     }
   }

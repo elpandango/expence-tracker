@@ -25,7 +25,7 @@ export default {
       });
     } catch (error: unknown) {
       if (error instanceof Error) {
-        const message = error?.response?._data?.message || 'Category update failed';
+        const message = error?.message || 'Category update failed';
         throw new Error(message);
       }
       throw new Error('Unknown error occurred');
@@ -40,7 +40,7 @@ export default {
       });
     } catch (error: unknown) {
       if (error instanceof Error) {
-        const message = error?.response?._data?.message || 'Category deletion failed';
+        const message = error?.message || 'Category deletion failed';
         throw new Error(message);
       }
       throw new Error('Unknown error occurred');
@@ -53,7 +53,7 @@ export default {
       });
     } catch (error: unknown) {
       if (error instanceof Error) {
-        const message = error?.response?._data?.message || 'Categories fetching failed';
+        const message = error?.message || 'Categories fetching failed';
         throw new Error(message);
       }
       throw new Error('Unknown error occurred');
