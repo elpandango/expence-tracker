@@ -116,7 +116,8 @@
             </BaseButton>
             <BaseButton
              size="medium"
-             @click="handleCreateTestData">{{ $t('components.modalsContent.addEditTransactionModal.generateTestDataBtnText') }}
+             @click="handleCreateTestData">
+              {{ $t('components.modalsContent.addEditTransactionModal.generateTestDataBtnText') }}
             </BaseButton>
           </div>
         </div>
@@ -308,12 +309,16 @@ const handleSaveTransaction = async () => {
 };
 
 const resetTransactionFields = () => {
-  transaction.accountId = null;
+  transaction.accountId = accounts.value[0].value || null;
   transaction.relatedAccountId = null;
   transaction.description = '';
   transaction.amount = '';
   transaction.date = new Date();
-  selectedAccount.value = null;
+  if (accounts.value[0]) {
+    selectedAccount.value = {value: accounts.value[0].value, label: accounts.value[0].label, currency: accounts.value[0].currency};
+  } else {
+    selectedAccount.value = null;
+  }
   selectedCategory.value = {value: null, label: defaultCategoriesOtherValues[locale.value]};
 };
 
