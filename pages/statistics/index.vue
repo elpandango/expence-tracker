@@ -10,10 +10,11 @@
          @date-changed="handleDateChanged('categoriesTable', $event)">
           <template v-if="sortedCategories">
             <h3 class="text-xl font-semibold my-3 mx-2">Expense categories</h3>
-            <div class="w-full py-2 px-3 border-t-[1px] border-stone-200 dark:border-neutral-600"
-                 v-for="expenseItem in sortedCategories"
-                 :key="expenseItem.category">
-              <strong>{{expenseItem.category}}</strong> - {{expenseItem.amount}} EUR
+            <div
+             v-for="expenseItem in sortedCategories"
+             :key="expenseItem.category"
+             class="w-full py-2 px-3 border-t-[1px] border-stone-200 dark:border-neutral-600">
+              <strong>{{ expenseItem.category }}</strong> - {{ expenseItem.amount }} EUR
             </div>
           </template>
           <template v-else>
@@ -173,7 +174,8 @@ onMounted(async () => {
 
 const sortedCategories = computed(() => {
   if (chartStore.chartDataByType.allCategoriesTable?.length > 0) {
-    return chartStore.chartDataByType.allCategoriesTable.sort((a, b) => b.amount - a.amount)
+    const categories = [...chartStore.chartDataByType.allCategoriesTable];
+    return categories?.sort((a, b) => b.amount - a.amount)
   }
   return [];
 });
