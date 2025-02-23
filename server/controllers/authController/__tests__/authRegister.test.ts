@@ -22,7 +22,6 @@ describe('authRegister', () => {
       email: 'john.doe@example.com',
       password: 'password123'
     });
-    console.log(result);
     expect(result.status).toBe(201);
     expect(result.userId).toBe('12345');
   });
