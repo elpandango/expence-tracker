@@ -22,7 +22,6 @@ export const generateChartConfigForType = (chartData, type) => {
           { name: 'Expenses', data: chartData.allTransactions.expense.map(({ date, amount }) => [new Date(date).getTime(), amount]) },
         ],
       };
-
     case 'top5':
       return {
         chart: { type: 'pie' },
@@ -51,6 +50,8 @@ export const generateChartConfigForType = (chartData, type) => {
           },
         ],
       };
+    case 'categoriesTable':
+      return chartData.allCategories;
     case 'total_expenses':
       return {
         chart: { type: 'line' },

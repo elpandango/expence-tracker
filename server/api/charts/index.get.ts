@@ -87,6 +87,23 @@ export default defineEventHandler(async (event) => {
       };
     }
 
+    case 'allCategoriesTable': {
+      const transactions = await TransactionModel.find({...mongoQuery, type: 'expense'})
+        .populate('category', 'name')
+        .lean();
+
+      const categoryTotals = transactions.reduce((acc, transaction) => {
+        const categoryName = transaction.category?.name || 'Uncategorized';
+        acc[categoryName] = (acc[categoryName] || 0) + Math.abs(transaction.amount);
+        return acc;
+      }, {});
+
+      return {
+        status: 200,
+        data: Object.entries(categoryTotals).map(([category, amount]) => ({category, amount})),
+      };
+    }
+
     case 'cashAndCards': {
       const transactions = await TransactionModel.find({...mongoQuery, type: 'expense'})
         .populate('accountId', 'type')

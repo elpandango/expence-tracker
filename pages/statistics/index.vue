@@ -3,6 +3,26 @@
     <h1 class="font-semibold text-3xl mb-4">{{ $t('components.statisticsPage.pageTitleText') }}</h1>
 
     <div class="charts w-full flex flex-wrap gap-5">
+
+      <div class="w-full flex flex-wrap">
+        <CardWithDate
+         class="chart-wrapper w-full sm:w-1/2"
+         @date-changed="handleDateChanged('categoriesTable', $event)">
+          <template v-if="sortedCategories">
+            <h3 class="text-xl font-semibold my-3 mx-2">Expense categories</h3>
+            <div class="w-full py-2 px-3 border-t-[1px] border-stone-200 dark:border-neutral-600"
+                 v-for="expenseItem in sortedCategories"
+                 :key="expenseItem.category">
+              <strong>{{expenseItem.category}}</strong> - {{expenseItem.amount}} EUR
+            </div>
+          </template>
+          <template v-else>
+            <Preloader height="300px"/>
+          </template>
+
+        </CardWithDate>
+      </div>
+
       <div class="w-full flex gap-5 flex-wrap md:flex-nowrap">
         <CardWithDate
          class="chart-wrapper w-full sm:w-1/2"
@@ -82,12 +102,14 @@ let HighchartsComponent = null;
 const chartConfigs = reactive({
   expenses_vs_incomes: null,
   categories: null,
+  categoriesTable: null,
   top5: null,
   total_expenses: null,
 });
 const chartsLoadingState = reactive({
   expenses_vs_incomes: true,
   categories: true,
+  categoriesTable: true,
   top5: true,
   total_expenses: true,
 });
@@ -103,6 +125,7 @@ const fetchChartsData = async (type, date) => {
   const typeMapping = {
     expenses_vs_incomes: 'allTransactions',
     categories: 'allCategories',
+    categoriesTable: 'allCategoriesTable',
     top5: 'topCategories',
     total_expenses: 'cashAndCards',
   };
@@ -133,7 +156,7 @@ onMounted(async () => {
       endDate: new Date().toISOString().split('T')[0],
     };
 
-    const chartTypes = ['expenses_vs_incomes', 'categories', 'top5', 'total_expenses'];
+    const chartTypes = ['expenses_vs_incomes', 'categories', 'categoriesTable', 'top5', 'total_expenses'];
     const chartDataPromises = chartTypes.map((type) =>
      fetchChartsData(type, dateRange).then(() => {
        chartConfigs[type] = generateChartConfigForType(chartStore.chartDataByType, type);
@@ -148,7 +171,12 @@ onMounted(async () => {
   }
 });
 
-
+const sortedCategories = computed(() => {
+  if (chartStore.chartDataByType.allCategoriesTable?.length > 0) {
+    return chartStore.chartDataByType.allCategoriesTable.sort((a, b) => b.amount - a.amount)
+  }
+  return [];
+});
 </script>
 
 <style>

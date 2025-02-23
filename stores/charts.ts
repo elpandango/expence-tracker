@@ -7,6 +7,7 @@ export const useChartStore = defineStore('charts', () => {
     allTransactions: null,
     topCategories: null,
     allCategories: null,
+    allCategoriesTable: null,
     cashAndCards: null,
   });
 
