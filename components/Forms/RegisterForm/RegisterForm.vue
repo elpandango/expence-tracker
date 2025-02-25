@@ -5,12 +5,14 @@
         <BaseInput
          v-model="user.name"
          size="medium"
+         autocomplete="off"
          label="Name"/>
       </div>
       <div class="w-full md:w-1/2">
         <BaseInput
          v-model="user.lastName"
          size="medium"
+         autocomplete="off"
          label="Last Name"/>
       </div>
     </div>
@@ -19,6 +21,7 @@
        v-model="user.email"
        size="medium"
        :error-message="emailError"
+       autocomplete="off"
        label="Email"/>
     </div>
     <div class="flex flex-wrap md:flex-nowrap gap-2 mb-4">
@@ -28,6 +31,7 @@
          size="medium"
          type="password"
          :error-message="passwordError"
+         autocomplete="new-password"
          label="Password"/>
       </div>
       <div class="w-full md:w-1/2 mb-2 md:mb-0">
@@ -36,6 +40,7 @@
          size="medium"
          type="password"
          :error-message="passwordError"
+         autocomplete="new-password"
          label="Repeat Password"/>
       </div>
     </div>

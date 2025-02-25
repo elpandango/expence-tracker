@@ -11,6 +11,7 @@
      :value="modelValue"
      :placeholder="placeholder"
      :step="type === 'number' ? 0.1 : null"
+     :autocomplete="autocomplete"
      @input="emits('update:modelValue', $event.target.value)">
 
     <div
@@ -38,7 +39,8 @@ const {modelValue, placeholder, label, size, status, errorMessage, disabled, typ
   disabled: {type: Boolean, default: false},
   type: {type: String, default: 'text'},
   hasIcon: {type: Boolean, default: false},
-  classes: {type: String, default: ''}
+  classes: {type: String, default: ''},
+  autocomplete: {type: String, default: 'on'}
 });
 
 const emits = defineEmits(['update:modelValue']);
