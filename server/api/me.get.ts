@@ -14,13 +14,13 @@ export default defineEventHandler(async (event) => {
   const userId = userData?.userId;
 
   //Redis usage
-  const cachedUser = await redis.get(`user:${userId}`);
+  // const cachedUser = await redis.get(`user:${userId}`);
 
-  if (cachedUser) {
-    return {
-      user: JSON.parse(cachedUser)
-    }
-  }
+  // if (cachedUser) {
+  //   return {
+  //     user: JSON.parse(cachedUser)
+  //   }
+  // }
 
   const user = await UserModel.findById(userId, 'name lastName email');
 

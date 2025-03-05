@@ -10,15 +10,15 @@ export default defineEventHandler(async (event) => {
     }
 
     //Redis usage
-    const cachedCategories = await redis.get(`categories:${userId}`);
-
-    if (cachedCategories) {
-      return {
-        status: 200,
-        message: 'Expense categories retrieved successfully',
-        categories: JSON.parse(cachedCategories),
-      };
-    }
+    // const cachedCategories = await redis.get(`categories:${userId}`);
+    //
+    // if (cachedCategories) {
+    //   return {
+    //     status: 200,
+    //     message: 'Expense categories retrieved successfully',
+    //     categories: JSON.parse(cachedCategories),
+    //   };
+    // }
 
     const categories = await CategoryModel.find();
     await redis.set(`categories:${userId}`, JSON.stringify(categories), 'EX', 600);
