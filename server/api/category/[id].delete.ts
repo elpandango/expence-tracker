@@ -1,5 +1,6 @@
 import { defineEventHandler, getCookie } from 'h3';
 import { CategoryModel } from '~/server/models/CategoryModel';
+import redis from '~/server/utils/redis';
 
 export default defineEventHandler(async (event) => {
   const { id } = event.context.params;
@@ -19,5 +20,6 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 404, message: 'Category not found' });
   }
 
+  await redis.del(`categories:${userId}`);
   return { status: 200, message: 'Category deleted successfully' };
 });

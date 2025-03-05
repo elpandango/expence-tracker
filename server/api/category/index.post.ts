@@ -1,5 +1,6 @@
 import {defineEventHandler, readBody, createError, getCookie} from 'h3';
 import {CategoryModel} from '~/server/models/CategoryModel';
+import redis from '~/server/utils/redis';
 
 export default defineEventHandler(async (event) => {
   try {
@@ -20,6 +21,7 @@ export default defineEventHandler(async (event) => {
     });
 
     await newCategory.save();
+    await redis.del(`categories:${userId}`);
 
     return {
       status: 200,
