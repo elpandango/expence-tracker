@@ -1,6 +1,7 @@
 import {createError} from 'h3';
 import {verifyToken} from "~/server/utils/auth";
 import {UserModel} from '../models/UserModel';
+import redis from '~/server/utils/redis';
 
 export default defineEventHandler(async (event) => {
   const token = parseCookies(event).auth_token;
@@ -12,11 +13,23 @@ export default defineEventHandler(async (event) => {
   const userData = verifyToken(token);
   const userId = userData?.userId;
 
+  //Redis usage
+  const cachedUser = await redis.get(`user:${userId}`);
+
+  if (cachedUser) {
+    return {
+      user: JSON.parse(cachedUser)
+    }
+  }
+
   const user = await UserModel.findById(userId, 'name lastName email');
 
   if (!user) {
     throw createError({statusCode: 404, message: 'User not found'});
   }
+
+  //Cache user in Redis
+  await redis.set(`user:${userId}`, JSON.stringify(user), 'EX', 600);
 
   return {
     user: {
@@ -24,6 +37,6 @@ export default defineEventHandler(async (event) => {
       name: user.name,
       lastName: user.lastName,
       email: user.email,
-    }
+    },
   };
 });
