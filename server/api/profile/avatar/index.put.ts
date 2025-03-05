@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
   const { avatar } = await readBody(event);
 
   try {
-    await redis.set(`avatar:${userId}`, JSON.stringify(avatar), 'EX', 600);
+    // await redis.set(`avatar:${userId}`, JSON.stringify(avatar), 'EX', 600);
     return await updateAvatar(userId, avatar);
   } catch (err) {
     console.log(err);

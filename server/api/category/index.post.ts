@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
     });
 
     await newCategory.save();
-    await redis.del(`categories:${userId}`);
+    // await redis.del(`categories:${userId}`);
 
     return {
       status: 200,

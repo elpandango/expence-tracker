@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
   }
 
   //Cache user in Redis
-  await redis.set(`user:${userId}`, JSON.stringify(user), 'EX', 600);
+  // await redis.set(`user:${userId}`, JSON.stringify(user), 'EX', 600);
 
   return {
     user: {

@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
     // }
 
     const categories = await CategoryModel.find();
-    await redis.set(`categories:${userId}`, JSON.stringify(categories), 'EX', 600);
+    // await redis.set(`categories:${userId}`, JSON.stringify(categories), 'EX', 600);
     return {status: 200, message: 'Expense categories retrieved successfully', categories};
   } catch (error) {
     console.error(error);

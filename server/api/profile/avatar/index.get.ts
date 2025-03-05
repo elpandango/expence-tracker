@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
     throw createError({statusCode: 404, message: 'Avatar not found'});
   }
 
-  await redis.set(`avatar:${userId}`, JSON.stringify(avatar), 'EX', 600);
+  // await redis.set(`avatar:${userId}`, JSON.stringify(avatar), 'EX', 600);
 
   return {
     avatar: avatar,
