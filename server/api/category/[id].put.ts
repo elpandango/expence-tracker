@@ -24,6 +24,6 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 404, message: 'Category not found' });
   }
 
-  // await redis.del(`categories:${userId}`);
+  await redis.del(`categories:${userId}`);
   return { status: 200, message: 'Category updated successfully', category: updatedCategory };
 });
