@@ -31,7 +31,7 @@ export default defineEventHandler(async (event) => {
   //Cache user in Redis
   await redis.set(`user:${userId}`, JSON.stringify(user), 'EX', 600);
 
-  await redis.set("testKey", "Hello from Upstash!");
+  await redis.set("testKey", "Hello from Upstash!", 'EX', 600);
   const value = await redis.get("testKey");
 
   return {
