@@ -2,6 +2,7 @@ export default defineNuxtConfig({
   ssr: true,
   devtools: {enabled: true},
   nitro: {
+    preset: 'netlify',
     plugins: ["~/server/plugins/mongodb.ts"],
   },
   app: {
