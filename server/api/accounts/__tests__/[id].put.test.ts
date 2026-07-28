@@ -6,7 +6,8 @@ import {getCookie, readBody} from 'h3';
 vi.mock('~/server/models/AccountModel', () => ({
   AccountModel: {
     findOne: vi.fn(),
-    save: vi.fn()
+    save: vi.fn(),
+    updateMany: vi.fn(),
   },
 }));
 
@@ -24,6 +25,7 @@ vi.stubGlobal('createError', vi.fn((error) => error));
 describe('PUT /accounts API', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    AccountModel.updateMany.mockResolvedValue({});
   });
 
   it('should return 401 if userId cookie is missing', async () => {
@@ -67,7 +69,7 @@ describe('PUT /accounts API', () => {
   it('should update account and return success message', async () => {
     const mockAccount = {_id: 'account123', userId: 'user123', name: 'Old Account', currency: 'USD', save: vi.fn()};
     getCookie.mockReturnValue('user123');
-    readBody.mockResolvedValue({name: 'Updated Account', currency: 'USD'});
+    readBody.mockResolvedValue({name: 'Updated Account', currency: 'USD', isDefault: true});
     AccountModel.findOne.mockResolvedValue(mockAccount);
 
     const mockEvent = {context: {params: {id: 'account123'}}};
@@ -76,8 +78,9 @@ describe('PUT /accounts API', () => {
     expect(result).toEqual({
       status: 200,
       message: 'Account updated successfully',
-      account: { ...mockAccount, name: 'Updated Account', currency: 'USD' },
+      account: { ...mockAccount, name: 'Updated Account', currency: 'USD', isDefault: true },
     });
+    expect(AccountModel.updateMany).toHaveBeenCalledWith({userId: 'user123'}, {$set: {isDefault: false}});
 
   });
 });

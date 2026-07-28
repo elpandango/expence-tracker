@@ -232,9 +232,14 @@ const populateAccountsList = async () => {
   await financeStore.fetchAccountsIfNeeded();
   accounts.value = financeStore.accountsList.map(account => ({
     value: account._id,
+    isDefault: account.isDefault,
     currency: account.currency,
     label: `${account.name}: ${formatCurrency(account.balance, account.currency)}`
   }));
+};
+
+const getDefaultAccountOption = () => {
+  return accounts.value.find(account => account.isDefault) || accounts.value[0] || null;
 };
 
 const populateCategoriesList = async () => {
@@ -309,13 +314,19 @@ const handleSaveTransaction = async () => {
 };
 
 const resetTransactionFields = () => {
-  transaction.accountId = accounts.value[0].value || null;
+  const defaultAccount = getDefaultAccountOption();
+
+  transaction.accountId = defaultAccount?.value || null;
   transaction.relatedAccountId = null;
   transaction.description = '';
   transaction.amount = '';
   transaction.date = new Date();
-  if (accounts.value[0]) {
-    selectedAccount.value = {value: accounts.value[0].value, label: accounts.value[0].label, currency: accounts.value[0].currency};
+  if (defaultAccount) {
+    selectedAccount.value = {
+      value: defaultAccount.value,
+      label: defaultAccount.label,
+      currency: defaultAccount.currency,
+    };
   } else {
     selectedAccount.value = null;
   }

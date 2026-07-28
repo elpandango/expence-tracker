@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const accounts = await AccountModel.find({ userId });
+    const accounts = await AccountModel.find({ userId }).sort({ isDefault: -1, createdAt: 1 });
 
     return {
       status: 200,

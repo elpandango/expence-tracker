@@ -68,6 +68,15 @@
            @input="formatCardNumber"/>
         </div>
 
+        <label class="mb-2 flex items-center gap-2 cursor-pointer">
+          <input
+           v-model="isDefaultAccount"
+           type="checkbox"
+           class="h-4 w-4 cursor-pointer rounded border-stone-300 text-blue-600 focus:ring-blue-600"
+          >
+          <span class="text-sm">Use as default account</span>
+        </label>
+
       </form>
     </template>
     <template #footer>
@@ -115,6 +124,7 @@ const cardNumberError = ref<string | null>(null);
 const modalValue = ref(props.isOpen);
 const accountName = ref('');
 const accountBalance = ref('');
+const isDefaultAccount = ref(false);
 const accountType = ref({
   value: 'cash',
   label: 'Cash'
@@ -152,6 +162,7 @@ const handleSaveAccount = async () => {
         id: financeStore.editingAccount.value._id,
         name: accountName.value,
         currency: selectedCurrency.value.value,
+        isDefault: isDefaultAccount.value,
       });
 
     } else {
@@ -161,6 +172,7 @@ const handleSaveAccount = async () => {
         currency: selectedCurrency.value.value,
         type: accountType.value.value,
         cardNumber: cardNumber.value ?? null,
+        isDefault: isDefaultAccount.value,
       });
     }
   } catch (error) {
@@ -176,6 +188,7 @@ const resetAccountFields = () => {
     label: 'Euro'
   };
   accountBalance.value = '';
+  isDefaultAccount.value = false;
   accountType.value = {
     value: 'cash',
     label: 'Cash'
@@ -189,6 +202,7 @@ const populateAccountFields = () => {
 
   accountName.value = editingAccount.name;
   accountBalance.value = editingAccount.balance;
+  isDefaultAccount.value = Boolean(editingAccount.isDefault);
 
   if (editingAccount.type === 'card') {
     cardNumber.value = editingAccount.cardNumber;
@@ -212,12 +226,14 @@ watchEffect(() => {
   const defaultAccountData = {
     name: '',
     balance: '',
-    currency: 'EUR'
+    currency: 'EUR',
+    isDefault: false,
   };
 
   const accountData = newIsEditMode ? newAccount : defaultAccountData;
   accountName.value = accountData.name || '';
   accountBalance.value = accountData.balance || '';
+  isDefaultAccount.value = Boolean(accountData.isDefault);
   selectedCurrency.value = {
     value: accountData.currency || 'EUR',
     label: accountData.currency || 'EUR',

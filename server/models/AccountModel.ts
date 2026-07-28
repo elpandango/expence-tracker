@@ -12,6 +12,7 @@ const AccountSchema = new mongoose.Schema({
   currency: { type: String, required: true, default: 'EUR' },
   balance: { type: Number, default: 0 },
   cardNumber: { type: String, default: null },
+  isDefault: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
 });
 

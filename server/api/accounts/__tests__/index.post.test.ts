@@ -4,9 +4,15 @@ import {AccountModel} from '~/server/models/AccountModel';
 import {getCookie, readBody} from 'h3';
 
 vi.mock('~/server/models/AccountModel', () => ({
-  AccountModel: vi.fn().mockImplementation(() => ({
-    save: vi.fn().mockResolvedValue({}),
-  })),
+  AccountModel: Object.assign(
+   vi.fn().mockImplementation(() => ({
+     save: vi.fn().mockResolvedValue({}),
+   })),
+   {
+     exists: vi.fn(),
+     updateMany: vi.fn(),
+   }
+  ),
 }));
 
 vi.mock('h3', async (importOriginal) => {
@@ -23,6 +29,8 @@ vi.stubGlobal('createError', vi.fn((error) => error));
 describe('POST /accounts API', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    AccountModel.exists.mockResolvedValue(true);
+    AccountModel.updateMany.mockResolvedValue({});
   });
 
   it('should return 401 if userId cookie is missing', async () => {
@@ -61,6 +69,7 @@ describe('POST /accounts API', () => {
       currency: 'USD',
       cardNumber: '1234567812345678',
       initialBalance: 100,
+      isDefault: true,
     });
 
     AccountModel.prototype.save = vi.fn().mockResolvedValue({});
@@ -70,6 +79,7 @@ describe('POST /accounts API', () => {
 
     expect(result.status).toBe(201);
     expect(result.message).toBe('Account created successfully');
+    expect(AccountModel.updateMany).toHaveBeenCalledWith({userId: 'user123'}, {$set: {isDefault: false}});
   });
 
   it('should throw an error if type not card or cash', async() => {

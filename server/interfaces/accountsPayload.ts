@@ -3,7 +3,8 @@ export interface CreateAccountPayload {
   initialBalance: number,
   currency: string,
   type: string,
-  cardNumber?: string
+  cardNumber?: string,
+  isDefault?: boolean
 }
 
 export interface UpdateAccountPayload extends Partial<CreateAccountPayload> {

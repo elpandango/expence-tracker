@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
     throw createError({statusCode: 401, message: 'Unauthorized'});
   }
 
-  const {name, currency} = await readBody(event);
+  const {name, currency, isDefault} = await readBody(event);
 
   if (!id) {
     throw createError({statusCode: 400, message: 'Account ID is required'});
@@ -21,6 +21,13 @@ export default defineEventHandler(async (event) => {
 
   if (name) account.name = name;
   if (currency) account.currency = currency;
+  if (typeof isDefault === 'boolean') {
+    if (isDefault) {
+      await AccountModel.updateMany({userId}, {$set: {isDefault: false}});
+    }
+
+    account.isDefault = isDefault;
+  }
 
   await account.save();
 

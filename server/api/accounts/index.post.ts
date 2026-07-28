@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 401, message: 'Unauthorized' });
   }
 
-  const { name, type, currency, cardNumber, initialBalance } = await readBody(event);
+  const { name, type, currency, cardNumber, initialBalance, isDefault } = await readBody(event);
 
   if (!name || !type || !currency) {
     throw createError({ statusCode: 400, message: 'Missing required fields' });
@@ -27,6 +27,13 @@ export default defineEventHandler(async (event) => {
     }
   }
 
+  const hasExistingDefaultAccount = await AccountModel.exists({ userId, isDefault: true });
+  const shouldSetAsDefault = Boolean(isDefault) || !hasExistingDefaultAccount;
+
+  if (shouldSetAsDefault) {
+    await AccountModel.updateMany({ userId }, { $set: { isDefault: false } });
+  }
+
   const newAccount = new AccountModel({
     userId,
     name,
@@ -34,6 +41,7 @@ export default defineEventHandler(async (event) => {
     currency,
     cardNumber: type === 'card' ? `**** **** **** ${cardNumber.slice(-4)}` : null,
     balance: initialBalance || 0,
+    isDefault: shouldSetAsDefault,
   });
 
   await newAccount.save();
