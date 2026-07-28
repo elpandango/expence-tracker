@@ -38,8 +38,6 @@
           <span class="text-xl">+</span>
           <span class="ml-2.5">{{ $t('components.accountsPage.addAccountText') }}</span>
         </button>
-
-        <p class="mt-4 mb-4">{{ $t('components.accountsPage.generateDataText') }}</p>
       </div>
     </template>
 
@@ -62,19 +60,16 @@ import {useSeoConfig} from "~/use/useSeoConfig";
 import {useFinanceStore} from "~/stores/finance";
 import {useUIStore} from "~/stores/ui";
 import {emitter} from "~/classes/uiEventBus";
-import {useGenerateTestData} from "~/use/useGenerateTestData";
 
 const AccountCard = defineAsyncComponent(() => import('~/components/AccountCard/AccountCard.vue'));
 const DeleteAccountModal = defineAsyncComponent(() => import('~/components/Modals/DeleteAccountModal.vue'));
 const seoMeta = useSeoConfig();
 useSeoMeta(seoMeta.value);
 
-const {generateTestData} = useGenerateTestData();
 const financeStore = useFinanceStore();
 const uiStore = useUIStore();
 const isDeleteConfirmationModalOpen = ref(false);
 const accountIdToDelete = ref('');
-const generateTestClicked = ref(false);
 
 const handleAddAmount = () => {
   financeStore.resetEditingAccount();
@@ -95,15 +90,6 @@ const handleDeleteAccount = async () => {
   const accountId = accountIdToDelete.value;
   isDeleteConfirmationModalOpen.value = false;
   await financeStore.deleteAccount(accountId);
-};
-
-const handleCreateTestData = async () => {
-  generateTestClicked.value = true;
-  emitter.emit('ui:startLoading', 'default');
-  await generateTestData();
-  emitter.emit('ui:stopLoading', 'default');
-  generateTestClicked.value = false;
-  window.location.reload();
 };
 
 onMounted(async () => {

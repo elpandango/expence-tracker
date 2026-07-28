@@ -23,23 +23,8 @@
       <p class="mb-2">{{ $t('components.accountsPage.emptyListTitleText') }}</p>
       <BaseButton
        size="medium"
-       @click="handleAddAmount">{{ $t('components.accountsPage.addAccountText') }}  test
+       @click="handleAddAmount">{{ $t('components.accountsPage.addAccountText') }}
       </BaseButton>
-
-      <p class="mt-4 mb-2">{{ $t('components.accountsPage.emptyAccountsText') }}:</p>
-
-      <BaseButton
-       v-if="!generateTestClicked"
-       size="medium"
-       @click="handleCreateTestData">{{ $t('components.accountsPage.generateBtnText') }}
-      </BaseButton>
-      <div
-       v-else
-       class="w-[170px] h-[44px]">
-        <Preloader
-         height="40px"/>
-      </div>
-
     </template>
 
     <div
@@ -68,16 +53,11 @@
 import {useUIStore} from "~/stores/ui";
 import {useFinanceStore} from "~/stores/finance";
 import {useCurrencyFormatter} from "~/use/useCurrencyFormatter";
-import {useGenerateTestData} from "~/use/useGenerateTestData";
-import {emitter} from "~/classes/uiEventBus";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
 
 const uiStore = useUIStore();
 const financeStore = useFinanceStore();
 const {formatCurrency} = useCurrencyFormatter();
-const {generateTestData} = useGenerateTestData();
-
-const generateTestClicked = ref(false);
 
 const handleAddFunds = () => {
   financeStore.resetEditingTransaction();
@@ -93,15 +73,6 @@ const handleNewExpense = () => {
   financeStore.resetEditingTransaction();
   uiStore.toggleModal('isAddExpenseModalOpen', true);
 }
-
-const handleCreateTestData = async () => {
-  generateTestClicked.value = true;
-  emitter.emit('ui:startLoading', 'default');
-  await generateTestData();
-  emitter.emit('ui:stopLoading', 'default');
-  generateTestClicked.value = false;
-  window.location.reload();
-};
 
 onMounted(async () => {
   try {

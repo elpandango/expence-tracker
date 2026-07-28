@@ -171,10 +171,6 @@ export const de = {
       accountName: 'Kontoname',
       accountType: 'Kontotyp',
       balance: 'Kontostand',
-      emptyAccountsText: 'oder probieren Sie die App mit vorgenerierten Beispielen aus',
-      generateBtnText: 'Testdaten generieren',
-      generateDataText: 'oder Testdaten generieren (kann einige Zeit dauern)',
-      generateDataBtnText: 'Testdaten generieren',
     },
     modalsContent: {
       addCardModal: {
@@ -223,7 +219,6 @@ export const de = {
         transactionDeleteText: 'Transaktion löschen',
         emptyAccountsText: 'Sie haben noch keine Konten und können daher keine Ausgaben hinzufügen.',
         goToAccountsBtnText: 'Gehe zu Konten',
-        generateTestDataBtnText: 'Testdaten generieren',
       },
       deleteCardModal: {
         deleteTitleText: 'Kartenlöschung bestätigen',

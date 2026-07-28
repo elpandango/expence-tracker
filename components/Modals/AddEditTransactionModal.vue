@@ -111,15 +111,10 @@
          v-else
          class="empty-message min-h-[250px] flex flex-col justify-center">
           <p>{{ $t('components.modalsContent.addEditTransactionModal.emptyAccountsText') }}</p>
-          <div class="btn-block flex justify-between items-center mt-10">
+          <div class="btn-block flex justify-start items-center mt-10">
             <BaseButton
              size="medium"
              @click="goToAccounts">{{ $t('components.modalsContent.addEditTransactionModal.goToAccountsBtnText') }}
-            </BaseButton>
-            <BaseButton
-             size="medium"
-             @click="handleCreateTestData">
-              {{ $t('components.modalsContent.addEditTransactionModal.generateTestDataBtnText') }}
             </BaseButton>
           </div>
         </div>
@@ -150,7 +145,6 @@ import {ref, reactive, computed, onMounted, watch} from 'vue';
 import {useFinanceStore} from '~/stores/finance';
 import {useCategoryStore} from '~/stores/category';
 import {useCurrencyFormatter} from "~/use/useCurrencyFormatter";
-import {useGenerateTestData} from "~/use/useGenerateTestData";
 import {useUIStore} from "~/stores/ui";
 import {useI18n} from 'vue-i18n';
 import {
@@ -173,7 +167,6 @@ const props = defineProps({
 });
 
 const {locale} = useI18n();
-const {generateTestData} = useGenerateTestData();
 const {formatCurrency} = useCurrencyFormatter();
 const financeStore = useFinanceStore();
 const categoryStore = useCategoryStore();
@@ -358,14 +351,6 @@ const resetTransactionFields = () => {
   }
   selectedCategory.value = {value: null, label: defaultCategoriesOtherValues[locale.value]};
   isCategorySelectedManually.value = false;
-};
-
-const handleCreateTestData = async () => {
-  emitter.emit('ui:startLoading', 'default');
-  closeModal();
-  await generateTestData();
-  emitter.emit('ui:stopLoading', 'default');
-  window.location.reload();
 };
 
 const goToAccounts = () => {
