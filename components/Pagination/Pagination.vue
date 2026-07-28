@@ -110,6 +110,7 @@ const props = defineProps({
 
 const prevPage = () => {
   emits('page-changed', props.data.previousPage);
+  alert('test');
 };
 
 const nextPage = () => {
