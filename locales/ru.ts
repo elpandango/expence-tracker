@@ -121,6 +121,7 @@ export const ru = {
       addExpense: 'Добавить расход',
       categories: 'Категории',
       theme: 'Тема',
+      language: 'Язык',
     },
     transactionsHistory: {
       titleText: 'История транзакций',

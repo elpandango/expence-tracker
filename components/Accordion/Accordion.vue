@@ -5,8 +5,8 @@
     <div class="accordion-inner-content relative">
       <div
        :style="{height: props.height}"
-       class="header-block bg-bg px-5 flex items-center justify-between cursor-pointer h-[50px]"
-       :class="align"
+       class="header-block bg-bg flex items-center justify-between cursor-pointer h-[50px]"
+       :class="[headerClass, align]"
        @click="accordionTrigger">
         <slot name="header">
           <div class="value">
@@ -31,10 +31,12 @@
       <div
        :style="{maxHeight: isActive ? computedHeight  + 'px' : '0px'}"
        class="content-block overflow-hidden max-h-0 transition-all duration-300 rounded-b-lg ">
-        <div
-         ref="contentBlock"
+      <div
+        ref="contentBlock"
          class="content-items-list">
-          <div class="content-item py-4 px-5 ">
+          <div
+           class="content-item"
+           :class="bodyClass">
             <slot name="accordion-body">default body</slot>
           </div>
         </div>
@@ -64,6 +66,14 @@ const props = defineProps({
   align: {
     type: String,
     default: ''
+  },
+  headerClass: {
+    type: String,
+    default: 'px-5'
+  },
+  bodyClass: {
+    type: String,
+    default: 'py-4 px-5'
   }
 });
 

@@ -26,9 +26,6 @@
            class="icon material-symbols-outlined absolute z-20 top-3 right-3 cursor-pointer"
            @click="searchTransactions">search</span>
         </div>
-
-        <LanguageTrigger/>
-
         <AvatarDropdown/>
 
         <button
@@ -131,6 +128,28 @@
             }}</span>
           {{ $t('components.menuList.theme') }}
         </div>
+        <div class="w-full px-3 py-2">
+          <Accordion
+           class="!rounded-md !shadow-none border-none dark:border-none"
+           height="44px"
+           header-class="px-0"
+           body-class="px-3 py-2"
+          >
+            <template #header>
+              <div class="flex items-center w-full text-[16px] font-medium">
+                <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">language</span>
+                {{ $t('components.menuList.language') }}
+              </div>
+            </template>
+            <template #accordion-body>
+              <LanguageMenu
+               :full-width="true"
+               :show-label="false"
+               @changed="closeMenu"
+              />
+            </template>
+          </Accordion>
+        </div>
 
         <button
          class="menu-link flex items-center w-full px-3 py-2 text-[16px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
@@ -152,6 +171,8 @@ import {useUserStore} from '~/stores/user';
 import {useFinanceStore} from "~/stores/finance";
 import {useAuthStore} from "~/stores/auth";
 import {useI18n} from 'vue-i18n';
+import Accordion from "~/components/Accordion/Accordion.vue";
+import LanguageMenu from "~/components/LanguageMenu/LanguageMenu.vue";
 
 const BaseInput = defineAsyncComponent(() => import('~/components/Forms/Inputs/BaseInput.vue'));
 

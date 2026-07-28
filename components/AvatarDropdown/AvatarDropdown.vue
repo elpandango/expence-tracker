@@ -17,7 +17,7 @@
 
     <div
      v-if="isOpen"
-     class="dropdown-menu absolute rounded-xl shadow-lg bg-card-bg top-[50px] right-0 w-[150px] p-2 px-1 z-[1000] flex flex-wrap gap-0.5">
+     class="dropdown-menu absolute rounded-xl shadow-lg bg-card-bg top-[50px] right-0 w-[190px] p-2 px-1 z-[1000] flex flex-wrap gap-1">
       <NuxtLink
        to="/profile"
        class="flex w-full items-center cursor-pointer no-underline py-1.5 transition-all duration-300 hover:bg-list-item-bg"
@@ -25,6 +25,10 @@
         <span class="icon material-symbols-outlined mr-3">account_circle</span>
         {{ $t('components.menuList.profile') }}
       </NuxtLink>
+      <LanguageMenu
+       :show-label="true"
+       @changed="closeMenu"
+      />
       <div
        class="flex w-full items-center cursor-pointer no-underline py-1.5 transition-all duration-300 hover:bg-list-item-bg"
        @click="handleLogout">
@@ -41,6 +45,7 @@
 import {ref, onMounted, onBeforeUnmount} from 'vue';
 import {useUserStore} from '~/stores/user';
 import {useAuthStore} from "~/stores/auth";
+import LanguageMenu from "~/components/LanguageMenu/LanguageMenu.vue";
 
 const userStore = useUserStore();
 const authStore = useAuthStore();
@@ -53,6 +58,7 @@ const toggleDropdown = () => {
 
 const handleLogout = async () => {
   try {
+    closeMenu();
     await authStore.logout();
   } catch (error) {
     console.log(`Logout failed: ${error.message}`);

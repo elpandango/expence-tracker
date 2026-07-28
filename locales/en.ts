@@ -121,6 +121,7 @@ export const en = {
       addExpense: 'Add Expense',
       categories: 'Categories',
       theme: 'Theme',
+      language: 'Language',
     },
     transactionsHistory: {
       titleText: 'Transactions History',

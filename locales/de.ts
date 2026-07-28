@@ -121,6 +121,7 @@ export const de = {
       addExpense: 'Ausgabe hinzufügen',
       categories: 'Kategorien',
       theme: 'Thema',
+      language: 'Sprache',
     },
     transactionsHistory: {
       titleText: 'Transaktionsverlauf',

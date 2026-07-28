@@ -121,6 +121,7 @@ export const ua = {
       addExpense: 'Додати витрату',
       categories: 'Категорії',
       theme: 'Тема',
+      language: 'Мова',
     },
     transactionsHistory: {
       titleText: 'Історія транзакцій',
