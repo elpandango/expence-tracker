@@ -12,7 +12,8 @@
      :placeholder="placeholder"
      :step="type === 'number' ? 0.1 : null"
      :autocomplete="autocomplete"
-     @input="emits('update:modelValue', $event.target.value)">
+     @input="emits('update:modelValue', $event.target.value)"
+     @blur="emits('blur', $event)">
 
     <div
      v-if="hasIcon"
@@ -43,7 +44,7 @@ const {modelValue, placeholder, label, size, status, errorMessage, disabled, typ
   autocomplete: {type: String, default: 'on'}
 });
 
-const emits = defineEmits(['update:modelValue']);
+const emits = defineEmits(['update:modelValue', 'blur']);
 
 const sizeClasses = {
   small: "text-sm py-1 px-4",

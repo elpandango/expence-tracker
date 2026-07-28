@@ -24,7 +24,7 @@
             <template v-if="transaction?.type !== 'income' && transaction?.category?.icon">
               <div
                class="category-icon material-symbols-outlined flex items-center justify-center w-5 h-5 text-sm mr-1 rounded-md"
-               :style="{ backgroundColor: transaction?.category?.color }">{{ transaction.category.icon }}
+               :style="{ backgroundColor: categoryDisplayMeta.color }">{{ categoryDisplayMeta.icon }}
               </div>
             </template>
             <template v-else-if="transaction?.type === 'income'">
@@ -69,6 +69,8 @@
  lang="ts">
 import {ref} from "vue";
 import {useCurrencyFormatter} from "~/use/useCurrencyFormatter";
+import {useI18n} from "vue-i18n";
+import {getCategoryDisplayMeta} from "~/utils/categoryHelpers";
 
 const { transaction, tag, showActions } = defineProps({
   transaction: {
@@ -88,6 +90,7 @@ const { transaction, tag, showActions } = defineProps({
 const emit = defineEmits(['delete-clicked', 'edit-clicked']);
 
 const {formatCurrency} = useCurrencyFormatter();
+const {locale} = useI18n();
 const isOpen = ref(false);
 const actions = ref(null);
 const handleClickOutside = (event: event) => {
@@ -96,11 +99,15 @@ const handleClickOutside = (event: event) => {
   }
 };
 
+const categoryDisplayMeta = computed(() => {
+  return getCategoryDisplayMeta(transaction?.category || {}, locale.value);
+});
+
 const categoryName = computed(() => {
   if (transaction?.type === 'income') {
     return 'Deposit';
   } else {
-    return transaction?.category?.name;
+    return categoryDisplayMeta.value.name;
   }
 });
 

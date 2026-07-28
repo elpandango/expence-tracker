@@ -64,7 +64,8 @@
              :status="transactionDescriptionError ? 'error' : ''"
              :error-message="transactionDescriptionError ? transactionDescriptionError : ''"
              :placeholder="$t('components.modalsContent.addEditTransactionModal.descriptionLabelText')"
-             :label="$t('components.modalsContent.addEditTransactionModal.descriptionLabelText')"/>
+             :label="$t('components.modalsContent.addEditTransactionModal.descriptionLabelText')"
+             @blur="handleDescriptionBlur"/>
           </div>
           <div class="flex gap-2 mb-5 flex-wrap">
             <BaseInput
@@ -99,6 +100,7 @@
             </div>
             <CategoryDropdown
              v-model="selectedCategory"
+             @update:model-value="handleCategoryChange"
              :options="categories"
              type="form-dropdown"
              size="h-[50px]"
@@ -151,6 +153,11 @@ import {useCurrencyFormatter} from "~/use/useCurrencyFormatter";
 import {useGenerateTestData} from "~/use/useGenerateTestData";
 import {useUIStore} from "~/stores/ui";
 import {useI18n} from 'vue-i18n';
+import {
+  buildVisibleCategoryOptions,
+  getCanonicalCategoryName,
+  inferCategoryOptionByDescription
+} from "~/utils/categoryHelpers";
 import Modal from './Modal.vue';
 import Dropdown from '~/components/Dropdown/Dropdown.vue';
 import BaseButton from '~/components/Buttons/BaseButton.vue';
@@ -196,6 +203,7 @@ const defaultAccountsValues = {
 
 const selectedCategory = ref({value: null, label: defaultCategoriesOtherValues[locale.value]});
 const categories = ref([]);
+const isCategorySelectedManually = ref(false);
 const transaction = reactive({
   id: null,
   accountId: null,
@@ -220,7 +228,9 @@ watch(modalValue, (newValue) => {
   if (newValue) resetTransactionFields();
 });
 
-const isEditMode = computed(() => !!financeStore.editingTransaction.value);
+const isEditMode = computed(() => {
+  return Boolean(financeStore.editingTransaction.value?._id);
+});
 
 const closeModal = () => emit('close');
 
@@ -244,17 +254,12 @@ const getDefaultAccountOption = () => {
 
 const populateCategoriesList = async () => {
   await categoryStore.fetchCategoriesIfNeeded();
-  categories.value = categoryStore.categories.map(ctg => ({
-    value: ctg._id,
-    label: ctg.name,
-    color: ctg.color,
-    icon: ctg.icon
-  }));
+  categories.value = buildVisibleCategoryOptions(categoryStore.categories, locale.value);
 };
 
 const populateTransactionFields = () => {
   const editingTransaction = financeStore.editingTransaction.value;
-  if (!editingTransaction) return;
+  if (!editingTransaction?._id) return;
 
   transaction.id = editingTransaction._id || null;
   transaction.accountId = editingTransaction.accountId || null;
@@ -272,10 +277,31 @@ const populateTransactionFields = () => {
     currency: ''
   };
 
-  selectedCategory.value = categories.value.find(cat => cat.value === editingTransaction.category?._id) || {
+  const editingCategoryName = editingTransaction.category?.name || '';
+  const canonicalCategoryName = getCanonicalCategoryName(editingCategoryName);
+
+  selectedCategory.value = categories.value.find(cat => cat.canonicalName === canonicalCategoryName) || {
     value: null,
     label: defaultCategoriesOtherValues[locale.value]
   };
+  isCategorySelectedManually.value = true;
+};
+
+const handleCategoryChange = (option) => {
+  selectedCategory.value = option;
+  isCategorySelectedManually.value = true;
+};
+
+const handleDescriptionBlur = () => {
+  if (transactionTypeLocal.value !== 'expense') return;
+  if (isCategorySelectedManually.value) return;
+  if (selectedCategory.value?.value) return;
+
+  const inferredCategory = inferCategoryOptionByDescription(transaction.description, categories.value);
+
+  if (inferredCategory) {
+    selectedCategory.value = inferredCategory;
+  }
 };
 
 const handleSaveTransaction = async () => {
@@ -331,6 +357,7 @@ const resetTransactionFields = () => {
     selectedAccount.value = null;
   }
   selectedCategory.value = {value: null, label: defaultCategoriesOtherValues[locale.value]};
+  isCategorySelectedManually.value = false;
 };
 
 const handleCreateTestData = async () => {

@@ -44,6 +44,8 @@ import {onMounted, ref, watch} from "vue";
 import {useChartStore} from "~/stores/charts";
 import {useFinanceStore} from "~/stores/finance";
 import {useSeoConfig} from "~/use/useSeoConfig";
+import {useI18n} from "vue-i18n";
+import {mergeCategoryAmounts} from "~/utils/categoryHelpers";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
 import Card from "~/components/Card/Card.vue";
 
@@ -52,6 +54,7 @@ useSeoMeta(seoMeta.value);
 
 const chartStore = useChartStore();
 const financeStore = useFinanceStore();
+const {locale} = useI18n();
 const isHighchartsLoaded = ref(false);
 const topChartIsLoaded = ref(false);
 // eslint-disable-next-line
@@ -82,10 +85,16 @@ const fetchChartData = async () => {
 
     chartStore.chartDataByType.topCategories = response.data;
 
-    const top5ChartData = chartStore.chartDataByType.topCategories?.map(t => ({
+    const top5ChartData = mergeCategoryAmounts(
+      chartStore.chartDataByType.topCategories || [],
+      locale.value
+    )
+      .sort((firstCategory, secondCategory) => secondCategory.amount - firstCategory.amount)
+      .slice(0, 5)
+      .map(t => ({
       name: t.category,
       y: Math.abs(t.amount),
-    })) || [];
+    }));
 
     chartConfig.value = {
       chart: {

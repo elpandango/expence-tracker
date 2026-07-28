@@ -5,7 +5,7 @@ import repositoryFactory from "~/repositories/repositoryFactory";
 import {useLocalizatedCategories} from "~/use/useLocalizatedCategories";
 
 export const useCategoryStore = defineStore('category', () => {
-  const categories = ref<{ id: string, name: string, icon: string }[]>([]);
+  const categories = ref<{ id: string, name: string, rawName: string, icon: string }[]>([]);
   const isLoading = ref(false);
   const error = ref<string | null>(null);
   const {locale} = useI18n();
@@ -22,6 +22,7 @@ export const useCategoryStore = defineStore('category', () => {
       const localizedCategories = response.categories.map((category) => {
         return {
           ...category,
+          rawName: category.name,
           name: useLocalizatedCategories(category.name, locale.value),
         };
       });

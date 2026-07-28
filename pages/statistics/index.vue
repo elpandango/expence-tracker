@@ -92,11 +92,14 @@ import {ref, reactive, onMounted} from 'vue';
 import {useSeoConfig} from "~/use/useSeoConfig";
 import {useChartStore} from "~/stores/charts";
 import {generateChartConfigForType} from "~/utils/chartUtils";
+import {useI18n} from "vue-i18n";
+import {mergeCategoryAmounts} from "~/utils/categoryHelpers";
 
 const seoMeta = useSeoConfig();
 useSeoMeta(seoMeta.value);
 
 const chartStore = useChartStore();
+const {locale} = useI18n();
 
 const isHighchartsLoaded = ref(false);
 let HighchartsComponent = null;
@@ -148,7 +151,9 @@ const fetchChartsData = async (type, date) => {
 
   try {
     const response = await chartStore.getChartsData(`?${dateQuery}`);
-    chartStore.chartDataByType[chartType] = response.data;
+    chartStore.chartDataByType[chartType] = ['topCategories', 'allCategories', 'allCategoriesTable'].includes(chartType)
+      ? mergeCategoryAmounts(response.data, locale.value)
+      : response.data;
   } catch (err) {
     console.error(`Error fetching data for ${chartType}:`, err);
   }
