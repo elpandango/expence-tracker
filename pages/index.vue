@@ -17,42 +17,10 @@
     <Card :with-scroll="true">
       <TransactionsHistory>
         <template #header>
-
-          <div class="title-block flex items-center justify-between mb-2 flex-wrap md:flex-nowrap">
+          <div class="title-block flex items-center justify-between mb-5 flex-wrap md:flex-nowrap gap-2">
             <h3 class="text-lg font-semibold">
               {{ $t('components.transactionsHistory.titleText') }}
             </h3>
-
-            <div class="sorting-block flex items-center justify-end mr-2">
-              <span class="sort-label whitespace-nowrap mr-2 text-sm">{{ $t('components.transactionsHistory.sortByText') }}</span>
-              <Dropdown
-               v-model="sortBySelected"
-               :options="transactionsHistoryOptions"
-               :placeholder="$t('components.transactionsHistory.sortPlaceholderText')"
-               type="text-xs"
-               @update:model-value="handleDropdownChanged"
-              />
-            </div>
-          </div>
-
-          <div class="period-buttons flex items-center justify-between mb-5 max-sm:flex-wrap gap-2">
-            <div class="period flex items-center gap-2">
-              <BaseButton
-               size="smallest"
-               :variant="periodSelected === 'day' ? 'bg-blue-600' : 'transparent'"
-               @click="changePeriod('day')">{{ $t('components.transactionsHistory.sortingPeriodDay') }}
-              </BaseButton>
-              <BaseButton
-               size="smallest"
-               :variant="periodSelected === 'week' ? 'bg-blue-600' : 'transparent'"
-               @click="changePeriod('week')">{{ $t('components.transactionsHistory.sortingPeriodWeek') }}
-              </BaseButton>
-              <BaseButton
-               size="smallest"
-               :variant="periodSelected === 'month' ? 'bg-blue-600' : 'transparent'"
-               @click="changePeriod('month')">{{ $t('components.transactionsHistory.sortingPeriodMonth') }}
-              </BaseButton>
-            </div>
             <div class="see-all">
               <NuxtLink to="/transactions">
                 <BaseButton
@@ -84,78 +52,13 @@ useSeoMeta(seoMeta.value);
 
 const chartStore = useChartStore();
 const financeStore = useFinanceStore();
-const transactions = ref([]);
 const isHighchartsLoaded = ref(false);
 const topChartIsLoaded = ref(false);
 // eslint-disable-next-line
 let HighchartsComponent: any = null;
 const chartConfig = ref({});
 
-const sortBySelected = ref({
-  value: null,
-  label: 'All Transactions'
-});
-const periodSelected = ref('week');
-const transactionsHistoryOptions = ref([]);
-const params = ref<Record<string, string | Date>>({});
 const isChartDataLoaded = ref(false);
-
-const fetchTransactions = async (query = '') => {
-  await financeStore.fetchTransactions(query);
-  transactions.value = financeStore.transactions;
-};
-
-// eslint-disable-next-line
-const updateParams = async (newParams: Record<string, any>) => {
-  financeStore.setLoading('transactions', true);
-
-  const filteredParams = Object.fromEntries(
-   Object.entries(newParams).filter(([_, value]) => value !== '')
-  );
-
-  //filtering
-  params.value = Object.keys(params.value).reduce((acc, key) => {
-    if (key === 'startDate' || key === 'endDate' || key in filteredParams) {
-      acc[key] = params.value[key];
-    }
-    return acc;
-  }, {});
-
-  Object.assign(params.value, filteredParams);
-
-  await fetchTransactions(params.value);
-  financeStore.setLoading('transactions', false);
-};
-
-const handleDropdownChanged = async (option: { value: number | string; label: string }) => {
-  const newParams: Record<string, string> = {
-    ...params.value,
-    accountId: option.value ? option.value.toString() : ''
-  };
-
-  await updateParams(newParams);
-};
-
-const changePeriod = async (period: string) => {
-  const startDate = new Date();
-  if (period === 'day') {
-    startDate.setDate(startDate.getDate() - 1);
-  } else if (period === 'week') {
-    startDate.setDate(startDate.getDate() - 7);
-  } else {
-    startDate.setDate(startDate.getDate() - 30);
-  }
-
-  const now = new Date();
-
-  const newParams = {
-    ...params.value,
-    startDate: `${startDate.getFullYear()}-${(startDate.getMonth() + 1).toString().padStart(2, '0')}-${startDate.getDate().toString().padStart(2, '0')}`,
-    endDate: `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}`
-  };
-  periodSelected.value = period;
-  await updateParams(newParams);
-};
 
 const fetchChartData = async () => {
   try {
@@ -210,16 +113,6 @@ const fetchChartData = async () => {
 
 onMounted(async () => {
   emitter.emit('ui:startLoading', 'default');
-
-  await changePeriod('week');
-  transactionsHistoryOptions.value = financeStore.accountsList.map(account => ({
-    value: account._id,
-    accountId: account._id,
-    label: `${account.name} (${account.currency})`
-  }));
-
-  transactionsHistoryOptions.value.unshift({value: null, label: 'All transactions'});
-
   emitter.emit('ui:stopLoading', 'default');
 
   if (import.meta.client) {
