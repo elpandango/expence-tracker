@@ -46,6 +46,7 @@ import {useFinanceStore} from "~/stores/finance";
 import {useSeoConfig} from "~/use/useSeoConfig";
 import {useI18n} from "vue-i18n";
 import {mergeCategoryAmounts} from "~/utils/categoryHelpers";
+import {DATE_RANGE_PRESETS, getDateRangeForPreset} from "~/utils/dateRangePresets";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
 import Card from "~/components/Card/Card.vue";
 
@@ -74,10 +75,7 @@ const fetchChartData = async () => {
   }
 
   try {
-    const dateRange = {
-      startDate: new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString().split('T')[0],
-      endDate: new Date().toISOString().split('T')[0],
-    };
+    const dateRange = getDateRangeForPreset(DATE_RANGE_PRESETS.currentMonth);
 
     const dateQuery = `startDate=${dateRange.startDate}&endDate=${dateRange.endDate}&chartType=topCategories`;
 

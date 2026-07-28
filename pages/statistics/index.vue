@@ -94,6 +94,7 @@ import {useChartStore} from "~/stores/charts";
 import {generateChartConfigForType} from "~/utils/chartUtils";
 import {useI18n} from "vue-i18n";
 import {mergeCategoryAmounts} from "~/utils/categoryHelpers";
+import {DATE_RANGE_PRESETS, getDateRangeForPreset} from "~/utils/dateRangePresets";
 
 const seoMeta = useSeoConfig();
 useSeoMeta(seoMeta.value);
@@ -164,10 +165,7 @@ onMounted(async () => {
     const {default: component} = await import('~/components/HighchartComponent/HighchartComponent.vue');
     HighchartsComponent = component;
 
-    const dateRange = {
-      startDate: new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString().split('T')[0],
-      endDate: new Date().toISOString().split('T')[0],
-    };
+    const dateRange = getDateRangeForPreset(DATE_RANGE_PRESETS.currentMonth);
 
     const chartTypes = ['expenses_vs_incomes', 'categories', 'categoriesTable', 'top5', 'total_expenses'];
     const chartDataPromises = chartTypes.map((type) =>

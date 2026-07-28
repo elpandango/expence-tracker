@@ -43,15 +43,16 @@
 <script
  setup
  lang="ts">
-import {ref, computed} from 'vue';
+import {ref, computed, onMounted} from 'vue';
 import Dropdown from "~/components/Dropdown/Dropdown.vue";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
+import {DATE_RANGE_PRESETS, getDateRangeForPreset} from "~/utils/dateRangePresets";
 
 const emit = defineEmits(['date-changed']);
 
 const selectedPeriod = ref({
-  value: 30,
-  label: 'Last 30 days'
+  value: DATE_RANGE_PRESETS.currentMonth,
+  label: 'Current month'
 });
 
 const startDate = ref<string | null>(null);
@@ -62,38 +63,22 @@ const maxSelectableDate = computed(() =>
 );
 
 const periods = [
-  {value: 7, label: 'Last 7 days'},
-  {value: 30, label: 'Last 30 days'},
-  {value: 90, label: 'Last 3 months'},
-  {value: 180, label: 'Last 6 months'},
-  {value: 365, label: 'Last 12 months'},
-  {value: 'custom', label: 'Custom range'},
+  {value: DATE_RANGE_PRESETS.currentWeek, label: 'Current week'},
+  {value: DATE_RANGE_PRESETS.currentMonth, label: 'Current month'},
+  {value: DATE_RANGE_PRESETS.last3Months, label: 'Last 3 months'},
+  {value: DATE_RANGE_PRESETS.last6Months, label: 'Last 6 months'},
+  {value: DATE_RANGE_PRESETS.last12Months, label: 'Last 12 months'},
+  {value: DATE_RANGE_PRESETS.custom, label: 'Custom range'},
 ];
 
 const onPeriodChange = () => {
-  const calculatedStartDate = new Date();
-  const calculatedEndDate = new Date();
-
-  switch (selectedPeriod.value.value) {
-    case 7:
-      calculatedStartDate.setDate(calculatedStartDate.getDate() - 7);
-      break;
-    case 30:
-      calculatedStartDate.setDate(calculatedStartDate.getDate() - 30);
-      break;
-    case 90:
-      calculatedStartDate.setMonth(calculatedStartDate.getMonth() - 3);
-      break;
-    case 180:
-      calculatedStartDate.setMonth(calculatedStartDate.getMonth() - 6);
-      break;
-    case 365:
-      calculatedStartDate.setFullYear(calculatedStartDate.getFullYear() - 1);
-      break;
+  if (selectedPeriod.value.value === DATE_RANGE_PRESETS.custom) {
+    return;
   }
 
-  startDate.value = calculatedStartDate.toISOString().substring(0, 10);
-  endDate.value = calculatedEndDate.toISOString().substring(0, 10);
+  const range = getDateRangeForPreset(selectedPeriod.value.value);
+  startDate.value = range.startDate;
+  endDate.value = range.endDate;
 
   emit('date-changed', {
     startDate: startDate.value,
@@ -107,6 +92,12 @@ const applyCustomRange = () => {
     endDate: endDate.value,
   });
 };
+
+onMounted(() => {
+  const range = getDateRangeForPreset(selectedPeriod.value.value);
+  startDate.value = range.startDate;
+  endDate.value = range.endDate;
+});
 </script>
 
 <style>
