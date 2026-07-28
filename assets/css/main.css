@@ -7,6 +7,8 @@
     --card-bg-color: #fff;
     --list-item-bg-color: #eee;
     --input-border-color: rgba(226, 232, 240, 0.9);
+    --bg-glass-strong: rgba(252, 252, 252, 0.56);
+    --bg-glass-light: rgba(252, 252, 252, 0.40);
 }
 
 [data-theme='dark'] {

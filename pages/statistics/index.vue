@@ -14,7 +14,7 @@
              v-for="expenseItem in sortedCategories"
              :key="expenseItem.category"
              class="w-full py-2 px-3 border-t-[1px] border-stone-200 dark:border-neutral-600">
-              <strong>{{ expenseItem.category }}</strong> - {{ expenseItem.amount }} EUR
+              <strong>{{ expenseItem.category }}</strong> - {{ formatStatAmount(expenseItem.amount) }} EUR
             </div>
           </template>
           <template v-else>
@@ -114,6 +114,13 @@ const chartsLoadingState = reactive({
   top5: true,
   total_expenses: true,
 });
+
+const formatStatAmount = (amount) => {
+  return new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  }).format(amount);
+};
 
 const handleDateChanged = async (type, date) => {
   chartsLoadingState[type] = false;

@@ -4,6 +4,7 @@ export const generateChartConfigForType = (chartData, type) => {
       return {
         chart: { type: 'line' },
         title: { text: 'Expenses vs Incomes' },
+        tooltip: { valueDecimals: 2 },
         xAxis: {
           type: 'datetime',
           title: { text: 'Date' },
@@ -26,6 +27,7 @@ export const generateChartConfigForType = (chartData, type) => {
       return {
         chart: { type: 'pie' },
         title: { text: 'Top 5 Categories' },
+        tooltip: { valueDecimals: 2 },
         series: [
           {
             name: 'Categories',
@@ -40,6 +42,7 @@ export const generateChartConfigForType = (chartData, type) => {
       return {
         chart: { type: 'column' },
         title: { text: 'All Categories' },
+        tooltip: { valueDecimals: 2 },
         series: [
           {
             name: 'Categories',
@@ -56,6 +59,7 @@ export const generateChartConfigForType = (chartData, type) => {
       return {
         chart: { type: 'line' },
         title: { text: 'Total Expenses' },
+        tooltip: { valueDecimals: 2 },
         xAxis: {
           type: 'datetime',
           title: { text: 'Date' },
@@ -79,4 +83,3 @@ export const generateChartConfigForType = (chartData, type) => {
       return null;
   }
 };
-

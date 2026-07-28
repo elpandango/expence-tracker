@@ -1,6 +1,8 @@
 import {defineEventHandler, getQuery, getCookie, createError} from 'h3';
 import {TransactionModel} from '~/server/models/TransactionModel';
 
+const roundAmount = (value: number) => Math.round((value + Number.EPSILON) * 100) / 100;
+
 export default defineEventHandler(async (event) => {
   const userId = getCookie(event, 'userId');
   if (!userId) {
@@ -43,8 +45,8 @@ export default defineEventHandler(async (event) => {
       return {
         status: 200,
         data: {
-          income: Object.entries(series.income).map(([date, amount]) => ({date, amount})),
-          expense: Object.entries(series.expense).map(([date, amount]) => ({date, amount})),
+          income: Object.entries(series.income).map(([date, amount]) => ({date, amount: roundAmount(amount)})),
+          expense: Object.entries(series.expense).map(([date, amount]) => ({date, amount: roundAmount(amount)})),
         },
       };
     }
@@ -66,7 +68,7 @@ export default defineEventHandler(async (event) => {
 
       return {
         status: 200,
-        data: sortedCategories.map(([category, amount]) => ({category, amount})),
+        data: sortedCategories.map(([category, amount]) => ({category, amount: roundAmount(amount)})),
       };
     }
 
@@ -83,7 +85,7 @@ export default defineEventHandler(async (event) => {
 
       return {
         status: 200,
-        data: Object.entries(categoryTotals).map(([category, amount]) => ({category, amount})),
+        data: Object.entries(categoryTotals).map(([category, amount]) => ({category, amount: roundAmount(amount)})),
       };
     }
 
@@ -100,7 +102,7 @@ export default defineEventHandler(async (event) => {
 
       return {
         status: 200,
-        data: Object.entries(categoryTotals).map(([category, amount]) => ({category, amount})),
+        data: Object.entries(categoryTotals).map(([category, amount]) => ({category, amount: roundAmount(amount)})),
       };
     }
 
@@ -123,8 +125,8 @@ export default defineEventHandler(async (event) => {
       return {
         status: 200,
         data: {
-          card: Object.entries(series.card).map(([date, amount]) => ({date, amount})),
-          cash: Object.entries(series.cash).map(([date, amount]) => ({date, amount})),
+          card: Object.entries(series.card).map(([date, amount]) => ({date, amount: roundAmount(amount)})),
+          cash: Object.entries(series.cash).map(([date, amount]) => ({date, amount: roundAmount(amount)})),
         },
       };
     }
