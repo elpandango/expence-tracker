@@ -4,7 +4,7 @@
       <ul class="list-none flex p-0 m-0">
         <li class="flex justify-center items-center mx-1">
           <BaseButton
-           class="w-5 md:w-24 min-w-[50px] md:min-w-[90px] px-0"
+           class="w-[60px] min-w-[60px] md:w-24 md:min-w-24 px-0"
            size="medium"
            :disabled="!props?.data?.hasPrevPage"
            @click="prevPage"
@@ -71,7 +71,7 @@
 
         <li class="flex justify-center items-center mx-1">
           <BaseButton
-           class="w-5 md:w-24 min-w-[50px] md:min-w-[90px] px-0"
+           class="w-[60px] min-w-[60px] md:w-24 md:min-w-24 px-0"
            size="medium"
            :disabled="!props?.data?.hasNextPage"
            @click="nextPage"
