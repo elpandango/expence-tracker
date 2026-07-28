@@ -103,13 +103,13 @@
      height="50vh"/>
     <template v-else>
       <Card
-       v-for="transactionsList in financeStore.transactionsResponse.transactions"
-       :key="transactionsList.date"
+       v-for="transactionGroup in transactionsList"
+       :key="transactionGroup.date"
        class="mb-4"
        :with-header="true">
-        <template #header>{{ useFormatDate(transactionsList.date) }}</template>
+        <template #header>{{ useFormatDate(transactionGroup.date) }}</template>
         <TransactionExtended
-         v-for="dateTransaction in transactionsList.transactions"
+         v-for="dateTransaction in transactionGroup.transactions"
          :key="dateTransaction._id"
          :transaction="dateTransaction"
          :show-actions="true"
@@ -119,17 +119,26 @@
       </Card>
 
       <div
-       v-if="financeStore.transactionsResponse?.transactions?.length === 0"
+       v-if="transactionsList.length === 0"
        class="w-full text-lg">
         <Card class="flex items-center justify-center h-[120px]"
         >{{ $t('components.transactionsPage.emptyListText') }}
         </Card>
       </div>
 
-      <Pagination
-       v-if="financeStore.transactionsResponse?.lastPage > 1"
-       :data="financeStore.transactionsResponse"
-       @page-changed="changePage"/>
+      <div
+       v-if="transactionsList.length > 0"
+       class="w-full">
+        <div
+         ref="infiniteScrollTrigger"
+         class="h-1"
+         aria-hidden="true"
+        />
+
+        <Preloader
+         v-if="isLoadingMore"
+         height="80px"/>
+      </div>
     </template>
 
     <template v-if="isDeleteTransactionModalOpen">
@@ -145,26 +154,41 @@
 <script
  setup
  lang="ts">
-import {ref, onMounted, watch} from 'vue';
+import {ref, onBeforeUnmount, onMounted} from 'vue';
 import {useRoute} from 'vue-router';
 import {useSeoConfig} from "~/use/useSeoConfig";
 import {useFinanceStore} from "~/stores/finance";
 import {useUIStore} from "~/stores/ui";
 import {useFormatDate} from "~/use/useFormatDate";
 import {emitter} from "~/classes/uiEventBus";
+import {useInfiniteScroll} from "~/use/useInfiniteScroll";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
 
 const DeleteTransactionModal = defineAsyncComponent(() => import('~/components/Modals/DeleteTransactionModal.vue'));
-const Pagination = defineAsyncComponent(() => import('~/components/Pagination/Pagination.vue'));
 const BaseInput = defineAsyncComponent(() => import('~/components/Forms/Inputs/BaseInput.vue'));
 
 const seoMeta = useSeoConfig();
 useSeoMeta(seoMeta.value);
 
+type TransactionGroup = {
+  date: string;
+  transactions: any[];
+};
+
+type TransactionsResponse = {
+  transactions: TransactionGroup[];
+  currentPage: number;
+  hasNextPage: boolean;
+};
+
 const financeStore = useFinanceStore();
 const uiStore = useUIStore();
 const currentPage = ref(1);
-const totalPages = ref(1);
+const pageSize = 5;
+const transactionsList = ref<TransactionGroup[]>([]);
+const hasNextPage = ref(false);
+const isLoadingMore = ref(false);
+const infiniteScrollTrigger = ref<HTMLElement | null>(null);
 const route = useRoute();
 
 const isDeleteTransactionModalOpen = ref(false);
@@ -193,15 +217,9 @@ const sortBySelected = ref({
   label: 'All Transactions'
 });
 const transactions = ref([]);
-const paginationData = ref({
-  currentPage: 1,
-  lastPage: 1,
-  hasNextPage: false,
-  hasPrevPage: false,
-});
 
-const updateTransactions = async () => {
-  const updatedFilters = {
+const getTransactionFilters = () => {
+  return {
     type: filters.value?.type?.value ?? null,
     source: filters.value?.source?.value ?? null,
     startDate: filters.value?.startDate ?? null,
@@ -211,10 +229,85 @@ const updateTransactions = async () => {
     description: filters.value?.description ?? null,
     accountId: sortBySelected.value.value ?? null,
   };
+};
 
-  emitter.emit('ui:startLoading', 'default');
-  await financeStore.fetchTransactions(updatedFilters, currentPage.value, 5);
-  emitter.emit('ui:stopLoading', 'default');
+const mergeTransactionGroups = (existingGroups: TransactionGroup[], newGroups: TransactionGroup[]) => {
+  const groupsByDate = new Map(
+   existingGroups.map(group => [group.date, {...group, transactions: [...group.transactions]}])
+  );
+
+  for (const group of newGroups) {
+    const existingGroup = groupsByDate.get(group.date);
+
+    if (!existingGroup) {
+      groupsByDate.set(group.date, {...group, transactions: [...group.transactions]});
+      continue;
+    }
+
+    existingGroup.transactions.push(...group.transactions);
+  }
+
+  return Array.from(groupsByDate.values());
+};
+
+const loadTransactions = async ({
+  page = 1,
+  append = false,
+  showLoader = true,
+}: {
+  page?: number;
+  append?: boolean;
+  showLoader?: boolean;
+} = {}) => {
+  const updatedFilters = getTransactionFilters();
+
+  if (showLoader) {
+    emitter.emit('ui:startLoading', 'default');
+  }
+
+  try {
+    const response = await financeStore.fetchTransactions(updatedFilters, page, pageSize) as TransactionsResponse | null;
+
+    if (!response) {
+      return;
+    }
+
+    currentPage.value = response.currentPage;
+    hasNextPage.value = response.hasNextPage;
+    transactionsList.value = append
+      ? mergeTransactionGroups(transactionsList.value, response.transactions)
+      : response.transactions;
+  } finally {
+    if (showLoader) {
+      emitter.emit('ui:stopLoading', 'default');
+    }
+  }
+};
+
+const reloadLoadedTransactions = async () => {
+  const pagesToRestore = currentPage.value;
+
+  transactionsList.value = [];
+
+  for (let page = 1; page <= pagesToRestore; page++) {
+    await loadTransactions({
+      page,
+      append: page > 1,
+      showLoader: page === 1,
+    });
+
+    if (!hasNextPage.value && currentPage.value === page) {
+      break;
+    }
+  }
+};
+
+const updateTransactions = async () => {
+  await loadTransactions({
+    page: 1,
+    append: false,
+    showLoader: true,
+  });
 };
 
 const clearFilters = async () => {
@@ -230,10 +323,21 @@ const clearFilters = async () => {
   await updateTransactions();
 };
 
-const changePage = async (page: number) => {
-  if (page >= 1 && page <= totalPages.value) {
-    currentPage.value = page;
-    await updateTransactions();
+const loadMoreTransactions = async () => {
+  if (isLoadingMore.value || !hasNextPage.value) {
+    return;
+  }
+
+  isLoadingMore.value = true;
+
+  try {
+    await loadTransactions({
+      page: currentPage.value + 1,
+      append: true,
+      showLoader: false,
+    });
+  } finally {
+    isLoadingMore.value = false;
   }
 };
 
@@ -259,14 +363,29 @@ const handleEditTransactionOpenModal = async (transaction: object) => {
   }
 };
 
+const handleTransactionsChanged = async () => {
+  await reloadLoadedTransactions();
+};
+
+useInfiniteScroll({
+  target: infiniteScrollTrigger,
+  canLoadMore: hasNextPage,
+  isLoading: isLoadingMore,
+  onLoadMore: loadMoreTransactions,
+});
+
 onMounted(async () => {
-  emitter.emit('ui:startLoading', 'default');
+  emitter.on('transactions:changed', handleTransactionsChanged);
 
   if (route.query.description) {
     filters.value.description = route.query.description;
   }
 
-  await financeStore.fetchTransactions();
+  await loadTransactions({
+    page: 1,
+    append: false,
+    showLoader: true,
+  });
 
   transactions.value = financeStore.accountsList.map(account => ({
     value: account._id,
@@ -277,24 +396,10 @@ onMounted(async () => {
   transactions.value.unshift({
     value: null, label: 'All transactions'
   });
-
-  if (filters.value.description) {
-    await updateTransactions();
-  }
-
-  emitter.emit('ui:stopLoading', 'default');
 });
 
-watch(() => financeStore.transactionsResponse, (newTransactions) => {
-  const totalItems = newTransactions.totalItems;
-  totalPages.value = Math.ceil(totalItems / 5);
-
-  paginationData.value = {
-    currentPage: currentPage.value,
-    lastPage: totalPages.value,
-    hasNextPage: currentPage.value < totalPages.value,
-    hasPrevPage: currentPage.value > 1,
-  };
+onBeforeUnmount(() => {
+  emitter.off('transactions:changed', handleTransactionsChanged);
 });
 </script>
 

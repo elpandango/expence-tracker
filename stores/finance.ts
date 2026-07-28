@@ -59,9 +59,12 @@ export const useFinanceStore = defineStore('finance', () => {
       queryParams.append('limit', limit.toString());
 
       const queryString = queryParams.toString() ? `?${queryParams.toString()}` : '';
-      transactionsResponse.value = await repositoryFactory.get('Transactions').getAllTransactions(queryString);
+      const response = await repositoryFactory.get('Transactions').getAllTransactions(queryString);
+      transactionsResponse.value = response;
+      return response;
     } catch (error) {
       console.error('Failed to fetch transactions:', error);
+      return null;
     }
   };
 
@@ -134,6 +137,7 @@ export const useFinanceStore = defineStore('finance', () => {
     try {
       await repositoryFactory.get('Transactions').addTransaction(payload);
       await Promise.all([await fetchAccounts(), await fetchTransactions()]);
+      emitter.emit('transactions:changed', undefined);
 
       emitter.emit('ui:showToast', {
         message: 'Transaction created successfully.',
@@ -155,6 +159,7 @@ export const useFinanceStore = defineStore('finance', () => {
     try {
       await repositoryFactory.get('Transactions').deleteTransaction(payload);
       await Promise.all([await fetchAccounts(), await fetchTransactions()]);
+      emitter.emit('transactions:changed', undefined);
 
       emitter.emit('ui:showToast', {
         message: 'Transaction deleted successfully.',
@@ -176,6 +181,7 @@ export const useFinanceStore = defineStore('finance', () => {
     try {
       await repositoryFactory.get('Transactions').updateTransaction(payload);
       await Promise.all([await fetchAccounts(), await fetchTransactions()]);
+      emitter.emit('transactions:changed', undefined);
 
       emitter.emit('ui:showToast', {
         message: 'Transaction updated successfully.',
