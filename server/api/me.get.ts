@@ -22,21 +22,25 @@ export default defineEventHandler(async (event) => {
     }
   }
 
-  const user = await UserModel.findById(userId, 'name lastName email');
+  const user = await UserModel.findById(userId, 'name lastName email avatar avatarVersion');
 
   if (!user) {
     throw createError({statusCode: 404, message: 'User not found'});
   }
 
+  const userPayload = {
+    userId: user._id,
+    name: user.name,
+    lastName: user.lastName,
+    email: user.email,
+    avatarVersion: user.avatarVersion || 0,
+    hasAvatar: Boolean(user.avatar),
+  };
+
   //Cache user in Redis
-  await redis.set(`user:${userId}`, JSON.stringify(user), 'EX', 600);
+  await redis.set(`user:${userId}`, JSON.stringify(userPayload), 'EX', 600);
 
   return {
-    user: {
-      userId: user._id,
-      name: user.name,
-      lastName: user.lastName,
-      email: user.email,
-    },
+    user: userPayload,
   };
 });

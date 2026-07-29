@@ -12,10 +12,13 @@ export default defineEventHandler(async (event) => {
   try {
     const updatedUser = await updateProfile(userId, { name, lastName, email });
     return {
+      userId: updatedUser._id,
       name: updatedUser.name,
       lastName: updatedUser.lastName,
       email: updatedUser.email,
       avatar: updatedUser?.avatar ?? '',
+      avatarVersion: updatedUser.avatarVersion || 0,
+      hasAvatar: Boolean(updatedUser.avatar),
     };
   } catch (err) {
     console.error("Error during update process: ", err);

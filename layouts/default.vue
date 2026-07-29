@@ -86,7 +86,7 @@ onBeforeMount(async () => {
     return router.push('/');
   }
 
-  if (userStore.isLoggedIn && userStore.user.email !== '') {
+  if (userStore.isLoggedIn && userStore.user.email !== '' && userStore.hasAvatar) {
     await userStore.getAvatar();
   }
 

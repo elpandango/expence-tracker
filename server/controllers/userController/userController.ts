@@ -41,7 +41,10 @@ export const updateAvatar = async (userId: string, avatarBase64: string) => {
     const optimizedAvatar = await optimizeImage(avatarBase64);
     const updatedUser = await UserModel.findByIdAndUpdate(
       userId,
-      {$set: {avatar: optimizedAvatar}},
+      {
+        $set: {avatar: optimizedAvatar},
+        $inc: {avatarVersion: 1},
+      },
       {new: true}
     );
 
@@ -60,7 +63,10 @@ export const deleteAvatar = async (userId: string) => {
   try {
     const updatedUser = await UserModel.findByIdAndUpdate(
       userId,
-      {$unset: {avatar: ""}},
+      {
+        $unset: {avatar: ""},
+        $inc: {avatarVersion: 1},
+      },
       {new: true}
     );
 

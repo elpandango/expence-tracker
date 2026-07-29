@@ -7,6 +7,7 @@ export interface IUser extends Document {
     name: string;
     lastName: string;
     avatar?: string;
+    avatarVersion: number;
     cards?: Types.ObjectId[];
     cashBalances?: Types.ObjectId[];
     _id?: Types.ObjectId;
@@ -18,6 +19,7 @@ const userSchema = new Schema<IUser>({
     name: { type: String, required: true },
     lastName: { type: String, required: true },
     avatar: { type: String },
+    avatarVersion: { type: Number, default: 0 },
     cards: [{ type: Schema.Types.ObjectId, ref: 'Card' }],
     cashBalances: [{ type: Schema.Types.ObjectId, ref: 'CashBalance' }],
 });

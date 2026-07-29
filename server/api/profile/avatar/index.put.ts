@@ -7,8 +7,18 @@ export default defineEventHandler(async (event) => {
   const { avatar } = await readBody(event);
 
   try {
-    await redis.set(`avatar:${userId}`, JSON.stringify(avatar), 'EX', 600);
-    return await updateAvatar(userId, avatar);
+    const updatedUser = await updateAvatar(userId, avatar);
+    const avatarPayload = {
+      avatar: updatedUser.avatar || '',
+      avatarVersion: updatedUser.avatarVersion || 0,
+    };
+
+    await Promise.all([
+      redis.set(`avatar:${userId}`, JSON.stringify(avatarPayload), 'EX', 600),
+      redis.del(`user:${userId}`),
+    ]);
+
+    return avatarPayload;
   } catch (err) {
     console.log(err);
     throw createError({ statusCode: 400, message: 'Failed to update avatar.' });

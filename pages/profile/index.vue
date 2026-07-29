@@ -150,7 +150,6 @@ const handleUploadAvatar = async () => {
 
       try {
         await userStore.updateAvatar(avatarBase64);
-        await userStore.getAvatar();
         user.avatar = userStore.avatar;
       } catch (error) {
         console.error('Error updating avatar:', error);
@@ -165,7 +164,6 @@ const handleUploadAvatar = async () => {
 const handleRemoveAvatar = async () => {
   try {
     await userStore.deleteAvatar();
-    await userStore.getAvatar();
     user.avatar = userStore.avatar;
   } catch (error) {
     console.error('Error removing avatar:', error);

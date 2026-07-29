@@ -14,15 +14,20 @@ export default defineEventHandler(async (event) => {
     }
   }
 
-  const avatar = await UserModel.findById(userId, 'avatar');
+  const avatar = await UserModel.findById(userId, 'avatar avatarVersion').lean();
 
-  if (!avatar) {
+  if (!avatar?.avatar) {
     throw createError({statusCode: 404, message: 'Avatar not found'});
   }
 
-  await redis.set(`avatar:${userId}`, JSON.stringify(avatar), 'EX', 600);
+  const avatarPayload = {
+    avatar: avatar.avatar,
+    avatarVersion: avatar.avatarVersion || 0,
+  };
+
+  await redis.set(`avatar:${userId}`, JSON.stringify(avatarPayload), 'EX', 600);
 
   return {
-    avatar: avatar,
+    avatar: avatarPayload,
   };
 });
