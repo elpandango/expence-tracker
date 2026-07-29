@@ -13,10 +13,7 @@ describe('Charts Store', () => {
   it('should have initial chart data as null', () => {
     const store = useChartStore();
 
-    expect(store.chartDataByType.allTransactions).toBeNull();
-    expect(store.chartDataByType.topCategories).toBeNull();
-    expect(store.chartDataByType.allCategories).toBeNull();
-    expect(store.chartDataByType.cashAndCards).toBeNull();
+    expect(store.chartDataByType.categoryTotals).toBeNull();
   });
 
   it('should fetch chart data and return it', async () => {

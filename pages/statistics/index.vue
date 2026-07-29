@@ -112,10 +112,10 @@ const openCategoryDetails = (categoryItem) => {
 const fetchCategoriesData = async (date) => {
   isStatisticsLoading.value = true;
   try {
-    const dateQuery = `startDate=${date.startDate}&endDate=${date.endDate}&chartType=allCategoriesTable`;
+    const dateQuery = `startDate=${date.startDate}&endDate=${date.endDate}&chartType=categoryTotals`;
     const response = await chartStore.getChartsData(`?${dateQuery}`);
 
-    chartStore.chartDataByType.allCategoriesTable = response.data.map((item) => ({
+    chartStore.chartDataByType.categoryTotals = response.data.map((item) => ({
       ...item,
       category: useLocalizatedCategories(item.category, locale.value),
     }));
@@ -141,8 +141,8 @@ onMounted(async () => {
 });
 
 const sortedCategories = computed(() => {
-  if (chartStore.chartDataByType.allCategoriesTable?.length > 0) {
-    const categories = [...chartStore.chartDataByType.allCategoriesTable];
+  if (chartStore.chartDataByType.categoryTotals?.length > 0) {
+    const categories = [...chartStore.chartDataByType.categoryTotals];
     return categories?.sort((a, b) => b.amount - a.amount)
   }
   return [];

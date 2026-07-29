@@ -4,11 +4,7 @@ import repositoryFactory from "~/repositories/repositoryFactory";
 
 export const useChartStore = defineStore('charts', () => {
   const chartDataByType = reactive({
-    allTransactions: null,
-    topCategories: null,
-    allCategories: null,
-    allCategoriesTable: null,
-    cashAndCards: null,
+    categoryTotals: null,
   });
 
   const getChartsData = async (query: string) => {

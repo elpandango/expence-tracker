@@ -1,25 +1,9 @@
 import {defineEventHandler, getQuery, getCookie, createError} from 'h3';
+import mongoose from 'mongoose';
 import {TransactionModel} from '~/server/models/TransactionModel';
+import {CategoryModel} from '~/server/models/CategoryModel';
 
 const roundAmount = (value: number) => Math.round((value + Number.EPSILON) * 100) / 100;
-
-const aggregateCategoryTotals = (transactions) => {
-  return Object.values(transactions.reduce((acc, transaction) => {
-    const categoryId = transaction.category?._id?.toString() || null;
-    const key = categoryId || 'uncategorized';
-
-    if (!acc[key]) {
-      acc[key] = {
-        category: transaction.category?.name || 'Uncategorized',
-        categoryId,
-        amount: 0,
-      };
-    }
-
-    acc[key].amount += Math.abs(transaction.amount);
-    return acc;
-  }, {}));
-};
 
 export default defineEventHandler(async (event) => {
   const userId = getCookie(event, 'userId');
@@ -28,9 +12,9 @@ export default defineEventHandler(async (event) => {
   }
 
   const query = getQuery(event);
-  const {type, top = 5, startDate, endDate, chartType} = query;
+  const {type, startDate, endDate, chartType} = query;
 // eslint-disable-next-line
-  const mongoQuery: any = {userId};
+  const mongoQuery: any = {userId: new mongoose.Types.ObjectId(userId)};
 
   if (startDate || endDate) {
     const start = startDate ? new Date(startDate) : new Date(0);
@@ -44,102 +28,39 @@ export default defineEventHandler(async (event) => {
   }
 
   switch (chartType) {
-    case 'allTransactions': {
-      const transactions = await TransactionModel.find(mongoQuery)
-        .sort({date: 1})
-        .lean();
-
-      const series = transactions.reduce(
-        (acc, transaction) => {
-          const key = transaction.date.toISOString().split('T')[0];
-          acc[transaction.type === 'income' ? 'income' : 'expense'][key] =
-            (acc[transaction.type === 'income' ? 'income' : 'expense'][key] || 0) +
-            transaction.amount;
-          return acc;
+    case 'categoryTotals': {
+      const totals = await TransactionModel.aggregate([
+        {$match: {...mongoQuery, type: 'expense'}},
+        {
+          $group: {
+            _id: '$category',
+            amount: {
+              $sum: {$abs: '$amount'},
+            },
+          },
         },
-        {income: {}, expense: {}},
+        {$sort: {amount: -1}},
+      ]);
+
+      const categoryIds = totals
+        .map(({_id}) => _id)
+        .filter(Boolean);
+
+      const categories = categoryIds.length > 0
+        ? await CategoryModel.find({_id: {$in: categoryIds}}, 'name').lean()
+        : [];
+
+      const categoryNameMap = new Map(
+        categories.map((category) => [category._id.toString(), category.name])
       );
 
       return {
         status: 200,
-        data: {
-          income: Object.entries(series.income).map(([date, amount]) => ({date, amount: roundAmount(amount)})),
-          expense: Object.entries(series.expense).map(([date, amount]) => ({date, amount: roundAmount(amount)})),
-        },
-      };
-    }
-
-    case 'topCategories': {
-      const transactions = await TransactionModel.find({...mongoQuery, type: 'expense'})
-        .populate('category', 'name')
-        .lean();
-
-      const sortedCategories = aggregateCategoryTotals(transactions)
-        .sort((firstCategory, secondCategory) => secondCategory.amount - firstCategory.amount)
-        .slice(0, top);
-
-      return {
-        status: 200,
-        data: sortedCategories.map((item) => ({
-          category: item.category,
-          categoryId: item.categoryId,
+        data: totals.map((item) => ({
+          category: item._id ? categoryNameMap.get(item._id.toString()) || 'Uncategorized' : 'Uncategorized',
+          categoryId: item._id?.toString() || null,
           amount: roundAmount(item.amount),
         })),
-      };
-    }
-
-    case 'allCategories': {
-      const transactions = await TransactionModel.find({...mongoQuery, type: 'expense'})
-        .populate('category', 'name')
-        .lean();
-
-      return {
-        status: 200,
-        data: aggregateCategoryTotals(transactions).map((item) => ({
-          category: item.category,
-          categoryId: item.categoryId,
-          amount: roundAmount(item.amount),
-        })),
-      };
-    }
-
-    case 'allCategoriesTable': {
-      const transactions = await TransactionModel.find({...mongoQuery, type: 'expense'})
-        .populate('category', 'name')
-        .lean();
-
-      return {
-        status: 200,
-        data: aggregateCategoryTotals(transactions).map((item) => ({
-          category: item.category,
-          categoryId: item.categoryId,
-          amount: roundAmount(item.amount),
-        })),
-      };
-    }
-
-    case 'cashAndCards': {
-      const transactions = await TransactionModel.find({...mongoQuery, type: 'expense'})
-        .populate('accountId', 'type')
-        .sort({date: 1})
-        .lean();
-
-      const series = transactions.reduce(
-        (acc, transaction) => {
-          const key = transaction.date.toISOString().split('T')[0];
-          const accountType = transaction.accountId?.type === 'card' ? 'card' : 'cash';
-          acc[accountType][key] = (acc[accountType][key] || 0) + Math.abs(transaction.amount);
-          return acc;
-        },
-        {card: {}, cash: {}},
-      );
-
-      return {
-        status: 200,
-        data: {
-          card: Object.entries(series.card).map(([date, amount]) => ({date, amount: roundAmount(amount)})),
-          cash: Object.entries(series.cash).map(([date, amount]) => ({date, amount: roundAmount(amount)})),
-        },
       };
     }
 

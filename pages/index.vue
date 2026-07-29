@@ -14,7 +14,7 @@
         <Preloader height="300px"/>
       </template>
     </Card>
-    <Card :with-scroll="true">
+    <div class="w-full">
       <TransactionsHistory>
         <template #header>
           <div class="title-block flex items-center justify-between mb-5 flex-wrap md:flex-nowrap gap-2">
@@ -32,7 +32,7 @@
           </div>
         </template>
       </TransactionsHistory>
-    </Card>
+    </div>
   </div>
 </template>
 
@@ -77,13 +77,13 @@ const fetchChartData = async () => {
   try {
     const dateRange = getDateRangeForPreset(DATE_RANGE_PRESETS.currentMonth);
 
-    const dateQuery = `startDate=${dateRange.startDate}&endDate=${dateRange.endDate}&chartType=allCategoriesTable`;
+    const dateQuery = `startDate=${dateRange.startDate}&endDate=${dateRange.endDate}&chartType=categoryTotals`;
 
     const response = await chartStore.getChartsData(`?${dateQuery}`);
 
-    chartStore.chartDataByType.allCategoriesTable = response.data;
+    chartStore.chartDataByType.categoryTotals = response.data;
 
-    const allCategoriesChartData = (chartStore.chartDataByType.allCategoriesTable || [])
+    const allCategoriesChartData = (chartStore.chartDataByType.categoryTotals || [])
       .sort((firstCategory, secondCategory) => secondCategory.amount - firstCategory.amount)
       .map(t => ({
         name: useLocalizatedCategories(t.category, locale.value),

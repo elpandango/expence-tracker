@@ -1,8 +1,6 @@
-import {describe, it, expect, vi} from 'vitest';
+import {beforeEach, describe, it, expect, vi} from 'vitest';
 import {updateProfile, updateAvatar, deleteAvatar} from '~/server/controllers/userController/userController';
-import {getCookie} from "h3";
 import {UserModel} from '~/server/models/UserModel';
-import handler from "~/server/api/profile/index.put";
 import sharp from 'sharp';
 
 vi.mock('~/server/models/UserModel', () => ({
@@ -31,9 +29,17 @@ vi.mock('h3', async (importOriginal) => {
 
 vi.stubGlobal('createError', vi.fn((error) => error));
 
+beforeEach(() => {
+  vi.clearAllMocks();
+  vi.mocked(sharp).mockImplementation(() => ({
+    resize: vi.fn().mockReturnThis(),
+    jpeg: vi.fn().mockReturnThis(),
+    toBuffer: vi.fn().mockResolvedValue(Buffer.from('optimized-image')),
+  }));
+});
+
 describe('updateProfile', () => {
   it('should update user profile successfully', async () => {
-    getCookie.mockReturnValue('user123');
     const mockUserId = '123';
     const mockUpdateData = {name: 'John', email: 'john@example.com'};
     const mockUpdatedUser = {_id: mockUserId, ...mockUpdateData};
@@ -76,7 +82,10 @@ describe('updateAvatar', () => {
     expect(sharp).toHaveBeenCalled();
     expect(UserModel.findByIdAndUpdate).toHaveBeenCalledWith(
       mockUserId,
-      {$set: {avatar: expect.any(String)}},
+      {
+        $set: {avatar: expect.any(String)},
+        $inc: {avatarVersion: 1},
+      },
       {new: true}
     );
     expect(result).toEqual(mockUpdatedUser);
@@ -102,7 +111,10 @@ describe('deleteAvatar', () => {
 
     expect(UserModel.findByIdAndUpdate).toHaveBeenCalledWith(
       mockUserId,
-      {$unset: {avatar: ''}},
+      {
+        $unset: {avatar: ''},
+        $inc: {avatarVersion: 1},
+      },
       {new: true}
     );
     expect(result).toEqual(mockUpdatedUser);

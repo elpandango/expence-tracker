@@ -4,15 +4,20 @@ import {getCookie, getQuery} from 'h3';
 
 vi.mock('~/server/models/TransactionModel', () => ({
   TransactionModel: {
+    aggregate: vi.fn().mockResolvedValue([
+      { _id: 'cat1', amount: 150 },
+      { _id: null, amount: 25 },
+    ]),
+  },
+}));
+
+vi.mock('~/server/models/CategoryModel', () => ({
+  CategoryModel: {
     find: vi.fn().mockReturnValue({
-      sort: vi.fn().mockReturnThis(),
       lean: vi.fn().mockResolvedValue([
-        { date: new Date('2025-01-01'), type: 'income', amount: 100 },
-        { date: new Date('2025-01-02'), type: 'expense', amount: 50 },
-        { date: new Date('2025-01-03'), type: 'income', amount: 200 },
+        { _id: 'cat1', name: 'Food' },
       ]),
     }),
-    populate: vi.fn().mockReturnThis()
   },
 }));
 
@@ -42,7 +47,7 @@ describe('GET /charts API', () => {
   });
 
   it('should return 400 for invalid chartType', async () => {
-    getCookie.mockReturnValue('user123');
+    getCookie.mockReturnValue('67745325944561b4ab55f52b');
     const mockEvent = { context: { params: {} } };
     getQuery.mockReturnValue({ chartType: 'invalidType' });
 
@@ -54,16 +59,18 @@ describe('GET /charts API', () => {
     });
   });
 
-  it('should return data for allTransactions chartType', async() => {
-    getCookie.mockReturnValue('user123');
+  it('should return data for categoryTotals chartType', async() => {
+    getCookie.mockReturnValue('67745325944561b4ab55f52b');
     const mockEvent = { context: { params: {} } };
-    getQuery.mockReturnValue({ chartType: 'allTransactions', startDate: '2025-01-01', endDate: '2025-01-10' });
+    getQuery.mockReturnValue({ chartType: 'categoryTotals', startDate: '2025-01-01', endDate: '2025-01-10' });
 
     const result = await handler(mockEvent);
 
     expect(result.status).toBe(200);
-    expect(result.data.income).toEqual([{ date: '2025-01-01', amount: 100 }, { date: '2025-01-03', amount: 200 }]);
-    expect(result.data.expense).toEqual([{ date: '2025-01-02', amount: 50 }]);
+    expect(result.data).toEqual([
+      { category: 'Food', categoryId: 'cat1', amount: 150 },
+      { category: 'Uncategorized', categoryId: null, amount: 25 },
+    ]);
   });
 
 });
