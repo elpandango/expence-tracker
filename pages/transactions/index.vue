@@ -7,9 +7,12 @@
 
     <Accordion
      v-if="financeStore.accountsList && financeStore.accountsList.length > 0"
+     :card-like="true"
+     header-class="px-4 md:px-5"
+     body-class="px-4 pb-4 pt-4 md:px-5 md:pb-5 md:pt-4"
      class="mb-6">
       <template #header>
-        <div class="link-text">{{ $t('components.transactionsPage.filtersTitle') }}</div>
+        <div class="link-text text-[18px] font-semibold">{{ $t('components.transactionsPage.filtersTitle') }}</div>
       </template>
       <template #accordion-body>
         <div class="w-full max-w-[1024px] m-auto">
