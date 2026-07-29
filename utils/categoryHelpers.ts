@@ -1,3 +1,5 @@
+import type {CategoryOption} from "~/types/categories";
+
 const CATEGORY_KEYWORDS_MAP: Record<string, string[]> = {
   "Food": [
     "обед",
@@ -67,7 +69,7 @@ const normalizeDescription = (value: string = "") => {
 
 export const inferCategoryOptionByDescription = (
   description: string,
-  categories: Array<Record<string, any>> = []
+  categories: CategoryOption[] = []
 ) => {
   const normalizedDescription = normalizeDescription(description);
 

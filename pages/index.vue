@@ -93,7 +93,7 @@ const fetchChartData = async () => {
       chartConfig.value = {
       chart: {
         type: 'pie',
-        backgroundColor: '#f9f9f9',
+        backgroundColor: '#ffffff',
         height: 520,
         spacingLeft: 0,
         spacingRight: 0,

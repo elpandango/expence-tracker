@@ -1,53 +1,3 @@
-<template>
-  <div class="transactions-history w-full">
-    <slot name="header"/>
-    <Preloader
-     v-if="isInitialLoading"
-     height="250px"/>
-    <div
-     v-else
-     class="transactions-block">
-      <template v-if="transactionsList.length > 0">
-        <Card
-         v-for="transactionGroup in transactionsList"
-         :key="transactionGroup.date"
-         class="shadow-none mb-4 border-[1px] border-stone-200 dark:border-neutral-600"
-         :with-header="true">
-          <template #header>{{ useFormatDate(transactionGroup.date) }}</template>
-          <TransactionExtended
-           v-for="dateTransaction in transactionGroup.transactions"
-           :key="dateTransaction._id"
-           :transaction="dateTransaction"
-           :show-actions="true"
-           @delete-clicked="handleDeleteTransactionOpenModal(dateTransaction)"
-           @edit-clicked="handleEditTransactionOpenModal(dateTransaction)"
-          />
-        </Card>
-
-        <div
-         ref="infiniteScrollTrigger"
-         class="h-1"
-         aria-hidden="true"
-        />
-        <Preloader
-         v-if="isLoadingMore"
-         height="80px"/>
-      </template>
-      <template v-else>
-        <p class="empty-message text-left text-md mt-5 whitespace-pre-wrap text-stone-300">{{ $t('components.transactionsHistory.emptyListText') }}</p>
-      </template>
-    </div>
-
-    <template v-if="isDeleteTransactionModalOpen">
-      <DeleteTransactionModal
-       :is-open="isDeleteTransactionModalOpen"
-       @delete="handleDeleteTransaction"
-       @update:is-open="isDeleteTransactionModalOpen = $event"
-      />
-    </template>
-  </div>
-</template>
-
 <script
  setup
  lang="ts">
@@ -55,21 +5,11 @@ import {onBeforeUnmount, onMounted, ref} from "vue";
 import {emitter} from "~/classes/uiEventBus";
 import {useFinanceStore} from "~/stores/finance";
 import {useUIStore} from "~/stores/ui";
+import type {TransactionGroup, TransactionListItem, TransactionsResponse} from "~/types/transactions";
 import {useFormatDate} from "~/use/useFormatDate";
 import {useInfiniteScroll} from "~/use/useInfiniteScroll";
 
 const DeleteTransactionModal = defineAsyncComponent(() => import('~/components/Modals/DeleteTransactionModal.vue'));
-
-type TransactionGroup = {
-  date: string;
-  transactions: any[];
-};
-
-type TransactionsResponse = {
-  transactions: TransactionGroup[];
-  currentPage: number;
-  hasNextPage: boolean;
-};
 
 const financeStore = useFinanceStore();
 const uiStore = useUIStore();
@@ -158,7 +98,7 @@ const loadMoreTransactions = async () => {
   }
 };
 
-const handleDeleteTransactionOpenModal = async (transaction: object) => {
+const handleDeleteTransactionOpenModal = async (transaction: TransactionListItem) => {
   isDeleteTransactionModalOpen.value = true;
   objectToDelete.value = {
     id: transaction._id ?? null,
@@ -170,7 +110,7 @@ const handleDeleteTransaction = async () => {
   await financeStore.deleteTransaction(objectToDelete.value.id);
 };
 
-const handleEditTransactionOpenModal = async (transaction: object) => {
+const handleEditTransactionOpenModal = async (transaction: TransactionListItem) => {
   financeStore.editingTransaction.value = {...transaction};
 
   if (transaction.type === 'income') {
@@ -205,6 +145,56 @@ onBeforeUnmount(() => {
   emitter.off('transactions:changed', handleTransactionsChanged);
 });
 </script>
+
+<template>
+  <div class="transactions-history w-full">
+    <slot name="header"/>
+    <Preloader
+     v-if="isInitialLoading"
+     height="250px"/>
+    <div
+     v-else
+     class="transactions-block">
+      <template v-if="transactionsList.length > 0">
+        <Card
+         v-for="transactionGroup in transactionsList"
+         :key="transactionGroup.date"
+         class="shadow-none mb-4 border-[1px] border-stone-200 dark:border-neutral-600"
+         :with-header="true">
+          <template #header>{{ useFormatDate(transactionGroup.date) }}</template>
+          <TransactionExtended
+           v-for="dateTransaction in transactionGroup.transactions"
+           :key="dateTransaction._id"
+           :transaction="dateTransaction"
+           :show-actions="true"
+           @delete-clicked="handleDeleteTransactionOpenModal(dateTransaction)"
+           @edit-clicked="handleEditTransactionOpenModal(dateTransaction)"
+          />
+        </Card>
+
+        <div
+         ref="infiniteScrollTrigger"
+         class="h-1"
+         aria-hidden="true"
+        />
+        <Preloader
+         v-if="isLoadingMore"
+         height="80px"/>
+      </template>
+      <template v-else>
+        <p class="empty-message text-left text-md mt-5 whitespace-pre-wrap text-stone-300">{{ $t('components.transactionsHistory.emptyListText') }}</p>
+      </template>
+    </div>
+
+    <template v-if="isDeleteTransactionModalOpen">
+      <DeleteTransactionModal
+       :is-open="isDeleteTransactionModalOpen"
+       @delete="handleDeleteTransaction"
+       @update:is-open="isDeleteTransactionModalOpen = $event"
+      />
+    </template>
+  </div>
+</template>
 
 <style>
 </style>

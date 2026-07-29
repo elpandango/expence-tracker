@@ -8,8 +8,9 @@ describe('BaseButton.vue', () => {
 
     expect(wrapper.classes()).toContain('font-semibold');
     expect(wrapper.classes()).toContain('text-sm');
-    expect(wrapper.classes()).toContain('rounded');
+    expect(wrapper.classes()).toContain('rounded-[8px]');
     expect(wrapper.classes()).toContain('transition-all');
+    expect(wrapper.classes()).toContain('bg-blue-600');
   });
 
   it('should apply correct size classes', async () => {

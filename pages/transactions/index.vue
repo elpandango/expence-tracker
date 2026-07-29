@@ -159,6 +159,7 @@ import {useRoute} from 'vue-router';
 import {useSeoConfig} from "~/use/useSeoConfig";
 import {useFinanceStore} from "~/stores/finance";
 import {useUIStore} from "~/stores/ui";
+import type {TransactionGroup, TransactionListItem, TransactionsResponse} from "~/types/transactions";
 import {useFormatDate} from "~/use/useFormatDate";
 import {emitter} from "~/classes/uiEventBus";
 import {useInfiniteScroll} from "~/use/useInfiniteScroll";
@@ -169,17 +170,6 @@ const BaseInput = defineAsyncComponent(() => import('~/components/Forms/Inputs/B
 
 const seoMeta = useSeoConfig();
 useSeoMeta(seoMeta.value);
-
-type TransactionGroup = {
-  date: string;
-  transactions: any[];
-};
-
-type TransactionsResponse = {
-  transactions: TransactionGroup[];
-  currentPage: number;
-  hasNextPage: boolean;
-};
 
 const financeStore = useFinanceStore();
 const uiStore = useUIStore();
@@ -341,7 +331,7 @@ const loadMoreTransactions = async () => {
   }
 };
 
-const handleDeleteTransactionOpenModal = async (transaction: object) => {
+const handleDeleteTransactionOpenModal = async (transaction: TransactionListItem) => {
   isDeleteTransactionModalOpen.value = true;
 
   objectToDelete.value = {
@@ -354,7 +344,7 @@ const handleDeleteTransaction = async () => {
   await financeStore.deleteTransaction(objectToDelete.value.id);
 };
 
-const handleEditTransactionOpenModal = async (transaction: object) => {
+const handleEditTransactionOpenModal = async (transaction: TransactionListItem) => {
   financeStore.editingTransaction.value = {...transaction};
   if (transaction.type === 'income') {
     uiStore.toggleModal('isAddFundsModalOpen', true);

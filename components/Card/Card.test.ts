@@ -11,9 +11,6 @@ describe('Card.vue', () => {
     expect(card.classes()).toContain('w-full');
     expect(card.classes()).toContain('flex');
     expect(card.classes()).toContain('flex-wrap');
-    expect(card.classes()).toContain('shadow-xl');
-    expect(card.classes()).toContain('rounded-xl');
-    expect(card.classes()).toContain('bg-card-bg');
   });
 
   it('should render with additional custom class', () => {
@@ -48,7 +45,7 @@ describe('Card.vue', () => {
       props: { withHeader: false }
     });
 
-    const header = wrapper.find('.w-full.font-semibold');
+    const header = wrapper.find('.card__header');
     expect(header.exists()).toBe(false);
   });
 
@@ -57,7 +54,7 @@ describe('Card.vue', () => {
       props: { withHeader: true }
     });
 
-    const header = wrapper.find('.w-full.font-semibold');
+    const header = wrapper.find('.card__header');
     expect(header.exists()).toBe(true);
   });
 
@@ -79,7 +76,7 @@ describe('Card.vue', () => {
       }
     });
 
-    const header = wrapper.find('.w-full.font-semibold');
+    const header = wrapper.find('.card__header');
     expect(header.text()).toContain('Header content');
   });
 

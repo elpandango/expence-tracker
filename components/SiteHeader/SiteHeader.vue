@@ -88,10 +88,11 @@ onBeforeUnmount(() => {
         <AvatarDropdown/>
 
         <button
-         class="menu-button block md:hidden text-3xl p-0 cursor-pointer "
-         aria-label="Toggle menu"
-         @click="toggleMenu">
-          <span class="material-symbols-outlined">
+            class="menu-button block md:hidden p-0 cursor-pointer"
+            aria-label="Toggle menu"
+            @click="toggleMenu"
+        >
+          <span class="material-symbols-outlined text-3xl">
             {{ menuOpen ? 'close' : 'menu' }}
           </span>
         </button>
@@ -113,7 +114,7 @@ onBeforeUnmount(() => {
       <div class="header-menu w-full">
         <NuxtLink
          to="/"
-         class="menu-link flex items-center w-full px-3 py-2 text-[16px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
+         class="menu-link flex items-center w-full px-3 py-3 text-[18px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
          :class="{'bg-card-bg text-accent': $route.path === '/' }"
          @click="closeMenu">
           <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">home</span>
@@ -121,7 +122,7 @@ onBeforeUnmount(() => {
         </NuxtLink>
         <NuxtLink
          to="/accounts"
-         class="menu-link flex items-center w-full px-3 py-2 text-[16px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
+         class="menu-link flex items-center w-full px-3 py-3 text-[18px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
          :class="{'bg-card-bg text-accent': $route.path === '/accounts' }"
          @click="closeMenu">
           <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">credit_card</span>
@@ -129,7 +130,7 @@ onBeforeUnmount(() => {
         </NuxtLink>
         <NuxtLink
          to="/transactions"
-         class="menu-link flex items-center w-full px-3 py-2 text-[16px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
+         class="menu-link flex items-center w-full px-3 py-3 text-[18px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
          :class="{'bg-card-bg text-accent': $route.path === '/transactions' }"
          @click="closeMenu">
           <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">swap_horiz</span>
@@ -137,7 +138,7 @@ onBeforeUnmount(() => {
         </NuxtLink>
         <NuxtLink
          to="/statistics"
-         class="menu-link flex items-center w-full px-3 py-2 text-[16px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
+         class="menu-link flex items-center w-full px-3 py-3 text-[18px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
          :class="{'bg-card-bg text-accent': $route.path === '/statistics' }"
          @click="closeMenu">
           <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">bar_chart</span>
@@ -145,14 +146,14 @@ onBeforeUnmount(() => {
         </NuxtLink>
         <NuxtLink
          to="/profile"
-         class="menu-link flex items-center w-full px-3 py-2 text-[16px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
+         class="menu-link flex items-center w-full px-3 py-3 text-[18px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
          :class="{'bg-card-bg text-accent': $route.path === '/profile' }"
          @click="closeMenu">
           <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">account_circle</span>
           {{ $t('components.menuList.profile') }}
         </NuxtLink>
         <button
-         class="menu-link flex items-center w-full px-3 py-2 text-[16px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
+         class="menu-link flex items-center w-full px-3 py-3 text-[18px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
          @click="handleNewExpense">
           <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">attach_money</span>
           {{ $t('components.menuList.addExpense') }}
@@ -160,29 +161,29 @@ onBeforeUnmount(() => {
 
         <NuxtLink
          to="/categories"
-         class="menu-link flex items-center w-full px-3 py-2 text-[16px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
+         class="menu-link flex items-center w-full px-3 py-3 text-[18px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
          :class="{'bg-card-bg text-accent': $route.path === '/categories' }"
          @click="closeMenu">
           <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">category</span>
           {{ $t('components.menuList.categories') }}
         </NuxtLink>
         <div
-         class="menu-link flex items-center w-full px-3 py-2 text-[16px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
+         class="menu-link flex items-center w-full px-3 py-3 text-[18px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
          @click="toggleTheme">
           <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">{{
               isDark ? 'light_mode' : 'dark_mode'
             }}</span>
           {{ $t('components.menuList.theme') }}
         </div>
-        <div class="w-full px-3 py-2">
+        <div class="w-full px-3 py-3">
           <Accordion
            class="!rounded-md !shadow-none border-none dark:border-none"
            height="44px"
            header-class="px-0"
-           body-class="px-3 py-2"
+           body-class="px-3 py-3"
           >
             <template #header>
-              <div class="flex items-center w-full text-[16px] font-medium">
+              <div class="flex items-center w-full text-[18px] font-medium">
                 <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">language</span>
                 {{ $t('components.menuList.language') }}
               </div>
@@ -198,7 +199,7 @@ onBeforeUnmount(() => {
         </div>
 
         <button
-         class="menu-link flex items-center w-full px-3 py-2 text-[16px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
+         class="menu-link flex items-center w-full px-3 py-3 text-[18px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
          @click="handleLogout">
           <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">logout</span>
           Logout

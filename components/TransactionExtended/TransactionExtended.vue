@@ -8,14 +8,14 @@
       <div class="transaction-description max-w-[80%] pr-3">
         <div
          v-if="transaction.description"
-         class="transaction-info text-lg max-sm:text-md">
+         class="transaction-info text-xl max-sm:text-md">
           {{ transaction.description }}
         </div>
       </div>
 
       <div class="right-side flex flex-col items-end relative group-[.show-actions]:pr-5 max-sm:group-[.show-actions]:pr-3.5">
         <div
-         class="transaction-amount text-md sm:text-xl text-right whitespace-nowrap mb-1.5 "
+         class="transaction-amount text-xl sm:text-xl text-right whitespace-nowrap mb-1.5 "
          :class="[transaction.type === 'income' ? 'text-green-600' : 'text-red-600']">
           {{transaction.type === 'income' ? '' : '-'}}{{ formatCurrency(transaction.amount, transaction.currency) }}
         </div>

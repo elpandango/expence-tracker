@@ -1,143 +1,3 @@
-<template>
-  <Modal
-   v-model="modalValue"
-   @update:model-value="closeModal">
-    <template #header>
-      <div class="flex flex-wrap">
-        <div
-         v-if="isEditMode"
-         class="title">
-          {{ $t(`components.modalsContent.addEditTransactionModal.editTransactionTitleText`) }}
-        </div>
-        <div
-         v-else
-         class="title">
-          {{
-            $t(`components.modalsContent.addEditTransactionModal.${transactionTypeLocal === 'expense' ? 'addExpenseTitleText' : 'addFundsTitleText'}`)
-          }}
-        </div>
-      </div>
-    </template>
-    <template #body>
-      <Preloader
-       v-if="isLoading"
-       height="250px"/>
-      <template v-else>
-        <form
-         v-if="financeStore.accountsList && financeStore.accountsList.length"
-         class="add-edit-transaction-modal"
-         @submit.prevent>
-          <div class="flex gap-2 mb-5 flex-wrap">
-            <div class="w-full flex flex-wrap gap-3">
-              <div class="w-full text-md">{{
-                  $t('components.modalsContent.addEditTransactionModal.transactionTypeLabel')
-                }}
-              </div>
-              <BaseButton
-               v-for="type in transactionTypes"
-               :key="type"
-               size="small"
-               :variant="transactionTypeLocal === type ? '' : 'transparent'"
-               @click="setTransactionType(type)">
-                {{ $t(`components.modalsContent.addEditTransactionModal.${type}`) }}
-              </BaseButton>
-            </div>
-          </div>
-          <div class="flex gap-2 mb-5 flex-wrap">
-            <div class="w-full text-md">{{
-                $t('components.modalsContent.addEditTransactionModal.paymentTypeLabel')
-              }}
-            </div>
-
-            <Dropdown
-             v-model="selectedAccount"
-             :options="accounts"
-             type="form-dropdown"
-             size="h-[50px]"
-             :placeholder="selectAccountPlaceholder"
-            />
-          </div>
-          <div class="flex gap-2 mb-5 flex-wrap">
-            <BaseInput
-             v-model="transaction.description"
-             size="medium"
-             :status="transactionDescriptionError ? 'error' : ''"
-             :error-message="transactionDescriptionError ? transactionDescriptionError : ''"
-             :placeholder="$t('components.modalsContent.addEditTransactionModal.descriptionLabelText')"
-             :label="$t('components.modalsContent.addEditTransactionModal.descriptionLabelText')"
-             @blur="handleDescriptionBlur"/>
-          </div>
-          <div class="flex gap-2 mb-5 flex-wrap">
-            <BaseInput
-             v-model="transaction.amount"
-             :has-icon="true"
-             size="medium"
-             type="number"
-             :status="transactionAmountError ? 'error' : ''"
-             :error-message="transactionAmountError ? transactionAmountError : ''"
-             :placeholder="$t('components.modalsContent.addEditTransactionModal.amountLabelText')"
-             :label="$t('components.modalsContent.addEditTransactionModal.amountLabelText')">
-              <template #icon>
-                <span
-                 class="icon material-symbols-outlined absolute z-20 top-[33px] right-1 cursor-pointer"
-                 @click="handleCalculateClick">calculate</span>
-              </template>
-            </BaseInput>
-          </div>
-          <div class="flex gap-2 mb-5 flex-wrap">
-            <div class="w-full text-md">{{ $t('components.modalsContent.addEditTransactionModal.dateLabelText') }}</div>
-            <Datepicker
-             v-model="transaction.date"
-             height="50px"
-             :max-date="new Date().toISOString().substring(0, 10)"/>
-          </div>
-          <div
-           v-if="transactionTypeLocal === 'expense'"
-           class="flex gap-2 mb-5 flex-wrap">
-            <div class="w-full text-md">{{
-                $t('components.modalsContent.addEditTransactionModal.categoryLabelText')
-              }}
-            </div>
-            <CategoryDropdown
-             v-model="selectedCategory"
-             :options="categories"
-             type="form-dropdown"
-             size="h-[50px]"
-             @update:model-value="handleCategoryChange"
-            />
-          </div>
-        </form>
-        <div
-         v-else
-         class="empty-message min-h-[250px] flex flex-col justify-center">
-          <p>{{ $t('components.modalsContent.addEditTransactionModal.emptyAccountsText') }}</p>
-          <div class="btn-block flex justify-start items-center mt-10">
-            <BaseButton
-             size="medium"
-             @click="goToAccounts">{{ $t('components.modalsContent.addEditTransactionModal.goToAccountsBtnText') }}
-            </BaseButton>
-          </div>
-        </div>
-      </template>
-    </template>
-    <template #footer>
-      <BaseButton
-       variant="transparent"
-       size="big"
-       @click="closeModal">{{ $t('components.buttons.cancelText') }}
-      </BaseButton>
-      <BaseButton
-       size="big"
-       @click="handleSaveTransaction">
-
-        {{
-          $t(`components.modalsContent.addEditTransactionModal.${isEditMode ? 'editBtnText' : 'saveBtnText'}`)
-        }}
-      </BaseButton>
-    </template>
-  </Modal>
-</template>
-
 <script
  setup
  lang="ts">
@@ -151,8 +11,8 @@ import {inferCategoryOptionByDescription} from "~/utils/categoryHelpers";
 import Modal from './Modal.vue';
 import Dropdown from '~/components/Dropdown/Dropdown.vue';
 import BaseButton from '~/components/Buttons/BaseButton.vue';
+import BaseTabs from '~/components/Tabs/BaseTabs.vue';
 import Datepicker from '~/components/Datepicker/Datepicker.vue';
-import {emitter} from "~/classes/uiEventBus";
 
 const CategoryDropdown = defineAsyncComponent(() => import('~/components/Dropdown/CategoryDropdown.vue'));
 const BaseInput = defineAsyncComponent(() => import('~/components/Forms/Inputs/BaseInput.vue'));
@@ -162,7 +22,7 @@ const props = defineProps({
   transactionType: {type: String, default: 'expense'}
 });
 
-const {locale} = useI18n();
+const {locale, t} = useI18n();
 const {formatCurrency} = useCurrencyFormatter();
 const financeStore = useFinanceStore();
 const categoryStore = useCategoryStore();
@@ -171,7 +31,16 @@ const uiStore = useUIStore();
 const isLoading = ref(true);
 const modalValue = ref(props.isOpen);
 const transactionTypeLocal = ref(props.transactionType);
-const transactionTypes = ['expense', 'income'];
+const transactionTypes = computed(() => ([
+  {
+    value: 'expense',
+    label: t('components.modalsContent.addEditTransactionModal.expense'),
+  },
+  {
+    value: 'income',
+    label: t('components.modalsContent.addEditTransactionModal.income'),
+  },
+]));
 
 const selectedAccount = ref(null);
 
@@ -397,6 +266,143 @@ onMounted(async () => {
   }
 });
 </script>
+
+<template>
+  <Modal
+   v-model="modalValue"
+   @update:model-value="closeModal">
+    <template #header>
+      <div class="flex flex-wrap">
+        <div
+         v-if="isEditMode"
+         class="title">
+          {{ $t(`components.modalsContent.addEditTransactionModal.editTransactionTitleText`) }}
+        </div>
+        <div
+         v-else
+         class="title">
+          {{
+            $t(`components.modalsContent.addEditTransactionModal.${transactionTypeLocal === 'expense' ? 'addExpenseTitleText' : 'addFundsTitleText'}`)
+          }}
+        </div>
+      </div>
+    </template>
+    <template #body>
+      <Preloader
+       v-if="isLoading"
+       height="250px"/>
+      <template v-else>
+        <form
+         v-if="financeStore.accountsList && financeStore.accountsList.length"
+         class="add-edit-transaction-modal"
+         @submit.prevent>
+          <div class="flex gap-2 mb-5 flex-wrap">
+            <div class="w-full flex flex-wrap gap-3">
+              <div class="w-full text-md">{{
+                  $t('components.modalsContent.addEditTransactionModal.transactionTypeLabel')
+                }}
+              </div>
+              <BaseTabs
+               v-model="transactionTypeLocal"
+               :items="transactionTypes"
+               size="md"
+              />
+            </div>
+          </div>
+          <div class="flex gap-2 mb-5 flex-wrap">
+            <div class="w-full text-md">{{
+                $t('components.modalsContent.addEditTransactionModal.paymentTypeLabel')
+              }}
+            </div>
+
+            <Dropdown
+             v-model="selectedAccount"
+             :options="accounts"
+             type="form-dropdown"
+             size="h-[50px]"
+             :placeholder="selectAccountPlaceholder"
+            />
+          </div>
+          <div class="flex gap-2 mb-5 flex-wrap">
+            <BaseInput
+             v-model="transaction.description"
+             size="medium"
+             :status="transactionDescriptionError ? 'error' : ''"
+             :error-message="transactionDescriptionError ? transactionDescriptionError : ''"
+             :placeholder="$t('components.modalsContent.addEditTransactionModal.descriptionLabelText')"
+             :label="$t('components.modalsContent.addEditTransactionModal.descriptionLabelText')"
+             @blur="handleDescriptionBlur"/>
+          </div>
+          <div class="flex gap-2 mb-5 flex-wrap">
+            <BaseInput
+             v-model="transaction.amount"
+             :has-icon="true"
+             size="medium"
+             type="number"
+             :status="transactionAmountError ? 'error' : ''"
+             :error-message="transactionAmountError ? transactionAmountError : ''"
+             :placeholder="$t('components.modalsContent.addEditTransactionModal.amountLabelText')"
+             :label="$t('components.modalsContent.addEditTransactionModal.amountLabelText')">
+              <template #icon>
+                <span
+                 class="icon material-symbols-outlined absolute z-20 top-[33px] right-1 cursor-pointer"
+                 @click="handleCalculateClick">calculate</span>
+              </template>
+            </BaseInput>
+          </div>
+          <div class="flex gap-2 mb-5 flex-wrap">
+            <div class="w-full text-md">{{ $t('components.modalsContent.addEditTransactionModal.dateLabelText') }}</div>
+            <Datepicker
+             v-model="transaction.date"
+             height="50px"
+             :max-date="new Date().toISOString().substring(0, 10)"/>
+          </div>
+          <div
+           v-if="transactionTypeLocal === 'expense'"
+           class="flex gap-2 mb-5 flex-wrap">
+            <div class="w-full text-md">{{
+                $t('components.modalsContent.addEditTransactionModal.categoryLabelText')
+              }}
+            </div>
+            <CategoryDropdown
+             v-model="selectedCategory"
+             :options="categories"
+             type="form-dropdown"
+             size="h-[50px]"
+             @update:model-value="handleCategoryChange"
+            />
+          </div>
+        </form>
+        <div
+         v-else
+         class="empty-message min-h-[250px] flex flex-col justify-center">
+          <p>{{ $t('components.modalsContent.addEditTransactionModal.emptyAccountsText') }}</p>
+          <div class="btn-block flex justify-start items-center mt-10">
+            <BaseButton
+             size="medium"
+             @click="goToAccounts">{{ $t('components.modalsContent.addEditTransactionModal.goToAccountsBtnText') }}
+            </BaseButton>
+          </div>
+        </div>
+      </template>
+    </template>
+    <template #footer>
+      <BaseButton
+       variant="transparent"
+       size="big"
+       @click="closeModal">{{ $t('components.buttons.cancelText') }}
+      </BaseButton>
+      <BaseButton
+       size="big"
+       @click="handleSaveTransaction">
+
+        {{
+          $t(`components.modalsContent.addEditTransactionModal.${isEditMode ? 'editBtnText' : 'saveBtnText'}`)
+        }}
+      </BaseButton>
+    </template>
+  </Modal>
+</template>
 
 <style>
 </style>
