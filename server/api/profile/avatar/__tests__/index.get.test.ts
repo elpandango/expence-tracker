@@ -1,5 +1,5 @@
-import { vi, expect, it, beforeEach, describe } from 'vitest';
-import { createError, defineEventHandler, getCookie, readBody } from 'h3';
+import { vi, expect, it, describe } from 'vitest';
+import { createError, defineEventHandler, getCookie } from 'h3';
 import {UserModel} from "~/server/models/UserModel";
 
 vi.mock('~/server/controllers/transactionsController/createTransaction', () => ({

@@ -1,4 +1,4 @@
-import {createError, parseCookies, setCookie, defineEventHandler, readBody} from 'h3';
+import {setCookie, readBody} from 'h3';
 import { authLogin } from '~/server/controllers/authController/authLogin';
 import {vi, it, expect, describe} from "vitest";
 

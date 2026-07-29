@@ -24,7 +24,11 @@ vi.mock('h3', async (importOriginal) => {
 vi.stubGlobal('createError', vi.fn((error) => error));
 
 describe('Delete Transaction API', () => {
-  let mockEvent: any;
+  let mockEvent: {
+    context: { params: { id: string } };
+    req: Record<string, never>;
+    res: Record<string, never>;
+  };
 
   beforeEach(() => {
     mockEvent = {
@@ -39,15 +43,11 @@ describe('Delete Transaction API', () => {
 
     const result = await defineEventHandler(async (event) => {
       const { id } = event.context.params;
-      try {
-        await deleteTransaction(id);
-        return {
-          status: 200,
-          message: 'Transaction deleted successfully',
-        };
-      } catch (err) {
-        throw err;
-      }
+      await deleteTransaction(id);
+      return {
+        status: 200,
+        message: 'Transaction deleted successfully',
+      };
     })(mockEvent);
 
     expect(result.status).toBe(200);
@@ -65,7 +65,7 @@ describe('Delete Transaction API', () => {
           status: 200,
           message: 'Transaction deleted successfully',
         };
-      } catch (err) {
+      } catch {
         throw createError({ statusCode: 404, message: 'Transaction not found' });
       }
     })(mockEvent))
@@ -84,7 +84,7 @@ describe('Delete Transaction API', () => {
           status: 200,
           message: 'Transaction deleted successfully',
         };
-      } catch (err) {
+      } catch {
         throw createError({ statusCode: 500, message: 'Unexpected error' });
       }
     })(mockEvent))

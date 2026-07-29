@@ -24,7 +24,11 @@ vi.mock('h3', async (importOriginal) => {
 vi.stubGlobal('createError', vi.fn((error) => error));
 
 describe('Update Transaction API', () => {
-  let mockEvent: any;
+  let mockEvent: {
+    context: Record<string, never>;
+    req: Record<string, never>;
+    res: Record<string, never>;
+  };
 
   beforeEach(() => {
     mockEvent = {
@@ -39,20 +43,16 @@ describe('Update Transaction API', () => {
 
     await expect(defineEventHandler(async (event) => {
       const transactionData = await readBody(event);
-      try {
-        const userId = getCookie(event, 'userId');
-        if (!userId) {
-          throw createError({statusCode: 401, message: 'Unauthorized'});
-        }
-        const savedTransaction = await updateTransaction(transactionData, userId);
-        return {
-          status: 200,
-          message: "Transaction updated successfully.",
-          transaction: savedTransaction,
-        };
-      } catch (err) {
-        throw err;
+      const userId = getCookie(event, 'userId');
+      if (!userId) {
+        throw createError({statusCode: 401, message: 'Unauthorized'});
       }
+      const savedTransaction = await updateTransaction(transactionData, userId);
+      return {
+        status: 200,
+        message: "Transaction updated successfully.",
+        transaction: savedTransaction,
+      };
     })(mockEvent))
       .rejects
       .toThrowError(expect.objectContaining({ statusCode: 401, message: 'Unauthorized' }));
@@ -89,12 +89,8 @@ describe('Update Transaction API', () => {
         throw createError({ statusCode: 400, message: "User ID is required." });
       }
 
-      try {
-        const updatedTransaction = await updateTransaction(accountId, { type, amount, currency }, userId);
-        return updatedTransaction;
-      } catch (err) {
-        throw err;
-      }
+      const updatedTransaction = await updateTransaction(accountId, { type, amount, currency }, userId);
+      return updatedTransaction;
     })(mockEvent);
 
     expect(result.accountId).toBe(updatedTransaction.accountId);
@@ -125,12 +121,8 @@ describe('Update Transaction API', () => {
         throw createError({ statusCode: 400, message: "User ID is required." });
       }
 
-      try {
-        const updatedTransaction = await updateTransaction(accountId, { type, amount, currency }, userId);
-        return updatedTransaction;
-      } catch (err) {
-        throw err;
-      }
+      const updatedTransaction = await updateTransaction(accountId, { type, amount, currency }, userId);
+      return updatedTransaction;
     })(mockEvent))
       .rejects
       .toThrowError('Error updating transaction');

@@ -59,18 +59,16 @@ describe('Delete Avatar API', () => {
 
       try {
         await deleteAvatar(userId);
-      } catch (err) {
+      } catch {
         throw createError({ statusCode: 400, message: 'Failed to delete avatar.' });
       }
     });
 
     defineEventHandler.mockReturnValue(mockHandler);
 
-    try {
-      await mockHandler(mockEvent);
-    } catch (err) {
-      expect(err.statusCode).toBe(400);
-      expect(err.message).toBe('Failed to delete avatar.');
-    }
+    await expect(mockHandler(mockEvent)).rejects.toMatchObject({
+      statusCode: 400,
+      message: 'Failed to delete avatar.',
+    });
   });
 });

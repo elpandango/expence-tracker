@@ -1,9 +1,7 @@
 import {mount} from '@vue/test-utils';
 import {describe, it, expect} from 'vitest';
-import {nextTick} from 'vue';
 import Pagination from './Pagination.vue';
 import BaseButton from '~/components/Buttons/BaseButton.vue';
-import BaseInput from "~/components/Forms/Inputs/BaseInput.vue";
 
 describe('Pagination.vue', () => {
   it('should display the correct page buttons', async () => {

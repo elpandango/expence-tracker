@@ -1,7 +1,5 @@
 import {createTransaction} from "~/server/controllers/transactionsController/createTransaction";
 import {describe, it, expect, vi} from "vitest";
-import {getCookie} from "h3";
-import handler from "~/server/api/transactions/index.post";
 import {TransactionModel} from '~/server/models/TransactionModel';
 import {AccountModel} from '~/server/models/AccountModel';
 

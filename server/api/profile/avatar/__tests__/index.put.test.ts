@@ -66,18 +66,16 @@ describe('Update Avatar API', () => {
 
       try {
         await updateAvatar(userId, avatar);
-      } catch (err) {
+      } catch {
         throw createError({ statusCode: 400, message: 'Failed to update avatar.' });
       }
     });
 
     defineEventHandler.mockReturnValue(mockHandler);
 
-    try {
-      await mockHandler(mockEvent);
-    } catch (err) {
-      expect(err.statusCode).toBe(400);
-      expect(err.message).toBe('Failed to update avatar.');
-    }
+    await expect(mockHandler(mockEvent)).rejects.toMatchObject({
+      statusCode: 400,
+      message: 'Failed to update avatar.',
+    });
   });
 });

@@ -1,4 +1,4 @@
-import {createError, parseCookies, setCookie, defineEventHandler, readBody} from 'h3';
+import {setCookie, readBody} from 'h3';
 import { authRegister } from '~/server/controllers/authController/authRegister';
 import {vi, it, expect, describe} from "vitest";
 
@@ -41,35 +41,31 @@ describe('Auth Register API', () => {
       const { name, lastName, email, password } = await readBody(event);
       const cookieAge = 60 * 60 * 24 * 7;
 
-      try {
-        const { token, userId } = await authRegister({ name, lastName, email, password });
+      const { token, userId } = await authRegister({ name, lastName, email, password });
 
-        setCookie(event, 'auth_token', token, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'strict',
-          maxAge: cookieAge,
-        });
+      setCookie(event, 'auth_token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: cookieAge,
+      });
 
-        setCookie(event, 'userId', userId, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'lax',
-          path: '/',
-          maxAge: cookieAge,
-        });
+      setCookie(event, 'userId', userId, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/',
+        maxAge: cookieAge,
+      });
 
-        setCookie(event, 'isAuthenticated', true, {
-          httpOnly: false,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'strict',
-          maxAge: cookieAge,
-        });
+      setCookie(event, 'isAuthenticated', true, {
+        httpOnly: false,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: cookieAge,
+      });
 
-        return { status: 200, userId };
-      } catch (err) {
-        throw err;
-      }
+      return { status: 200, userId };
     });
 
     const result = await mockHandler(mockEvent);
@@ -116,35 +112,31 @@ describe('Auth Register API', () => {
       const { name, lastName, email, password } = await readBody(event);
       const cookieAge = 60 * 60 * 24 * 7;
 
-      try {
-        const { token, userId } = await authRegister({ name, lastName, email, password });
+      const { token, userId } = await authRegister({ name, lastName, email, password });
 
-        setCookie(event, 'auth_token', token, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'strict',
-          maxAge: cookieAge,
-        });
+      setCookie(event, 'auth_token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: cookieAge,
+      });
 
-        setCookie(event, 'userId', userId, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'lax',
-          path: '/',
-          maxAge: cookieAge,
-        });
+      setCookie(event, 'userId', userId, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/',
+        maxAge: cookieAge,
+      });
 
-        setCookie(event, 'isAuthenticated', true, {
-          httpOnly: false,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'strict',
-          maxAge: cookieAge,
-        });
+      setCookie(event, 'isAuthenticated', true, {
+        httpOnly: false,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: cookieAge,
+      });
 
-        return { status: 200, userId };
-      } catch (err) {
-        throw err;
-      }
+      return { status: 200, userId };
     });
 
     try {

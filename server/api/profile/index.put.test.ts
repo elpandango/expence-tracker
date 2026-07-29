@@ -21,7 +21,13 @@ vi.mock('~/server/controllers/userController/userController', () => ({
 vi.stubGlobal('createError', vi.fn((error) => error));
 
 describe('Edit User Profile API', () => {
-  let mockEvent: any;
+  let mockEvent: {
+    context: { params: Record<string, never> };
+    req: Record<string, never>;
+    res: Record<string, never>;
+    getCookie?: ReturnType<typeof vi.fn>;
+    readBody?: ReturnType<typeof vi.fn>;
+  };
 
   beforeEach(() => {
     mockEvent = {

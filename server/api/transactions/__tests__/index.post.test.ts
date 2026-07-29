@@ -18,7 +18,11 @@ vi.mock('h3', async (importOriginal) => {
 vi.stubGlobal('createError', vi.fn((error) => error));
 
 describe('Create Transaction API', () => {
-  let mockEvent: any;
+  let mockEvent: {
+    context: Record<string, never>;
+    req: Record<string, never>;
+    res: Record<string, never>;
+  };
 
   beforeEach(() => {
     mockEvent = {
@@ -33,20 +37,16 @@ describe('Create Transaction API', () => {
 
     await expect(defineEventHandler(async (event) => {
       const transactionData = await readBody(event);
-      try {
-        const userId = getCookie(event, 'userId');
-        if (!userId) {
-          throw createError({statusCode: 401, message: 'Unauthorized'});
-        }
-        const savedTransaction = await createTransaction(transactionData, userId);
-        return {
-          status: 201,
-          message: "Transaction created successfully.",
-          transaction: savedTransaction,
-        };
-      } catch (err) {
-        throw err;
+      const userId = getCookie(event, 'userId');
+      if (!userId) {
+        throw createError({statusCode: 401, message: 'Unauthorized'});
       }
+      const savedTransaction = await createTransaction(transactionData, userId);
+      return {
+        status: 201,
+        message: "Transaction created successfully.",
+        transaction: savedTransaction,
+      };
     })(mockEvent))
       .rejects
       .toThrowError(expect.objectContaining({ statusCode: 401, message: 'Unauthorized' }));
@@ -73,20 +73,16 @@ describe('Create Transaction API', () => {
 
     const result = await defineEventHandler(async (event) => {
       const transactionData = await readBody(event);
-      try {
-        const userId = getCookie(event, 'userId');
-        if (!userId) {
-          throw createError({statusCode: 401, message: 'Unauthorized'});
-        }
-        const savedTransaction = await createTransaction(transactionData, userId);
-        return {
-          status: 201,
-          message: "Transaction created successfully.",
-          transaction: savedTransaction,
-        };
-      } catch (err) {
-        throw err;
+      const userId = getCookie(event, 'userId');
+      if (!userId) {
+        throw createError({statusCode: 401, message: 'Unauthorized'});
       }
+      const savedTransaction = await createTransaction(transactionData, userId);
+      return {
+        status: 201,
+        message: "Transaction created successfully.",
+        transaction: savedTransaction,
+      };
     })(mockEvent);
 
     expect(result.status).toBe(201);
@@ -107,20 +103,16 @@ describe('Create Transaction API', () => {
 
     await expect(defineEventHandler(async (event) => {
       const transactionData = await readBody(event);
-      try {
-        const userId = getCookie(event, 'userId');
-        if (!userId) {
-          throw createError({statusCode: 401, message: 'Unauthorized'});
-        }
-        const savedTransaction = await createTransaction(transactionData, userId);
-        return {
-          status: 201,
-          message: "Transaction created successfully.",
-          transaction: savedTransaction,
-        };
-      } catch (err) {
-        throw err;
+      const userId = getCookie(event, 'userId');
+      if (!userId) {
+        throw createError({statusCode: 401, message: 'Unauthorized'});
       }
+      const savedTransaction = await createTransaction(transactionData, userId);
+      return {
+        status: 201,
+        message: "Transaction created successfully.",
+        transaction: savedTransaction,
+      };
     })(mockEvent))
       .rejects
       .toThrowError('Some error during creation');

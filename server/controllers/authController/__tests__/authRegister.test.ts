@@ -2,11 +2,9 @@ import {authRegister} from '~/server/controllers/authController/authRegister';
 import {UserModel} from '~/server/models/UserModel';
 import bcrypt from 'bcryptjs';
 import {vi, describe, it, expect} from 'vitest';
-import jwt from 'jsonwebtoken';
 
 vi.mock('~/server/models/UserModel');
 vi.mock('bcryptjs');
-vi.mock('jsonwebtoken');
 
 describe('authRegister', () => {
   it('should register a new user successfully', async () => {

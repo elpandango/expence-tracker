@@ -1,4 +1,4 @@
-import {createError, parseCookies, setCookie, deleteCookie, defineEventHandler, readBody} from 'h3';
+import {deleteCookie} from 'h3';
 import {vi, it, expect, describe} from "vitest";
 
 vi.mock('h3', async (importOriginal) => {

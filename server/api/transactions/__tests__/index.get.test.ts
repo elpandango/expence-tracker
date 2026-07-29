@@ -27,7 +27,12 @@ vi.mock('~/server/models/TransactionModel', () => ({
 vi.stubGlobal('createError', vi.fn((error) => error));
 
 describe('Create Transaction API', () => {
-  let mockEvent: any;
+  let mockEvent: {
+    context: { params: Record<string, never> };
+    req: Record<string, never>;
+    res: Record<string, never>;
+    getQuery?: ReturnType<typeof vi.fn>;
+  };
 
   beforeEach(() => {
     mockEvent = {
@@ -67,7 +72,7 @@ describe('Create Transaction API', () => {
       const {
         type,
         page = 1,
-        perPage = 5,
+        perPage: _perPage = 5,
       } = getQuery(event);
 
       const query = { userId };
@@ -105,7 +110,7 @@ describe('Create Transaction API', () => {
         const {
           type,
           page = 1,
-          perPage = 5,
+          perPage: _perPage = 5,
         } = getQuery(event);
 
         const query = { userId };
@@ -157,7 +162,7 @@ describe('Create Transaction API', () => {
       const {
         type,
         page = 1,
-        perPage = 5,
+        perPage: _perPage = 5,
       } = getQuery(event);
 
       const query = { userId };

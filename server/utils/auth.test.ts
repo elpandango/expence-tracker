@@ -33,7 +33,7 @@ describe('verifyToken()', () => {
   it('should log an error for invalid tokens', () => {
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     verifyToken('invalidToken');
-    expect(consoleSpy).toHaveBeenCalled;
+    expect(consoleSpy).toHaveBeenCalled();
     const [message, error] = consoleSpy.mock.calls[0];
     expect(message).toContain('Invalid token');
     expect(error).toBeInstanceOf(Error);
@@ -41,7 +41,7 @@ describe('verifyToken()', () => {
 
   it('should return null for empty or incorrect input', () => {
     expect(verifyToken('')).toBeNull();
-    expect(verifyToken(null as any)).toBeNull();
-    expect(verifyToken(undefined as any)).toBeNull();
+    expect(verifyToken(null as unknown as string)).toBeNull();
+    expect(verifyToken(undefined as unknown as string)).toBeNull();
   });
 });
