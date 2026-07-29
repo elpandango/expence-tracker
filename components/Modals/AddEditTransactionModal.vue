@@ -100,10 +100,10 @@
             </div>
             <CategoryDropdown
              v-model="selectedCategory"
-             @update:model-value="handleCategoryChange"
              :options="categories"
              type="form-dropdown"
              size="h-[50px]"
+             @update:model-value="handleCategoryChange"
             />
           </div>
         </form>

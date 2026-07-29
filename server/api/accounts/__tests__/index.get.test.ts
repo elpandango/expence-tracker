@@ -26,7 +26,11 @@ describe('GET /accounts API', () => {
 
   it('should return 500 if there is a problem with database', async () => {
     getCookie.mockReturnValue('user123');
-    AccountModel.find.mockRejectedValue(new TypeError('Database error'));
+    const databaseError = new TypeError('Database error');
+    const sortMock = vi.fn().mockRejectedValue(databaseError);
+    AccountModel.find.mockReturnValue({
+      sort: sortMock,
+    });
 
     const mockEvent = {};
     const result = handler(mockEvent);
@@ -34,10 +38,12 @@ describe('GET /accounts API', () => {
     await expect(result).rejects.toEqual({
       statusCode: 500,
       message: 'Failed to fetch accounts',
-      data: new TypeError('Database error'),
+      data: databaseError,
     });
 
     expect(getCookie).toHaveBeenCalledWith(mockEvent, 'userId');
+    expect(AccountModel.find).toHaveBeenCalledWith({ userId: 'user123' });
+    expect(sortMock).toHaveBeenCalledWith({ isDefault: -1, createdAt: 1 });
   });
 
   it('should return 401 if userId cookie is missing', async () => {
@@ -59,7 +65,10 @@ describe('GET /accounts API', () => {
       { id: 'account1', name: 'Savings', balance: 1000 },
       { id: 'account2', name: 'Checking', balance: 500 },
     ];
-    AccountModel.find.mockResolvedValue(mockAccounts);
+    const sortMock = vi.fn().mockResolvedValue(mockAccounts);
+    AccountModel.find.mockReturnValue({
+      sort: sortMock,
+    });
 
     const mockEvent = {};
     const result = await handler(mockEvent);
@@ -71,5 +80,6 @@ describe('GET /accounts API', () => {
 
     expect(getCookie).toHaveBeenCalledWith(mockEvent, 'userId');
     expect(AccountModel.find).toHaveBeenCalledWith({ userId: 'user123' });
+    expect(sortMock).toHaveBeenCalledWith({ isDefault: -1, createdAt: 1 });
   });
 });

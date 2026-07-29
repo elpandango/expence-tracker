@@ -6,7 +6,7 @@
 
       <div class="w-full flex flex-wrap">
         <CardWithDate
-         class="chart-wrapper w-full sm:w-1/2"
+         class="chart-wrapper w-full"
          @date-changed="handleDateChanged('categoriesTable', $event)">
           <template v-if="sortedCategories">
             <h3 class="text-xl font-semibold my-3 mx-2">Expense categories</h3>
@@ -35,56 +35,12 @@
 
       <div class="w-full flex gap-5 flex-wrap md:flex-nowrap">
         <CardWithDate
-         class="chart-wrapper w-full sm:w-1/2"
-         @date-changed="handleDateChanged('expenses_vs_incomes', $event)">
-          <template v-if="isHighchartsLoaded && chartsLoadingState.expenses_vs_incomes">
-            <HighchartsComponent
-             v-if="chartConfigs.expenses_vs_incomes.series[0].data.length > 0"
-             :options="chartConfigs.expenses_vs_incomes"/>
-            <NoChartsData v-else/>
-          </template>
-          <template v-else>
-            <Preloader height="300px"/>
-          </template>
-        </CardWithDate>
-
-        <CardWithDate
-         class="chart-wrapper w-full sm:w-1/2"
+         class="chart-wrapper w-full"
          @date-changed="handleDateChanged('top5', $event)">
           <template v-if="isHighchartsLoaded && chartsLoadingState.top5">
             <HighchartsComponent
              v-if="chartConfigs.top5 && chartConfigs.top5.series[0].data.length > 0"
              :options="chartConfigs.top5"/>
-            <NoChartsData v-else/>
-          </template>
-          <template v-else>
-            <Preloader height="300px"/>
-          </template>
-        </CardWithDate>
-      </div>
-
-      <div class="w-full flex gap-5 flex-wrap md:flex-nowrap">
-        <CardWithDate
-         class="chart-wrapper w-full sm:w-1/2"
-         @date-changed="handleDateChanged('categories', $event)">
-          <template v-if="isHighchartsLoaded && chartsLoadingState.categories">
-            <HighchartsComponent
-             v-if="chartConfigs.categories && chartConfigs.categories.series[0].data.length > 0"
-             :options="chartConfigs.categories"/>
-            <NoChartsData v-else/>
-          </template>
-          <template v-else>
-            <Preloader height="300px"/>
-          </template>
-        </CardWithDate>
-
-        <CardWithDate
-         class="chart-wrapper w-full sm:w-1/2"
-         @date-changed="handleDateChanged('total_expenses', $event)">
-          <template v-if="isHighchartsLoaded && chartsLoadingState.total_expenses">
-            <HighchartsComponent
-             v-if="chartConfigs.total_expenses && chartConfigs.total_expenses.series[0].data.length > 0"
-             :options="chartConfigs.total_expenses"/>
             <NoChartsData v-else/>
           </template>
           <template v-else>

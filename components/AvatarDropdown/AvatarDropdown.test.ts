@@ -8,6 +8,13 @@ vi.mock('~/stores/user', () => ({
   useUserStore: vi.fn(),
 }));
 
+vi.mock('~/components/LanguageMenu/LanguageMenu.vue', () => ({
+  default: {
+    name: 'LanguageMenu',
+    template: '<div class="language-menu-stub" />',
+  },
+}));
+
 vi.mock('~/stores/auth', () => ({
   useAuthStore: vi.fn().mockReturnValue({
     logout: vi.fn().mockResolvedValue(),
@@ -15,11 +22,30 @@ vi.mock('~/stores/auth', () => ({
 }));
 
 describe('AvatarDropdown.vue', () => {
+  beforeEach(() => {
+    const logout = vi.fn().mockResolvedValue(undefined);
+
+    useUserStore.mockReturnValue({
+      avatar: null,
+    });
+    useAuthStore.mockReturnValue({
+      logout,
+    });
+  });
+
   it('should render the user avatar if userStore.avatar exists', () => {
     useUserStore.mockReturnValue({
       avatar: 'mock-avatar.jpg',
     });
-    const wrapper = mount(AvatarDropdown);
+    const wrapper = mount(AvatarDropdown, {
+      global: {
+        stubs: {
+          NuxtLink: {
+            template: '<a><slot /></a>',
+          },
+        },
+      },
+    });
     const img = wrapper.find('img');
 
     expect(img.exists()).toBe(true);
@@ -31,17 +57,31 @@ describe('AvatarDropdown.vue', () => {
       avatar: null,
     });
 
-    const wrapper = mount(AvatarDropdown);
+    const wrapper = mount(AvatarDropdown, {
+      global: {
+        stubs: {
+          NuxtLink: {
+            template: '<a><slot /></a>',
+          },
+        },
+      },
+    });
 
     const img = wrapper.find('img');
     expect(img.exists()).toBe(false);
   });
 
   it('should call logout when clicking the logout button', async () => {
+    const authStore = useAuthStore();
     const wrapper = mount(AvatarDropdown, {
       global: {
         mocks: {
           $t: (key) => key,
+        },
+        stubs: {
+          NuxtLink: {
+            template: '<a><slot /></a>',
+          },
         },
       },
     });
@@ -53,10 +93,13 @@ describe('AvatarDropdown.vue', () => {
 
     expect(wrapper.find('.dropdown-menu').exists()).toBe(true);
 
-    const logoutButton = wrapper.find('.dropdown-menu div');
+    const logoutButton = wrapper.findAll('.dropdown-menu div')
+      .find((node) => node.text().includes('Logout'));
+
+    expect(logoutButton?.exists()).toBe(true);
     await logoutButton.trigger('click');
 
-    expect(useAuthStore().logout).toHaveBeenCalled();
+    expect(authStore.logout).toHaveBeenCalled();
   });
 
 });
