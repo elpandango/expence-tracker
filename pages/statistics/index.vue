@@ -7,8 +7,8 @@
       <div class="w-full flex flex-wrap">
         <CardWithDate
          class="chart-wrapper w-full"
-         @date-changed="handleDateChanged('categoriesTable', $event)">
-          <template v-if="sortedCategories">
+         @date-changed="handleDateChanged">
+          <template v-if="!isStatisticsLoading">
             <h3 class="text-xl font-semibold my-3 mx-2">Expense categories</h3>
             <div
              v-for="expenseItem in sortedCategories"
@@ -36,11 +36,11 @@
       <div class="w-full flex gap-5 flex-wrap md:flex-nowrap">
         <CardWithDate
          class="chart-wrapper w-full"
-         @date-changed="handleDateChanged('top5', $event)">
-          <template v-if="isHighchartsLoaded && chartsLoadingState.top5">
+         @date-changed="handleDateChanged">
+          <template v-if="isHighchartsLoaded && !isStatisticsLoading">
             <HighchartsComponent
-             v-if="chartConfigs.top5 && chartConfigs.top5.series[0].data.length > 0"
-             :options="chartConfigs.top5"/>
+             v-if="allCategoriesChartConfig && allCategoriesChartConfig.series[0].data.length > 0"
+             :options="allCategoriesChartConfig"/>
             <NoChartsData v-else/>
           </template>
           <template v-else>
@@ -62,10 +62,9 @@
 </template>
 
 <script setup>
-import {ref, reactive, onMounted} from 'vue';
+import {computed, ref, reactive, onMounted} from 'vue';
 import {useSeoConfig} from "~/use/useSeoConfig";
 import {useChartStore} from "~/stores/charts";
-import {generateChartConfigForType} from "~/utils/chartUtils";
 import {useI18n} from "vue-i18n";
 import {useLocalizatedCategories} from "~/use/useLocalizatedCategories";
 import {DATE_RANGE_PRESETS, getDateRangeForPreset} from "~/utils/dateRangePresets";
@@ -79,21 +78,8 @@ const {locale} = useI18n();
 const CategoryTransactionsModal = defineAsyncComponent(() => import('~/components/Modals/CategoryTransactionsModal.vue'));
 
 const isHighchartsLoaded = ref(false);
+const isStatisticsLoading = ref(true);
 let HighchartsComponent = null;
-const chartConfigs = reactive({
-  expenses_vs_incomes: null,
-  categories: null,
-  categoriesTable: null,
-  top5: null,
-  total_expenses: null,
-});
-const chartsLoadingState = reactive({
-  expenses_vs_incomes: true,
-  categories: true,
-  categoriesTable: true,
-  top5: true,
-  total_expenses: true,
-});
 const categoryTableDateRange = ref(getDateRangeForPreset(DATE_RANGE_PRESETS.currentMonth));
 const isCategoryTransactionsModalOpen = ref(false);
 const selectedCategoryDetails = reactive({
@@ -110,15 +96,9 @@ const formatStatAmount = (amount) => {
   }).format(amount);
 };
 
-const handleDateChanged = async (type, date) => {
-  if (type === 'categoriesTable') {
-    categoryTableDateRange.value = {...date};
-  }
-
-  chartsLoadingState[type] = false;
-  await fetchChartsData(type, date);
-  chartConfigs[type] = generateChartConfigForType(chartStore.chartDataByType, type);
-  chartsLoadingState[type] = true;
+const handleDateChanged = async (date) => {
+  categoryTableDateRange.value = {...date};
+  await fetchCategoriesData(date);
 };
 
 const openCategoryDetails = (categoryItem) => {
@@ -129,33 +109,20 @@ const openCategoryDetails = (categoryItem) => {
   isCategoryTransactionsModalOpen.value = true;
 };
 
-const fetchChartsData = async (type, date) => {
-  const typeMapping = {
-    expenses_vs_incomes: 'allTransactions',
-    categories: 'allCategories',
-    categoriesTable: 'allCategoriesTable',
-    top5: 'topCategories',
-    total_expenses: 'cashAndCards',
-  };
-
-  const chartType = typeMapping[type];
-  if (!chartType) {
-    console.error(`Unknown chart type: ${type}`);
-    return;
-  }
-
-  const dateQuery = `startDate=${date.startDate}&endDate=${date.endDate}&chartType=${chartType}`;
-
+const fetchCategoriesData = async (date) => {
+  isStatisticsLoading.value = true;
   try {
+    const dateQuery = `startDate=${date.startDate}&endDate=${date.endDate}&chartType=allCategoriesTable`;
     const response = await chartStore.getChartsData(`?${dateQuery}`);
-    chartStore.chartDataByType[chartType] = ['topCategories', 'allCategories', 'allCategoriesTable'].includes(chartType)
-      ? response.data.map((item) => ({
-          ...item,
-          category: useLocalizatedCategories(item.category, locale.value),
-        }))
-      : response.data;
+
+    chartStore.chartDataByType.allCategoriesTable = response.data.map((item) => ({
+      ...item,
+      category: useLocalizatedCategories(item.category, locale.value),
+    }));
   } catch (err) {
-    console.error(`Error fetching data for ${chartType}:`, err);
+    console.error('Error fetching category statistics:', err);
+  } finally {
+    isStatisticsLoading.value = false;
   }
 };
 
@@ -165,15 +132,7 @@ onMounted(async () => {
     HighchartsComponent = component;
 
     const dateRange = getDateRangeForPreset(DATE_RANGE_PRESETS.currentMonth);
-
-    const chartTypes = ['expenses_vs_incomes', 'categories', 'categoriesTable', 'top5', 'total_expenses'];
-    const chartDataPromises = chartTypes.map((type) =>
-     fetchChartsData(type, dateRange).then(() => {
-       chartConfigs[type] = generateChartConfigForType(chartStore.chartDataByType, type);
-     })
-    );
-
-    await Promise.all(chartDataPromises);
+    await fetchCategoriesData(dateRange);
   } catch (err) {
     console.error('Error loading charts:', err);
   } finally {
@@ -188,6 +147,21 @@ const sortedCategories = computed(() => {
   }
   return [];
 });
+
+const allCategoriesChartConfig = computed(() => ({
+  chart: {type: 'pie'},
+  title: {text: 'Expense Categories'},
+  tooltip: {valueDecimals: 2},
+  series: [
+    {
+      name: 'Categories',
+      data: sortedCategories.value.map(({category, amount}) => ({
+        name: category,
+        y: amount,
+      })),
+    },
+  ],
+}));
 </script>
 
 <style>

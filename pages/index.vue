@@ -77,15 +77,14 @@ const fetchChartData = async () => {
   try {
     const dateRange = getDateRangeForPreset(DATE_RANGE_PRESETS.currentMonth);
 
-    const dateQuery = `startDate=${dateRange.startDate}&endDate=${dateRange.endDate}&chartType=topCategories`;
+    const dateQuery = `startDate=${dateRange.startDate}&endDate=${dateRange.endDate}&chartType=allCategoriesTable`;
 
     const response = await chartStore.getChartsData(`?${dateQuery}`);
 
-    chartStore.chartDataByType.topCategories = response.data;
+    chartStore.chartDataByType.allCategoriesTable = response.data;
 
-    const top5ChartData = (chartStore.chartDataByType.topCategories || [])
+    const allCategoriesChartData = (chartStore.chartDataByType.allCategoriesTable || [])
       .sort((firstCategory, secondCategory) => secondCategory.amount - firstCategory.amount)
-      .slice(0, 5)
       .map(t => ({
         name: useLocalizatedCategories(t.category, locale.value),
         y: Math.abs(t.amount),
@@ -97,13 +96,13 @@ const fetchChartData = async () => {
         backgroundColor: '#f9f9f9',
       },
       title: {
-        text: 'Top 5 Expense Categories',
+        text: 'Expense Categories',
       },
       series: [
         {
           name: 'Expenses',
           colorByPoint: true,
-          data: top5ChartData,
+          data: allCategoriesChartData,
         },
       ],
     };
