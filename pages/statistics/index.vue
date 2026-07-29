@@ -25,6 +25,12 @@
                 Details
               </BaseButton>
             </div>
+            <div
+             v-if="sortedCategories.length > 0"
+             class="w-full py-3 px-3 border-t-[1px] border-stone-200 dark:border-neutral-600 flex items-center justify-between gap-3 text-[18px] font-semibold">
+              <div>Total</div>
+              <div>{{ formatStatAmount(totalExpensesAmount) }} EUR</div>
+            </div>
           </template>
           <template v-else>
             <Preloader height="300px"/>
@@ -146,6 +152,10 @@ const sortedCategories = computed(() => {
     return categories?.sort((a, b) => b.amount - a.amount)
   }
   return [];
+});
+
+const totalExpensesAmount = computed(() => {
+  return sortedCategories.value.reduce((total, category) => total + category.amount, 0);
 });
 
 const allCategoriesChartConfig = computed(() => ({
