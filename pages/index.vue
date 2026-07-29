@@ -45,7 +45,7 @@ import {useChartStore} from "~/stores/charts";
 import {useFinanceStore} from "~/stores/finance";
 import {useSeoConfig} from "~/use/useSeoConfig";
 import {useI18n} from "vue-i18n";
-import {mergeCategoryAmounts} from "~/utils/categoryHelpers";
+import {useLocalizatedCategories} from "~/use/useLocalizatedCategories";
 import {DATE_RANGE_PRESETS, getDateRangeForPreset} from "~/utils/dateRangePresets";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
 import Card from "~/components/Card/Card.vue";
@@ -83,16 +83,13 @@ const fetchChartData = async () => {
 
     chartStore.chartDataByType.topCategories = response.data;
 
-    const top5ChartData = mergeCategoryAmounts(
-      chartStore.chartDataByType.topCategories || [],
-      locale.value
-    )
+    const top5ChartData = (chartStore.chartDataByType.topCategories || [])
       .sort((firstCategory, secondCategory) => secondCategory.amount - firstCategory.amount)
       .slice(0, 5)
       .map(t => ({
-      name: t.category,
-      y: Math.abs(t.amount),
-    }));
+        name: useLocalizatedCategories(t.category, locale.value),
+        y: Math.abs(t.amount),
+      }));
 
     chartConfig.value = {
       chart: {

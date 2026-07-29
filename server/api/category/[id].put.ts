@@ -17,13 +17,17 @@ export default defineEventHandler(async (event) => {
 
   const updatedCategory = await CategoryModel.findByIdAndUpdate(id, {
     name: body.name,
-    icon: body.icon ?? ''
+    icon: body.icon ?? '',
+    archived: typeof body.archived === 'boolean' ? body.archived : undefined,
   }, { new: true });
 
   if (!updatedCategory) {
     throw createError({ statusCode: 404, message: 'Category not found' });
   }
 
-  await redis.del(`categories:${userId}`);
+  await Promise.all([
+    redis.del(`categories:${userId}:active`),
+    redis.del(`categories:${userId}:all`),
+  ]);
   return { status: 200, message: 'Category updated successfully', category: updatedCategory };
 });

@@ -147,11 +147,7 @@ import {useCategoryStore} from '~/stores/category';
 import {useCurrencyFormatter} from "~/use/useCurrencyFormatter";
 import {useUIStore} from "~/stores/ui";
 import {useI18n} from 'vue-i18n';
-import {
-  buildVisibleCategoryOptions,
-  getCanonicalCategoryName,
-  inferCategoryOptionByDescription
-} from "~/utils/categoryHelpers";
+import {inferCategoryOptionByDescription} from "~/utils/categoryHelpers";
 import Modal from './Modal.vue';
 import Dropdown from '~/components/Dropdown/Dropdown.vue';
 import BaseButton from '~/components/Buttons/BaseButton.vue';
@@ -247,7 +243,14 @@ const getDefaultAccountOption = () => {
 
 const populateCategoriesList = async () => {
   await categoryStore.fetchCategoriesIfNeeded();
-  categories.value = buildVisibleCategoryOptions(categoryStore.categories, locale.value);
+  categories.value = categoryStore.categories.map(ctg => ({
+    value: ctg._id || ctg.id,
+    rawName: ctg.rawName || ctg.name,
+    label: ctg.name,
+    color: ctg.color,
+    icon: ctg.icon,
+    archived: ctg.archived,
+  }));
 };
 
 const populateTransactionFields = () => {
@@ -270,10 +273,23 @@ const populateTransactionFields = () => {
     currency: ''
   };
 
+  const editingCategoryId = editingTransaction.category?._id || null;
   const editingCategoryName = editingTransaction.category?.name || '';
-  const canonicalCategoryName = getCanonicalCategoryName(editingCategoryName);
 
-  selectedCategory.value = categories.value.find(cat => cat.canonicalName === canonicalCategoryName) || {
+  const archivedCategoryOption = editingCategoryId && editingCategoryName
+    ? {
+        value: editingCategoryId,
+        rawName: editingCategoryName,
+        label: editingCategoryName,
+        color: editingTransaction.category?.color || '#BDBDBD',
+        icon: editingTransaction.category?.icon || 'category',
+        archived: true,
+      }
+    : null;
+
+  const matchedCategory = categories.value.find(cat => cat.value === editingCategoryId);
+
+  selectedCategory.value = matchedCategory || archivedCategoryOption || {
     value: null,
     label: defaultCategoriesOtherValues[locale.value]
   };

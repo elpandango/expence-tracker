@@ -93,7 +93,7 @@ import {useSeoConfig} from "~/use/useSeoConfig";
 import {useChartStore} from "~/stores/charts";
 import {generateChartConfigForType} from "~/utils/chartUtils";
 import {useI18n} from "vue-i18n";
-import {mergeCategoryAmounts} from "~/utils/categoryHelpers";
+import {useLocalizatedCategories} from "~/use/useLocalizatedCategories";
 import {DATE_RANGE_PRESETS, getDateRangeForPreset} from "~/utils/dateRangePresets";
 
 const seoMeta = useSeoConfig();
@@ -153,7 +153,10 @@ const fetchChartsData = async (type, date) => {
   try {
     const response = await chartStore.getChartsData(`?${dateQuery}`);
     chartStore.chartDataByType[chartType] = ['topCategories', 'allCategories', 'allCategoriesTable'].includes(chartType)
-      ? mergeCategoryAmounts(response.data, locale.value)
+      ? response.data.map((item) => ({
+          ...item,
+          category: useLocalizatedCategories(item.category, locale.value),
+        }))
       : response.data;
   } catch (err) {
     console.error(`Error fetching data for ${chartType}:`, err);

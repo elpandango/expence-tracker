@@ -20,6 +20,9 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 404, message: 'Category not found' });
   }
 
-  await redis.del(`categories:${userId}`);
+  await Promise.all([
+    redis.del(`categories:${userId}:active`),
+    redis.del(`categories:${userId}:all`),
+  ]);
   return { status: 200, message: 'Category deleted successfully' };
 });

@@ -24,7 +24,7 @@
             <template v-if="transaction?.type !== 'income' && transaction?.category?.icon">
               <div
                class="category-icon material-symbols-outlined flex items-center justify-center w-5 h-5 text-sm mr-1 rounded-md"
-               :style="{ backgroundColor: categoryDisplayMeta.color }">{{ categoryDisplayMeta.icon }}
+               :style="{ backgroundColor: transaction?.category?.color }">{{ transaction?.category?.icon }}
               </div>
             </template>
             <template v-else-if="transaction?.type === 'income'">
@@ -70,7 +70,7 @@
 import {ref} from "vue";
 import {useCurrencyFormatter} from "~/use/useCurrencyFormatter";
 import {useI18n} from "vue-i18n";
-import {getCategoryDisplayMeta} from "~/utils/categoryHelpers";
+import {useLocalizatedCategories} from "~/use/useLocalizatedCategories";
 
 const { transaction, tag, showActions } = defineProps({
   transaction: {
@@ -99,15 +99,11 @@ const handleClickOutside = (event: event) => {
   }
 };
 
-const categoryDisplayMeta = computed(() => {
-  return getCategoryDisplayMeta(transaction?.category || {}, locale.value);
-});
-
 const categoryName = computed(() => {
   if (transaction?.type === 'income') {
     return 'Deposit';
   } else {
-    return categoryDisplayMeta.value.name;
+    return useLocalizatedCategories(transaction?.category?.name || '', locale.value);
   }
 });
 

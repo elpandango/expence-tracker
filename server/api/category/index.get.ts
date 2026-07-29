@@ -1,4 +1,4 @@
-import {createError, getCookie, defineEventHandler} from 'h3';
+import {createError, getCookie, defineEventHandler, getQuery} from 'h3';
 import {CategoryModel} from '~/server/models/CategoryModel';
 import redis from '~/server/utils/redis';
 
@@ -9,8 +9,14 @@ export default defineEventHandler(async (event) => {
       throw createError({statusCode: 401, message: 'Unauthorized'});
     }
 
+    const {includeArchived} = getQuery(event);
+    const shouldIncludeArchived = includeArchived === 'true';
+    const cacheKey = shouldIncludeArchived
+      ? `categories:${userId}:all`
+      : `categories:${userId}:active`;
+
     //Redis usage
-    const cachedCategories = await redis.get(`categories:${userId}`);
+    const cachedCategories = await redis.get(cacheKey);
 
     if (cachedCategories) {
       return {
@@ -20,8 +26,10 @@ export default defineEventHandler(async (event) => {
       };
     }
 
-    const categories = await CategoryModel.find();
-    await redis.set(`categories:${userId}`, JSON.stringify(categories), 'EX', 600);
+    const categories = await CategoryModel.find(
+      shouldIncludeArchived ? {} : {archived: false}
+    );
+    await redis.set(cacheKey, JSON.stringify(categories), 'EX', 600);
     return {status: 200, message: 'Expense categories retrieved successfully', categories};
   } catch (error) {
     console.error(error);

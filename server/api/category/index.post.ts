@@ -21,7 +21,10 @@ export default defineEventHandler(async (event) => {
     });
 
     await newCategory.save();
-    await redis.del(`categories:${userId}`);
+    await Promise.all([
+      redis.del(`categories:${userId}:active`),
+      redis.del(`categories:${userId}:all`),
+    ]);
 
     return {
       status: 200,
@@ -30,6 +33,7 @@ export default defineEventHandler(async (event) => {
         id: newCategory._id,
         name: newCategory.name,
         icon: newCategory.icon,
+        archived: newCategory.archived,
       }
     };
   } catch (error) {
