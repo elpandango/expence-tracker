@@ -12,9 +12,18 @@
             <h3 class="text-xl font-semibold my-3 mx-2">Expense categories</h3>
             <div
              v-for="expenseItem in sortedCategories"
-             :key="expenseItem.category"
-             class="w-full py-2 px-3 border-t-[1px] border-stone-200 dark:border-neutral-600">
-              <strong>{{ expenseItem.category }}</strong> - {{ formatStatAmount(expenseItem.amount) }} EUR
+             :key="`${expenseItem.category}-${expenseItem.categoryId || 'uncategorized'}`"
+             class="w-full py-2 px-3 border-t-[1px] border-stone-200 dark:border-neutral-600 flex items-center justify-between gap-3">
+              <div>
+                <strong>{{ expenseItem.category }}</strong> - {{ formatStatAmount(expenseItem.amount) }} EUR
+              </div>
+              <BaseButton
+               v-if="expenseItem.categoryId"
+               size="smallest"
+               variant="transparent"
+               @click="openCategoryDetails(expenseItem)">
+                Details
+              </BaseButton>
             </div>
           </template>
           <template v-else>
@@ -84,6 +93,15 @@
         </CardWithDate>
       </div>
     </div>
+
+    <CategoryTransactionsModal
+     :is-open="isCategoryTransactionsModalOpen"
+     :category-id="selectedCategoryDetails.categoryId"
+     :category-name="selectedCategoryDetails.category"
+     :start-date="selectedCategoryDetails.startDate"
+     :end-date="selectedCategoryDetails.endDate"
+     @close="isCategoryTransactionsModalOpen = false"
+    />
   </div>
 </template>
 
@@ -95,12 +113,14 @@ import {generateChartConfigForType} from "~/utils/chartUtils";
 import {useI18n} from "vue-i18n";
 import {useLocalizatedCategories} from "~/use/useLocalizatedCategories";
 import {DATE_RANGE_PRESETS, getDateRangeForPreset} from "~/utils/dateRangePresets";
+import BaseButton from "~/components/Buttons/BaseButton.vue";
 
 const seoMeta = useSeoConfig();
 useSeoMeta(seoMeta.value);
 
 const chartStore = useChartStore();
 const {locale} = useI18n();
+const CategoryTransactionsModal = defineAsyncComponent(() => import('~/components/Modals/CategoryTransactionsModal.vue'));
 
 const isHighchartsLoaded = ref(false);
 let HighchartsComponent = null;
@@ -118,6 +138,14 @@ const chartsLoadingState = reactive({
   top5: true,
   total_expenses: true,
 });
+const categoryTableDateRange = ref(getDateRangeForPreset(DATE_RANGE_PRESETS.currentMonth));
+const isCategoryTransactionsModalOpen = ref(false);
+const selectedCategoryDetails = reactive({
+  category: '',
+  categoryId: null,
+  startDate: categoryTableDateRange.value.startDate,
+  endDate: categoryTableDateRange.value.endDate,
+});
 
 const formatStatAmount = (amount) => {
   return new Intl.NumberFormat('en-US', {
@@ -127,10 +155,22 @@ const formatStatAmount = (amount) => {
 };
 
 const handleDateChanged = async (type, date) => {
+  if (type === 'categoriesTable') {
+    categoryTableDateRange.value = {...date};
+  }
+
   chartsLoadingState[type] = false;
   await fetchChartsData(type, date);
   chartConfigs[type] = generateChartConfigForType(chartStore.chartDataByType, type);
   chartsLoadingState[type] = true;
+};
+
+const openCategoryDetails = (categoryItem) => {
+  selectedCategoryDetails.category = categoryItem.category;
+  selectedCategoryDetails.categoryId = categoryItem.categoryId;
+  selectedCategoryDetails.startDate = categoryTableDateRange.value.startDate;
+  selectedCategoryDetails.endDate = categoryTableDateRange.value.endDate;
+  isCategoryTransactionsModalOpen.value = true;
 };
 
 const fetchChartsData = async (type, date) => {

@@ -3,6 +3,24 @@ import {TransactionModel} from '~/server/models/TransactionModel';
 
 const roundAmount = (value: number) => Math.round((value + Number.EPSILON) * 100) / 100;
 
+const aggregateCategoryTotals = (transactions) => {
+  return Object.values(transactions.reduce((acc, transaction) => {
+    const categoryId = transaction.category?._id?.toString() || null;
+    const key = categoryId || 'uncategorized';
+
+    if (!acc[key]) {
+      acc[key] = {
+        category: transaction.category?.name || 'Uncategorized',
+        categoryId,
+        amount: 0,
+      };
+    }
+
+    acc[key].amount += Math.abs(transaction.amount);
+    return acc;
+  }, {}));
+};
+
 export default defineEventHandler(async (event) => {
   const userId = getCookie(event, 'userId');
   if (!userId) {
@@ -56,19 +74,17 @@ export default defineEventHandler(async (event) => {
         .populate('category', 'name')
         .lean();
 
-      const categoryTotals = transactions.reduce((acc, transaction) => {
-        const categoryName = transaction.category?.name || 'Uncategorized';
-        acc[categoryName] = (acc[categoryName] || 0) + Math.abs(transaction.amount);
-        return acc;
-      }, {});
-
-      const sortedCategories = Object.entries(categoryTotals)
-        .sort(([, a], [, b]) => b - a)
+      const sortedCategories = aggregateCategoryTotals(transactions)
+        .sort((firstCategory, secondCategory) => secondCategory.amount - firstCategory.amount)
         .slice(0, top);
 
       return {
         status: 200,
-        data: sortedCategories.map(([category, amount]) => ({category, amount: roundAmount(amount)})),
+        data: sortedCategories.map((item) => ({
+          category: item.category,
+          categoryId: item.categoryId,
+          amount: roundAmount(item.amount),
+        })),
       };
     }
 
@@ -77,15 +93,13 @@ export default defineEventHandler(async (event) => {
         .populate('category', 'name')
         .lean();
 
-      const categoryTotals = transactions.reduce((acc, transaction) => {
-        const categoryName = transaction.category?.name || 'Uncategorized';
-        acc[categoryName] = (acc[categoryName] || 0) + Math.abs(transaction.amount);
-        return acc;
-      }, {});
-
       return {
         status: 200,
-        data: Object.entries(categoryTotals).map(([category, amount]) => ({category, amount: roundAmount(amount)})),
+        data: aggregateCategoryTotals(transactions).map((item) => ({
+          category: item.category,
+          categoryId: item.categoryId,
+          amount: roundAmount(item.amount),
+        })),
       };
     }
 
@@ -94,15 +108,13 @@ export default defineEventHandler(async (event) => {
         .populate('category', 'name')
         .lean();
 
-      const categoryTotals = transactions.reduce((acc, transaction) => {
-        const categoryName = transaction.category?.name || 'Uncategorized';
-        acc[categoryName] = (acc[categoryName] || 0) + Math.abs(transaction.amount);
-        return acc;
-      }, {});
-
       return {
         status: 200,
-        data: Object.entries(categoryTotals).map(([category, amount]) => ({category, amount: roundAmount(amount)})),
+        data: aggregateCategoryTotals(transactions).map((item) => ({
+          category: item.category,
+          categoryId: item.categoryId,
+          amount: roundAmount(item.amount),
+        })),
       };
     }
 

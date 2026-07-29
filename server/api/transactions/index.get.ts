@@ -11,6 +11,7 @@ export default defineEventHandler(async (event) => {
   const {
     type,
     accountId,
+    categoryId,
     relatedAccountId,
     startDate,
     endDate,
@@ -18,10 +19,12 @@ export default defineEventHandler(async (event) => {
     maxAmount,
     description,
     page = 1,
-    perPage = 5
+    perPage,
+    limit,
   } = getQuery(event);
 
   const query = {userId};
+  const itemsPerPage = Number(perPage || limit || 5);
 
   if (type) {
     query.type = type;
@@ -29,6 +32,10 @@ export default defineEventHandler(async (event) => {
 
   if (accountId) {
     query.accountId = new mongoose.Types.ObjectId(accountId);
+  }
+
+  if (categoryId) {
+    query.category = new mongoose.Types.ObjectId(categoryId);
   }
 
   if (relatedAccountId) {
@@ -77,17 +84,17 @@ export default defineEventHandler(async (event) => {
     .sort((a, b) => new Date(b.date) - new Date(a.date));
 
   const totalItems = groupedArray.length;
-  const paginatedResult = groupedArray.slice((+page - 1) * perPage, +page * perPage);
+  const paginatedResult = groupedArray.slice((+page - 1) * itemsPerPage, +page * itemsPerPage);
 
   return {
     status: 200,
     transactions: paginatedResult,
     totalItems,
     currentPage: parseInt(page),
-    hasNextPage: perPage * +page < totalItems,
+    hasNextPage: itemsPerPage * +page < totalItems,
     hasPrevPage: +page > 1,
     nextPage: +page + 1,
     previousPage: +page - 1,
-    lastPage: Math.ceil(totalItems / perPage),
+    lastPage: Math.ceil(totalItems / itemsPerPage),
   };
 });

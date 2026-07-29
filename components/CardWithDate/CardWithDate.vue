@@ -47,6 +47,7 @@ import {ref, computed, onMounted} from 'vue';
 import Dropdown from "~/components/Dropdown/Dropdown.vue";
 import BaseButton from "~/components/Buttons/BaseButton.vue";
 import {DATE_RANGE_PRESETS, getDateRangeForPreset} from "~/utils/dateRangePresets";
+import {formatDateToLocalIso} from "~/utils/dateFormat";
 
 const emit = defineEmits(['date-changed']);
 
@@ -59,7 +60,7 @@ const startDate = ref<string | null>(null);
 const endDate = ref<string | null>(null);
 
 const maxSelectableDate = computed(() =>
- new Date().toISOString().substring(0, 10)
+ formatDateToLocalIso(new Date())
 );
 
 const periods = [

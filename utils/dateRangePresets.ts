@@ -1,4 +1,4 @@
-const toIsoDate = (date: Date) => date.toISOString().substring(0, 10);
+import {formatDateToLocalIso} from "~/utils/dateFormat";
 
 const getToday = () => new Date();
 
@@ -32,24 +32,24 @@ export const DATE_RANGE_PRESETS = {
 
 export const getDateRangeForPreset = (preset: string) => {
   const today = getToday();
-  const endDate = toIsoDate(today);
+  const endDate = formatDateToLocalIso(today);
   let startDate = endDate;
 
   switch (preset) {
     case DATE_RANGE_PRESETS.currentWeek:
-      startDate = toIsoDate(getStartOfCurrentWeek(today));
+      startDate = formatDateToLocalIso(getStartOfCurrentWeek(today));
       break;
     case DATE_RANGE_PRESETS.currentMonth:
-      startDate = toIsoDate(getStartOfCurrentMonth(today));
+      startDate = formatDateToLocalIso(getStartOfCurrentMonth(today));
       break;
     case DATE_RANGE_PRESETS.last3Months:
-      startDate = toIsoDate(getStartOfMonthsRange(today, 3));
+      startDate = formatDateToLocalIso(getStartOfMonthsRange(today, 3));
       break;
     case DATE_RANGE_PRESETS.last6Months:
-      startDate = toIsoDate(getStartOfMonthsRange(today, 6));
+      startDate = formatDateToLocalIso(getStartOfMonthsRange(today, 6));
       break;
     case DATE_RANGE_PRESETS.last12Months:
-      startDate = toIsoDate(getStartOfMonthsRange(today, 12));
+      startDate = formatDateToLocalIso(getStartOfMonthsRange(today, 12));
       break;
     default:
       break;
