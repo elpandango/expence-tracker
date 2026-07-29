@@ -90,13 +90,59 @@ const fetchChartData = async () => {
         y: Math.abs(t.amount),
       }));
 
-    chartConfig.value = {
+      chartConfig.value = {
       chart: {
         type: 'pie',
         backgroundColor: '#f9f9f9',
+        height: 520,
+        spacingLeft: 0,
+        spacingRight: 0,
       },
       title: {
         text: 'Expense Categories',
+      },
+      tooltip: {
+        pointFormat: '<b>{point.percentage:.1f}%</b><br/>{point.y:.2f} EUR',
+      },
+      legend: {
+        align: 'center',
+        verticalAlign: 'bottom',
+        layout: 'horizontal',
+        alignColumns: false,
+        itemMarginTop: 6,
+        itemMarginBottom: 6,
+        itemStyle: {
+          textOverflow: 'clip',
+        },
+      },
+      responsive: {
+        rules: [
+          {
+            condition: {
+              maxWidth: 640,
+            },
+            chartOptions: {
+              chart: {
+                height: 620,
+                spacingLeft: 0,
+                spacingRight: 0,
+              },
+              legend: {
+                itemWidth: 135,
+                alignColumns: false,
+              },
+            },
+          },
+        ],
+      },
+      plotOptions: {
+        pie: {
+          innerSize: '58%',
+          showInLegend: true,
+          dataLabels: {
+            enabled: false,
+          },
+        },
       },
       series: [
         {
