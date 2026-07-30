@@ -24,7 +24,10 @@ const props = defineProps({
 <template>
   <div
    class="card w-full flex flex-wrap"
-   :class="[props.class, withScroll ? 'overflow-auto' : '']"
+   :class="[
+     props.class,
+     withScroll ? 'overflow-auto' : ''
+   ]"
    :style="{ maxWidth }">
     <div
      v-if="withHeader"

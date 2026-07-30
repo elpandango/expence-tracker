@@ -55,7 +55,7 @@ onMounted(() => {
 
 <template>
   <div
-   class="accordion w-full overflow-hidden transition-all duration-300 group"
+   class="accordion w-full transition-all duration-300 group"
    :class="[
      {'active': isActive},
      props.cardLike ? 'accordion--card-like' : 'accordion--default'
@@ -89,7 +89,7 @@ onMounted(() => {
       <div
        :style="{maxHeight: isActive ? computedHeight  + 'px' : '0px'}"
        class="content-block overflow-hidden max-h-0 transition-all duration-300">
-        <div
+       <div
           ref="contentBlock"
           class="content-items-list">
           <div
@@ -108,6 +108,7 @@ onMounted(() => {
   border: 1px solid rgb(231 229 228);
   border-radius: 0.75rem;
   box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  overflow: hidden;
 }
 
 :global(.dark) .accordion--default {

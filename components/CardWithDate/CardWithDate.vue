@@ -1,51 +1,9 @@
-<template>
-  <Card>
-    <div class="mb-1 !min-h-[30px]">
-      <div class="w-[208px]">
-        <Dropdown
-         v-model="selectedPeriod"
-         :options="periods"
-         type="form-dropdown"
-         size="h-[36px]"
-         placeholder="Select period"
-         @update:model-value="onPeriodChange"
-        />
-      </div>
-
-      <div v-if="selectedPeriod.value === 'custom'">
-        <div class="w-full flex pt-2.5">
-          <div class="flex flex-1 gap-3">
-            <Datepicker
-             v-model="startDate"
-             :max-date="endDate || maxSelectableDate"
-             placeholder="Select start date"
-            />
-            <Datepicker
-             v-model="endDate"
-             :min-date="startDate || ''"
-             :max-date="maxSelectableDate"
-             placeholder="Select end date"
-            />
-          </div>
-
-          <BaseButton
-           class="ml-3"
-           @click="applyCustomRange">Apply
-          </BaseButton>
-        </div>
-      </div>
-    </div>
-
-    <slot/>
-  </Card>
-</template>
-
 <script
  setup
  lang="ts">
-import {ref, computed, onMounted} from 'vue';
+import {ref, computed, onMounted, watch} from 'vue';
 import Dropdown from "~/components/Dropdown/Dropdown.vue";
-import BaseButton from "~/components/Buttons/BaseButton.vue";
+import BaseDateRangePicker from '~/components/DateRangePicker/BaseDateRangePicker.vue';
 import {DATE_RANGE_PRESETS, getDateRangeForPreset} from "~/utils/dateRangePresets";
 import {formatDateToLocalIso} from "~/utils/dateFormat";
 
@@ -56,11 +14,16 @@ const selectedPeriod = ref({
   label: 'Current month'
 });
 
+const customRange = ref({
+  startDate: '2026-07-01',
+  endDate: '2026-07-30',
+});
+
 const startDate = ref<string | null>(null);
 const endDate = ref<string | null>(null);
 
 const maxSelectableDate = computed(() =>
- formatDateToLocalIso(new Date())
+  formatDateToLocalIso(new Date())
 );
 
 const periods = [
@@ -81,25 +44,68 @@ const onPeriodChange = () => {
   startDate.value = range.startDate;
   endDate.value = range.endDate;
 
+  customRange.value.startDate = range.startDate;
+  customRange.value.endDate = range.endDate;
+
   emit('date-changed', {
     startDate: startDate.value,
     endDate: endDate.value,
   });
 };
 
-const applyCustomRange = () => {
-  emit('date-changed', {
-    startDate: startDate.value,
-    endDate: endDate.value,
-  });
-};
+watch(customRange, (range) => {
+  startDate.value = range.startDate;
+  endDate.value = range.endDate;
+
+  if (
+    selectedPeriod.value.value === DATE_RANGE_PRESETS.custom &&
+    range.startDate &&
+    range.endDate
+  ) {
+    emit('date-changed', {
+      startDate: range.startDate,
+      endDate: range.endDate,
+    });
+  }
+}, {deep: true});
 
 onMounted(() => {
   const range = getDateRangeForPreset(selectedPeriod.value.value);
   startDate.value = range.startDate;
   endDate.value = range.endDate;
+
+  customRange.value.startDate = range.startDate;
+  customRange.value.endDate = range.endDate;
 });
 </script>
+
+<template>
+  <Card>
+    <div class="mb-4 !min-h-[30px]">
+      <div class="w-full md:w-[208px]">
+        <Dropdown
+         v-model="selectedPeriod"
+         :options="periods"
+         type="form-dropdown"
+         size="h-[36px]"
+         placeholder="Select period"
+         @update:model-value="onPeriodChange"
+        />
+      </div>
+
+      <div v-if="selectedPeriod.value === 'custom'" class="w-full mt-4">
+        <BaseDateRangePicker
+         v-model="customRange"
+         start-placeholder="Start date"
+         end-placeholder="End date"
+         :max-date="maxSelectableDate"
+        />
+      </div>
+    </div>
+
+    <slot/>
+  </Card>
+</template>
 
 <style>
 </style>
