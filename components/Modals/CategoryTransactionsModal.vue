@@ -144,15 +144,14 @@ watch(() => props.isOpen, (newValue) => {
    v-model="modalValue"
    @update:model-value="closeModal">
     <template #header>
-      <div class="pr-6">
+      <div class="pr-6 font-semibold text-xl">
         {{ categoryName }}
+      </div>
+      <div class="text-md text-stone-500">
+        {{ formattedPeriod }}
       </div>
     </template>
     <template #body>
-      <div class="text-sm text-stone-500 mb-4">
-        {{ formattedPeriod }}
-      </div>
-
       <Preloader
        v-if="isInitialLoading"
        height="220px"/>

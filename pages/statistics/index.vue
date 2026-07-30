@@ -1,72 +1,3 @@
-<template>
-  <div class="charts-page max-w-4xl lg:max-w-screen-lg m-auto">
-    <h1 class="font-semibold text-3xl mb-4">{{ $t('components.statisticsPage.pageTitleText') }}</h1>
-
-    <div class="charts w-full flex flex-wrap gap-5">
-
-      <div class="w-full flex flex-wrap">
-        <CardWithDate
-         class="chart-wrapper w-full"
-         @date-changed="handleDateChanged">
-          <template v-if="!isStatisticsLoading">
-            <h3 class="text-xl font-semibold my-3 mx-2">Expense categories</h3>
-            <div
-             v-for="expenseItem in sortedCategories"
-             :key="`${expenseItem.category}-${expenseItem.categoryId || 'uncategorized'}`"
-             class="w-full py-2 px-3 border-t-[1px] border-stone-200 dark:border-neutral-600 flex items-center justify-between gap-3">
-              <div>
-                <strong>{{ expenseItem.category }}</strong> - {{ formatStatAmount(expenseItem.amount) }} EUR
-              </div>
-              <BaseButton
-               v-if="expenseItem.categoryId"
-               size="smallest"
-               variant="transparent"
-               @click="openCategoryDetails(expenseItem)">
-                Details
-              </BaseButton>
-            </div>
-            <div
-             v-if="sortedCategories.length > 0"
-             class="w-full py-3 px-3 border-t-[1px] border-stone-200 dark:border-neutral-600 flex items-center justify-between gap-3 text-[18px] font-semibold">
-              <div>Total</div>
-              <div>{{ formatStatAmount(totalExpensesAmount) }} EUR</div>
-            </div>
-          </template>
-          <template v-else>
-            <Preloader height="300px"/>
-          </template>
-
-        </CardWithDate>
-      </div>
-
-      <div class="w-full flex gap-5 flex-wrap md:flex-nowrap">
-        <CardWithDate
-         class="chart-wrapper w-full"
-         @date-changed="handleDateChanged">
-          <template v-if="isHighchartsLoaded && !isStatisticsLoading">
-            <HighchartsComponent
-             v-if="allCategoriesChartConfig && allCategoriesChartConfig.series[0].data.length > 0"
-             :options="allCategoriesChartConfig"/>
-            <NoChartsData v-else/>
-          </template>
-          <template v-else>
-            <Preloader height="300px"/>
-          </template>
-        </CardWithDate>
-      </div>
-    </div>
-
-    <CategoryTransactionsModal
-     :is-open="isCategoryTransactionsModalOpen"
-     :category-id="selectedCategoryDetails.categoryId"
-     :category-name="selectedCategoryDetails.category"
-     :start-date="selectedCategoryDetails.startDate"
-     :end-date="selectedCategoryDetails.endDate"
-     @close="isCategoryTransactionsModalOpen = false"
-    />
-  </div>
-</template>
-
 <script setup>
 import {computed, ref, reactive, onMounted} from 'vue';
 import {useSeoConfig} from "~/use/useSeoConfig";
@@ -222,6 +153,75 @@ const allCategoriesChartConfig = computed(() => ({
   ],
 }));
 </script>
+
+<template>
+  <div class="charts-page max-w-4xl lg:max-w-screen-lg m-auto">
+    <h1 class="font-semibold text-3xl mb-4">{{ $t('components.statisticsPage.pageTitleText') }}</h1>
+
+    <div class="charts w-full flex flex-wrap gap-5">
+
+      <div class="w-full flex flex-wrap">
+        <CardWithDate
+         class="chart-wrapper w-full"
+         @date-changed="handleDateChanged">
+          <template v-if="!isStatisticsLoading">
+            <h3 class="text-xl font-semibold my-3 mx-2">Expense categories</h3>
+            <div
+             v-for="expenseItem in sortedCategories"
+             :key="`${expenseItem.category}-${expenseItem.categoryId || 'uncategorized'}`"
+             class="w-full py-2 px-3 border-t-[1px] border-stone-200 dark:border-neutral-600 flex items-center justify-between gap-3">
+              <div>
+                <strong>{{ expenseItem.category }}</strong> - {{ formatStatAmount(expenseItem.amount) }} EUR
+              </div>
+              <BaseButton
+               v-if="expenseItem.categoryId"
+               size="smallest"
+               variant="transparent"
+               @click="openCategoryDetails(expenseItem)">
+                Details
+              </BaseButton>
+            </div>
+            <div
+             v-if="sortedCategories.length > 0"
+             class="w-full py-3 px-3 border-t-[1px] border-stone-200 dark:border-neutral-600 flex items-center justify-between gap-3 text-[18px] font-semibold">
+              <div>Total</div>
+              <div>{{ formatStatAmount(totalExpensesAmount) }} EUR</div>
+            </div>
+          </template>
+          <template v-else>
+            <Preloader height="300px"/>
+          </template>
+
+        </CardWithDate>
+      </div>
+
+      <div class="w-full flex gap-5 flex-wrap md:flex-nowrap">
+        <CardWithDate
+         class="chart-wrapper w-full"
+         @date-changed="handleDateChanged">
+          <template v-if="isHighchartsLoaded && !isStatisticsLoading">
+            <HighchartsComponent
+             v-if="allCategoriesChartConfig && allCategoriesChartConfig.series[0].data.length > 0"
+             :options="allCategoriesChartConfig"/>
+            <NoChartsData v-else/>
+          </template>
+          <template v-else>
+            <Preloader height="300px"/>
+          </template>
+        </CardWithDate>
+      </div>
+    </div>
+
+    <CategoryTransactionsModal
+     :is-open="isCategoryTransactionsModalOpen"
+     :category-id="selectedCategoryDetails.categoryId"
+     :category-name="selectedCategoryDetails.category"
+     :start-date="selectedCategoryDetails.startDate"
+     :end-date="selectedCategoryDetails.endDate"
+     @close="isCategoryTransactionsModalOpen = false"
+    />
+  </div>
+</template>
 
 <style>
 </style>
