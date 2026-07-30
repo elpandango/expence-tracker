@@ -43,31 +43,6 @@
           <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">account_circle</span>
           {{ $t('components.menuList.profile') }}
         </NuxtLink>
-
-        <button
-         class="menu-link flex w-full h-9 items-center px-4 transition-all duration-300 rounded-md font-medium text-md cursor-pointer hover:bg-card-bg hover:text-color-600 .active:bg-card-bg .active:text-color-600 router-link-active:bg-card-bg router-link-active:text-accent"
-         @click="handleNewExpense">
-          <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">attach_money</span>
-          {{ $t('components.menuList.addExpense') }}
-        </button>
-
-        <NuxtLink
-         to="/categories"
-         class="menu-link flex w-full h-9 items-center px-4 transition-all duration-300 rounded-md font-medium text-md cursor-pointer hover:bg-card-bg hover:text-color-600 .active:bg-card-bg .active:text-color-600 router-link-active:bg-card-bg router-link-active:text-accent"
-         :class="{'bg-card-bg text-accent': $route.path === '/categories' }">
-          <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">category</span>
-          {{ $t('components.menuList.categories') }}
-        </NuxtLink>
-      </div>
-    </div>
-    <div class="bottom-block">
-      <div
-       class="menu-link flex w-full h-9 items-center px-4 transition-all duration-300 rounded-md font-medium text-md cursor-pointer hover:bg-card-bg hover:text-color-600 .active:bg-card-bg .active:text-color-600 router-link-active:bg-card-bg router-link-active:text-accent"
-       @click="toggleTheme">
-        <ClientOnly>
-          <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">{{ isDark ? 'light_mode' : 'dark_mode' }}</span>
-        </ClientOnly>
-        {{ $t('components.menuList.theme') }}
       </div>
     </div>
   </aside>
@@ -76,17 +51,6 @@
 <script
  setup
  lang="ts">
-import {useTheme} from "~/use/useTheme";
-import {useUIStore} from "~/stores/ui";
-import {useFinanceStore} from "~/stores/finance";
-
-const {isDark, toggleTheme} = useTheme();
-const financeStore = useFinanceStore();
-const uiStore = useUIStore();
-const handleNewExpense = () => {
-  financeStore.resetEditingTransaction();
-  uiStore.toggleModal('isAddExpenseModalOpen', true);
-}
 </script>
 
 <style>

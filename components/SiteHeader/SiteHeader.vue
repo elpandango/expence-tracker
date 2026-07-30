@@ -1,22 +1,15 @@
 <script setup>
 import {ref} from 'vue';
-import {useTheme} from "~/use/useTheme";
-import {useUIStore} from "~/stores/ui";
 import {useUserStore} from '~/stores/user';
-import {useFinanceStore} from "~/stores/finance";
 import {useAuthStore} from "~/stores/auth";
 import {useI18n} from 'vue-i18n';
 import Accordion from "~/components/Accordion/Accordion.vue";
 import LanguageMenu from "~/components/LanguageMenu/LanguageMenu.vue";
 
 const {t} = useI18n();
-const financeStore = useFinanceStore();
 const authStore = useAuthStore();
-const uiStore = useUIStore();
 const userStore = useUserStore();
 const menuOpen = ref(false);
-
-const {isDark, toggleTheme} = useTheme();
 
 const timeOfDay = computed(() => {
   const hours = new Date().getHours();
@@ -38,12 +31,6 @@ const toggleMenu = () => {
 const closeMenu = () => {
   menuOpen.value = false;
   document.body.classList.toggle('no-scroll', false);
-};
-
-const handleNewExpense = () => {
-  financeStore.resetEditingTransaction();
-  uiStore.toggleModal('isAddExpenseModalOpen', true);
-  closeMenu();
 };
 
 const handleClickOutside = (event) => {
@@ -152,29 +139,6 @@ onBeforeUnmount(() => {
           <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">account_circle</span>
           {{ $t('components.menuList.profile') }}
         </NuxtLink>
-        <button
-         class="menu-link flex items-center w-full px-3 py-3 text-[18px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
-         @click="handleNewExpense">
-          <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">attach_money</span>
-          {{ $t('components.menuList.addExpense') }}
-        </button>
-
-        <NuxtLink
-         to="/categories"
-         class="menu-link flex items-center w-full px-3 py-3 text-[18px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
-         :class="{'bg-card-bg text-accent': $route.path === '/categories' }"
-         @click="closeMenu">
-          <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">category</span>
-          {{ $t('components.menuList.categories') }}
-        </NuxtLink>
-        <div
-         class="menu-link flex items-center w-full px-3 py-3 text-[18px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
-         @click="toggleTheme">
-          <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">{{
-              isDark ? 'light_mode' : 'dark_mode'
-            }}</span>
-          {{ $t('components.menuList.theme') }}
-        </div>
         <div class="w-full px-3 py-3">
           <Accordion
            class="!rounded-md !shadow-none border-none dark:border-none"
