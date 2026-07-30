@@ -2,6 +2,15 @@ import type {CategoryOption} from "~/types/categories";
 
 const CATEGORY_KEYWORDS_MAP: Record<string, string[]> = {
   "Food": [
+    "lidl",
+    "лидл",
+    "aldi",
+    "альди",
+    "алди",
+    "rewe",
+    "реве",
+    "kaufland",
+    "кауфланд",
     "обед",
     "продукты",
     "продукт",
@@ -33,6 +42,8 @@ const CATEGORY_KEYWORDS_MAP: Record<string, string[]> = {
     "интернет",
     "internet",
     "водопровод",
+    "водафон",
+    "vodafone",
   ],
   "Car": [
     "заправка",
@@ -56,6 +67,22 @@ const CATEGORY_KEYWORDS_MAP: Record<string, string[]> = {
     "бинты",
     "мазь",
     "таблетки",
+  ],
+  "Technology": [
+    "подписка чат",
+    "чат",
+    "чатГПТ",
+    "chat",
+    "chatGPT",
+    "телефон Оля",
+    "телефон Женя",
+    "телефон Тимур",
+  ],
+  "Transport": [
+    "проездной",
+    "проездной Оля",
+    "проездной Женя",
+    "проездной Тимур",
   ],
 };
 

@@ -161,7 +161,7 @@ const allCategoriesChartConfig = computed(() => ({
     <div class="charts w-full flex flex-wrap gap-5">
 
       <div class="w-full flex flex-wrap">
-        <CardWithDate
+             <CardWithDate
          class="chart-wrapper w-full"
          @date-changed="handleDateChanged">
           <template v-if="!isStatisticsLoading">
