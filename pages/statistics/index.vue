@@ -7,7 +7,7 @@ import {useChartStore} from "~/stores/charts";
 import {useI18n} from "vue-i18n";
 import {useLocalizatedCategories} from "~/use/useLocalizatedCategories";
 import {DATE_RANGE_PRESETS, getDateRangeForPreset} from "~/utils/dateRangePresets";
-import {shiftDateRangeByYears} from "~/utils/dateFormat";
+import {getDateRangeLengthInDays, shiftDateRangeByYears} from "~/utils/dateFormat";
 
 type CategoryTotalItem = {
   category: string;
@@ -43,6 +43,7 @@ const selectedCategoryDetails = reactive({
   startDate: categoryTableDateRange.value.startDate,
   endDate: categoryTableDateRange.value.endDate,
 });
+const MAX_COMPARISON_RANGE_DAYS = 366;
 
 const formatStatAmount = (amount) => {
   return new Intl.NumberFormat('en-US', {
@@ -57,6 +58,18 @@ const localizeCategoryTotals = (items: CategoryTotalItem[]) => {
     category: useLocalizatedCategories(item.category, locale.value),
   }));
 };
+
+const shouldShowPreviousYearColumn = computed(() => {
+  return getDateRangeLengthInDays(categoryTableDateRange.value) <= MAX_COMPARISON_RANGE_DAYS;
+});
+
+const currentPeriodYearLabel = computed(() => {
+  return categoryTableDateRange.value.endDate.slice(0, 4);
+});
+
+const previousPeriodYearLabel = computed(() => {
+  return shiftDateRangeByYears(categoryTableDateRange.value, -1).endDate.slice(0, 4);
+});
 
 const handleDateChanged = async (date) => {
   categoryTableDateRange.value = {...date};
@@ -244,8 +257,8 @@ const allCategoriesChartConfig = computed(() => ({
                 <thead>
                   <tr>
                     <th class="statistics-table__head statistics-table__head--text">Category</th>
-                    <th class="statistics-table__head">This year</th>
-                    <th class="statistics-table__head">Last year</th>
+                    <th class="statistics-table__head">{{ currentPeriodYearLabel }}</th>
+                    <th v-if="shouldShowPreviousYearColumn" class="statistics-table__head">{{ previousPeriodYearLabel }}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -263,7 +276,7 @@ const allCategoriesChartConfig = computed(() => ({
                     <td class="statistics-table__cell statistics-table__cell--amount">
                       €{{ formatStatAmount(row.currentAmount) }}
                     </td>
-                    <td class="statistics-table__cell statistics-table__cell--amount">
+                    <td v-if="shouldShowPreviousYearColumn" class="statistics-table__cell statistics-table__cell--amount">
                       €{{ formatStatAmount(row.previousAmount) }}
                     </td>
                   </tr>
@@ -274,10 +287,9 @@ const allCategoriesChartConfig = computed(() => ({
                     <td class="statistics-table__cell statistics-table__cell--total-value">
                       €{{ formatStatAmount(totalExpensesAmount) }}
                     </td>
-                    <td class="statistics-table__cell statistics-table__cell--total-value">
+                    <td v-if="shouldShowPreviousYearColumn" class="statistics-table__cell statistics-table__cell--total-value">
                       €{{ formatStatAmount(totalPreviousYearExpensesAmount) }}
                     </td>
-                    <td class="statistics-table__cell statistics-table__cell--actions"/>
                   </tr>
                 </tfoot>
               </table>
