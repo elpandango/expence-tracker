@@ -1,7 +1,7 @@
 <script
  setup
  lang="ts">
-import {computed, onMounted, ref} from 'vue';
+import {nextTick, onBeforeUnmount, onMounted, ref, watch} from 'vue';
 
 const props = defineProps({
   height: {
@@ -37,8 +37,14 @@ const props = defineProps({
 const isActive = ref<boolean>(false);
 const contentBlock = ref<HTMLElement | null>(null);
 
-const computedHeight = computed(() => {
-  return contentBlock.value ? contentBlock.value.offsetHeight : 0;
+const contentHeight = ref(0);
+let contentObserver: ResizeObserver | undefined;
+const measureContent = () => {
+  contentHeight.value = contentBlock.value?.offsetHeight ?? 0;
+};
+watch(isActive, async () => {
+  await nextTick();
+  measureContent();
 });
 
 const accordionTrigger = (e: Event) => {
@@ -47,10 +53,16 @@ const accordionTrigger = (e: Event) => {
 };
 
 onMounted(() => {
+  measureContent();
+  if (typeof ResizeObserver !== 'undefined' && contentBlock.value) {
+    contentObserver = new ResizeObserver(measureContent);
+    contentObserver.observe(contentBlock.value);
+  }
   if (props.isActiveOnInit) {
     isActive.value = true;
   }
 });
+onBeforeUnmount(() => contentObserver?.disconnect());
 </script>
 
 <template>
@@ -65,7 +77,12 @@ onMounted(() => {
        :style="{height: props.height}"
        class="header-block flex items-center justify-between cursor-pointer h-[50px]"
        :class="[headerClass, align]"
-       @click="accordionTrigger">
+       role="button"
+       tabindex="0"
+       :aria-expanded="isActive"
+       @click="accordionTrigger"
+       @keydown.enter.prevent="accordionTrigger"
+       @keydown.space.prevent="accordionTrigger">
         <slot name="header">
           <div class="value">
             default value
@@ -87,7 +104,8 @@ onMounted(() => {
         </div>
       </div>
       <div
-       :style="{maxHeight: isActive ? computedHeight  + 'px' : '0px'}"
+       :style="{maxHeight: isActive ? contentHeight + 'px' : '0px'}"
+       :inert="!isActive"
        class="content-block overflow-hidden max-h-0 transition-all duration-300">
        <div
           ref="contentBlock"

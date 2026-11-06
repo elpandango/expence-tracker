@@ -132,6 +132,14 @@ onBeforeUnmount(() => {
           {{ $t('components.menuList.statistics') }}
         </NuxtLink>
         <NuxtLink
+         to="/savings-plan"
+         class="menu-link flex items-center w-full px-3 py-3 text-[18px] font-medium transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
+         :class="{'bg-card-bg text-accent': $route.path === '/savings-plan' }"
+         @click="closeMenu">
+          <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">savings</span>
+          {{ $t('savingsPlan.title') }}
+        </NuxtLink>
+        <NuxtLink
          to="/profile"
          class="menu-link flex items-center w-full px-3 py-3 text-[18px] font-medium  transition-colors duration-300 rounded-md hover:bg-card-bg hover:text-accent router-link-active:bg-card-bg router-link-active:text-accent"
          :class="{'bg-card-bg text-accent': $route.path === '/profile' }"

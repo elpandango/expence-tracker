@@ -1,3 +1,6 @@
+<script setup lang="ts">
+</script>
+
 <template>
   <aside class="sidebar fixed flex-wrap flex-col justify-between top-0 left-0 z-10 w-[250px] h-screen bg-bg py-5 pr-3.5 pl-0 hidden md:absolute md:hidden lg:flex">
     <div class="top-block flex flex-wrap">
@@ -37,6 +40,13 @@
           {{ $t('components.menuList.statistics') }}
         </NuxtLink>
         <NuxtLink
+         to="/savings-plan"
+         class="menu-link flex w-full h-9 items-center px-4 transition-all duration-300 rounded-md font-medium text-md cursor-pointer hover:bg-card-bg hover:text-color-600 router-link-active:bg-card-bg router-link-active:text-accent"
+         :class="{'bg-card-bg text-accent': $route.path === '/savings-plan' }">
+          <span class="icon material-symbols-outlined w-5 h-5 flex items-center mr-6">savings</span>
+          {{ $t('savingsPlan.title') }}
+        </NuxtLink>
+        <NuxtLink
          to="/profile"
          class="menu-link flex w-full h-9 items-center px-4 transition-all duration-300 rounded-md font-medium text-md cursor-pointer hover:bg-card-bg hover:text-color-600 .active:bg-card-bg .active:text-color-600 router-link-active:bg-card-bg router-link-active:text-accent"
          :class="{'bg-card-bg text-accent': $route.path === '/profile' }">
@@ -47,11 +57,6 @@
     </div>
   </aside>
 </template>
-
-<script
- setup
- lang="ts">
-</script>
 
 <style>
 </style>
